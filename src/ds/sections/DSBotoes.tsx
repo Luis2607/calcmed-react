@@ -1,6 +1,73 @@
 import { useState } from 'react'
 import DSPanel from '../DSPanel'
 
+function ButtonPlayground() {
+  const [variant, setVariant] = useState('primary')
+  const [size, setSize] = useState('md')
+  const [disabled, setDisabled] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [label, setLabel] = useState('Calcular')
+  const [withIcon, setWithIcon] = useState(false)
+
+  const cls = `btn btn-${size} btn-${variant}${disabled ? ' disabled' : ''}${loading ? ' btn-loading' : ''}`
+
+  return (
+    <div className="ds-subsection">
+      <h3>Playground</h3>
+      <p className="ds-subsection-desc">Configure o bot\u00e3o abaixo e veja o resultado em tempo real. Copie as classes CSS para usar no seu c\u00f3digo.</p>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+        {/* Controls */}
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="t-legenda text-fg-2 mb-1">Variante</label>
+            <div className="flex flex-wrap gap-2">
+              {['primary','ghost','outline','secondary','text','danger','discrete'].map(v => (
+                <button key={v} className={`chip ${v === variant ? 'active' : ''}`} onClick={() => setVariant(v)}>{v}</button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label className="t-legenda text-fg-2 mb-1">Tamanho</label>
+            <div className="flex gap-2">
+              {['sm','md','lg'].map(s => (
+                <button key={s} className={`chip ${s === size ? 'active' : ''}`} onClick={() => setSize(s)}>{s}</button>
+              ))}
+            </div>
+          </div>
+          <div className="flex gap-4">
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={disabled} onChange={e => setDisabled(e.target.checked)} />
+              <span className="t-corpo-2">Disabled</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={loading} onChange={e => setLoading(e.target.checked)} />
+              <span className="t-corpo-2">Loading</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={withIcon} onChange={e => setWithIcon(e.target.checked)} />
+              <span className="t-corpo-2">Com \u00edcone</span>
+            </label>
+          </div>
+          <div>
+            <label className="t-legenda text-fg-2 mb-1">Texto</label>
+            <input className="input-field" value={label} onChange={e => setLabel(e.target.value)} />
+          </div>
+        </div>
+
+        {/* Preview */}
+        <div className="flex flex-col items-center justify-center gap-4 p-6 rounded-xl" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)' }}>
+          <button className={cls} disabled={disabled}>
+            {withIcon && <i className="ph ph-calculator" />}
+            {loading ? '' : label}
+          </button>
+          <code className="ds-token" style={{ fontSize: 11 }}>.{cls.trim().replace(/\s+/g, ' .')}</code>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function ButtonShowcase() {
   const [loading, setLoading] = useState(false)
 
@@ -102,6 +169,8 @@ export default function DSBotoes() {
         (<code>.btn-sm</code>, <code>.btn-md</code>, <code>.btn-lg</code>).
       </p>
 
+      <ButtonPlayground />
+
       <div className="ds-subsection">
         <h3>Todas as Variantes</h3>
         <p className="ds-subsection-desc">
@@ -161,6 +230,39 @@ export default function DSBotoes() {
             </div>
           </div>
         </DSPanel>
+      </div>
+
+      <div className="ds-subsection">
+        <h3>Boas Práticas</h3>
+        <p className="ds-subsection-desc">Diretrizes para uso correto dos componentes em contexto clínico.</p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div>
+            <div className="t-texto-badge text-success mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>Faça</div>
+            {[
+              'Use apenas 1 botão Primary por tela',
+              'Botão de emergência sempre btn-lg (52dp)',
+              'Loading state em ações que demoram >500ms',
+            ].map(d => (
+              <div key={d} className="flex gap-2 items-start mb-2">
+                <i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} />
+                <span className="t-corpo-2">{d}</span>
+              </div>
+            ))}
+          </div>
+          <div>
+            <div className="t-texto-badge text-danger mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>Não faça</div>
+            {[
+              'Nunca 2 botões Primary lado a lado',
+              'Nunca btn-sm para ações clínicas críticas',
+              'Nunca botão sem feedback visual ao toque',
+            ].map(d => (
+              <div key={d} className="flex gap-2 items-start mb-2">
+                <i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} />
+                <span className="t-corpo-2">{d}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="ds-subsection">

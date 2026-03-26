@@ -137,6 +137,40 @@ export default function DSAlertas() {
         </DSPanel>
       </div>
 
+      {/* Boas Práticas */}
+      <div className="ds-subsection">
+        <h3>Boas Práticas</h3>
+        <p className="ds-subsection-desc">Diretrizes para uso correto dos componentes em contexto clínico.</p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div>
+            <div className="t-texto-badge text-success mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>Faça</div>
+            {[
+              'Resultado/dose (nível 2) é SEMPRE o protagonista visual',
+              'Crítico (nível 3) só para dose máxima ultrapassada',
+              'Rodapé (nível 5) sempre no final, referência bibliográfica',
+            ].map(d => (
+              <div key={d} className="flex gap-2 items-start mb-2">
+                <i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} />
+                <span className="t-corpo-2">{d}</span>
+              </div>
+            ))}
+          </div>
+          <div>
+            <div className="t-texto-badge text-danger mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>Não faça</div>
+            {[
+              'Nunca usar verde para alertas que não sejam resultado',
+              'Nunca diminuir fonte de dose abaixo de 20px',
+              'Nunca omitir referência bibliográfica (nível 5)',
+            ].map(d => (
+              <div key={d} className="flex gap-2 items-start mb-2">
+                <i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} />
+                <span className="t-corpo-2">{d}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Classes */}
       <div className="ds-subsection">
         <h3>Classes CSS</h3>
