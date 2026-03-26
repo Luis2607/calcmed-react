@@ -1,0 +1,2896 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CalcMed — Design System v2.0</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@700&display=swap" rel="stylesheet">
+
+<!-- Phosphor Icons CDN -->
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+<style>
+/* ================================================================
+   1. TOKENS PRIMITIVOS — 152 variaveis do Figma
+   ================================================================ */
+:root {
+  /* === BRAND (6) === */
+  --brand-navy:#002060; --brand-navy-dark:#081c39; --brand-navy-deep:#0d1b2a;
+  --brand-red:#ce0000; --brand-red-light:#e80005; --brand-red-bright:#ff3030;
+
+  /* === TEAL — Primary Interactive (11) === */
+  --teal-50:#f0fbfd; --teal-100:#ccf3fa; --teal-200:#99e6f4; --teal-300:#5cd5eb;
+  --teal-400:#26c5df; --teal-500:#00b4d8; --teal-600:#0096b7; --teal-700:#007993;
+  --teal-800:#006275; --teal-900:#004d5d; --teal-950:#003340;
+
+  /* === NAVY — Dark Surfaces (11) === */
+  --navy-50:#e8eef4; --navy-100:#c8d5e4; --navy-200:#9fb2cc; --navy-300:#708aac;
+  --navy-400:#4b648c; --navy-500:#364c72; --navy-600:#2a3f5f; --navy-700:#223249;
+  --navy-800:#1a2942; --navy-900:#111c2e; --navy-950:#0d1b2a;
+
+  /* === SLATE — Neutrals (13) === */
+  --slate-0:#ffffff; --slate-25:#fcfcfd; --slate-50:#f8fafc; --slate-100:#f1f5f9;
+  --slate-200:#e2e8f0; --slate-300:#cbd5e1; --slate-400:#94a3b8; --slate-500:#64748b;
+  --slate-600:#475569; --slate-700:#334155; --slate-800:#1e293b; --slate-900:#0f172a;
+  --slate-950:#020617;
+
+  /* === EMERALD — Success / Doses (11) === */
+  --emerald-50:#ecfdf5; --emerald-100:#d1fae5; --emerald-200:#a7f3d0; --emerald-300:#6ee7b7;
+  --emerald-400:#34d399; --emerald-500:#10b981; --emerald-600:#059669; --emerald-700:#047857;
+  --emerald-800:#065f46; --emerald-900:#064e3b; --emerald-950:#022c22;
+
+  /* === RED — Critical / UI (11) === */
+  --red-50:#fef2f2; --red-100:#fee2e2; --red-200:#fecaca; --red-300:#fca5a5;
+  --red-400:#f87171; --red-500:#ef4444; --red-600:#dc2626; --red-700:#b91c1c;
+  --red-800:#991b1b; --red-900:#7f1d1d; --red-950:#450a0a;
+
+  /* === AMBER — Warning (11) === */
+  --amber-50:#fffbeb; --amber-100:#fef3c7; --amber-200:#fde68a; --amber-300:#fcd34d;
+  --amber-400:#fbbf24; --amber-500:#f59e0b; --amber-600:#d97706; --amber-700:#b45309;
+  --amber-800:#92400e; --amber-900:#78350f; --amber-950:#451a03;
+
+  /* === BLUE — Domain Diluicoes (11) === */
+  --blue-50:#eff6ff; --blue-100:#dbeafe; --blue-200:#bfdbfe; --blue-300:#93c5fd;
+  --blue-400:#60a5fa; --blue-500:#3b82f6; --blue-600:#2563eb; --blue-700:#1d4ed8;
+  --blue-800:#1e40af; --blue-900:#1e3a8a; --blue-950:#172554;
+
+  /* === PURPLE — Domain Protocolos (11) === */
+  --purple-50:#faf5ff; --purple-100:#f3e8ff; --purple-200:#e9d5ff; --purple-300:#d8b4fe;
+  --purple-400:#c084fc; --purple-500:#a855f7; --purple-600:#9333ea; --purple-700:#7e22ce;
+  --purple-800:#6b21a8; --purple-900:#581c87; --purple-950:#3b0764;
+
+  /* === INDIGO — Domain Conversores (11) === */
+  --indigo-50:#eef2ff; --indigo-100:#e0e7ff; --indigo-200:#c7d2fe; --indigo-300:#a5b4fc;
+  --indigo-400:#818cf8; --indigo-500:#6366f1; --indigo-600:#4f46e5; --indigo-700:#4338ca;
+  --indigo-800:#3730a3; --indigo-900:#312e81; --indigo-950:#1e1b4b;
+
+  /* === ROSE — Domain Urgencias (11) === */
+  --rose-50:#fff1f2; --rose-100:#ffe4e6; --rose-200:#fecdd3; --rose-300:#fda4af;
+  --rose-400:#fb7185; --rose-500:#f43f5e; --rose-600:#e11d48; --rose-700:#be123c;
+  --rose-800:#9f1239; --rose-900:#881337; --rose-950:#4c0519;
+
+  /* === ORANGE — Domain Calculadoras (11) === */
+  --orange-50:#fff7ed; --orange-100:#ffedd5; --orange-200:#fed7aa; --orange-300:#fdba74;
+  --orange-400:#fb923c; --orange-500:#f97316; --orange-600:#ea580c; --orange-700:#c2410c;
+  --orange-800:#9a3412; --orange-900:#7c2d12; --orange-950:#431407;
+
+  /* === CYAN — Domain Escores (11) === */
+  --cyan-50:#ecfeff; --cyan-100:#cffafe; --cyan-200:#a5f3fc; --cyan-300:#67e8f9;
+  --cyan-400:#22d3ee; --cyan-500:#06b6d4; --cyan-600:#0891b2; --cyan-700:#0e7490;
+  --cyan-800:#155e75; --cyan-900:#164e63; --cyan-950:#083344;
+
+  /* === SPACING (12) === */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px;
+  --sp-8:32px; --sp-10:40px; --sp-12:48px; --sp-16:64px; --sp-20:80px; --sp-24:96px;
+
+  /* === RADIUS === */
+  --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-pill:100px;
+
+  /* === Z-INDEX SCALE (7 niveis) === */
+  --z-base:0; --z-sticky:100; --z-dropdown:200; --z-overlay:300;
+  --z-modal:400; --z-toast:500; --z-tooltip:600;
+
+  /* === MOTION / ANIMATION (4 duracoes + 2 easings) === */
+  --dur-fast:100ms; --dur-normal:200ms; --dur-slow:300ms; --dur-sheet:400ms;
+  --ease-default:cubic-bezier(0.2,0,0,1); --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+
+  /* === OPACITY (5 niveis semanticos) === */
+  --opacity-disabled:0.38; --opacity-hover:0.08; --opacity-pressed:0.12;
+  --opacity-scrim:0.5; --opacity-overlay:0.6;
+
+  /* === BREAKPOINTS (5 — documentacional, nao usado em media queries) === */
+  --bp-sm:320px; --bp-md:390px; --bp-lg:428px; --bp-tablet:768px; --bp-desktop:1024px;
+
+  /* === ELEVATION SHADOWS (6 niveis) === */
+  --shadow-0:none;
+  --shadow-1:0 1px 2px rgba(0,0,0,0.06);
+  --shadow-2:0 2px 4px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-3:0 4px 8px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+  --shadow-4:0 8px 16px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.08);
+  --shadow-5:0 12px 24px rgba(0,0,0,0.16), 0 6px 12px rgba(0,0,0,0.10);
+}
+
+/* ================================================================
+   2. TOKENS SEMANTICOS — 50 variaveis, 2 modes (Light / Dark)
+   ================================================================ */
+
+/* --- LIGHT MODE (default) --- */
+.light, :root {
+  /* Surfaces */
+  --bg:#f8fafc; --bg-surface:#ffffff; --bg-card:#ffffff;
+  --bg-elevated:#f1f5f9; --bg-hover:#f1f5f9; --bg-overlay:rgba(0,0,0,0.50);
+  /* Text */
+  --fg:#0f172a; --fg-2:#475569; --fg-3:#94a3b8;
+  --fg-disabled:#cbd5e1; --fg-on:#ffffff; --fg-link:#007993;
+  /* Borders */
+  --border:#e2e8f0; --border-subtle:#f1f5f9;
+  --border-focus:#00b4d8; --border-error:#ef4444;
+  /* Interactive */
+  --btn-primary:#007993; --btn-primary-hover:#006275; --btn-primary-active:#004d5d;
+  --btn-accent:#00b4d8; --btn-danger:#dc2626;
+  --btn-disabled-bg:#f1f5f9; --btn-disabled-fg:#cbd5e1;
+  /* Feedback */
+  --success:#047857; --success-bg:#ecfdf5; --success-border:#a7f3d0;
+  --danger:#991b1b; --danger-bg:#fef2f2; --danger-border:#fecaca;
+  --warning:#92400e; --warning-bg:#fffbeb; --warning-border:#fde68a;
+  /* Domains */
+  --dom-urg:#e11d48; --dom-urg-bg:#fff1f2; --dom-urg-text:#e11d48;
+  --dom-dil:#3b82f6; --dom-dil-bg:#eff6ff; --dom-dil-text:#1d4ed8;
+  --dom-calc:#f97316; --dom-calc-bg:#fff7ed; --dom-calc-text:#ea580c;
+  --dom-prot:#a855f7; --dom-prot-bg:#faf5ff; --dom-prot-text:#9333ea;
+  --dom-esc:#06b6d4; --dom-esc-bg:#ecfeff; --dom-esc-text:#0891b2;
+  --dom-conv:#6366f1; --dom-conv-bg:#eef2ff; --dom-conv-text:#4f46e5;
+}
+
+/* --- DARK MODE --- */
+.dark {
+  --bg:#0d1b2a; --bg-surface:#111c2e; --bg-card:#1a2942;
+  --bg-elevated:#223249; --bg-hover:#364c72; --bg-overlay:rgba(0,0,0,0.60);
+  --fg:#f1f5f9; --fg-2:#94a3b8; --fg-3:#64748b;
+  --fg-disabled:#475569; --fg-on:#ffffff; --fg-link:#00b4d8;
+  --border:#2a3f5f; --border-subtle:#223249;
+  --border-focus:#00b4d8; --border-error:#f87171;
+  --btn-primary:#0096b7; --btn-primary-hover:#007993; --btn-primary-active:#006275;
+  --btn-accent:#00b4d8; --btn-danger:#ef4444;
+  --btn-disabled-bg:#1a2942; --btn-disabled-fg:#475569;
+  --success:#34d399; --success-bg:#022c22; --success-border:#065f46;
+  --danger:#fca5a5; --danger-bg:#450a0a; --danger-border:#991b1b;
+  --warning:#fcd34d; --warning-bg:#451a03; --warning-border:#92400e;
+  --dom-urg:#fb7185; --dom-urg-bg:#4c0519; --dom-urg-text:#fda4af;
+  --dom-dil:#60a5fa; --dom-dil-bg:#172554; --dom-dil-text:#93c5fd;
+  --dom-calc:#fb923c; --dom-calc-bg:#431407; --dom-calc-text:#fdba74;
+  --dom-prot:#c084fc; --dom-prot-bg:#3b0764; --dom-prot-text:#d8b4fe;
+  --dom-esc:#22d3ee; --dom-esc-bg:#083344; --dom-esc-text:#67e8f9;
+  --dom-conv:#818cf8; --dom-conv-bg:#1e1b4b; --dom-conv-text:#a5b4fc;
+}
+
+/* ================================================================
+   3. TIPOGRAFIA — 17 text styles do Figma
+   ================================================================ */
+.t-dose-valor     { font: 700 36px/40px 'JetBrains Mono', monospace; letter-spacing: 0 }
+.t-dose-unidade   { font: 500 20px/28px 'JetBrains Mono', monospace; letter-spacing: 0 }
+.t-nome-droga     { font: 600 18px/28px 'Inter', sans-serif; letter-spacing: 0 }
+.t-titulo-pagina  { font: 700 24px/32px 'Inter', sans-serif; letter-spacing: -0.48px }
+.t-titulo-secao   { font: 700 20px/28px 'Inter', sans-serif; letter-spacing: -0.2px }
+.t-subtitulo      { font: 600 18px/28px 'Inter', sans-serif; letter-spacing: 0 }
+.t-alerta-titulo  { font: 700 16px/24px 'Inter', sans-serif; letter-spacing: 0 }
+.t-alerta-corpo   { font: 400 14px/20px 'Inter', sans-serif; letter-spacing: 0.14px }
+.t-corpo          { font: 400 16px/24px 'Inter', sans-serif; letter-spacing: 0 }
+.t-corpo-2        { font: 400 14px/20px 'Inter', sans-serif; letter-spacing: 0.14px }
+.t-rotulo-campo   { font: 500 14px/20px 'Inter', sans-serif; letter-spacing: 0.14px }
+.t-valor-campo    { font: 400 16px/24px 'Inter', sans-serif; letter-spacing: 0 }
+.t-valor-mono     { font: 400 16px/24px 'JetBrains Mono', monospace; letter-spacing: 0 }
+.t-rotulo-nav     { font: 500 12px/16px 'Inter', sans-serif; letter-spacing: 0.24px }
+.t-texto-badge    { font: 600 11px/16px 'Inter', sans-serif; letter-spacing: 0.22px }
+.t-legenda        { font: 400 12px/16px 'Inter', sans-serif; letter-spacing: 0.24px }
+.t-marca          { font: 700 28px/32px 'Outfit', sans-serif; letter-spacing: 0 }
+
+/* ================================================================
+   4. RESET & BASE
+   ================================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+body { font-family: 'Inter', sans-serif; background: var(--slate-100); color: var(--slate-900); -webkit-font-smoothing: antialiased }
+button { font-family: inherit }
+
+/* ================================================================
+   5. PAGE LAYOUT — Sidebar + Main
+   ================================================================ */
+body { display: flex; height: 100vh; overflow: hidden }
+
+/* --- SIDEBAR --- */
+.sidebar {
+  width: 280px; min-width: 280px; height: 100vh; overflow-y: auto;
+  background: var(--brand-navy-deep); color: var(--slate-300);
+  display: flex; flex-direction: column; border-right: 1px solid var(--navy-700);
+}
+.sidebar::-webkit-scrollbar { width: 4px }
+.sidebar::-webkit-scrollbar-track { background: transparent }
+.sidebar::-webkit-scrollbar-thumb { background: var(--navy-600); border-radius: 4px }
+
+.sidebar-brand {
+  padding: var(--sp-6) var(--sp-5); border-bottom: 1px solid var(--navy-700);
+  display: flex; align-items: center; gap: var(--sp-3);
+}
+.sidebar-brand img { width: 36px; height: 36px }
+.sidebar-brand .brand-name { font: 700 20px 'Outfit'; color: white }
+.sidebar-brand .brand-name .dot { color: var(--brand-red) }
+.sidebar-brand .brand-version { font: 500 10px 'Inter'; color: var(--teal-500); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px }
+
+.sidebar-nav { flex: 1; padding: var(--sp-4) 0 }
+
+/* Tree group */
+.nav-group { margin-bottom: var(--sp-1) }
+.nav-group-title {
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-5); font: 600 11px 'Inter';
+  color: var(--slate-500); letter-spacing: 1.5px; text-transform: uppercase;
+  cursor: pointer; user-select: none; transition: color .15s;
+}
+.nav-group-title:hover { color: var(--teal-400) }
+.nav-group-title i.ph-caret-right { font-size: 12px; transition: transform .2s; color: var(--slate-500) }
+.nav-group.open .nav-group-title i.ph-caret-right { transform: rotate(90deg); color: var(--teal-500) }
+.nav-group-title .group-icon { font-size: 14px; color: var(--teal-500) }
+
+.nav-group-items { display: none; padding: var(--sp-1) 0 var(--sp-2) }
+.nav-group.open .nav-group-items { display: block }
+
+.nav-link {
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: 6px var(--sp-5) 6px 44px; font: 400 13px 'Inter';
+  color: var(--slate-400); text-decoration: none; cursor: pointer;
+  transition: all .15s; border-left: 2px solid transparent;
+}
+.nav-link:hover { color: var(--teal-300); background: rgba(0,180,216,0.04) }
+.nav-link.active {
+  color: var(--teal-400); background: rgba(0,180,216,0.08);
+  border-left-color: var(--teal-400); font-weight: 600;
+}
+
+/* Sidebar footer */
+.sidebar-footer {
+  padding: var(--sp-4) var(--sp-5); border-top: 1px solid var(--navy-700);
+  display: flex; align-items: center; gap: var(--sp-3);
+}
+.sidebar-footer .stat-pill {
+  padding: 3px 8px; border-radius: var(--r-pill); font: 600 10px 'Inter';
+  background: var(--navy-800); color: var(--teal-400);
+}
+
+/* --- MAIN CONTENT --- */
+.main { flex: 1; height: 100vh; overflow-y: auto; background: var(--slate-50) }
+.main::-webkit-scrollbar { width: 8px }
+.main::-webkit-scrollbar-track { background: var(--slate-100) }
+.main::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 4px }
+.main::-webkit-scrollbar-thumb:hover { background: var(--slate-400) }
+
+.main-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(248,250,252,0.92); backdrop-filter: blur(12px);
+  padding: var(--sp-5) var(--sp-8); border-bottom: 1px solid var(--slate-200);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.main-header h1 { font: 700 24px 'Inter'; color: var(--slate-900) }
+.main-header .breadcrumb { font: 400 13px 'Inter'; color: var(--slate-400) }
+.main-header .breadcrumb span { color: var(--slate-600); font-weight: 500 }
+
+.main-content { padding: var(--sp-8) }
+
+/* Section */
+.ds-section { display: none; animation: section-in .3s var(--ease-default) }
+.ds-section.active { display: block }
+@keyframes section-in { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: translateY(0) } }
+.ds-section > h2 { font-size: 28px; font-weight: 700; color: var(--slate-900); margin-bottom: 4px }
+.ds-section > .role { font-size: 14px; font-weight: 500; color: var(--teal-700); margin-bottom: var(--sp-6) }
+.ds-section h3 { font-size: 15px; font-weight: 600; color: var(--slate-600); margin: var(--sp-8) 0 var(--sp-3) }
+.ds-section h3:first-of-type { margin-top: 0 }
+
+/* Responsive grid for swatches and component showcases */
+.ds-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: var(--sp-3) }
+.ds-grid-lg { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--sp-5) }
+.ds-grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6) }
+
+/* Dual panel (Light | Dark) */
+.dual { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); margin-bottom: var(--sp-6) }
+.panel { border-radius: var(--r-xl); padding: var(--sp-6); border: 1px solid var(--border) }
+.panel.light { background: var(--slate-50) }
+.panel.dark { background: var(--navy-950); border-color: var(--navy-700) }
+.mode-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: var(--sp-4) }
+.light .mode-label { color: var(--slate-400) }
+.dark .mode-label { color: var(--slate-500) }
+
+.flex { display: flex }
+.flex-col { flex-direction: column }
+.flex-wrap { flex-wrap: wrap }
+.items-center { align-items: center }
+.items-start { align-items: flex-start }
+.justify-center { justify-content: center }
+.gap-1 { gap: var(--sp-1) } .gap-2 { gap: var(--sp-2) } .gap-3 { gap: var(--sp-3) }
+.gap-4 { gap: var(--sp-4) } .gap-6 { gap: var(--sp-6) } .gap-8 { gap: var(--sp-8) }
+.w-full { width: 100% }
+.text-center { text-align: center }
+
+/* Item with label underneath */
+.item { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2) }
+.item .lbl { font-size: 10px; font-weight: 500 }
+.light .item .lbl { color: var(--slate-500) }
+.dark .item .lbl { color: var(--slate-500) }
+
+/* Color swatch */
+.swatch { flex: 1; min-width: 64px; max-width: 100px; text-align: center }
+.swatch .color { width: 100%; height: 48px; border-radius: var(--r-lg); border: 1px solid rgba(0,0,0,.06) }
+.swatch .name { font-size: 11px; font-weight: 600; color: var(--slate-700); margin-top: 6px }
+.swatch .hex { font-size: 10px; color: var(--slate-400); font-family: 'JetBrains Mono'; margin-top: 2px }
+
+/* Spacing bar */
+.sp-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: 6px }
+.sp-row .tk { font: 600 11px 'JetBrains Mono'; color: var(--slate-700); width: 60px }
+.sp-row .val { font: 500 11px 'Inter'; color: var(--teal-700); width: 32px }
+.sp-row .bar { height: 14px; border-radius: var(--r-sm); background: var(--teal-100); border: 1px solid var(--teal-200) }
+
+/* Grid visual */
+.grid-vis { border-radius: var(--r-md); display: flex; padding: 4px; background: var(--slate-100) }
+.grid-vis .col-v { background: var(--teal-200); border-radius: 2px; height: 44px; flex: 1 }
+
+/* Elevation card */
+.elev { width: 88px; height: 56px; border-radius: var(--r-lg); display: flex; flex-direction: column; align-items: center; justify-content: center }
+.elev .n { font-size: 11px; font-weight: 700 }
+.elev .dp { font-size: 9px }
+
+/* ================================================================
+   6. COMPONENTES — Classes CSS reutilizaveis
+   ================================================================ */
+
+/* === BOTOES === */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-3);
+  font: 600 16px 'Inter'; border: none; cursor: pointer; transition: all .15s; min-width: 180px;
+}
+.btn-md { height: 48px; border-radius: var(--r-lg); padding: 0 var(--sp-6) }
+.btn-lg { height: 52px; border-radius: var(--r-lg); padding: 0 var(--sp-6) }
+.btn-primary { background: var(--btn-primary); color: var(--fg-on) }
+.btn-primary:hover { background: var(--btn-primary-hover) }
+.btn-primary:active { background: var(--btn-primary-active); transform: scale(.98) }
+.btn-primary.disabled { background: var(--btn-disabled-bg); color: var(--btn-disabled-fg); cursor: not-allowed }
+.btn-google { background: var(--bg-card); color: var(--fg); border: 1px solid var(--border); font-weight: 500 }
+.btn-google:hover { background: var(--bg-hover) }
+.btn-apple { background: #000; color: #fff; font-weight: 500 }
+.btn-secondary { background: var(--bg-elevated); color: var(--fg); border: 1px solid var(--border); font-weight: 500 }
+.btn-secondary:hover { background: var(--bg-hover); border-color: var(--fg-3) }
+.btn-secondary:active { background: var(--bg-hover); transform: scale(.98) }
+.btn-secondary.disabled { background: var(--btn-disabled-bg); color: var(--btn-disabled-fg); border-color: var(--btn-disabled-bg); cursor: not-allowed }
+.btn-text { background: none; border: none; font: 500 16px 'Inter'; cursor: pointer; padding: var(--sp-3) var(--sp-4); color: var(--fg-link) }
+.btn-text:hover { text-decoration: underline }
+.btn-discrete { background: none; border: none; font: 400 14px 'Inter'; cursor: pointer; padding: var(--sp-3); color: var(--fg-3) }
+.btn-discrete:hover { color: var(--fg-2) }
+.btn-danger { background: var(--btn-danger); color: var(--fg-on); font-weight: 600 }
+.btn-danger:hover { opacity: .9 }
+.btn-danger:active { transform: scale(.98) }
+
+/* === INPUTS === */
+.input-group { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 220px }
+.input-label { font: 500 14px/20px 'Inter'; color: var(--fg-2) }
+.input-label.disabled { color: var(--fg-disabled) }
+.input-field {
+  height: 48px; border-radius: var(--r-lg); padding: 0 var(--sp-4);
+  font: 400 16px 'Inter'; outline: none; transition: all .15s;
+  background: var(--bg-card); border: 1px solid var(--border); color: var(--fg); width: 100%;
+}
+.input-field::placeholder { color: var(--fg-3) }
+.input-field:focus { border: 2px solid var(--border-focus) }
+.input-field.error { border: 2px solid var(--border-error) }
+.input-field.disabled { background: var(--bg-elevated); color: var(--fg-disabled) }
+.input-error { font-size: 12px; color: var(--border-error) }
+
+.toggle-seg { display: inline-flex; border-radius: var(--r-lg); background: var(--bg-elevated) }
+.toggle-seg .tab {
+  padding: var(--sp-3) var(--sp-6); font: 500 14px 'Inter';
+  cursor: pointer; border-radius: var(--r-lg); border: none; background: none; color: var(--fg-3);
+}
+.light .toggle-seg .tab.active { background: var(--bg-card); color: var(--fg); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,.08) }
+.dark .toggle-seg .tab.active { background: var(--btn-primary); color: var(--fg-on); font-weight: 600 }
+
+.checkbox { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0 }
+.checkbox.off { border: 2px solid var(--border); background: var(--bg-card) }
+.checkbox.on { background: var(--btn-accent); color: white; font: 700 14px 'Inter' }
+
+/* === TAGS / BADGES === */
+.tag-abbr { display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: var(--r-md); font: 700 16px 'Inter' }
+.tag-domain { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: var(--r-pill); font: 600 12px 'Inter' }
+.tag-status { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: var(--r-sm); font: 700 10px 'Inter'; text-transform: uppercase; letter-spacing: .5px }
+.tag-count { display: inline-flex; align-items: center; justify-content: center; padding: 4px 8px; border-radius: var(--r-md); font: 600 12px 'Inter'; background: var(--bg-elevated); color: var(--fg-2) }
+
+/* Domain color classes */
+.urg { background: var(--dom-urg-bg); color: var(--dom-urg-text) }
+.dil { background: var(--dom-dil-bg); color: var(--dom-dil-text) }
+.calc { background: var(--dom-calc-bg); color: var(--dom-calc-text) }
+.prot { background: var(--dom-prot-bg); color: var(--dom-prot-text) }
+.esc { background: var(--dom-esc-bg); color: var(--dom-esc-text) }
+.conv { background: var(--dom-conv-bg); color: var(--dom-conv-text) }
+
+.tag-status.premium { background: var(--btn-primary); color: var(--fg-on) }
+.tag-status.experimentando { background: var(--success-bg); color: var(--success) }
+.tag-status.novo { background: var(--red-500); color: white }
+.tag-status.atualizado { background: var(--success-bg); color: var(--success) }
+
+/* === CARDS === */
+.card-selection {
+  display: flex; align-items: center; gap: var(--sp-4); padding: var(--sp-5);
+  border-radius: var(--r-xl); cursor: pointer; min-width: 240px;
+  background: var(--bg-card); border: 1px solid var(--border);
+}
+.card-selection.selected { border: 2px solid var(--border-focus) }
+.card-selection .icon-circle {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; background: var(--bg-elevated); color: var(--fg-3);
+}
+.card-selection.selected .icon-circle { background: var(--teal-100); color: var(--teal-700) }
+.dark .card-selection.selected .icon-circle { background: var(--teal-600); color: white }
+.card-selection .card-text { font: 500 16px 'Inter'; color: var(--fg) }
+
+.card-feature {
+  padding: var(--sp-4); border-radius: var(--r-xl); width: 156px; cursor: pointer;
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  background: var(--bg-card); border: 1px solid var(--border);
+}
+.card-feature.selected { border: 2px solid var(--border-focus) }
+.card-feature .feat-name { font: 400 13px 'Inter'; color: var(--fg) }
+
+/* === ALERTAS === */
+.alert { padding: var(--sp-4) var(--sp-5); border-radius: var(--r-lg); border: 1px solid }
+.alert-title { font: 700 14px/20px 'Inter'; margin-bottom: 4px }
+.alert-body { font: 400 13px/20px 'Inter' }
+.alert.info { background: var(--bg-card); border-color: var(--border) }
+.alert.info .alert-title { color: var(--fg) }
+.alert.info .alert-body { color: var(--fg-2) }
+.alert.success { background: var(--success-bg); border-color: var(--success-border) }
+.alert.success .alert-title, .alert.success .alert-body { color: var(--success) }
+.alert.success .dose { font: 700 36px/40px 'JetBrains Mono'; margin: var(--sp-2) 0; color: var(--success) }
+.alert.critical { background: var(--danger-bg); border-color: var(--danger-border) }
+.alert.critical .alert-title, .alert.critical .alert-body { color: var(--danger) }
+.alert.warning { background: var(--warning-bg); border-color: var(--warning-border) }
+.alert.warning .alert-title, .alert.warning .alert-body { color: var(--warning) }
+.alert.footnote { background: none; border: none }
+.alert.footnote .alert-body { color: var(--fg-3); font-size: 12px }
+
+/* === NAV === */
+.nav-header { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-4) var(--sp-6); background: var(--bg-surface); border-radius: var(--r-lg) }
+.nav-header .back { font-size: 20px; cursor: pointer; color: var(--fg-link) }
+.nav-header .title { font: 600 18px 'Inter'; color: var(--fg) }
+.dots { display: flex; gap: var(--sp-2); align-items: center }
+.dots .active { width: 24px; height: 8px; border-radius: 4px; background: white }
+.dots .inactive { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.4) }
+.progress { font: 400 14px 'Inter'; text-align: center; color: var(--fg-3) }
+.divider-ou { display: flex; align-items: center; gap: var(--sp-4) }
+.divider-ou .line { flex: 1; height: 1px; background: var(--border-subtle) }
+.divider-ou .text { font: 400 14px 'Inter'; color: var(--fg-3) }
+.feedback-sent { display: flex; flex-direction: column; align-items: center; gap: var(--sp-4); padding: var(--sp-6) }
+.feedback-sent .icon-circle { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; background: var(--bg-elevated); color: var(--fg-link) }
+.feedback-sent .msg { font: 400 14px/1.5 'Inter'; text-align: center; color: var(--fg-2) }
+.bottom-sheet { border-radius: 24px 24px 0 0; padding: var(--sp-8); min-height: 140px; background: var(--bg-card) }
+.bottom-sheet .handle { width: 40px; height: 4px; border-radius: 2px; margin: 0 auto var(--sp-6); background: var(--border) }
+
+/* === ICONS === */
+.icon-grid { display: flex; flex-wrap: wrap; gap: var(--sp-3) }
+.icon-item { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 64px }
+.icon-item i { font-size: 24px; color: var(--fg) }
+.icon-item .iname { font-size: 8px; color: var(--fg-3); text-align: center; word-break: break-all }
+
+/* ================================================================
+   7. BOTTOM NAV — 5 tabs, mobile
+   ================================================================ */
+.bottom-nav {
+  display: flex; align-items: center; justify-content: space-around;
+  height: 56px; padding: 0 var(--sp-4); padding-bottom: env(safe-area-inset-bottom, 0);
+  background: var(--bg-surface); border-top: 1px solid var(--border);
+}
+.bottom-nav .nav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  cursor: pointer; padding: var(--sp-2) var(--sp-3); border-radius: var(--r-md);
+  text-decoration: none; transition: all .15s;
+}
+.bottom-nav .nav-item i { font-size: 24px; color: var(--fg-3) }
+.bottom-nav .nav-item span { font: 500 11px 'Inter'; color: var(--fg-3) }
+.bottom-nav .nav-item.active i { color: var(--btn-accent) }
+.bottom-nav .nav-item.active span { color: var(--btn-accent); font-weight: 600 }
+
+/* ================================================================
+   8. SIDEBAR — Desktop, 2 estados (expandida/recolhida)
+   ================================================================ */
+.sidebar {
+  width: 260px; height: 100%; display: flex; flex-direction: column;
+  background: var(--bg-surface); border-right: 1px solid var(--border);
+  padding: var(--sp-6) var(--sp-4); gap: var(--sp-2); transition: width .2s ease-out;
+}
+.sidebar.collapsed { width: 64px; padding: var(--sp-6) var(--sp-3); align-items: center }
+.sidebar .sidebar-item {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4); border-radius: var(--r-md);
+  cursor: pointer; font: 500 14px 'Inter'; color: var(--fg-2); transition: all .15s;
+}
+.sidebar .sidebar-item:hover { background: var(--bg-hover) }
+.sidebar .sidebar-item.active { background: var(--btn-primary); color: var(--fg-on) }
+.sidebar .sidebar-item.active i { color: var(--fg-on) }
+.sidebar .sidebar-item i { font-size: 24px; color: var(--fg-3) }
+.sidebar.collapsed .sidebar-item { padding: var(--sp-3); justify-content: center }
+.sidebar.collapsed .sidebar-item span { display: none }
+.sidebar .sidebar-logo { font: 700 20px 'Outfit'; color: var(--fg); margin-bottom: var(--sp-6); padding: 0 var(--sp-4) }
+.sidebar .sidebar-logo .dot { color: var(--brand-red) }
+.sidebar.collapsed .sidebar-logo { font-size: 0; padding: 0 }
+
+/* ================================================================
+   9. MOBILE FRAME — Container 390x844
+   ================================================================ */
+.mobile-frame {
+  width: 390px; height: 844px; border-radius: 44px;
+  overflow: hidden; position: relative;
+  background: var(--bg); border: 1px solid var(--border);
+  display: flex; flex-direction: column;
+}
+.mobile-frame .screen-content {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+}
+.mobile-frame .screen-content::-webkit-scrollbar { display: none }
+
+/* ================================================================
+   10. UTILITY CLASSES
+   ================================================================ */
+/* Padding */
+.p-0{padding:0}.p-1{padding:var(--sp-1)}.p-2{padding:var(--sp-2)}.p-3{padding:var(--sp-3)}.p-4{padding:var(--sp-4)}.p-5{padding:var(--sp-5)}.p-6{padding:var(--sp-6)}.p-8{padding:var(--sp-8)}
+.px-4{padding-left:var(--sp-4);padding-right:var(--sp-4)}.px-6{padding-left:var(--sp-6);padding-right:var(--sp-6)}.px-8{padding-left:var(--sp-8);padding-right:var(--sp-8)}
+.py-2{padding-top:var(--sp-2);padding-bottom:var(--sp-2)}.py-3{padding-top:var(--sp-3);padding-bottom:var(--sp-3)}.py-4{padding-top:var(--sp-4);padding-bottom:var(--sp-4)}.py-6{padding-top:var(--sp-6);padding-bottom:var(--sp-6)}
+.pt-12{padding-top:var(--sp-12)}.pb-8{padding-bottom:var(--sp-8)}.pb-10{padding-bottom:var(--sp-10)}
+/* Margin */
+.m-0{margin:0}.mt-1{margin-top:var(--sp-1)}.mt-2{margin-top:var(--sp-2)}.mt-3{margin-top:var(--sp-3)}.mt-4{margin-top:var(--sp-4)}.mt-6{margin-top:var(--sp-6)}.mt-8{margin-top:var(--sp-8)}
+.mb-2{margin-bottom:var(--sp-2)}.mb-4{margin-bottom:var(--sp-4)}.mb-6{margin-bottom:var(--sp-6)}
+.mx-auto{margin-left:auto;margin-right:auto}
+.ml-auto{margin-left:auto}
+/* Width/Height */
+.w-full{width:100%}.w-screen{width:390px}.h-full{height:100%}.h-screen{height:844px}
+.max-w-text{max-width:680px}
+/* Border radius */
+.rounded{border-radius:var(--r-md)}.rounded-lg{border-radius:var(--r-lg)}.rounded-xl{border-radius:var(--r-xl)}.rounded-full{border-radius:50%}.rounded-pill{border-radius:var(--r-pill)}
+/* Display */
+.block{display:block}.inline{display:inline}.hidden{display:none}
+.flex{display:flex}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.flex-1{flex:1}
+.items-center{align-items:center}.items-start{align-items:flex-start}.items-end{align-items:flex-end}
+.justify-center{justify-content:center}.justify-between{justify-content:space-between}.justify-around{justify-content:space-around}
+/* Gap */
+.gap-1{gap:var(--sp-1)}.gap-2{gap:var(--sp-2)}.gap-3{gap:var(--sp-3)}.gap-4{gap:var(--sp-4)}.gap-6{gap:var(--sp-6)}.gap-8{gap:var(--sp-8)}
+/* Text */
+.text-center{text-align:center}.text-left{text-align:left}.text-right{text-align:right}
+.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* Colors via tokens */
+.text-fg{color:var(--fg)}.text-fg-2{color:var(--fg-2)}.text-fg-3{color:var(--fg-3)}.text-fg-on{color:var(--fg-on)}.text-link{color:var(--fg-link)}
+.text-success{color:var(--success)}.text-danger{color:var(--danger)}.text-warning{color:var(--warning)}
+.bg-default{background:var(--bg)}.bg-surface{background:var(--bg-surface)}.bg-card{background:var(--bg-card)}.bg-elevated{background:var(--bg-elevated)}
+/* Overflow */
+.overflow-hidden{overflow:hidden}.overflow-auto{overflow:auto}.overflow-y-auto{overflow-y:auto}
+/* Position */
+.relative{position:relative}.absolute{position:absolute}.fixed{position:fixed}.sticky{position:sticky}
+.top-0{top:0}.bottom-0{bottom:0}.left-0{left:0}.right-0{right:0}
+.inset-x-0{left:0;right:0}
+.z-10{z-index:10}.z-50{z-index:50}
+/* Opacity */
+.opacity-50{opacity:0.5}.opacity-75{opacity:0.75}
+/* Transition */
+.transition{transition:all var(--dur-normal) var(--ease-default)}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
+  .skeleton-shimmer{animation:none!important}
+}
+
+/* ================================================================
+   11. GOOGLE & APPLE SVG ICONS (inline data URI)
+   ================================================================ */
+.icon-google {
+  width: 20px; height: 20px; flex-shrink: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z' fill='%234285F4'/%3E%3Cpath d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z' fill='%2334A853'/%3E%3Cpath d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z' fill='%23FBBC05'/%3E%3Cpath d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z' fill='%23EA4335'/%3E%3C/svg%3E") no-repeat center/contain;
+}
+.icon-apple {
+  width: 20px; height: 20px; flex-shrink: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z' fill='white'/%3E%3C/svg%3E") no-repeat center/contain;
+}
+
+/* ================================================================
+   12. HERO DARK — Background escuro pra tela de entrada
+   ================================================================ */
+.hero-dark {
+  background: linear-gradient(180deg, var(--brand-navy) 0%, var(--brand-navy-deep) 100%);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: var(--sp-10) var(--sp-6);
+  color: white; text-align: center;
+}
+.hero-dark .hero-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1;
+}
+.hero-dark .hero-image {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0.3;
+}
+.hero-dark > * { position: relative; z-index: 2 }
+.hero-dark .hero-text {
+  font: 700 28px/36px 'Inter'; color: white;
+  max-width: 300px; margin-top: var(--sp-6);
+}
+
+/* ================================================================
+   13. BRAND — Logos SVG reais (3 variantes)
+   ================================================================ */
+.brand-lockup {
+  display: flex; flex-direction: column; align-items: center; gap: var(--sp-3);
+}
+.brand-lockup img { max-width: 100%; height: auto; }
+.brand-lockup .brand-icon { width: 80px; height: 80px; }
+.brand-lockup .brand-full { width: 200px; }
+.brand-lockup-sm .brand-icon { width: 56px; height: 56px; }
+.brand-lockup-sm .brand-full { width: 140px; }
+
+/* ================================================================
+   14. SHEET HEADER — Voltar + titulo dentro de bottom sheet
+   ================================================================ */
+.sheet-header {
+  display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-4);
+}
+.sheet-header .back {
+  font-size: 20px; cursor: pointer; color: var(--fg-3);
+  display: flex; align-items: center;
+}
+.sheet-header .title { font: 700 20px 'Inter'; color: var(--fg) }
+.sheet-header .subtitle { font: 400 14px 'Inter'; color: var(--fg-2); margin-top: 2px }
+
+/* ================================================================
+   15. AVATAR — Circular com iniciais
+   ================================================================ */
+.avatar {
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: var(--fg-on); flex-shrink: 0;
+}
+.avatar-sm { width: 32px; height: 32px; font-size: 13px }
+.avatar-md { width: 40px; height: 40px; font-size: 16px }
+.avatar-lg { width: 48px; height: 48px; font-size: 18px }
+.avatar-teal { background: var(--btn-primary) }
+.avatar-navy { background: var(--brand-navy) }
+
+/* ================================================================
+   16. NOTIFICATION BADGE — Dot vermelho sobre icone
+   ================================================================ */
+.notif-wrap { position: relative; display: inline-flex }
+.notif-dot {
+  position: absolute; top: -2px; right: -2px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--brand-red); border: 2px solid var(--bg-surface);
+}
+
+/* ================================================================
+   17. BANNER EDITORIAL — Card destaque na home
+   ================================================================ */
+.banner-editorial {
+  border-radius: var(--r-xl); padding: var(--sp-5);
+  background: linear-gradient(135deg, var(--teal-700), var(--teal-900));
+  color: white; position: relative; overflow: hidden;
+  cursor: pointer; transition: transform .15s;
+}
+.banner-editorial:hover { transform: scale(1.01) }
+.banner-editorial .banner-tag {
+  font: 600 10px 'Inter'; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--teal-200); margin-bottom: var(--sp-2);
+}
+.banner-editorial .banner-title { font: 600 16px/22px 'Inter'; color: white }
+.banner-editorial .banner-desc { font: 400 13px/18px 'Inter'; color: rgba(255,255,255,0.7); margin-top: var(--sp-2) }
+
+/* Dark variant */
+.dark .banner-editorial { background: linear-gradient(135deg, var(--navy-700), var(--navy-800)) }
+.dark .banner-editorial .banner-tag { color: var(--teal-400) }
+.dark .banner-editorial .banner-desc { color: var(--slate-400) }
+
+/* ================================================================
+   18. CARD FAVORITE — Meu Plantao (horizontal)
+   ================================================================ */
+.card-favorite {
+  display: flex; flex-direction: column; gap: var(--sp-3);
+  padding: var(--sp-4); border-radius: var(--r-xl); min-width: 120px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  cursor: pointer; transition: all .15s; position: relative;
+}
+.card-favorite:hover { border-color: var(--border-focus) }
+.card-favorite .fav-abbr {
+  font: 700 20px 'Inter'; display: inline-block;
+}
+.card-favorite .fav-name { font: 400 12px 'Inter'; color: var(--fg-2) }
+.card-favorite .fav-bookmark {
+  position: absolute; top: var(--sp-3); right: var(--sp-3);
+  font-size: 16px; color: var(--fg-3); cursor: pointer;
+}
+.card-favorite .fav-bookmark.saved { color: var(--btn-accent) }
+
+/* ================================================================
+   19. CATEGORY COLLAPSIBLE — Categorias na Home
+   ================================================================ */
+.category-collapse {
+  border-radius: var(--r-xl); overflow: hidden;
+  background: var(--bg-card); border: 1px solid var(--border);
+}
+.category-header {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5); cursor: pointer;
+  transition: background .15s;
+}
+.category-header:hover { background: var(--bg-hover) }
+.category-header .cat-accent {
+  width: 4px; height: 24px; border-radius: 2px; flex-shrink: 0;
+}
+.category-header .cat-name { font: 600 16px 'Inter'; color: var(--fg); flex: 1 }
+.category-header .cat-chevron {
+  font-size: 20px; color: var(--fg-3); transition: transform .2s;
+}
+.category-header .cat-chevron.open { transform: rotate(90deg) }
+.category-body {
+  padding: 0 var(--sp-5) var(--sp-4);
+  display: none;
+}
+.category-body.open { display: block }
+
+/* Feature mini card (inside expanded category) */
+.card-feature-mini {
+  display: inline-flex; flex-direction: column; align-items: center;
+  gap: var(--sp-2); padding: var(--sp-3);
+  border-radius: var(--r-lg); width: 80px;
+  background: var(--bg-elevated); cursor: pointer;
+  transition: all .15s; text-align: center;
+}
+.card-feature-mini:hover { background: var(--bg-hover) }
+.card-feature-mini .mini-icon { font-size: 24px }
+.card-feature-mini .mini-name { font: 500 10px 'Inter'; color: var(--fg-2) }
+
+/* ================================================================
+   20. CARD RECENT — Ultimas utilizadas
+   ================================================================ */
+.card-recent {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4); border-radius: var(--r-lg);
+  background: var(--bg-card); border: 1px solid var(--border);
+  cursor: pointer; transition: all .15s;
+}
+.card-recent:hover { border-color: var(--border-focus) }
+.card-recent .recent-icon { font-size: 20px; color: var(--fg-3) }
+.card-recent .recent-name { font: 500 14px 'Inter'; color: var(--fg); flex: 1 }
+.card-recent .recent-time { font: 400 12px 'Inter'; color: var(--fg-3) }
+
+/* ================================================================
+   21. ESTADOS FALTANTES — Focus, hover, loading, variantes
+   ================================================================ */
+
+/* --- Global focus-visible ring --- */
+.btn:focus-visible, .input-field:focus-visible, .card-selection:focus-visible,
+.card-feature:focus-visible, .checkbox:focus-visible, .toggle-seg .tab:focus-visible,
+.sidebar-item:focus-visible, .nav-item:focus-visible, .list-item:focus-visible,
+.chip:focus-visible, .radio:focus-visible, .stepper-btn:focus-visible,
+.select:focus-visible, .search-bar:focus-visible {
+  outline: 2px solid var(--border-focus); outline-offset: 2px;
+}
+
+/* --- Button variants faltantes --- */
+.btn-sm { height: 36px; border-radius: var(--r-md); padding: 0 var(--sp-4); font-size: 14px }
+.btn-icon-only { width: 48px; height: 48px; min-width: 48px; border-radius: 50%; padding: 0 }
+.btn-icon-only.btn-sm { width: 36px; height: 36px; min-width: 36px }
+.btn-outline {
+  background: none; border: 1.5px solid var(--btn-primary); color: var(--btn-primary);
+}
+.btn-outline:hover { background: rgba(0,121,147,var(--opacity-hover)) }
+.btn-outline:active { background: rgba(0,121,147,var(--opacity-pressed)) }
+.dark .btn-outline { border-color: var(--btn-accent); color: var(--btn-accent) }
+.dark .btn-outline:hover { background: rgba(0,180,216,var(--opacity-hover)) }
+
+.btn-loading { pointer-events: none; position: relative; color: transparent !important }
+.btn-loading::after {
+  content: ''; position: absolute; width: 20px; height: 20px;
+  border: 2px solid rgba(255,255,255,.3); border-top-color: white;
+  border-radius: 50%; animation: btn-spin .6s linear infinite;
+}
+@keyframes btn-spin { to { transform: rotate(360deg) } }
+@keyframes demo-move { 0%{transform:translateX(0)} 100%{transform:translateX(40px)} }
+
+/* --- Input variants faltantes --- */
+.input-field.success { border: 2px solid var(--success) }
+.input-helper { font: 400 12px 'Inter'; color: var(--fg-3); margin-top: 2px }
+.input-with-icon { position: relative }
+.input-with-icon .input-field { padding-left: var(--sp-10) }
+.input-with-icon .input-icon-left {
+  position: absolute; left: var(--sp-4); top: 50%; transform: translateY(-50%);
+  font-size: 20px; color: var(--fg-3); pointer-events: none;
+}
+.input-with-unit { position: relative }
+.input-with-unit .input-field { padding-right: var(--sp-12) }
+.input-with-unit .input-unit {
+  position: absolute; right: var(--sp-4); top: 50%; transform: translateY(-50%);
+  font: 500 14px 'Inter'; color: var(--fg-3); pointer-events: none;
+}
+/* Password with eye toggle */
+.input-password { position: relative }
+.input-password .input-field { padding-right: var(--sp-12) }
+.input-password .eye-toggle {
+  position: absolute; right: var(--sp-3); top: 50%; transform: translateY(-50%);
+  font-size: 20px; color: var(--fg-3); cursor: pointer;
+  background: none; border: none; padding: var(--sp-2);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--r-md); transition: color var(--dur-fast) var(--ease-default);
+}
+.input-password .eye-toggle:hover { color: var(--fg-2) }
+
+.textarea {
+  min-height: 96px; border-radius: var(--r-lg); padding: var(--sp-3) var(--sp-4);
+  font: 400 16px/24px 'Inter'; outline: none; resize: vertical;
+  background: var(--bg-card); border: 1px solid var(--border); color: var(--fg); width: 100%;
+}
+.textarea:focus { border: 2px solid var(--border-focus) }
+.textarea::placeholder { color: var(--fg-3) }
+
+/* --- Card variants faltantes --- */
+.card-selection:hover { background: var(--bg-hover) }
+.card-feature:hover { border-color: var(--border-focus) }
+.card-feature.locked { opacity: var(--opacity-disabled); pointer-events: none; position: relative }
+.card-feature.locked::after {
+  content: ''; position: absolute; inset: 0; border-radius: var(--r-xl);
+  background: var(--bg-overlay); display: flex; align-items: center; justify-content: center;
+}
+.card-feature.trial { border-style: dashed }
+
+/* --- Tag variants faltantes --- */
+.tag-status.free { background: var(--bg-elevated); color: var(--fg-2) }
+.tag-dismissible { padding-right: var(--sp-2) }
+.tag-dismissible .tag-x {
+  margin-left: var(--sp-1); cursor: pointer; font-size: 12px; opacity: .6;
+}
+.tag-dismissible .tag-x:hover { opacity: 1 }
+
+/* --- Alert variants faltantes --- */
+.alert .alert-close {
+  margin-left: auto; cursor: pointer; font-size: 18px; color: inherit; opacity: .5;
+  background: none; border: none; padding: var(--sp-1);
+}
+.alert .alert-close:hover { opacity: 1 }
+.alert.compact { padding: var(--sp-3) var(--sp-4); display: flex; align-items: center; gap: var(--sp-3) }
+.alert.compact .alert-title { margin-bottom: 0; font-size: 13px }
+.alert.compact .alert-body { font-size: 12px }
+
+/* --- Bottom Nav pressed + badge --- */
+.bottom-nav .nav-item:active { transform: scale(.95); opacity: .8 }
+.nav-item-badge { position: relative }
+.nav-item-badge::after {
+  content: ''; position: absolute; top: 2px; right: -4px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--brand-red); border: 2px solid var(--bg-surface);
+}
+
+/* --- Sidebar extras --- */
+.sidebar-divider { height: 1px; background: var(--border); margin: var(--sp-3) var(--sp-4) }
+.sidebar-section-label {
+  font: 600 11px 'Inter'; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--fg-3); padding: var(--sp-4) var(--sp-4) var(--sp-2);
+}
+.sidebar-badge {
+  margin-left: auto; font: 600 11px 'Inter'; padding: 2px 6px;
+  border-radius: var(--r-pill); background: var(--brand-red); color: white;
+}
+
+/* ================================================================
+   22. LIST ITEM — Single/Two-line com trailing
+   ================================================================ */
+.list-item {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4); min-height: 56px;
+  cursor: pointer; transition: background var(--dur-fast) var(--ease-default);
+}
+.list-item:hover { background: var(--bg-hover) }
+.list-item:active { background: rgba(0,0,0,var(--opacity-pressed)) }
+.list-item.selected { background: var(--teal-50) }
+.dark .list-item.selected { background: var(--navy-800) }
+.list-item.disabled { opacity: var(--opacity-disabled); pointer-events: none }
+.list-item .list-icon {
+  width: 40px; height: 40px; border-radius: var(--r-lg); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-elevated); font-size: 20px; color: var(--fg-3);
+}
+.list-item .list-content { flex: 1; min-width: 0 }
+.list-item .list-title { font: 500 16px/24px 'Inter'; color: var(--fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.list-item .list-subtitle { font: 400 13px/18px 'Inter'; color: var(--fg-3) }
+.list-item .list-trailing { font-size: 20px; color: var(--fg-3); flex-shrink: 0; display: flex; align-items: center; gap: var(--sp-2) }
+.list-item .list-trailing .list-meta { font: 400 12px 'Inter'; color: var(--fg-3) }
+.list-divider { height: 1px; background: var(--border-subtle); margin-left: 68px }
+
+/* ================================================================
+   23. SEARCH BAR — Inline pill + Filter chips
+   ================================================================ */
+.search-bar {
+  display: flex; align-items: center; gap: var(--sp-3);
+  height: 48px; border-radius: var(--r-pill); padding: 0 var(--sp-5);
+  background: var(--bg-elevated); cursor: text;
+  transition: all var(--dur-normal) var(--ease-default);
+}
+.search-bar i { font-size: 20px; color: var(--fg-3) }
+.search-bar .search-placeholder { font: 400 16px 'Inter'; color: var(--fg-3); flex: 1 }
+.search-bar .search-input {
+  flex: 1; border: none; outline: none; background: none;
+  font: 400 16px 'Inter'; color: var(--fg);
+}
+.search-bar .search-input::placeholder { color: var(--fg-3) }
+.search-bar:focus-within { border: 2px solid var(--border-focus); background: var(--bg-card) }
+
+.chip {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3); border-radius: var(--r-pill);
+  font: 500 13px 'Inter'; cursor: pointer;
+  background: var(--bg-elevated); color: var(--fg-2); border: 1px solid var(--border);
+  transition: all var(--dur-fast) var(--ease-default);
+}
+.chip:hover { background: var(--bg-hover) }
+.chip.active { background: var(--btn-primary); color: var(--fg-on); border-color: var(--btn-primary) }
+.dark .chip.active { background: var(--btn-accent); border-color: var(--btn-accent) }
+
+/* ================================================================
+   24. LOADING SKELETON — Shimmer animation
+   ================================================================ */
+.skeleton {
+  background: var(--bg-elevated); border-radius: var(--r-md);
+  position: relative; overflow: hidden;
+}
+.skeleton::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.15) 50%, transparent 100%);
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+.dark .skeleton::after {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.06) 50%, transparent 100%);
+}
+@keyframes skeleton-shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+.skeleton-text { height: 16px; margin-bottom: var(--sp-2) }
+.skeleton-text.w-100 { width: 100% }
+.skeleton-text.w-80 { width: 80% }
+.skeleton-text.w-60 { width: 60% }
+.skeleton-circle { border-radius: 50% }
+.skeleton-card { height: 100px; border-radius: var(--r-xl) }
+
+/* ================================================================
+   25. EMPTY STATE — Contextual placeholder
+   ================================================================ */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  padding: var(--sp-12) var(--sp-6); text-align: center;
+}
+.empty-state .empty-icon {
+  font-size: 64px; color: var(--fg-3); margin-bottom: var(--sp-4); opacity: .5;
+}
+.empty-state .empty-title { font: 600 18px/28px 'Inter'; color: var(--fg); margin-bottom: var(--sp-2) }
+.empty-state .empty-desc { font: 400 14px/20px 'Inter'; color: var(--fg-2); max-width: 280px; margin-bottom: var(--sp-6) }
+
+/* ================================================================
+   26. TOAST / SNACKBAR — Feedback efemero
+   ================================================================ */
+.toast {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4); border-radius: var(--r-lg);
+  font: 500 14px 'Inter'; min-width: 280px; max-width: 360px;
+  box-shadow: var(--shadow-4);
+  animation: toast-in var(--dur-slow) var(--ease-spring);
+}
+@keyframes toast-in { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+.toast i { font-size: 20px; flex-shrink: 0 }
+.toast .toast-msg { flex: 1 }
+.toast .toast-action { font: 600 13px 'Inter'; cursor: pointer; background: none; border: none; padding: var(--sp-1) var(--sp-2); border-radius: var(--r-sm) }
+.toast-success { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border) }
+.toast-success .toast-action { color: var(--success) }
+.toast-error { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border) }
+.toast-error .toast-action { color: var(--danger) }
+.toast-info { background: var(--bg-card); color: var(--fg); border: 1px solid var(--border) }
+.toast-info .toast-action { color: var(--fg-link) }
+.toast-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-border) }
+.toast-warning .toast-action { color: var(--warning) }
+
+/* ================================================================
+   27. TOOLTIP — CSS-only com pseudo-elements
+   ================================================================ */
+[data-tooltip] { position: relative }
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+  padding: var(--sp-2) var(--sp-3); border-radius: var(--r-md);
+  font: 500 12px 'Inter'; white-space: nowrap;
+  background: var(--slate-900); color: white;
+  opacity: 0; pointer-events: none; z-index: var(--z-tooltip);
+  transition: opacity var(--dur-fast) var(--ease-default);
+}
+.dark [data-tooltip]::after { background: var(--slate-100); color: var(--slate-900) }
+[data-tooltip]:hover::after { opacity: 1 }
+[data-tooltip].tooltip-bottom::after { bottom: auto; top: calc(100% + 8px) }
+[data-tooltip].tooltip-left::after { bottom: auto; left: auto; right: calc(100% + 8px); top: 50%; transform: translateY(-50%) }
+[data-tooltip].tooltip-right::after { bottom: auto; left: calc(100% + 8px); top: 50%; transform: translateY(-50%) }
+
+/* ================================================================
+   28. MODAL / DIALOG — Overlay + container
+   ================================================================ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: var(--z-modal);
+  background: var(--bg-overlay); display: flex; align-items: center; justify-content: center;
+  animation: modal-fade-in var(--dur-normal) var(--ease-default);
+}
+@keyframes modal-fade-in { from{opacity:0} to{opacity:1} }
+.modal {
+  width: 340px; max-width: 90vw; border-radius: var(--r-xl);
+  background: var(--bg-card); box-shadow: var(--shadow-5); overflow: hidden;
+  animation: modal-scale-in var(--dur-slow) var(--ease-spring);
+}
+@keyframes modal-scale-in { from{transform:scale(.95);opacity:0} to{transform:scale(1);opacity:1} }
+.modal-header { padding: var(--sp-5) var(--sp-5) var(--sp-3); font: 700 18px 'Inter'; color: var(--fg) }
+.modal-body { padding: 0 var(--sp-5) var(--sp-4); font: 400 14px/20px 'Inter'; color: var(--fg-2) }
+.modal-footer { padding: var(--sp-3) var(--sp-5) var(--sp-5); display: flex; gap: var(--sp-3); justify-content: flex-end }
+.modal-footer .btn { min-width: auto; flex: 1 }
+
+/* ================================================================
+   29. DROPDOWN / SELECT
+   ================================================================ */
+.select {
+  position: relative; display: inline-flex; align-items: center;
+  height: 48px; border-radius: var(--r-lg); padding: 0 var(--sp-4);
+  background: var(--bg-card); border: 1px solid var(--border); cursor: pointer;
+  font: 400 16px 'Inter'; color: var(--fg); min-width: 180px;
+  transition: border-color var(--dur-fast) var(--ease-default);
+}
+.select:hover { border-color: var(--fg-3) }
+.select.open { border: 2px solid var(--border-focus) }
+.select .select-value { flex: 1 }
+.select .select-arrow { font-size: 20px; color: var(--fg-3); transition: transform var(--dur-fast) }
+.select.open .select-arrow { transform: rotate(180deg) }
+.select.disabled { opacity: var(--opacity-disabled); pointer-events: none }
+.select-options {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); box-shadow: var(--shadow-3);
+  z-index: var(--z-dropdown); overflow: hidden;
+  animation: select-open var(--dur-normal) var(--ease-default);
+}
+@keyframes select-open { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+.select-option {
+  padding: var(--sp-3) var(--sp-4); font: 400 16px 'Inter'; color: var(--fg);
+  cursor: pointer; transition: background var(--dur-fast);
+}
+.select-option:hover { background: var(--bg-hover) }
+.select-option.selected { color: var(--btn-primary); font-weight: 600 }
+.select-option.selected::after { content: ' ✓'; color: var(--btn-primary) }
+
+/* ================================================================
+   30. RADIO BUTTON
+   ================================================================ */
+.radio {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+  transition: all var(--dur-fast) var(--ease-default);
+}
+.radio.off { border: 2px solid var(--border); background: var(--bg-card) }
+.radio.on { border: 2px solid var(--btn-accent); background: var(--bg-card) }
+.radio.on::after {
+  content: ''; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--btn-accent);
+}
+.radio.disabled { opacity: var(--opacity-disabled); pointer-events: none }
+.radio-group { display: flex; flex-direction: column; gap: var(--sp-3) }
+.radio-row { display: flex; align-items: center; gap: var(--sp-3); cursor: pointer }
+.radio-row .radio-label { font: 400 16px 'Inter'; color: var(--fg) }
+
+/* ================================================================
+   31. STEPPER / NUMBER INPUT — Medico-especifico
+   ================================================================ */
+.stepper {
+  display: inline-flex; align-items: center;
+  border-radius: var(--r-lg); border: 1px solid var(--border);
+  background: var(--bg-card); overflow: hidden;
+}
+.stepper-btn {
+  width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: var(--fg-link); cursor: pointer;
+  background: none; border: none;
+  transition: background var(--dur-fast) var(--ease-default);
+}
+.stepper-btn:hover { background: var(--bg-hover) }
+.stepper-btn:active { background: rgba(0,0,0,var(--opacity-pressed)) }
+.stepper-btn.disabled { color: var(--fg-disabled); pointer-events: none }
+.stepper-value {
+  min-width: 64px; text-align: center; padding: 0 var(--sp-2);
+  font: 600 18px 'JetBrains Mono'; color: var(--fg);
+  border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+}
+.stepper-unit { font: 400 12px 'Inter'; color: var(--fg-3); display: block }
+</style>
+</head>
+<body>
+
+<!-- ====== SIDEBAR ====== -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/Icone.svg" alt="CalcMed">
+    <div class="brand-version">Design System v2.0</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <!-- Fundacoes -->
+    <div class="nav-group open">
+      <div class="nav-group-title"><i class="ph ph-caret-right"></i><i class="ph ph-swatches group-icon"></i> Fundacoes</div>
+      <div class="nav-group-items">
+        <a class="nav-link active" data-section="brand">Brand</a>
+        <a class="nav-link" data-section="colors">Cores</a>
+        <a class="nav-link" data-section="typography">Tipografia</a>
+        <a class="nav-link" data-section="spacing">Espacamento</a>
+        <a class="nav-link" data-section="grid">Grid</a>
+        <a class="nav-link" data-section="elevation">Elevacao</a>
+        <a class="nav-link" data-section="motion">Motion</a>
+        <a class="nav-link" data-section="icons">Icones</a>
+      </div>
+    </div>
+
+    <!-- Componentes Core -->
+    <div class="nav-group">
+      <div class="nav-group-title"><i class="ph ph-caret-right"></i><i class="ph ph-puzzle-piece group-icon"></i> Componentes</div>
+      <div class="nav-group-items">
+        <a class="nav-link" data-section="buttons">Botoes</a>
+        <a class="nav-link" data-section="inputs">Inputs</a>
+        <a class="nav-link" data-section="tags">Tags & Chips</a>
+        <a class="nav-link" data-section="cards">Cards</a>
+        <a class="nav-link" data-section="alerts">Alertas</a>
+        <a class="nav-link" data-section="list-items">List Items</a>
+      </div>
+    </div>
+
+    <!-- Overlays & Feedback -->
+    <div class="nav-group">
+      <div class="nav-group-title"><i class="ph ph-caret-right"></i><i class="ph ph-stack group-icon"></i> Overlays</div>
+      <div class="nav-group-items">
+        <a class="nav-link" data-section="modal">Modal</a>
+        <a class="nav-link" data-section="toast">Toast</a>
+        <a class="nav-link" data-section="tooltip">Tooltip</a>
+        <a class="nav-link" data-section="select-section">Select</a>
+      </div>
+    </div>
+
+    <!-- Formularios -->
+    <div class="nav-group">
+      <div class="nav-group-title"><i class="ph ph-caret-right"></i><i class="ph ph-textbox group-icon"></i> Formularios</div>
+      <div class="nav-group-items">
+        <a class="nav-link" data-section="radio-section">Radio</a>
+        <a class="nav-link" data-section="stepper-section">Stepper</a>
+        <a class="nav-link" data-section="search">Search</a>
+      </div>
+    </div>
+
+    <!-- Patterns -->
+    <div class="nav-group">
+      <div class="nav-group-title"><i class="ph ph-caret-right"></i><i class="ph ph-layout group-icon"></i> Patterns</div>
+      <div class="nav-group-items">
+        <a class="nav-link" data-section="skeleton">Skeleton</a>
+        <a class="nav-link" data-section="empty">Empty State</a>
+        <a class="nav-link" data-section="nav-section">Navegacao</a>
+        <a class="nav-link" data-section="patterns-extra">Compostos</a>
+        <a class="nav-link" data-section="accessibility">Acessibilidade</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <span class="stat-pill">176 primitivos</span>
+    <span class="stat-pill">602 regras</span>
+  </div>
+</aside>
+
+<!-- ====== MAIN ====== -->
+<div class="main">
+  <div class="main-header">
+    <div class="breadcrumb" id="breadcrumb">Fundacoes > <span id="breadcrumb-item">Brand</span></div>
+  </div>
+
+  <div class="main-content">
+
+<!-- ============================================================
+     CORES
+     ============================================================ -->
+<!-- ============================================================
+     BRAND / LOGOS
+     ============================================================ -->
+<section class="ds-section active" id="brand">
+  <h2>Brand</h2>
+  <div class="role">3 LOGOS SVG · Icone, Colorida (light), Branca (dark) · Nunca alterar sem aprovacao de branding</div>
+
+  <h3>Icone do App</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="flex items-center gap-6">
+        <img src="assets/icone.svg" width="96" height="96" alt="CalcMed Icon">
+        <img src="assets/icone.svg" width="72" height="72" alt="CalcMed Icon 72">
+        <img src="assets/icone.svg" width="48" height="48" alt="CalcMed Icon 48">
+        <img src="assets/icone.svg" width="32" height="32" alt="CalcMed Icon 32">
+      </div>
+      <div class="flex gap-6 mt-2" style="font-size:10px;color:var(--fg-3)"><span style="width:96px;text-align:center">96px splash</span><span style="width:72px;text-align:center">72px welcome</span><span style="width:48px;text-align:center">48px header</span><span style="width:32px;text-align:center">32px nav</span></div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="flex items-center gap-6">
+        <img src="assets/icone.svg" width="96" height="96" alt="CalcMed Icon">
+        <img src="assets/icone.svg" width="72" height="72" alt="CalcMed Icon 72">
+        <img src="assets/icone.svg" width="48" height="48" alt="CalcMed Icon 48">
+        <img src="assets/icone.svg" width="32" height="32" alt="CalcMed Icon 32">
+      </div>
+      <div class="flex gap-6 mt-2" style="font-size:10px;color:var(--fg-3)"><span style="width:96px;text-align:center">96px</span><span style="width:72px;text-align:center">72px</span><span style="width:48px;text-align:center">48px</span><span style="width:32px;text-align:center">32px</span></div>
+    </div>
+  </div>
+
+  <h3>Logo Completa</h3>
+  <div class="dual">
+    <div class="panel light" style="padding:var(--sp-10)"><div class="mode-label">Light — Logo Colorida</div>
+      <div class="flex flex-col items-center gap-6">
+        <img src="assets/logo-colorida.svg" width="320" alt="CalcMed Logo Colorida">
+        <img src="assets/logo-colorida.svg" width="200" alt="CalcMed Logo Colorida SM">
+      </div>
+    </div>
+    <div class="panel dark" style="padding:var(--sp-10)"><div class="mode-label">Dark — Logo Branca</div>
+      <div class="flex flex-col items-center gap-6">
+        <img src="assets/logo-branca.svg" width="320" alt="CalcMed Logo Branca">
+        <img src="assets/logo-branca.svg" width="200" alt="CalcMed Logo Branca SM">
+      </div>
+    </div>
+  </div>
+
+  <h3>Regras de Uso</h3>
+  <div class="flex flex-col gap-2" style="max-width:600px">
+    <div class="flex gap-3 items-center"><span style="color:var(--success);font-size:20px">✓</span><span class="t-corpo-2" style="color:var(--fg)">Logo colorida sobre fundo claro (light mode, materiais impressos)</span></div>
+    <div class="flex gap-3 items-center"><span style="color:var(--success);font-size:20px">✓</span><span class="t-corpo-2" style="color:var(--fg)">Logo branca sobre fundo navy/escuro (dark mode, hero sections)</span></div>
+    <div class="flex gap-3 items-center"><span style="color:var(--success);font-size:20px">✓</span><span class="t-corpo-2" style="color:var(--fg)">Icone isolado pra app icon, favicon, espacos compactos</span></div>
+    <div class="flex gap-3 items-center"><span style="color:var(--danger);font-size:20px">✗</span><span class="t-corpo-2" style="color:var(--fg)">Nunca alterar gradiente, proporcoes ou cores do icone</span></div>
+    <div class="flex gap-3 items-center"><span style="color:var(--danger);font-size:20px">✗</span><span class="t-corpo-2" style="color:var(--fg)">Nunca usar brand red (#CE0000) pra estados de UI (usar UI red #EF4444)</span></div>
+    <div class="flex gap-3 items-center"><span style="color:var(--danger);font-size:20px">✗</span><span class="t-corpo-2" style="color:var(--fg)">Nunca recriar o wordmark em texto — usar sempre o SVG oficial</span></div>
+  </div>
+</section>
+
+<section class="ds-section" id="colors">
+  <h2>Tokens de Cor</h2>
+  <div class="role">12 ESCALAS (50-950) + 6 BRAND · 50 semanticos Light/Dark · Zero sobreposicao dominio/feedback</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">152 primitivos organizados em 12 escalas. 50 semanticos por modo (Light/Dark). Dominios NUNCA usam cores de feedback — Rose(urg), Blue(dil), Orange(calc), Purple(prot), Cyan(esc), Indigo(conv) sao exclusivos.</p>
+
+  <h3>Brand — Sagrado</h3>
+  <div class="ds-grid" id="brand-swatches"></div>
+
+  <h3>Teal — Primary Interactive</h3>
+  <div class="ds-grid" id="teal-swatches"></div>
+
+  <h3>Navy — Dark Mode Surfaces</h3>
+  <div class="ds-grid" id="navy-swatches"></div>
+
+  <h3>Slate — Neutrals & Grayscale</h3>
+  <div class="ds-grid" id="slate-swatches"></div>
+
+  <h3>Feedback: Emerald (sucesso) · Red (critico) · Amber (warning)</h3>
+  <div class="ds-grid" id="emerald-swatches"></div>
+  <div class="ds-grid" id="red-swatches" style="margin-top:8px"></div>
+  <div class="ds-grid" id="amber-swatches" style="margin-top:8px"></div>
+
+  <h3>Dominios: Rose · Blue · Orange · Purple · Cyan · Indigo</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="ds-grid">
+        <div class="swatch"><div class="color" style="background:var(--rose-500)"></div><div class="name">Rose</div></div>
+        <div class="swatch"><div class="color" style="background:var(--blue-500)"></div><div class="name">Blue</div></div>
+        <div class="swatch"><div class="color" style="background:var(--orange-500)"></div><div class="name">Orange</div></div>
+        <div class="swatch"><div class="color" style="background:var(--purple-500)"></div><div class="name">Purple</div></div>
+        <div class="swatch"><div class="color" style="background:var(--cyan-500)"></div><div class="name">Cyan</div></div>
+        <div class="swatch"><div class="color" style="background:var(--indigo-500)"></div><div class="name">Indigo</div></div>
+      </div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="ds-grid">
+        <div class="swatch"><div class="color" style="background:var(--rose-400)"></div><div class="name">Rose</div></div>
+        <div class="swatch"><div class="color" style="background:var(--blue-400)"></div><div class="name">Blue</div></div>
+        <div class="swatch"><div class="color" style="background:var(--orange-400)"></div><div class="name">Orange</div></div>
+        <div class="swatch"><div class="color" style="background:var(--purple-400)"></div><div class="name">Purple</div></div>
+        <div class="swatch"><div class="color" style="background:var(--cyan-400)"></div><div class="name">Cyan</div></div>
+        <div class="swatch"><div class="color" style="background:var(--indigo-400)"></div><div class="name">Indigo</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TIPOGRAFIA
+     ============================================================ -->
+<section class="ds-section" id="typography">
+  <h2>Tipografia</h2>
+  <div class="role">17 TEXT STYLES · Inter (UI) + JetBrains Mono (dados) + Outfit (brand)</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Escala com ratio ~1.25 (Major Third). 3 familias: Inter (UI), JetBrains Mono (doses/valores), Outfit (marca). Tamanhos de 11px (badge) a 36px (dose), sempre em multiplos de 2.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="flex flex-col gap-4">
+        <div><span class="t-dose-valor" style="color:var(--success)">0,1 UI/kg/h</span><div class="lbl" style="color:var(--fg-3);margin-top:4px">dose-valor · JBMono Bold 36/40</div></div>
+        <div><span class="t-dose-unidade" style="color:var(--success)">mg/kg/min</span><div class="lbl" style="color:var(--fg-3)">dose-unidade · JBMono Medium 20/28</div></div>
+        <div><span class="t-titulo-pagina" style="color:var(--fg)">Cetoacidose Diabetica</span><div class="lbl" style="color:var(--fg-3)">titulo-pagina · Inter Bold 24/32</div></div>
+        <div><span class="t-titulo-secao" style="color:var(--fg)">Meu Plantao</span><div class="lbl" style="color:var(--fg-3)">titulo-secao · Inter Bold 20/28</div></div>
+        <div><span class="t-nome-droga" style="color:var(--fg)">Propofol</span><div class="lbl" style="color:var(--fg-3)">nome-droga · Inter SB 18/28</div></div>
+        <div><span class="t-corpo" style="color:var(--fg)">Texto principal do corpo</span><div class="lbl" style="color:var(--fg-3)">corpo · Inter Reg 16/24</div></div>
+        <div><span class="t-corpo-2" style="color:var(--fg-2)">Texto secundario helper</span><div class="lbl" style="color:var(--fg-3)">corpo-2 · Inter Reg 14/20</div></div>
+        <div><span class="t-rotulo-nav" style="color:var(--fg-3)">Inicio</span><div class="lbl" style="color:var(--fg-3)">rotulo-nav · Inter Med 12/16</div></div>
+        <div><span class="t-legenda" style="color:var(--fg-3)">Logo: usar SVG da section Brand (nao recriar em texto)</span></div>
+      </div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="flex flex-col gap-4">
+        <div><span class="t-dose-valor" style="color:var(--success)">0,1 UI/kg/h</span><div class="lbl" style="color:var(--fg-3)">dose-valor</div></div>
+        <div><span class="t-dose-unidade" style="color:var(--success)">mg/kg/min</span><div class="lbl" style="color:var(--fg-3)">dose-unidade</div></div>
+        <div><span class="t-titulo-pagina" style="color:var(--fg)">Cetoacidose Diabetica</span><div class="lbl" style="color:var(--fg-3)">titulo-pagina</div></div>
+        <div><span class="t-titulo-secao" style="color:var(--fg)">Meu Plantao</span><div class="lbl" style="color:var(--fg-3)">titulo-secao</div></div>
+        <div><span class="t-nome-droga" style="color:var(--fg)">Propofol</span><div class="lbl" style="color:var(--fg-3)">nome-droga</div></div>
+        <div><span class="t-corpo" style="color:var(--fg)">Texto principal do corpo</span><div class="lbl" style="color:var(--fg-3)">corpo</div></div>
+        <div><span class="t-corpo-2" style="color:var(--fg-2)">Texto secundario helper</span><div class="lbl" style="color:var(--fg-3)">corpo-2</div></div>
+        <div><span class="t-rotulo-nav" style="color:var(--fg-3)">Inicio</span><div class="lbl" style="color:var(--fg-3)">rotulo-nav</div></div>
+        <div><span class="t-legenda" style="color:var(--fg-3)">Logo: usar SVG da section Brand</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SPACING
+     ============================================================ -->
+<section class="ds-section" id="spacing">
+  <h2>Espacamento</h2>
+  <div class="role">12 TOKENS · Base 4px · Touch target 48dp min, 52dp emergencia</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Base 4px. Todos os valores sao multiplos de 4, garantindo alinhamento pixel-perfect em qualquer densidade de tela. A escala segue progressao: 4→8→12→16→20→24→32→40→48→64→80→96.</p>
+  <div id="sp-container"></div>
+</section>
+
+<!-- ============================================================
+     GRID
+     ============================================================ -->
+<section class="ds-section" id="grid">
+  <h2>Grid</h2>
+  <div class="role">3 BREAKPOINTS · Celular 4col · Tablet 8col · Desktop 12col · M3 aligned</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">3 breakpoints. Mobile (<600dp): 4 colunas, margin 24px, gutter 16px. Tablet (600-839dp): 8 colunas, margin 24px, gutter 24px. Desktop (≥840dp): 12 colunas, margin 32px, gutter 24px.</p>
+  <div class="flex gap-8 flex-wrap items-start" id="grid-container"></div>
+</section>
+
+<!-- ============================================================
+     ELEVATION
+     ============================================================ -->
+<section class="ds-section" id="elevation">
+  <h2>Elevacao</h2>
+  <div class="role">6 NIVEIS · Light: dual shadow · Dark: luminancia navy progressiva</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">6 niveis de sombra (0-5). Light usa rgba preto. Dark usa luminancia crescente (navy-800→navy-500). Nivel 0 = flat, Nivel 5 = modal/overlay.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light — Shadows</div>
+      <div class="flex gap-3 flex-wrap">
+        <div class="elev" style="background:white;box-shadow:var(--shadow-0)"><span class="n" style="color:var(--fg)">0</span><span class="dp" style="color:var(--fg-3)">0dp</span></div>
+        <div class="elev" style="background:white;box-shadow:var(--shadow-1)"><span class="n" style="color:var(--fg)">1</span><span class="dp" style="color:var(--fg-3)">1dp</span></div>
+        <div class="elev" style="background:white;box-shadow:var(--shadow-2)"><span class="n" style="color:var(--fg)">2</span><span class="dp" style="color:var(--fg-3)">3dp</span></div>
+        <div class="elev" style="background:white;box-shadow:var(--shadow-3)"><span class="n" style="color:var(--fg)">3</span><span class="dp" style="color:var(--fg-3)">6dp</span></div>
+        <div class="elev" style="background:white;box-shadow:var(--shadow-4)"><span class="n" style="color:var(--fg)">4</span><span class="dp" style="color:var(--fg-3)">8dp</span></div>
+        <div class="elev" style="background:white;box-shadow:var(--shadow-5)"><span class="n" style="color:var(--fg)">5</span><span class="dp" style="color:var(--fg-3)">12dp</span></div>
+      </div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark — Navy luminancia</div>
+      <div class="flex gap-3 flex-wrap">
+        <div class="elev" style="background:var(--navy-950)"><span class="n" style="color:#f1f5f9">0</span><span class="dp" style="color:#64748b">950</span></div>
+        <div class="elev" style="background:var(--navy-900)"><span class="n" style="color:#f1f5f9">1</span><span class="dp" style="color:#64748b">900</span></div>
+        <div class="elev" style="background:var(--navy-800)"><span class="n" style="color:#f1f5f9">2</span><span class="dp" style="color:#64748b">800</span></div>
+        <div class="elev" style="background:var(--navy-700)"><span class="n" style="color:#f1f5f9">3</span><span class="dp" style="color:#64748b">700</span></div>
+        <div class="elev" style="background:var(--navy-600);border:1px solid rgba(255,255,255,.06)"><span class="n" style="color:#f1f5f9">4</span><span class="dp" style="color:#64748b">600</span></div>
+        <div class="elev" style="background:var(--navy-500);border:1px solid rgba(255,255,255,.06)"><span class="n" style="color:#f1f5f9">5</span><span class="dp" style="color:#64748b">500</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MOTION / ANIMATION
+     ============================================================ -->
+<section class="ds-section" id="motion">
+  <h2>Motion & Animacao</h2>
+  <div class="role">4 DURACOES + 2 EASINGS + 5 OPACIDADES + 7 Z-INDEX · Respeita prefers-reduced-motion</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">4 duracoes semanticas: fast (micro-feedback), normal (transicoes), slow (revelacao), sheet (bottom sheets). 2 easings: default (suave), spring (bounce sutil). Respeita prefers-reduced-motion.</p>
+
+  <h3>Duracoes</h3>
+  <div class="flex gap-6 flex-wrap" style="margin-bottom:var(--sp-6)">
+    <div class="flex flex-col items-center gap-2">
+      <div style="width:80px;height:48px;background:var(--teal-500);border-radius:var(--r-md);animation:demo-move var(--dur-fast) ease infinite alternate" class="transition"></div>
+      <span class="t-legenda" style="color:var(--fg-3)">fast · 100ms</span>
+      <code style="font:500 11px 'JetBrains Mono';color:var(--teal-700)">--dur-fast</code>
+    </div>
+    <div class="flex flex-col items-center gap-2">
+      <div style="width:80px;height:48px;background:var(--teal-500);border-radius:var(--r-md);animation:demo-move var(--dur-normal) ease infinite alternate"></div>
+      <span class="t-legenda" style="color:var(--fg-3)">normal · 200ms</span>
+      <code style="font:500 11px 'JetBrains Mono';color:var(--teal-700)">--dur-normal</code>
+    </div>
+    <div class="flex flex-col items-center gap-2">
+      <div style="width:80px;height:48px;background:var(--teal-500);border-radius:var(--r-md);animation:demo-move var(--dur-slow) ease infinite alternate"></div>
+      <span class="t-legenda" style="color:var(--fg-3)">slow · 300ms</span>
+      <code style="font:500 11px 'JetBrains Mono';color:var(--teal-700)">--dur-slow</code>
+    </div>
+    <div class="flex flex-col items-center gap-2">
+      <div style="width:80px;height:48px;background:var(--teal-500);border-radius:var(--r-md);animation:demo-move var(--dur-sheet) ease infinite alternate"></div>
+      <span class="t-legenda" style="color:var(--fg-3)">sheet · 400ms</span>
+      <code style="font:500 11px 'JetBrains Mono';color:var(--teal-700)">--dur-sheet</code>
+    </div>
+  </div>
+
+  <h3>Easings</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Default</div>
+      <div style="font:500 12px 'JetBrains Mono';color:var(--fg-2);margin-bottom:var(--sp-2)">cubic-bezier(0.2, 0, 0, 1)</div>
+      <div class="t-corpo-2" style="color:var(--fg-3)">Uso geral: hover, fade, toggle. Aceleracao suave, desaceleracao forte.</div>
+    </div>
+    <div class="panel light"><div class="mode-label">Spring</div>
+      <div style="font:500 12px 'JetBrains Mono';color:var(--fg-2);margin-bottom:var(--sp-2)">cubic-bezier(0.34, 1.56, 0.64, 1)</div>
+      <div class="t-corpo-2" style="color:var(--fg-3)">Feedback tactil: toast entrada, modal scale, botao press. Overshoot sutil.</div>
+    </div>
+  </div>
+
+  <h3>Opacidade Semantica</h3>
+  <div class="flex gap-4 flex-wrap">
+    <div class="flex flex-col items-center gap-2"><div style="width:64px;height:40px;border-radius:var(--r-md);background:var(--btn-primary);opacity:var(--opacity-hover)"></div><span class="t-legenda" style="color:var(--fg-3)">hover · 0.08</span></div>
+    <div class="flex flex-col items-center gap-2"><div style="width:64px;height:40px;border-radius:var(--r-md);background:var(--btn-primary);opacity:var(--opacity-pressed)"></div><span class="t-legenda" style="color:var(--fg-3)">pressed · 0.12</span></div>
+    <div class="flex flex-col items-center gap-2"><div style="width:64px;height:40px;border-radius:var(--r-md);background:var(--btn-primary);opacity:var(--opacity-disabled)"></div><span class="t-legenda" style="color:var(--fg-3)">disabled · 0.38</span></div>
+    <div class="flex flex-col items-center gap-2"><div style="width:64px;height:40px;border-radius:var(--r-md);background:var(--slate-900);opacity:var(--opacity-scrim)"></div><span class="t-legenda" style="color:var(--fg-3)">scrim · 0.50</span></div>
+    <div class="flex flex-col items-center gap-2"><div style="width:64px;height:40px;border-radius:var(--r-md);background:var(--slate-900);opacity:var(--opacity-overlay)"></div><span class="t-legenda" style="color:var(--fg-3)">overlay · 0.60</span></div>
+  </div>
+
+  <h3>Z-Index Scale</h3>
+  <div class="flex gap-3 flex-wrap" style="margin-top:var(--sp-2)">
+    <div class="flex flex-col items-center gap-1" style="width:80px"><div style="width:64px;height:32px;border-radius:var(--r-sm);background:var(--slate-200);display:flex;align-items:center;justify-content:center;font:600 11px 'JetBrains Mono';color:var(--slate-700)">0</div><span class="t-legenda" style="color:var(--fg-3)">base</span></div>
+    <div class="flex flex-col items-center gap-1" style="width:80px"><div style="width:64px;height:32px;border-radius:var(--r-sm);background:var(--teal-100);display:flex;align-items:center;justify-content:center;font:600 11px 'JetBrains Mono';color:var(--teal-700)">100</div><span class="t-legenda" style="color:var(--fg-3)">sticky</span></div>
+    <div class="flex flex-col items-center gap-1" style="width:80px"><div style="width:64px;height:32px;border-radius:var(--r-sm);background:var(--teal-200);display:flex;align-items:center;justify-content:center;font:600 11px 'JetBrains Mono';color:var(--teal-800)">200</div><span class="t-legenda" style="color:var(--fg-3)">dropdown</span></div>
+    <div class="flex flex-col items-center gap-1" style="width:80px"><div style="width:64px;height:32px;border-radius:var(--r-sm);background:var(--teal-400);display:flex;align-items:center;justify-content:center;font:600 11px 'JetBrains Mono';color:white">300</div><span class="t-legenda" style="color:var(--fg-3)">overlay</span></div>
+    <div class="flex flex-col items-center gap-1" style="width:80px"><div style="width:64px;height:32px;border-radius:var(--r-sm);background:var(--teal-600);display:flex;align-items:center;justify-content:center;font:600 11px 'JetBrains Mono';color:white">400</div><span class="t-legenda" style="color:var(--fg-3)">modal</span></div>
+    <div class="flex flex-col items-center gap-1" style="width:80px"><div style="width:64px;height:32px;border-radius:var(--r-sm);background:var(--teal-700);display:flex;align-items:center;justify-content:center;font:600 11px 'JetBrains Mono';color:white">500</div><span class="t-legenda" style="color:var(--fg-3)">toast</span></div>
+    <div class="flex flex-col items-center gap-1" style="width:80px"><div style="width:64px;height:32px;border-radius:var(--r-sm);background:var(--teal-900);display:flex;align-items:center;justify-content:center;font:600 11px 'JetBrains Mono';color:white">600</div><span class="t-legenda" style="color:var(--fg-3)">tooltip</span></div>
+  </div>
+
+  <h3>Breakpoints</h3>
+  <div class="flex gap-4 flex-wrap" style="margin-top:var(--sp-2)">
+    <div class="flex flex-col gap-1"><span style="font:600 13px 'JetBrains Mono';color:var(--fg)">320px</span><span class="t-legenda" style="color:var(--fg-3)">sm · iPhone SE</span></div>
+    <div class="flex flex-col gap-1"><span style="font:600 13px 'JetBrains Mono';color:var(--btn-primary)">390px</span><span class="t-legenda" style="color:var(--fg-3)">md · iPhone 14 (design target)</span></div>
+    <div class="flex flex-col gap-1"><span style="font:600 13px 'JetBrains Mono';color:var(--fg)">428px</span><span class="t-legenda" style="color:var(--fg-3)">lg · iPhone Pro Max</span></div>
+    <div class="flex flex-col gap-1"><span style="font:600 13px 'JetBrains Mono';color:var(--fg)">768px</span><span class="t-legenda" style="color:var(--fg-3)">tablet · iPad</span></div>
+    <div class="flex flex-col gap-1"><span style="font:600 13px 'JetBrains Mono';color:var(--fg)">1024px</span><span class="t-legenda" style="color:var(--fg-3)">desktop · sidebar layout</span></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ICONS
+     ============================================================ -->
+<section class="ds-section" id="icons">
+  <h2>Icones</h2>
+  <div class="role">62 ICONES · Phosphor Icons Regular · Nomes em portugues</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Phosphor Icons, peso Regular (padrao). Tamanho fixo 24x24px em todos os contextos. Cor herda do parent via currentColor. 62 icones organizados em 8 categorias semanticas.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <h3 style="margin-top:0">Navegacao</h3>
+      <div class="icon-grid" id="icons-nav-light"></div>
+      <h3>Dominios</h3>
+      <div class="icon-grid" id="icons-dom-light"></div>
+      <h3>Alertas</h3>
+      <div class="icon-grid" id="icons-alert-light"></div>
+      <h3>Acoes</h3>
+      <div class="icon-grid" id="icons-act-light"></div>
+      <h3>Formularios</h3>
+      <div class="icon-grid" id="icons-form-light"></div>
+      <h3>Sistema</h3>
+      <div class="icon-grid" id="icons-sys-light"></div>
+      <h3>Premium</h3>
+      <div class="icon-grid" id="icons-prem-light"></div>
+      <h3>Medicos</h3>
+      <div class="icon-grid" id="icons-med-light"></div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <h3 style="margin-top:0">Navegacao</h3>
+      <div class="icon-grid" id="icons-nav-dark"></div>
+      <h3>Dominios</h3>
+      <div class="icon-grid" id="icons-dom-dark"></div>
+      <h3>Alertas</h3>
+      <div class="icon-grid" id="icons-alert-dark"></div>
+      <h3>Acoes</h3>
+      <div class="icon-grid" id="icons-act-dark"></div>
+      <h3>Formularios</h3>
+      <div class="icon-grid" id="icons-form-dark"></div>
+      <h3>Sistema</h3>
+      <div class="icon-grid" id="icons-sys-dark"></div>
+      <h3>Premium</h3>
+      <div class="icon-grid" id="icons-prem-dark"></div>
+      <h3>Medicos</h3>
+      <div class="icon-grid" id="icons-med-dark"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     BUTTONS
+     ============================================================ -->
+<section class="ds-section" id="buttons">
+  <h2>Botoes</h2>
+  <div class="role">HIERARQUIA COMPLETA · Primario, Secundario, Outline, Texto, Discreto, Social, Perigo · 3 tamanhos · Com icone · Loading · Disabled</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">7 hierarquias visuais: Primary (acao principal), Ghost (secundaria), Text (terciaria), Google/Apple (social), Danger (destrutiva), Discrete (minima). 3 tamanhos: lg (52dp, emergencia), md (48dp, padrao), sm (36dp, compacto). Touch target minimo 48dp.</p>
+
+  <h3>1. Primario — Acao principal (1 por tela)</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-4">
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-lg btn-primary w-full">Continuar</button><span class="lbl">lg 52dp (emergencia)</span></div>
+      </div>
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-md btn-primary">Entrar</button><span class="lbl">md 48dp (padrao)</span></div>
+        <div class="item"><button class="btn btn-sm btn-primary">Filtrar</button><span class="lbl">sm 36dp (compacto)</span></div>
+      </div>
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-md btn-primary"><i class="ph ph-plus" style="font-size:18px"></i> Adicionar</button><span class="lbl">com icone</span></div>
+        <div class="item"><button class="btn btn-icon-only btn-primary"><i class="ph ph-plus" style="font-size:20px"></i></button><span class="lbl">icon-only 48dp</span></div>
+      </div>
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-md btn-primary disabled">Continuar</button><span class="lbl">disabled</span></div>
+        <div class="item"><button class="btn btn-md btn-primary btn-loading">Salvando...</button><span class="lbl">loading</span></div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-4">
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-lg btn-primary w-full">Continuar</button><span class="lbl">lg 52dp</span></div>
+      </div>
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-md btn-primary">Entrar</button><span class="lbl">md 48dp</span></div>
+        <div class="item"><button class="btn btn-sm btn-primary">Filtrar</button><span class="lbl">sm 36dp</span></div>
+      </div>
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-md btn-primary"><i class="ph ph-plus" style="font-size:18px"></i> Adicionar</button><span class="lbl">com icone</span></div>
+        <div class="item"><button class="btn btn-icon-only btn-primary"><i class="ph ph-plus" style="font-size:20px"></i></button><span class="lbl">icon-only</span></div>
+      </div>
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-md btn-primary disabled">Continuar</button><span class="lbl">disabled</span></div>
+        <div class="item"><button class="btn btn-md btn-primary btn-loading">Salvando...</button><span class="lbl">loading</span></div>
+      </div>
+    </div></div>
+  </div>
+
+  <h3>2. Secundario — Acao secundaria (complementa primario)</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-3">
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-md btn-secondary">Voltar</button><span class="lbl">md</span></div>
+        <div class="item"><button class="btn btn-sm btn-secondary">Cancelar</button><span class="lbl">sm</span></div>
+      </div>
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-md btn-secondary"><i class="ph ph-arrow-left" style="font-size:18px"></i> Voltar</button><span class="lbl">com icone</span></div>
+        <div class="item"><button class="btn btn-md btn-secondary disabled">Voltar</button><span class="lbl">disabled</span></div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-3">
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-md btn-secondary">Voltar</button><span class="lbl">md</span></div>
+        <div class="item"><button class="btn btn-sm btn-secondary">Cancelar</button><span class="lbl">sm</span></div>
+      </div>
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-md btn-secondary"><i class="ph ph-arrow-left" style="font-size:18px"></i> Voltar</button><span class="lbl">com icone</span></div>
+        <div class="item"><button class="btn btn-md btn-secondary disabled">Voltar</button><span class="lbl">disabled</span></div>
+      </div>
+    </div></div>
+  </div>
+
+  <h3>3. Outline — Acao terciaria (par em modais, alternativa visual)</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-3">
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-md btn-outline">Cancelar</button><span class="lbl">md</span></div>
+        <div class="item"><button class="btn btn-sm btn-outline">Pular</button><span class="lbl">sm</span></div>
+      </div>
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-icon-only btn-outline"><i class="ph ph-pencil-simple" style="font-size:18px"></i></button><span class="lbl">icon-only</span></div>
+        <div class="item"><button class="btn btn-md btn-outline btn-loading">Enviando</button><span class="lbl">loading</span></div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-3">
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-md btn-outline">Cancelar</button><span class="lbl">md</span></div>
+        <div class="item"><button class="btn btn-sm btn-outline">Pular</button><span class="lbl">sm</span></div>
+      </div>
+      <div class="flex gap-3 flex-wrap items-start">
+        <div class="item"><button class="btn btn-icon-only btn-outline"><i class="ph ph-pencil-simple" style="font-size:18px"></i></button><span class="lbl">icon-only</span></div>
+        <div class="item"><button class="btn btn-md btn-outline btn-loading">Enviando</button><span class="lbl">loading</span></div>
+      </div>
+    </div></div>
+  </div>
+
+  <h3>4. Texto + Discreto — Links e acoes minimas</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-3">
+      <div class="flex gap-4 flex-wrap items-center">
+        <div class="item"><button class="btn-text">Entrar com e-mail</button><span class="lbl">texto (link)</span></div>
+        <div class="item"><button class="btn-text"><i class="ph ph-arrow-left" style="font-size:16px;margin-right:4px"></i> Voltar para o login</button><span class="lbl">texto + icone</span></div>
+      </div>
+      <div class="flex gap-4 flex-wrap items-center">
+        <div class="item"><button class="btn-discrete">Suporte</button><span class="lbl">discreto</span></div>
+        <div class="item"><button class="btn-discrete">Agora nao, quero explorar</button><span class="lbl">discreto (skip)</span></div>
+        <div class="item"><button class="btn-text" style="color:var(--danger)">Esqueci minha senha</button><span class="lbl">texto danger</span></div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-3">
+      <div class="flex gap-4 flex-wrap items-center">
+        <div class="item"><button class="btn-text">Entrar com e-mail</button><span class="lbl">texto</span></div>
+        <div class="item"><button class="btn-text"><i class="ph ph-arrow-left" style="font-size:16px;margin-right:4px"></i> Voltar para o login</button><span class="lbl">texto + icone</span></div>
+      </div>
+      <div class="flex gap-4 flex-wrap items-center">
+        <div class="item"><button class="btn-discrete">Suporte</button><span class="lbl">discreto</span></div>
+        <div class="item"><button class="btn-discrete">Agora nao, quero explorar</button><span class="lbl">discreto (skip)</span></div>
+        <div class="item"><button class="btn-text" style="color:var(--danger)">Esqueci minha senha</button><span class="lbl">texto danger</span></div>
+      </div>
+    </div></div>
+  </div>
+
+  <h3>5. Social — Login externo (Google / Apple)</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-3">
+      <button class="btn btn-lg btn-google w-full"><span class="icon-google"></span> Entrar com Google</button>
+      <button class="btn btn-lg btn-apple w-full"><span class="icon-apple"></span> Entrar com Apple</button>
+      <div class="divider-ou"><div class="line"></div><span class="text">ou</span><div class="line"></div></div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-3">
+      <button class="btn btn-lg btn-google w-full"><span class="icon-google"></span> Entrar com Google</button>
+      <button class="btn btn-lg btn-apple w-full"><span class="icon-apple"></span> Entrar com Apple</button>
+      <div class="divider-ou"><div class="line"></div><span class="text">ou</span><div class="line"></div></div>
+    </div></div>
+  </div>
+
+  <h3>6. Perigo — Acao destrutiva (confirmar exclusao)</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex gap-3 flex-wrap items-start">
+      <div class="item"><button class="btn btn-md btn-danger">Excluir conta</button><span class="lbl">md</span></div>
+      <div class="item"><button class="btn btn-md btn-danger"><i class="ph ph-trash" style="font-size:18px"></i> Excluir</button><span class="lbl">com icone</span></div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex gap-3 flex-wrap items-start">
+      <div class="item"><button class="btn btn-md btn-danger">Excluir conta</button><span class="lbl">md</span></div>
+      <div class="item"><button class="btn btn-md btn-danger"><i class="ph ph-trash" style="font-size:18px"></i> Excluir</button><span class="lbl">com icone</span></div>
+    </div></div>
+  </div>
+
+  <h3>Hierarquia de Uso</h3>
+  <div class="flex flex-col gap-2" style="max-width:600px">
+    <div class="flex gap-3 items-center"><span style="font:700 14px 'JetBrains Mono';color:var(--btn-primary);width:28px">1</span><span class="t-corpo-2" style="color:var(--fg)"><strong>Primario</strong> — 1 por tela. CTA principal. "Continuar", "Entrar", "Assinar"</span></div>
+    <div class="flex gap-3 items-center"><span style="font:700 14px 'JetBrains Mono';color:var(--fg-2);width:28px">2</span><span class="t-corpo-2" style="color:var(--fg)"><strong>Secundario</strong> — Par do primario. "Voltar", "Cancelar"</span></div>
+    <div class="flex gap-3 items-center"><span style="font:700 14px 'JetBrains Mono';color:var(--fg-3);width:28px">3</span><span class="t-corpo-2" style="color:var(--fg)"><strong>Outline</strong> — Alternativa em modais, toolbar. "Pular", "Cancelar"</span></div>
+    <div class="flex gap-3 items-center"><span style="font:700 14px 'JetBrains Mono';color:var(--fg-3);width:28px">4</span><span class="t-corpo-2" style="color:var(--fg)"><strong>Texto</strong> — Links em contexto. "Esqueci minha senha", "Entrar com e-mail"</span></div>
+    <div class="flex gap-3 items-center"><span style="font:700 14px 'JetBrains Mono';color:var(--fg-3);width:28px">5</span><span class="t-corpo-2" style="color:var(--fg)"><strong>Discreto</strong> — Acao minima. "Suporte", "Agora nao"</span></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     INPUTS
+     ============================================================ -->
+<section class="ds-section" id="inputs">
+  <h2>Inputs</h2>
+  <div class="role">TODOS OS TIPOS · Texto (6 estados) · Senha com olhinho · Com icone · Com unidade medica · Toggle · Checkbox · Textarea</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Label SEMPRE visivel acima do campo (nunca placeholder-only). Borda muda de cor por estado: default (border), focus (teal), error (red), success (emerald). Teclado numerico automatico em campos de dose via inputmode='numeric'.</p>
+
+  <h3>1. Campo de Texto — 6 estados</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-4">
+      <div class="input-group"><label class="input-label">Seu e-mail</label><input class="input-field" placeholder="medico@hospital.com"><span class="input-helper">Usaremos apenas pra login</span></div>
+      <div class="input-group"><label class="input-label">Seu e-mail</label><input class="input-field" value="luis@gmail.com"></div>
+      <div class="input-group"><label class="input-label">Seu e-mail</label><input class="input-field" style="border:2px solid var(--border-focus)"></div>
+      <div class="input-group"><label class="input-label">E-mail confirmado</label><input class="input-field success" value="dr.rafael@hospital.com"><span class="input-helper" style="color:var(--success)"><i class="ph ph-check"></i> E-mail verificado</span></div>
+      <div class="input-group"><label class="input-label">Seu e-mail</label><input class="input-field error"><span class="input-error"><i class="ph ph-warning-circle"></i> Campo obrigatorio</span></div>
+      <div class="input-group"><label class="input-label disabled">Seu e-mail</label><input class="input-field disabled" placeholder="Desabilitado" disabled></div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-4">
+      <div class="input-group"><label class="input-label">Seu e-mail</label><input class="input-field" placeholder="medico@hospital.com"><span class="input-helper">Usaremos apenas pra login</span></div>
+      <div class="input-group"><label class="input-label">Seu e-mail</label><input class="input-field" value="luis@gmail.com"></div>
+      <div class="input-group"><label class="input-label">Seu e-mail</label><input class="input-field" style="border:2px solid var(--border-focus)"></div>
+      <div class="input-group"><label class="input-label">E-mail confirmado</label><input class="input-field success" value="dr.rafael@hospital.com"><span class="input-helper" style="color:var(--success)"><i class="ph ph-check"></i> E-mail verificado</span></div>
+      <div class="input-group"><label class="input-label">Seu e-mail</label><input class="input-field error"><span class="input-error"><i class="ph ph-warning-circle"></i> Campo obrigatorio</span></div>
+      <div class="input-group"><label class="input-label disabled">Seu e-mail</label><input class="input-field disabled" placeholder="Desabilitado" disabled></div>
+    </div></div>
+  </div>
+
+  <h3>2. Senha — Com toggle olhinho (eye/eye-slash)</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-4">
+      <div class="input-group"><label class="input-label">Sua senha</label><div class="input-password"><input class="input-field js-password" type="password" value="12345678"><button class="eye-toggle js-eye-toggle" type="button"><i class="ph ph-eye-slash"></i></button></div></div>
+      <div class="input-group"><label class="input-label">Sua senha (visivel)</label><div class="input-password"><input class="input-field" type="text" value="12345678"><button class="eye-toggle" type="button"><i class="ph ph-eye"></i></button></div></div>
+      <div class="input-group"><label class="input-label">Sua senha</label><div class="input-password"><input class="input-field error" type="password"><button class="eye-toggle" type="button"><i class="ph ph-eye-slash"></i></button></div><span class="input-error"><i class="ph ph-warning-circle"></i> Senha incorreta</span></div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-4">
+      <div class="input-group"><label class="input-label">Sua senha</label><div class="input-password"><input class="input-field js-password" type="password" value="12345678"><button class="eye-toggle js-eye-toggle" type="button"><i class="ph ph-eye-slash"></i></button></div></div>
+      <div class="input-group"><label class="input-label">Sua senha (visivel)</label><div class="input-password"><input class="input-field" type="text" value="12345678"><button class="eye-toggle" type="button"><i class="ph ph-eye"></i></button></div></div>
+      <div class="input-group"><label class="input-label">Sua senha</label><div class="input-password"><input class="input-field error" type="password"><button class="eye-toggle" type="button"><i class="ph ph-eye-slash"></i></button></div><span class="input-error"><i class="ph ph-warning-circle"></i> Senha incorreta</span></div>
+    </div></div>
+  </div>
+
+  <h3>3. Com icone (busca, lupa) + Com unidade medica (kg, mL)</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-4">
+      <div class="input-group input-with-icon"><label class="input-label">Buscar droga</label><i class="ph ph-magnifying-glass input-icon-left"></i><input class="input-field" placeholder="Ex: Propofol"></div>
+      <div class="input-group input-with-unit"><label class="input-label">Peso do paciente</label><input class="input-field" value="70"><span class="input-unit">kg</span></div>
+      <div class="input-group input-with-unit"><label class="input-label">Volume</label><input class="input-field" value="250"><span class="input-unit">mL</span></div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-4">
+      <div class="input-group input-with-icon"><label class="input-label">Buscar droga</label><i class="ph ph-magnifying-glass input-icon-left"></i><input class="input-field" placeholder="Ex: Propofol"></div>
+      <div class="input-group input-with-unit"><label class="input-label">Peso do paciente</label><input class="input-field" value="70"><span class="input-unit">kg</span></div>
+      <div class="input-group input-with-unit"><label class="input-label">Volume</label><input class="input-field" value="250"><span class="input-unit">mL</span></div>
+    </div></div>
+  </div>
+
+  <h3>4. Toggle segmentado + Checkbox</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-4">
+      <div class="flex gap-4"><div class="toggle-seg"><button class="tab active">Adulto</button><button class="tab">Ped</button></div><div class="toggle-seg"><button class="tab">M</button><button class="tab active">F</button></div></div>
+      <div class="flex gap-4 items-center"><div class="checkbox off"></div><span style="color:var(--fg-2);font-size:14px">Off</span><div class="checkbox on">✓</div><span style="color:var(--fg-2);font-size:14px">On</span></div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-4">
+      <div class="flex gap-4"><div class="toggle-seg"><button class="tab active">Adulto</button><button class="tab">Ped</button></div><div class="toggle-seg"><button class="tab">M</button><button class="tab active">F</button></div></div>
+      <div class="flex gap-4 items-center"><div class="checkbox off"></div><span style="color:var(--fg-2);font-size:14px">Off</span><div class="checkbox on">✓</div><span style="color:var(--fg-2);font-size:14px">On</span></div>
+    </div></div>
+  </div>
+
+  <h3>5. Textarea</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="input-group"><label class="input-label">Observacoes</label><textarea class="textarea" placeholder="Notas clinicas opcionais..." rows="3"></textarea><span class="input-helper">Maximo 500 caracteres</span></div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="input-group"><label class="input-label">Observacoes</label><textarea class="textarea" placeholder="Notas clinicas opcionais..." rows="3"></textarea><span class="input-helper">Maximo 500 caracteres</span></div>
+    </div>
+  </div>
+
+  <h3>Input com Unidade</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="flex flex-col gap-4">
+        <div class="input-group"><label class="input-label">Idade</label><div class="input-with-unit"><input class="input-field" type="number" placeholder="Ex: 65"><span class="input-unit">anos</span></div></div>
+        <div class="input-group"><label class="input-label">Peso</label><div class="input-with-unit"><input class="input-field" type="number" placeholder="Ex: 70"><span class="input-unit">kg</span></div></div>
+        <div class="input-group"><label class="input-label">Creatinina</label><div class="input-with-unit"><input class="input-field" type="number" placeholder="Ex: 1.2"><span class="input-unit">mg/dL</span></div></div>
+      </div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="flex flex-col gap-4">
+        <div class="input-group"><label class="input-label">Idade</label><div class="input-with-unit"><input class="input-field" type="number" placeholder="Ex: 65"><span class="input-unit">anos</span></div></div>
+        <div class="input-group"><label class="input-label">Peso</label><div class="input-with-unit"><input class="input-field" type="number" placeholder="Ex: 70"><span class="input-unit">kg</span></div></div>
+        <div class="input-group"><label class="input-label">Creatinina</label><div class="input-with-unit"><input class="input-field" type="number" placeholder="Ex: 1.2"><span class="input-unit">mg/dL</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Textarea</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="input-group"><label class="input-label">Observacoes</label><textarea class="input-field" rows="3" placeholder="Anotacoes sobre o plantao..."></textarea></div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="input-group"><label class="input-label">Observacoes</label><textarea class="input-field" rows="3" placeholder="Anotacoes sobre o plantao..."></textarea></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TAGS
+     ============================================================ -->
+<section class="ds-section" id="tags">
+  <h2>Tags, Badges & Chips</h2>
+  <div class="role">Abreviacao · Domain pill · Status (premium/experimentando/novo/atualizado) · Contagem</div>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-3">
+      <div class="flex gap-2 flex-wrap"><span class="tag-abbr urg">IOT</span><span class="tag-abbr urg">VM</span><span class="tag-abbr dil">DVA</span><span class="tag-abbr calc">CrCl</span><span class="tag-abbr urg">DHE</span><span class="tag-abbr urg">CAD</span></div>
+      <div class="flex gap-2 flex-wrap"><span class="tag-domain urg">Urgencias</span><span class="tag-domain dil">Diluicoes</span><span class="tag-domain calc">Calculadoras</span><span class="tag-domain prot">Protocolos</span><span class="tag-domain esc">Escores</span><span class="tag-domain conv">Conversores</span></div>
+      <div class="flex gap-2"><span class="tag-status premium">PREMIUM</span><span class="tag-status experimentando">EXPERIMENTANDO</span><span class="tag-status novo">NOVO</span><span class="tag-status atualizado">ATUALIZADO</span></div>
+      <div class="flex gap-2"><span class="tag-count">15</span><span class="tag-count">6</span><span class="tag-count">11</span><span class="tag-count">13</span><span class="tag-count">22</span><span class="tag-count">7</span></div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-3">
+      <div class="flex gap-2 flex-wrap"><span class="tag-abbr urg">IOT</span><span class="tag-abbr urg">VM</span><span class="tag-abbr dil">DVA</span><span class="tag-abbr calc">CrCl</span><span class="tag-abbr urg">DHE</span><span class="tag-abbr urg">CAD</span></div>
+      <div class="flex gap-2 flex-wrap"><span class="tag-domain urg">Urgencias</span><span class="tag-domain dil">Diluicoes</span><span class="tag-domain calc">Calculadoras</span><span class="tag-domain prot">Protocolos</span><span class="tag-domain esc">Escores</span><span class="tag-domain conv">Conversores</span></div>
+      <div class="flex gap-2"><span class="tag-status premium">PREMIUM</span><span class="tag-status experimentando">EXPERIMENTANDO</span><span class="tag-status novo">NOVO</span><span class="tag-status atualizado">ATUALIZADO</span></div>
+      <div class="flex gap-2"><span class="tag-count">15</span><span class="tag-count">6</span><span class="tag-count">11</span><span class="tag-count">13</span><span class="tag-count">22</span><span class="tag-count">7</span></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CARDS
+     ============================================================ -->
+<section class="ds-section" id="cards">
+  <h2>Cards</h2>
+  <div class="role">Selecao (onboarding) · Funcionalidade (kit plantao) · 3 estados</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">4 estados de card: Gratuito (limpo), Premium Bloqueado (cadeado + opacidade), Degustacao (funciona + tag dias restantes), Assinante (completamente limpo). Quanto mais paga, mais limpa a interface.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-3">
+      <div class="card-selection"><div class="icon-circle"><i class="ph ph-user" style="font-size:20px"></i></div><span class="card-text">Adulto</span></div>
+      <div class="card-selection selected"><div class="icon-circle"><i class="ph ph-user" style="font-size:20px"></i></div><span class="card-text">Adulto</span></div>
+      <div class="flex gap-3" style="margin-top:8px">
+        <div class="card-feature"><span class="tag-abbr urg">IOT</span><span class="feat-name">Intubacao</span></div>
+        <div class="card-feature selected"><span class="tag-abbr dil">DVA</span><span class="feat-name">Drogas Vasoativas</span></div>
+        <div class="card-feature"><span class="tag-abbr urg">DHE</span><span class="feat-name">Dist. Hidro</span><span class="tag-status premium" style="margin-top:4px">PREMIUM</span></div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-3">
+      <div class="card-selection"><div class="icon-circle"><i class="ph ph-user" style="font-size:20px"></i></div><span class="card-text">Adulto</span></div>
+      <div class="card-selection selected"><div class="icon-circle"><i class="ph ph-user" style="font-size:20px"></i></div><span class="card-text">Adulto</span></div>
+      <div class="flex gap-3" style="margin-top:8px">
+        <div class="card-feature"><span class="tag-abbr urg">IOT</span><span class="feat-name">Intubacao</span></div>
+        <div class="card-feature selected"><span class="tag-abbr dil">DVA</span><span class="feat-name">Drogas Vasoativas</span></div>
+        <div class="card-feature"><span class="tag-abbr urg">DHE</span><span class="feat-name">Dist. Hidro</span><span class="tag-status premium" style="margin-top:4px">PREMIUM</span></div>
+      </div>
+    </div></div>
+  </div>
+
+  <h3>Estados Premium</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="flex gap-4">
+        <div class="card-feature locked"><span class="tag-abbr urg">DHE</span><span class="feat-name">Dist. Hidroeletroliticos</span><span class="tag-status premium">PREMIUM</span></div>
+        <div class="card-feature trial"><span class="tag-abbr dil">DVA</span><span class="feat-name">Drogas Vasoativas</span><span class="tag-status experimentando">2 dias</span></div>
+      </div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="flex gap-4">
+        <div class="card-feature locked"><span class="tag-abbr urg">DHE</span><span class="feat-name">Dist. Hidroeletroliticos</span><span class="tag-status premium">PREMIUM</span></div>
+        <div class="card-feature trial"><span class="tag-abbr dil">DVA</span><span class="feat-name">Drogas Vasoativas</span><span class="tag-status experimentando">2 dias</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ALERTS
+     ============================================================ -->
+<section class="ds-section" id="alerts">
+  <h2>Alertas & Resultados</h2>
+  <div class="role">5 NIVEIS · Info · Resultado (PROTAGONISTA) · Critico · Observacao · Rodape</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">5 niveis hierarquicos clinicos: 1-Info (preto), 2-Resultado/Dose (verde, PROTAGONISTA), 3-Critico (vermelho), 4-Observacao (ambar), 5-Rodape (cinza). O nivel 2 domina a tela — dose legivel a ~1 metro de distancia.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-3">
+      <div class="alert info"><div class="alert-title"><i class="ph ph-info"></i> Nivel 1 — Info</div><div class="alert-body">Diluir 50 UI de insulina regular em 500 mL de SF 0,9%.</div></div>
+      <div class="alert success"><div class="alert-title"><i class="ph ph-check-circle"></i> Nivel 2 — Resultado</div><div class="dose">0,1 UI/kg/h</div><div class="alert-body">7 UI/h · Bomba de infusao continua</div></div>
+      <div class="alert critical"><div class="alert-title"><i class="ph ph-warning-octagon"></i> DOSE MAXIMA EXCEDIDA</div><div class="alert-body">A dose excede 0,14 UI/kg/h. Verificar.</div></div>
+      <div class="alert warning"><div class="alert-title"><i class="ph ph-warning"></i> Observacao</div><div class="alert-body">Repor potassio se K+ &lt; 5.3 mEq/L.</div></div>
+      <div class="alert footnote"><div class="alert-body">Ref: ADA Standards of Care 2026</div></div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-3">
+      <div class="alert info"><div class="alert-title"><i class="ph ph-info"></i> Nivel 1 — Info</div><div class="alert-body">Diluir 50 UI de insulina regular em 500 mL de SF 0,9%.</div></div>
+      <div class="alert success"><div class="alert-title"><i class="ph ph-check-circle"></i> Nivel 2 — Resultado</div><div class="dose">0,1 UI/kg/h</div><div class="alert-body">7 UI/h · Bomba de infusao continua</div></div>
+      <div class="alert critical"><div class="alert-title"><i class="ph ph-warning-octagon"></i> DOSE MAXIMA EXCEDIDA</div><div class="alert-body">A dose excede 0,14 UI/kg/h. Verificar.</div></div>
+      <div class="alert warning"><div class="alert-title"><i class="ph ph-warning"></i> Observacao</div><div class="alert-body">Repor potassio se K+ &lt; 5.3 mEq/L.</div></div>
+      <div class="alert footnote"><div class="alert-body">Ref: ADA Standards of Care 2026</div></div>
+    </div></div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     LIST ITEMS
+     ============================================================ -->
+<section class="ds-section" id="list-items">
+  <h2>List Items</h2>
+  <div class="role">Single-line · Two-line · Com icone dominio · Trailing: chevron, badge, toggle, meta</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Padrao de lista com 3 zonas: icon (esquerda), content (centro, flex-1), trailing (direita). Min-height 56px. Touch target 48dp+. Hover com bg sutil.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col">
+      <div class="list-item">
+        <div class="list-icon" style="background:var(--dom-urg-bg);color:var(--dom-urg)"><i class="ph ph-siren"></i></div>
+        <div class="list-content"><div class="list-title">Intubacao Orotraqueal</div><div class="list-subtitle">Sequencia rapida · 15 drogas</div></div>
+        <div class="list-trailing"><i class="ph ph-caret-right"></i></div>
+      </div>
+      <div class="list-divider"></div>
+      <div class="list-item">
+        <div class="list-icon" style="background:var(--dom-dil-bg);color:var(--dom-dil)"><i class="ph ph-syringe"></i></div>
+        <div class="list-content"><div class="list-title">Drogas Vasoativas</div><div class="list-subtitle">Noradrenalina, Dobutamina, Vasopressina</div></div>
+        <div class="list-trailing"><span class="tag-status premium">PREMIUM</span></div>
+      </div>
+      <div class="list-divider"></div>
+      <div class="list-item selected">
+        <div class="list-icon" style="background:var(--dom-calc-bg);color:var(--dom-calc)"><i class="ph ph-calculator"></i></div>
+        <div class="list-content"><div class="list-title">Clearance de Creatinina</div></div>
+        <div class="list-trailing"><i class="ph ph-caret-right"></i></div>
+      </div>
+      <div class="list-divider"></div>
+      <div class="list-item disabled">
+        <div class="list-icon"><i class="ph ph-lock"></i></div>
+        <div class="list-content"><div class="list-title">Gasometria Arterial</div><div class="list-subtitle">Premium bloqueado</div></div>
+        <div class="list-trailing"><i class="ph ph-lock"></i></div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col">
+      <div class="list-item">
+        <div class="list-icon" style="background:var(--dom-urg-bg);color:var(--dom-urg)"><i class="ph ph-siren"></i></div>
+        <div class="list-content"><div class="list-title">Intubacao Orotraqueal</div><div class="list-subtitle">Sequencia rapida · 15 drogas</div></div>
+        <div class="list-trailing"><i class="ph ph-caret-right"></i></div>
+      </div>
+      <div class="list-divider"></div>
+      <div class="list-item">
+        <div class="list-icon" style="background:var(--dom-dil-bg);color:var(--dom-dil)"><i class="ph ph-syringe"></i></div>
+        <div class="list-content"><div class="list-title">Drogas Vasoativas</div><div class="list-subtitle">Noradrenalina, Dobutamina, Vasopressina</div></div>
+        <div class="list-trailing"><span class="tag-status premium">PREMIUM</span></div>
+      </div>
+      <div class="list-divider"></div>
+      <div class="list-item selected">
+        <div class="list-icon" style="background:var(--dom-calc-bg);color:var(--dom-calc)"><i class="ph ph-calculator"></i></div>
+        <div class="list-content"><div class="list-title">Clearance de Creatinina</div></div>
+        <div class="list-trailing"><i class="ph ph-caret-right"></i></div>
+      </div>
+      <div class="list-divider"></div>
+      <div class="list-item disabled">
+        <div class="list-icon"><i class="ph ph-lock"></i></div>
+        <div class="list-content"><div class="list-title">Gasometria Arterial</div><div class="list-subtitle">Premium bloqueado</div></div>
+        <div class="list-trailing"><i class="ph ph-lock"></i></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SEARCH BAR
+     ============================================================ -->
+<section class="ds-section" id="search">
+  <h2>Search Bar</h2>
+  <div class="role">Inline pill · Com input ativo · Filter chips por dominio</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Busca preditiva com autocomplete. Resultados agrupados por dominio clinico com accent de cor. Tolerante a erro (Voce quis dizer: X?). Chips de acesso rapido por dominio.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-4">
+      <div class="search-bar"><i class="ph ph-magnifying-glass"></i><span class="search-placeholder">Buscar calculadora, droga...</span></div>
+      <div class="search-bar" style="border:2px solid var(--border-focus);background:var(--bg-card)"><i class="ph ph-magnifying-glass"></i><input class="search-input" value="Propofol"><i class="ph ph-x" style="cursor:pointer"></i></div>
+      <div class="flex gap-2 flex-wrap">
+        <span class="chip active"><i class="ph ph-siren" style="font-size:14px"></i> Urgencias</span>
+        <span class="chip"><i class="ph ph-syringe" style="font-size:14px"></i> Diluicoes</span>
+        <span class="chip"><i class="ph ph-calculator" style="font-size:14px"></i> Calculadoras</span>
+        <span class="chip"><i class="ph ph-clipboard-text" style="font-size:14px"></i> Protocolos</span>
+        <span class="chip"><i class="ph ph-chart-bar" style="font-size:14px"></i> Escores</span>
+        <span class="chip"><i class="ph ph-arrows-left-right" style="font-size:14px"></i> Conversores</span>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-4">
+      <div class="search-bar"><i class="ph ph-magnifying-glass"></i><span class="search-placeholder">Buscar calculadora, droga...</span></div>
+      <div class="search-bar" style="border:2px solid var(--border-focus);background:var(--bg-card)"><i class="ph ph-magnifying-glass"></i><input class="search-input" value="Propofol"><i class="ph ph-x" style="cursor:pointer"></i></div>
+      <div class="flex gap-2 flex-wrap">
+        <span class="chip active"><i class="ph ph-siren" style="font-size:14px"></i> Urgencias</span>
+        <span class="chip"><i class="ph ph-syringe" style="font-size:14px"></i> Diluicoes</span>
+        <span class="chip"><i class="ph ph-calculator" style="font-size:14px"></i> Calculadoras</span>
+        <span class="chip"><i class="ph ph-clipboard-text" style="font-size:14px"></i> Protocolos</span>
+        <span class="chip"><i class="ph ph-chart-bar" style="font-size:14px"></i> Escores</span>
+        <span class="chip"><i class="ph ph-arrows-left-right" style="font-size:14px"></i> Conversores</span>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TOAST / SNACKBAR
+     ============================================================ -->
+<section class="ds-section" id="toast">
+  <h2>Toast / Snackbar</h2>
+  <div class="role">4 VARIANTES · Feedback efemero · Auto-dismiss · Swipe-to-dismiss · Entrada com spring</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Notificacao temporaria (3-5s). 4 variantes: success, error, info, warning. Aparece no topo, z-index 500. Animacao spring de entrada.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-3">
+      <div class="toast toast-success"><i class="ph ph-check-circle"></i><span class="toast-msg">Favorito adicionado ao Meu Plantao</span><button class="toast-action">Desfazer</button></div>
+      <div class="toast toast-error"><i class="ph ph-warning-circle"></i><span class="toast-msg">Falha ao salvar. Tente novamente.</span><button class="toast-action">Retry</button></div>
+      <div class="toast toast-info"><i class="ph ph-info"></i><span class="toast-msg">Calculo copiado para area de transferencia</span></div>
+      <div class="toast toast-warning"><i class="ph ph-warning"></i><span class="toast-msg">Conexao instavel. Usando dados em cache.</span></div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-3">
+      <div class="toast toast-success"><i class="ph ph-check-circle"></i><span class="toast-msg">Favorito adicionado ao Meu Plantao</span><button class="toast-action">Desfazer</button></div>
+      <div class="toast toast-error"><i class="ph ph-warning-circle"></i><span class="toast-msg">Falha ao salvar. Tente novamente.</span><button class="toast-action">Retry</button></div>
+      <div class="toast toast-info"><i class="ph ph-info"></i><span class="toast-msg">Calculo copiado para area de transferencia</span></div>
+      <div class="toast toast-warning"><i class="ph ph-warning"></i><span class="toast-msg">Conexao instavel. Usando dados em cache.</span></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TOOLTIP
+     ============================================================ -->
+<section class="ds-section" id="tooltip">
+  <h2>Tooltip</h2>
+  <div class="role">CSS-only · 4 posicoes · Hover desktop / Long-press mobile</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">CSS-only com pseudo-elements. 4 posicoes: top (padrao), bottom, left, right. Hover em desktop, long-press em mobile. Z-index 600.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="flex gap-8 items-center justify-center" style="padding:var(--sp-10) 0">
+        <span data-tooltip="Tooltip padrao (top)" style="cursor:help;color:var(--fg-link)"><i class="ph ph-info" style="font-size:24px"></i></span>
+        <span data-tooltip="Tooltip bottom" class="tooltip-bottom" style="cursor:help;color:var(--fg-link)"><i class="ph ph-question" style="font-size:24px"></i></span>
+        <span data-tooltip="FiO2: Fracao inspirada de oxigenio" style="cursor:help"><span class="t-rotulo-campo" style="color:var(--fg-2);text-decoration:underline dotted">FiO2 <i class="ph ph-info" style="font-size:12px"></i></span></span>
+      </div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="flex gap-8 items-center justify-center" style="padding:var(--sp-10) 0">
+        <span data-tooltip="Tooltip padrao (top)" style="cursor:help;color:var(--fg-link)"><i class="ph ph-info" style="font-size:24px"></i></span>
+        <span data-tooltip="Tooltip bottom" class="tooltip-bottom" style="cursor:help;color:var(--fg-link)"><i class="ph ph-question" style="font-size:24px"></i></span>
+        <span data-tooltip="FiO2: Fracao inspirada de oxigenio" style="cursor:help"><span class="t-rotulo-campo" style="color:var(--fg-2);text-decoration:underline dotted">FiO2 <i class="ph ph-info" style="font-size:12px"></i></span></span>
+      </div>
+    </div>
+  </div>
+
+  <h3>Todas as Posicoes</h3>
+  <div class="panel light" style="padding:var(--sp-10)">
+    <div class="flex gap-8 justify-center items-center flex-wrap">
+      <span data-tooltip="Tooltip top" class="btn btn-sm btn-primary">Top (padrao)</span>
+      <span data-tooltip="Tooltip bottom" class="tooltip-bottom btn btn-sm btn-primary">Bottom</span>
+      <span data-tooltip="Tooltip left" class="tooltip-left btn btn-sm btn-primary">Left</span>
+      <span data-tooltip="Tooltip right" class="tooltip-right btn btn-sm btn-primary">Right</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MODAL / DIALOG
+     ============================================================ -->
+<section class="ds-section" id="modal">
+  <h2>Modal / Dialog</h2>
+  <div class="role">3 VARIANTES · Confirmacao, Destrutivo, Informativo · Focus trap · Scrim overlay</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Overlay escuro (50% opacity) + card centralizado. 3 variantes: informativa, confirmacao, destrutiva. Botao 'Agora nao' SEMPRE presente (medico pode estar na urgencia).</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-4">
+      <div style="position:relative;background:var(--bg-overlay);border-radius:var(--r-xl);padding:var(--sp-8);display:flex;align-items:center;justify-content:center;min-height:240px">
+        <div class="modal" style="position:relative;animation:none">
+          <div class="modal-header">Confirmar assinatura</div>
+          <div class="modal-body">Voce sera cobrado R$ 29,90/mes com renovacao automatica. Pode cancelar a qualquer momento.</div>
+          <div class="modal-footer"><button class="btn btn-md btn-outline" style="min-width:auto;flex:1">Cancelar</button><button class="btn btn-md btn-primary" style="min-width:auto;flex:1">Assinar</button></div>
+        </div>
+      </div>
+      <div style="position:relative;background:var(--bg-overlay);border-radius:var(--r-xl);padding:var(--sp-8);display:flex;align-items:center;justify-content:center;min-height:220px">
+        <div class="modal" style="position:relative;animation:none">
+          <div class="modal-header" style="color:var(--danger)">Excluir conta</div>
+          <div class="modal-body">Esta acao e irreversivel. Todos os seus dados, favoritos e historico serao perdidos permanentemente.</div>
+          <div class="modal-footer"><button class="btn btn-md btn-outline" style="min-width:auto;flex:1">Voltar</button><button class="btn btn-md btn-danger" style="min-width:auto;flex:1">Excluir</button></div>
+        </div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-4">
+      <div style="position:relative;background:var(--bg-overlay);border-radius:var(--r-xl);padding:var(--sp-8);display:flex;align-items:center;justify-content:center;min-height:240px">
+        <div class="modal" style="position:relative;animation:none">
+          <div class="modal-header">Confirmar assinatura</div>
+          <div class="modal-body">Voce sera cobrado R$ 29,90/mes com renovacao automatica. Pode cancelar a qualquer momento.</div>
+          <div class="modal-footer"><button class="btn btn-md btn-outline" style="min-width:auto;flex:1">Cancelar</button><button class="btn btn-md btn-primary" style="min-width:auto;flex:1">Assinar</button></div>
+        </div>
+      </div>
+      <div style="position:relative;background:var(--bg-overlay);border-radius:var(--r-xl);padding:var(--sp-8);display:flex;align-items:center;justify-content:center;min-height:220px">
+        <div class="modal" style="position:relative;animation:none">
+          <div class="modal-header" style="color:var(--danger)">Excluir conta</div>
+          <div class="modal-body">Esta acao e irreversivel. Todos os seus dados, favoritos e historico serao perdidos permanentemente.</div>
+          <div class="modal-footer"><button class="btn btn-md btn-outline" style="min-width:auto;flex:1">Voltar</button><button class="btn btn-md btn-danger" style="min-width:auto;flex:1">Excluir</button></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SELECT / DROPDOWN
+     ============================================================ -->
+<section class="ds-section" id="select-section">
+  <h2>Select / Dropdown</h2>
+  <div class="role">Fechado · Aberto · Selecionado · Disabled · Para unidades, vias, drogas</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Dropdown com opcoes. Click abre/fecha. Opcao selecionada com check. Estado disabled com opacidade reduzida.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-4">
+      <div class="flex gap-4 items-start">
+        <div class="input-group"><label class="input-label">Via de administracao</label>
+          <div class="select"><span class="select-value">Selecionar...</span><i class="ph ph-caret-down select-arrow"></i></div>
+        </div>
+        <div class="input-group"><label class="input-label">Unidade</label>
+          <div class="select" style="min-width:120px"><span class="select-value" style="color:var(--btn-primary);font-weight:600">mg/kg</span><i class="ph ph-caret-down select-arrow"></i></div>
+        </div>
+      </div>
+      <div class="input-group" style="max-width:220px"><label class="input-label">Via (aberto)</label>
+        <div class="select open" style="border:2px solid var(--border-focus)"><span class="select-value">Intravenosa</span><i class="ph ph-caret-up select-arrow"></i>
+          <div class="select-options" style="position:absolute;top:100%;left:-2px;right:-2px">
+            <div class="select-option selected">Intravenosa (IV)</div>
+            <div class="select-option">Intramuscular (IM)</div>
+            <div class="select-option">Subcutanea (SC)</div>
+            <div class="select-option">Via oral (VO)</div>
+          </div>
+        </div>
+      </div>
+      <div class="input-group" style="max-width:180px"><label class="input-label disabled">Disabled</label>
+        <div class="select disabled"><span class="select-value">Bloqueado</span><i class="ph ph-caret-down select-arrow"></i></div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-4">
+      <div class="flex gap-4 items-start">
+        <div class="input-group"><label class="input-label">Via de administracao</label>
+          <div class="select"><span class="select-value">Selecionar...</span><i class="ph ph-caret-down select-arrow"></i></div>
+        </div>
+        <div class="input-group"><label class="input-label">Unidade</label>
+          <div class="select" style="min-width:120px"><span class="select-value" style="color:var(--btn-accent);font-weight:600">mg/kg</span><i class="ph ph-caret-down select-arrow"></i></div>
+        </div>
+      </div>
+      <div class="input-group" style="max-width:220px"><label class="input-label">Via (aberto)</label>
+        <div class="select open" style="border:2px solid var(--border-focus)"><span class="select-value">Intravenosa</span><i class="ph ph-caret-up select-arrow"></i>
+          <div class="select-options" style="position:absolute;top:100%;left:-2px;right:-2px">
+            <div class="select-option selected">Intravenosa (IV)</div>
+            <div class="select-option">Intramuscular (IM)</div>
+            <div class="select-option">Subcutanea (SC)</div>
+            <div class="select-option">Via oral (VO)</div>
+          </div>
+        </div>
+      </div>
+      <div class="input-group" style="max-width:180px"><label class="input-label disabled">Disabled</label>
+        <div class="select disabled"><span class="select-value">Bloqueado</span><i class="ph ph-caret-down select-arrow"></i></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     RADIO BUTTON
+     ============================================================ -->
+<section class="ds-section" id="radio-section">
+  <h2>Radio Button</h2>
+  <div class="role">On · Off · Disabled · Grupo vertical · Para selecao unica (Glasgow, via, etc)</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Selecao unica em grupo. Dot teal preenchido quando ativo. Usado em escores clinicos (Glasgow, NIHSS).</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-4">
+      <div class="flex gap-4 items-center">
+        <div class="item"><div class="radio off"></div><span class="lbl">off</span></div>
+        <div class="item"><div class="radio on"></div><span class="lbl">on</span></div>
+        <div class="item"><div class="radio off disabled"></div><span class="lbl">disabled</span></div>
+      </div>
+      <div class="radio-group">
+        <div class="radio-row"><div class="radio on"></div><span class="radio-label">Espontanea (4)</span></div>
+        <div class="radio-row"><div class="radio off"></div><span class="radio-label">A voz (3)</span></div>
+        <div class="radio-row"><div class="radio off"></div><span class="radio-label">A dor (2)</span></div>
+        <div class="radio-row"><div class="radio off"></div><span class="radio-label">Nenhuma (1)</span></div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-4">
+      <div class="flex gap-4 items-center">
+        <div class="item"><div class="radio off"></div><span class="lbl">off</span></div>
+        <div class="item"><div class="radio on"></div><span class="lbl">on</span></div>
+        <div class="item"><div class="radio off disabled"></div><span class="lbl">disabled</span></div>
+      </div>
+      <div class="radio-group">
+        <div class="radio-row"><div class="radio on"></div><span class="radio-label">Espontanea (4)</span></div>
+        <div class="radio-row"><div class="radio off"></div><span class="radio-label">A voz (3)</span></div>
+        <div class="radio-row"><div class="radio off"></div><span class="radio-label">A dor (2)</span></div>
+        <div class="radio-row"><div class="radio off"></div><span class="radio-label">Nenhuma (1)</span></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     STEPPER / NUMBER INPUT
+     ============================================================ -->
+<section class="ds-section" id="stepper-section">
+  <h2>Stepper / Number Input</h2>
+  <div class="role">Medico-especifico · +/- com valor central · Para peso, idade, dose</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Incremento/decremento numerico com botoes +/-. Contexto medico: peso, idade, FiO2. Limites min/max com botao disabled.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-4">
+      <div class="flex gap-4 items-start">
+        <div class="input-group"><label class="input-label">Peso</label>
+          <div class="stepper"><button class="stepper-btn"><i class="ph ph-minus"></i></button><div class="stepper-value">70<span class="stepper-unit">kg</span></div><button class="stepper-btn"><i class="ph ph-plus"></i></button></div>
+        </div>
+        <div class="input-group"><label class="input-label">Idade</label>
+          <div class="stepper"><button class="stepper-btn"><i class="ph ph-minus"></i></button><div class="stepper-value">45<span class="stepper-unit">anos</span></div><button class="stepper-btn"><i class="ph ph-plus"></i></button></div>
+        </div>
+      </div>
+      <div class="input-group"><label class="input-label">FiO2 (limite atingido)</label>
+        <div class="stepper"><button class="stepper-btn disabled"><i class="ph ph-minus"></i></button><div class="stepper-value">21<span class="stepper-unit">%</span></div><button class="stepper-btn"><i class="ph ph-plus"></i></button></div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-4">
+      <div class="flex gap-4 items-start">
+        <div class="input-group"><label class="input-label">Peso</label>
+          <div class="stepper"><button class="stepper-btn"><i class="ph ph-minus"></i></button><div class="stepper-value">70<span class="stepper-unit">kg</span></div><button class="stepper-btn"><i class="ph ph-plus"></i></button></div>
+        </div>
+        <div class="input-group"><label class="input-label">Idade</label>
+          <div class="stepper"><button class="stepper-btn"><i class="ph ph-minus"></i></button><div class="stepper-value">45<span class="stepper-unit">anos</span></div><button class="stepper-btn"><i class="ph ph-plus"></i></button></div>
+        </div>
+      </div>
+      <div class="input-group"><label class="input-label">FiO2 (limite atingido)</label>
+        <div class="stepper"><button class="stepper-btn disabled"><i class="ph ph-minus"></i></button><div class="stepper-value">21<span class="stepper-unit">%</span></div><button class="stepper-btn"><i class="ph ph-plus"></i></button></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     LOADING SKELETON
+     ============================================================ -->
+<section class="ds-section" id="skeleton">
+  <h2>Loading Skeleton</h2>
+  <div class="role">NUNCA spinner · Shimmer 1.5s · Respeita prefers-reduced-motion · Text, Circle, Card</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Loading placeholder animado. Shimmer da esquerda pra direita. 3 patterns: card, list item, texto multi-linha. Respeita prefers-reduced-motion.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-4">
+      <h3 style="margin:0">Card skeleton</h3>
+      <div class="skeleton skeleton-card" style="width:100%"></div>
+      <h3 style="margin:0">List item skeleton</h3>
+      <div class="flex items-center gap-3">
+        <div class="skeleton skeleton-circle" style="width:40px;height:40px;flex-shrink:0"></div>
+        <div class="flex-1 flex flex-col gap-2">
+          <div class="skeleton skeleton-text w-80"></div>
+          <div class="skeleton skeleton-text w-60"></div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="skeleton skeleton-circle" style="width:40px;height:40px;flex-shrink:0"></div>
+        <div class="flex-1 flex flex-col gap-2">
+          <div class="skeleton skeleton-text w-100"></div>
+          <div class="skeleton skeleton-text w-60"></div>
+        </div>
+      </div>
+      <h3 style="margin:0">Text skeleton</h3>
+      <div class="flex flex-col gap-2">
+        <div class="skeleton skeleton-text w-100"></div>
+        <div class="skeleton skeleton-text w-100"></div>
+        <div class="skeleton skeleton-text w-80"></div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-4">
+      <h3 style="margin:0">Card skeleton</h3>
+      <div class="skeleton skeleton-card" style="width:100%"></div>
+      <h3 style="margin:0">List item skeleton</h3>
+      <div class="flex items-center gap-3">
+        <div class="skeleton skeleton-circle" style="width:40px;height:40px;flex-shrink:0"></div>
+        <div class="flex-1 flex flex-col gap-2">
+          <div class="skeleton skeleton-text w-80"></div>
+          <div class="skeleton skeleton-text w-60"></div>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="skeleton skeleton-circle" style="width:40px;height:40px;flex-shrink:0"></div>
+        <div class="flex-1 flex flex-col gap-2">
+          <div class="skeleton skeleton-text w-100"></div>
+          <div class="skeleton skeleton-text w-60"></div>
+        </div>
+      </div>
+      <h3 style="margin:0">Text skeleton</h3>
+      <div class="flex flex-col gap-2">
+        <div class="skeleton skeleton-text w-100"></div>
+        <div class="skeleton skeleton-text w-100"></div>
+        <div class="skeleton skeleton-text w-80"></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     EMPTY STATE
+     ============================================================ -->
+<section class="ds-section" id="empty">
+  <h2>Empty State</h2>
+  <div class="role">4 VARIANTES · Sem favoritos · Sem resultados · Sem conexao · Primeiro uso</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">4 contextos: sem favoritos, sem resultados, sem conexao, boas-vindas. Icone + titulo + descricao + CTA. Sempre oferece acao pro usuario.</p>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-6">
+      <div class="empty-state" style="padding:var(--sp-6)">
+        <i class="ph ph-bookmark-simple empty-icon"></i>
+        <div class="empty-title">Nenhum favorito ainda</div>
+        <div class="empty-desc">Adicione calculadoras e drogas ao seu Meu Plantao para acesso rapido durante o plantao.</div>
+        <button class="btn btn-sm btn-primary">Explorar calculadoras</button>
+      </div>
+      <div class="empty-state" style="padding:var(--sp-6)">
+        <i class="ph ph-magnifying-glass empty-icon"></i>
+        <div class="empty-title">Nenhum resultado</div>
+        <div class="empty-desc">Tente buscar por outro termo ou verifique a ortografia.</div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-6">
+      <div class="empty-state" style="padding:var(--sp-6)">
+        <i class="ph ph-wifi-slash empty-icon"></i>
+        <div class="empty-title">Sem conexao</div>
+        <div class="empty-desc">Verifique sua internet. Voce pode usar calculadoras ja acessadas offline.</div>
+        <button class="btn btn-sm btn-outline">Tentar novamente</button>
+      </div>
+      <div class="empty-state" style="padding:var(--sp-6)">
+        <i class="ph ph-stethoscope empty-icon"></i>
+        <div class="empty-title">Bem-vindo ao CalcMed</div>
+        <div class="empty-desc">Comece montando seu Kit de Plantao com as calculadoras que voce mais usa.</div>
+        <button class="btn btn-sm btn-primary">Montar meu kit</button>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     HERO, AVATAR, BANNER, CARD-FAVORITE, CATEGORY, CARD-RECENT (showcase dos CSS-only)
+     ============================================================ -->
+<section class="ds-section" id="patterns-extra">
+  <h2>Patterns Compostos</h2>
+  <div class="role">Hero dark · Avatar · Notification badge · Banner editorial · Card favorito · Category collapse · Card recent · Sheet header</div>
+
+  <h3>Hero Dark (tela de entrada)</h3>
+  <div class="dual">
+    <div class="panel light" style="padding:0;overflow:hidden;border-radius:var(--r-xl)"><div class="mode-label" style="padding:var(--sp-3) var(--sp-4)">Light (background)</div>
+      <div class="hero-dark" style="min-height:240px">
+        <img src="assets/icone.svg" width="72" height="72" alt="" style="position:relative;z-index:2">
+        <div class="hero-text" style="position:relative;z-index:2">Calculadoras medicas para urgencia e emergencia</div>
+        <div class="dots" style="margin-top:var(--sp-6);position:relative;z-index:2"><div class="active"></div><div class="inactive"></div><div class="inactive"></div></div>
+      </div>
+    </div>
+    <div class="panel dark" style="padding:0;overflow:hidden;border-radius:var(--r-xl)"><div class="mode-label" style="padding:var(--sp-3) var(--sp-4)">Dark (sempre navy)</div>
+      <div class="hero-dark" style="min-height:240px">
+        <img src="assets/icone.svg" width="72" height="72" alt="" style="position:relative;z-index:2">
+        <div class="hero-text" style="position:relative;z-index:2">Calculadoras medicas para urgencia e emergencia</div>
+        <div class="dots" style="margin-top:var(--sp-6);position:relative;z-index:2"><div class="active"></div><div class="inactive"></div><div class="inactive"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Avatar</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="flex gap-4 items-center">
+        <div class="item"><div class="avatar avatar-sm avatar-teal">RF</div><span class="lbl">sm 32</span></div>
+        <div class="item"><div class="avatar avatar-md avatar-teal">RF</div><span class="lbl">md 40</span></div>
+        <div class="item"><div class="avatar avatar-lg avatar-teal">RF</div><span class="lbl">lg 48</span></div>
+        <div class="item"><div class="avatar avatar-md avatar-navy">LF</div><span class="lbl">navy</span></div>
+      </div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="flex gap-4 items-center">
+        <div class="item"><div class="avatar avatar-sm avatar-teal">RF</div><span class="lbl">sm</span></div>
+        <div class="item"><div class="avatar avatar-md avatar-teal">RF</div><span class="lbl">md</span></div>
+        <div class="item"><div class="avatar avatar-lg avatar-teal">RF</div><span class="lbl">lg</span></div>
+        <div class="item"><div class="avatar avatar-md avatar-navy">LF</div><span class="lbl">navy</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Notification Badge</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="flex gap-6 items-center">
+        <div class="item"><div class="notif-wrap"><i class="ph ph-bell" style="font-size:24px;color:var(--fg-3)"></i><div class="notif-dot"></div></div><span class="lbl">com notif</span></div>
+        <div class="item"><i class="ph ph-bell" style="font-size:24px;color:var(--fg-3)"></i><span class="lbl">sem notif</span></div>
+      </div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="flex gap-6 items-center">
+        <div class="item"><div class="notif-wrap"><i class="ph ph-bell" style="font-size:24px;color:var(--fg-3)"></i><div class="notif-dot"></div></div><span class="lbl">com notif</span></div>
+        <div class="item"><i class="ph ph-bell" style="font-size:24px;color:var(--fg-3)"></i><span class="lbl">sem notif</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Sheet Header</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="sheet-header"><span class="back"><i class="ph ph-arrow-left"></i></span><div><div class="title">Cadastrar com e-mail</div><div class="subtitle">Passo 1 de 2</div></div></div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="sheet-header"><span class="back"><i class="ph ph-arrow-left"></i></span><div><div class="title">Cadastrar com e-mail</div><div class="subtitle">Passo 1 de 2</div></div></div>
+    </div>
+  </div>
+
+  <h3>Banner Editorial</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="banner-editorial"><div class="banner-tag">Novidade</div><div class="banner-title">Escala de Glasgow atualizada com criterios 2026</div><div class="banner-desc">Veja as mudancas e atualize sua pratica clinica.</div></div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="banner-editorial"><div class="banner-tag">Novidade</div><div class="banner-title">Escala de Glasgow atualizada com criterios 2026</div><div class="banner-desc">Veja as mudancas e atualize sua pratica clinica.</div></div>
+    </div>
+  </div>
+
+  <h3>Card Favorito (Meu Plantao)</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="flex gap-3">
+        <div class="card-favorite"><span class="fav-abbr" style="color:var(--dom-urg)">IOT</span><span class="fav-name">Intubacao Orotraqueal</span><i class="ph ph-bookmark-simple fav-bookmark saved"></i></div>
+        <div class="card-favorite"><span class="fav-abbr" style="color:var(--dom-dil)">DVA</span><span class="fav-name">Drogas Vasoativas</span><i class="ph ph-bookmark-simple fav-bookmark"></i></div>
+        <div class="card-favorite"><span class="fav-abbr" style="color:var(--dom-calc)">CrCl</span><span class="fav-name">Clearance Creatinina</span><i class="ph ph-bookmark-simple fav-bookmark saved"></i></div>
+      </div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="flex gap-3">
+        <div class="card-favorite"><span class="fav-abbr" style="color:var(--dom-urg)">IOT</span><span class="fav-name">Intubacao Orotraqueal</span><i class="ph ph-bookmark-simple fav-bookmark saved"></i></div>
+        <div class="card-favorite"><span class="fav-abbr" style="color:var(--dom-dil)">DVA</span><span class="fav-name">Drogas Vasoativas</span><i class="ph ph-bookmark-simple fav-bookmark"></i></div>
+        <div class="card-favorite"><span class="fav-abbr" style="color:var(--dom-calc)">CrCl</span><span class="fav-name">Clearance Creatinina</span><i class="ph ph-bookmark-simple fav-bookmark saved"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Category Collapsible</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-3">
+      <div class="category-collapse">
+        <div class="category-header" onclick="this.querySelector('.cat-chevron').classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+          <div class="cat-accent" style="background:var(--dom-urg)"></div>
+          <span class="cat-name">Urgencias</span>
+          <span class="tag-count">15</span>
+          <i class="ph ph-caret-right cat-chevron open"></i>
+        </div>
+        <div class="category-body open">
+          <div class="flex gap-2 flex-wrap">
+            <div class="card-feature-mini"><i class="ph ph-siren mini-icon" style="color:var(--dom-urg)"></i><span class="mini-name">IOT</span></div>
+            <div class="card-feature-mini"><i class="ph ph-heartbeat mini-icon" style="color:var(--dom-urg)"></i><span class="mini-name">PCR</span></div>
+            <div class="card-feature-mini"><i class="ph ph-drop mini-icon" style="color:var(--dom-urg)"></i><span class="mini-name">DHE</span></div>
+            <div class="card-feature-mini"><i class="ph ph-flask mini-icon" style="color:var(--dom-urg)"></i><span class="mini-name">CAD</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="category-collapse">
+        <div class="category-header" onclick="this.querySelector('.cat-chevron').classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+          <div class="cat-accent" style="background:var(--dom-dil)"></div>
+          <span class="cat-name">Diluicoes</span>
+          <span class="tag-count">6</span>
+          <i class="ph ph-caret-right cat-chevron"></i>
+        </div>
+        <div class="category-body">
+          <div class="flex gap-2 flex-wrap">
+            <div class="card-feature-mini"><i class="ph ph-syringe mini-icon" style="color:var(--dom-dil)"></i><span class="mini-name">DVA</span></div>
+            <div class="card-feature-mini"><i class="ph ph-syringe mini-icon" style="color:var(--dom-dil)"></i><span class="mini-name">Sedacao</span></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-3">
+      <div class="category-collapse">
+        <div class="category-header" onclick="this.querySelector('.cat-chevron').classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+          <div class="cat-accent" style="background:var(--dom-urg)"></div>
+          <span class="cat-name">Urgencias</span>
+          <span class="tag-count">15</span>
+          <i class="ph ph-caret-right cat-chevron open"></i>
+        </div>
+        <div class="category-body open">
+          <div class="flex gap-2 flex-wrap">
+            <div class="card-feature-mini"><i class="ph ph-siren mini-icon" style="color:var(--dom-urg)"></i><span class="mini-name">IOT</span></div>
+            <div class="card-feature-mini"><i class="ph ph-heartbeat mini-icon" style="color:var(--dom-urg)"></i><span class="mini-name">PCR</span></div>
+            <div class="card-feature-mini"><i class="ph ph-drop mini-icon" style="color:var(--dom-urg)"></i><span class="mini-name">DHE</span></div>
+            <div class="card-feature-mini"><i class="ph ph-flask mini-icon" style="color:var(--dom-urg)"></i><span class="mini-name">CAD</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="category-collapse">
+        <div class="category-header" onclick="this.querySelector('.cat-chevron').classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+          <div class="cat-accent" style="background:var(--dom-dil)"></div>
+          <span class="cat-name">Diluicoes</span>
+          <span class="tag-count">6</span>
+          <i class="ph ph-caret-right cat-chevron"></i>
+        </div>
+        <div class="category-body">
+          <div class="flex gap-2 flex-wrap">
+            <div class="card-feature-mini"><i class="ph ph-syringe mini-icon" style="color:var(--dom-dil)"></i><span class="mini-name">DVA</span></div>
+            <div class="card-feature-mini"><i class="ph ph-syringe mini-icon" style="color:var(--dom-dil)"></i><span class="mini-name">Sedacao</span></div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <h3>Card Recent (Ultimas utilizadas)</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-2">
+      <div class="card-recent"><i class="ph ph-clock-counter-clockwise recent-icon"></i><span class="recent-name">Clearance de Creatinina</span><span class="recent-time">2 min</span></div>
+      <div class="card-recent"><i class="ph ph-clock-counter-clockwise recent-icon"></i><span class="recent-name">Noradrenalina</span><span class="recent-time">15 min</span></div>
+      <div class="card-recent"><i class="ph ph-clock-counter-clockwise recent-icon"></i><span class="recent-name">Glasgow (adulto)</span><span class="recent-time">1h</span></div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-2">
+      <div class="card-recent"><i class="ph ph-clock-counter-clockwise recent-icon"></i><span class="recent-name">Clearance de Creatinina</span><span class="recent-time">2 min</span></div>
+      <div class="card-recent"><i class="ph ph-clock-counter-clockwise recent-icon"></i><span class="recent-name">Noradrenalina</span><span class="recent-time">15 min</span></div>
+      <div class="card-recent"><i class="ph ph-clock-counter-clockwise recent-icon"></i><span class="recent-name">Glasgow (adulto)</span><span class="recent-time">1h</span></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ACCESSIBILITY
+     ============================================================ -->
+<section class="ds-section" id="accessibility">
+  <h2>Acessibilidade</h2>
+  <div class="role">WCAG AAA · Touch targets · Contraste · Focus ring · Reduced motion · Screen readers</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">WCAG AA minimo, AAA pra texto clinico. Touch targets: 48dp padrao, 52dp emergencia. Contraste 7:1 pra doses. Focus ring 2px teal. Screen reader: roles, aria-labels, aria-selected.</p>
+
+  <h3>Touch Targets</h3>
+  <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font:400 13px 'Inter'">
+      <thead><tr style="background:var(--slate-100)">
+        <th style="padding:var(--sp-3);text-align:left;font-weight:600;color:var(--fg)">Componente</th>
+        <th style="padding:var(--sp-3);text-align:center;font-weight:600;color:var(--fg)">Minimo</th>
+        <th style="padding:var(--sp-3);text-align:center;font-weight:600;color:var(--fg)">CalcMed</th>
+        <th style="padding:var(--sp-3);text-align:center;font-weight:600;color:var(--fg)">Status</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">Botao primario (md)</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">48dp</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">48dp</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓ Pass</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">Botao emergencia (lg)</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">52dp</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">52dp</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓ Pass</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">Input field</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">48dp</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">48dp</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓ Pass</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">Checkbox / Radio</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">48dp</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">24dp (visual) + 48dp (tap)</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓ Pass</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">Nav item (bottom)</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">48dp</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">56dp row</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓ Pass</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">List item</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">48dp</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">56dp min</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓ Pass</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">Stepper +/- botao</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">48dp</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">48dp</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓ Pass</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3)">Botao sm (contexto compacto)</td><td style="text-align:center">44dp</td><td style="text-align:center">36dp</td><td style="text-align:center;color:var(--warning)">⚠ Compacto</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Contraste WCAG</h3>
+  <div style="overflow-x:auto;margin-top:var(--sp-4)">
+    <table style="width:100%;border-collapse:collapse;font:400 13px 'Inter'">
+      <thead><tr style="background:var(--slate-100)">
+        <th style="padding:var(--sp-3);text-align:left;font-weight:600;color:var(--fg)">Combinacao</th>
+        <th style="padding:var(--sp-3);text-align:center;font-weight:600;color:var(--fg)">Ratio</th>
+        <th style="padding:var(--sp-3);text-align:center;font-weight:600;color:var(--fg)">AA</th>
+        <th style="padding:var(--sp-3);text-align:center;font-weight:600;color:var(--fg)">AAA</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">--fg (#0f172a) sobre --bg (#f8fafc)</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">17.4:1</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">--fg-2 (#475569) sobre --bg (#f8fafc)</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">7.1:1</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">--fg-on (#fff) sobre --btn-primary (#007993)</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">4.8:1</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--warning)">~</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">--success (#047857) sobre --success-bg (#ecfdf5)</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">7.3:1</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">--danger (#991b1b) sobre --danger-bg (#fef2f2)</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">9.8:1</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--border-subtle)">Dark: --fg (#f1f5f9) sobre --bg (#0d1b2a)</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle)">14.7:1</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓</td><td style="text-align:center;border-bottom:1px solid var(--border-subtle);color:var(--success)">✓</td></tr>
+        <tr><td style="padding:var(--sp-2) var(--sp-3)">Dark: --fg-on (#fff) sobre --btn-primary (#0096b7)</td><td style="text-align:center">3.4:1</td><td style="text-align:center;color:var(--warning)">~ Large</td><td style="text-align:center;color:var(--danger)">✗</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Focus Ring</h3>
+  <div class="flex flex-col gap-2" style="margin-top:var(--sp-3)">
+    <div class="t-corpo-2" style="color:var(--fg)"><strong>Padrao global:</strong> <code style="font:500 12px 'JetBrains Mono';color:var(--teal-700)">outline: 2px solid var(--border-focus); outline-offset: 2px</code></div>
+    <div class="t-corpo-2" style="color:var(--fg-2)">Aplicado em: .btn, .input-field, .card-selection, .card-feature, .checkbox, .toggle-seg .tab, .sidebar-item, .nav-item, .list-item, .chip, .radio, .stepper-btn, .select, .search-bar</div>
+    <div class="t-corpo-2" style="color:var(--fg-2)">Trigger: <code style="font:500 12px 'JetBrains Mono'">:focus-visible</code> (apenas teclado, nao mouse)</div>
+  </div>
+
+  <h3>Reduced Motion</h3>
+  <div class="flex flex-col gap-2" style="margin-top:var(--sp-3)">
+    <div class="t-corpo-2" style="color:var(--fg)"><code style="font:500 12px 'JetBrains Mono';color:var(--teal-700)">@media (prefers-reduced-motion: reduce)</code></div>
+    <div class="t-corpo-2" style="color:var(--fg-2)">Todas as animacoes e transicoes sao reduzidas a 0.01ms. Skeleton shimmer desligado. Scroll behavior auto.</div>
+  </div>
+</section>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<section class="ds-section" id="nav-section">
+  <h2>Navegacao & Patterns</h2>
+  <div class="role">Bottom Nav · Sidebar · Header · Dots · Progress · Divider · Feedback · Bottom sheet · Mobile frame</div>
+  <p style="font:400 14px/22px 'Inter';color:var(--slate-500);max-width:800px;margin-bottom:var(--sp-6)">Bottom nav 5 itens fixo. Sidebar desktop 260px (expandida) / 64px (colapsada). Header com avatar + toggle adulto/ped + notificacoes.</p>
+
+  <h3>Bottom Nav — 5 tabs mobile</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="bottom-nav" style="border-radius:var(--r-lg);position:relative">
+        <a class="nav-item active"><i class="ph ph-house"></i><span>Inicio</span></a>
+        <a class="nav-item"><i class="ph ph-magnifying-glass"></i><span>Busca</span></a>
+        <a class="nav-item"><i class="ph ph-calendar-blank"></i><span>Escala</span></a>
+        <a class="nav-item"><i class="ph ph-sparkle"></i><span>IA</span></a>
+        <a class="nav-item"><i class="ph ph-list"></i><span>Menu</span></a>
+      </div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="bottom-nav" style="border-radius:var(--r-lg);position:relative">
+        <a class="nav-item active"><i class="ph ph-house"></i><span>Inicio</span></a>
+        <a class="nav-item"><i class="ph ph-magnifying-glass"></i><span>Busca</span></a>
+        <a class="nav-item"><i class="ph ph-calendar-blank"></i><span>Escala</span></a>
+        <a class="nav-item"><i class="ph ph-sparkle"></i><span>IA</span></a>
+        <a class="nav-item"><i class="ph ph-list"></i><span>Menu</span></a>
+      </div>
+    </div>
+  </div>
+
+  <h3>Sidebar — Desktop (expandida + recolhida, tamanho real)</h3>
+
+  <div class="mode-label" style="color:var(--slate-400);margin-bottom:var(--sp-2)">LIGHT — Expandida (320px) + Area de conteudo</div>
+  <div class="flex" style="width:1440px;height:900px;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--slate-200);margin-bottom:var(--sp-6)">
+    <div class="sidebar light" style="height:100%;position:relative;border-radius:0">
+      <div class="sidebar-logo"><img src="assets/icone.svg" width="28" height="28" style="vertical-align:middle;margin-right:8px" alt="">CalcMed</div>
+      <a class="sidebar-item active"><i class="ph ph-house"></i><span>Inicio</span></a>
+      <a class="sidebar-item"><i class="ph ph-magnifying-glass"></i><span>Busca</span></a>
+      <a class="sidebar-item"><i class="ph ph-calendar-blank"></i><span>Escala</span></a>
+      <a class="sidebar-item"><i class="ph ph-sparkle"></i><span>CalcMed IA</span></a>
+      <a class="sidebar-item"><i class="ph ph-list"></i><span>Menu</span></a>
+      <div style="margin-top:auto;padding:var(--sp-4)">
+        <div class="toggle-seg" style="width:100%"><button class="tab active" style="flex:1">Adulto</button><button class="tab" style="flex:1">Ped</button></div>
+      </div>
+    </div>
+    <div class="flex-1 light" style="background:var(--bg);padding:var(--sp-8)">
+      <span class="t-corpo-2" style="color:var(--fg-3)">Bom dia,</span>
+      <span class="t-titulo-pagina" style="color:var(--fg);display:block;margin-top:2px">Dr. Rafael</span>
+      <p class="t-corpo" style="color:var(--fg-2);margin-top:var(--sp-6)">Area de conteudo (sidebar 320px, conteudo preenche o resto)</p>
+    </div>
+  </div>
+
+  <div class="mode-label" style="color:var(--slate-400);margin-bottom:var(--sp-2)">LIGHT — Recolhida (64px)</div>
+  <div class="flex" style="width:1440px;height:900px;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--slate-200);margin-bottom:var(--sp-8)">
+    <div class="sidebar collapsed light" style="height:100%;position:relative;border-radius:0">
+      <div class="sidebar-logo"><img src="assets/icone.svg" width="28" height="28" alt=""></div>
+      <a class="sidebar-item active"><i class="ph ph-house"></i><span>Inicio</span></a>
+      <a class="sidebar-item"><i class="ph ph-magnifying-glass"></i><span>Busca</span></a>
+      <a class="sidebar-item"><i class="ph ph-calendar-blank"></i><span>Escala</span></a>
+      <a class="sidebar-item"><i class="ph ph-sparkle"></i><span>IA</span></a>
+      <a class="sidebar-item"><i class="ph ph-list"></i><span>Menu</span></a>
+    </div>
+    <div class="flex-1 light" style="background:var(--bg);padding:var(--sp-8)">
+      <span class="t-titulo-pagina" style="color:var(--fg)">Conteudo com sidebar recolhida</span>
+      <p class="t-corpo" style="color:var(--fg-2);margin-top:var(--sp-4)">Mais espaco horizontal disponivel.</p>
+    </div>
+  </div>
+
+  <div class="mode-label" style="color:var(--slate-500);margin-bottom:var(--sp-2)">DARK — Expandida (320px) + Area de conteudo</div>
+  <div class="flex dark" style="width:1440px;height:900px;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--navy-700);margin-bottom:var(--sp-6)">
+    <div class="sidebar" style="height:100%;position:relative;border-radius:0">
+      <div class="sidebar-logo"><img src="assets/icone.svg" width="28" height="28" style="vertical-align:middle;margin-right:8px" alt="">CalcMed</div>
+      <a class="sidebar-item active"><i class="ph ph-house"></i><span>Inicio</span></a>
+      <a class="sidebar-item"><i class="ph ph-magnifying-glass"></i><span>Busca</span></a>
+      <a class="sidebar-item"><i class="ph ph-calendar-blank"></i><span>Escala</span></a>
+      <a class="sidebar-item"><i class="ph ph-sparkle"></i><span>CalcMed IA</span></a>
+      <a class="sidebar-item"><i class="ph ph-list"></i><span>Menu</span></a>
+      <div style="margin-top:auto;padding:var(--sp-4)">
+        <div class="toggle-seg" style="width:100%"><button class="tab active" style="flex:1">Adulto</button><button class="tab" style="flex:1">Ped</button></div>
+      </div>
+    </div>
+    <div class="flex-1" style="background:var(--bg);padding:var(--sp-8)">
+      <span class="t-corpo-2" style="color:var(--fg-3)">Bom dia,</span>
+      <span class="t-titulo-pagina" style="color:var(--fg);display:block;margin-top:2px">Dr. Rafael</span>
+      <p class="t-corpo" style="color:var(--fg-2);margin-top:var(--sp-6)">Area de conteudo dark mode</p>
+    </div>
+  </div>
+
+  <div class="mode-label" style="color:var(--slate-500);margin-bottom:var(--sp-2)">DARK — Recolhida (64px)</div>
+  <div class="flex dark" style="width:1440px;height:900px;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--navy-700);margin-bottom:var(--sp-6)">
+    <div class="sidebar collapsed" style="height:100%;position:relative;border-radius:0">
+      <div class="sidebar-logo"><img src="assets/icone.svg" width="28" height="28" alt=""></div>
+      <a class="sidebar-item active"><i class="ph ph-house"></i><span>Inicio</span></a>
+      <a class="sidebar-item"><i class="ph ph-magnifying-glass"></i><span>Busca</span></a>
+      <a class="sidebar-item"><i class="ph ph-calendar-blank"></i><span>Escala</span></a>
+      <a class="sidebar-item"><i class="ph ph-sparkle"></i><span>IA</span></a>
+      <a class="sidebar-item"><i class="ph ph-list"></i><span>Menu</span></a>
+    </div>
+    <div class="flex-1" style="background:var(--bg);padding:var(--sp-8)">
+      <span class="t-titulo-pagina" style="color:var(--fg)">Conteudo com sidebar recolhida</span>
+      <p class="t-corpo" style="color:var(--fg-2);margin-top:var(--sp-4)">Mais espaco horizontal.</p>
+    </div>
+  </div>
+
+  <h3>Mobile Frame — Container 390x844</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div>
+      <div class="mobile-frame" style="height:300px">
+        <div class="screen-content p-6">
+          <span class="t-titulo-pagina" style="color:var(--fg)">Tela exemplo</span>
+          <p class="t-corpo-2 mt-2" style="color:var(--fg-2)">Conteudo aqui dentro. Scroll funciona.</p>
+        </div>
+        <div class="bottom-nav">
+          <a class="nav-item active"><i class="ph ph-house"></i><span>Inicio</span></a>
+          <a class="nav-item"><i class="ph ph-magnifying-glass"></i><span>Busca</span></a>
+          <a class="nav-item"><i class="ph ph-calendar-blank"></i><span>Escala</span></a>
+          <a class="nav-item"><i class="ph ph-sparkle"></i><span>IA</span></a>
+          <a class="nav-item"><i class="ph ph-list"></i><span>Menu</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="panel dark"><div class="mode-label">Dark</div>
+      <div class="mobile-frame" style="height:300px">
+        <div class="screen-content p-6">
+          <span class="t-titulo-pagina" style="color:var(--fg)">Tela exemplo</span>
+          <p class="t-corpo-2 mt-2" style="color:var(--fg-2)">Conteudo aqui dentro. Scroll funciona.</p>
+        </div>
+        <div class="bottom-nav">
+          <a class="nav-item active"><i class="ph ph-house"></i><span>Inicio</span></a>
+          <a class="nav-item"><i class="ph ph-magnifying-glass"></i><span>Busca</span></a>
+          <a class="nav-item"><i class="ph ph-calendar-blank"></i><span>Escala</span></a>
+          <a class="nav-item"><i class="ph ph-sparkle"></i><span>IA</span></a>
+          <a class="nav-item"><i class="ph ph-list"></i><span>Menu</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Outros Patterns</h3>
+  <div class="dual">
+    <div class="panel light"><div class="mode-label">Light</div><div class="flex flex-col gap-4">
+      <div class="nav-header"><span class="back"><i class="ph ph-caret-left"></i></span><span class="title">Clearance de Creatinina</span><span class="tag-domain calc" style="margin-left:auto">Calculadoras</span></div>
+      <div style="background:var(--brand-navy);padding:var(--sp-4);border-radius:var(--r-lg)" class="flex justify-center"><div class="dots"><div class="active"></div><div class="inactive"></div><div class="inactive"></div></div></div>
+      <div class="progress">Passo 1 de 2</div>
+      <div class="divider-ou"><div class="line"></div><span class="text">ou</span><div class="line"></div></div>
+      <div class="feedback-sent"><div class="icon-circle"><i class="ph ph-envelope"></i></div><div class="msg">Enviamos um link para<br><strong>luis@gmail.com</strong></div></div>
+      <div class="bottom-sheet" style="max-width:280px"><div class="handle"></div><div style="color:var(--fg-3);font-size:13px" class="text-center">Bottom sheet</div></div>
+    </div></div>
+    <div class="panel dark"><div class="mode-label">Dark</div><div class="flex flex-col gap-4">
+      <div class="nav-header"><span class="back"><i class="ph ph-caret-left"></i></span><span class="title">Clearance de Creatinina</span><span class="tag-domain calc" style="margin-left:auto">Calculadoras</span></div>
+      <div style="background:var(--navy-900);padding:var(--sp-4);border-radius:var(--r-lg)" class="flex justify-center"><div class="dots"><div class="active"></div><div class="inactive"></div><div class="inactive"></div></div></div>
+      <div class="progress">Passo 1 de 2</div>
+      <div class="divider-ou"><div class="line"></div><span class="text">ou</span><div class="line"></div></div>
+      <div class="feedback-sent"><div class="icon-circle"><i class="ph ph-envelope"></i></div><div class="msg">Enviamos um link para<br><strong>luis@gmail.com</strong></div></div>
+      <div class="bottom-sheet" style="max-width:280px"><div class="handle"></div><div style="color:var(--fg-3);font-size:13px" class="text-center">Bottom sheet</div></div>
+    </div></div>
+  </div>
+</section>
+
+  </div><!-- /.main-content -->
+</div><!-- /.main -->
+
+<!-- ====== JAVASCRIPT ====== -->
+<script>
+// === SIDEBAR NAVIGATION (SPA-like) ===
+const groupMap = {
+  brand:'Fundacoes', colors:'Fundacoes', typography:'Fundacoes', spacing:'Fundacoes',
+  grid:'Fundacoes', elevation:'Fundacoes', motion:'Fundacoes', icons:'Fundacoes',
+  buttons:'Componentes', inputs:'Componentes', tags:'Componentes', cards:'Componentes',
+  alerts:'Componentes', 'list-items':'Componentes',
+  modal:'Overlays', toast:'Overlays', tooltip:'Overlays', 'select-section':'Overlays',
+  'radio-section':'Formularios', 'stepper-section':'Formularios', search:'Formularios',
+  skeleton:'Patterns', empty:'Patterns', 'nav-section':'Patterns',
+  'patterns-extra':'Patterns', accessibility:'Patterns'
+};
+
+const navLinks = document.querySelectorAll('.nav-link');
+const allSections = document.querySelectorAll('.ds-section');
+const breadcrumbEl = document.getElementById('breadcrumb');
+
+function showSection(id) {
+  allSections.forEach(s => s.classList.remove('active'));
+  const target = document.getElementById(id);
+  if (target) target.classList.add('active');
+
+  navLinks.forEach(l => l.classList.remove('active'));
+  const activeLink = document.querySelector(`.nav-link[data-section="${id}"]`);
+  if (activeLink) activeLink.classList.add('active');
+
+  // Update breadcrumb
+  if (breadcrumbEl && target) {
+    const group = groupMap[id] || 'Fundacoes';
+    const name = target.querySelector('h2')?.textContent || id;
+    breadcrumbEl.innerHTML = group + ' > <span>' + name + '</span>';
+  }
+
+  // Scroll main to top
+  document.querySelector('.main').scrollTop = 0;
+}
+
+// Nav link clicks
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    const id = link.dataset.section;
+    showSection(id);
+  });
+});
+
+// Toggle group open/close
+document.querySelectorAll('.nav-group-title').forEach(title => {
+  title.addEventListener('click', () => {
+    title.parentElement.classList.toggle('open');
+  });
+});
+
+// Show first section by default
+showSection('brand');
+
+// === Generate color swatches ===
+const colorScales = {
+  brand: {el:'brand-swatches', vars:[['navy','#002060'],['navy-dk','#081C39'],['navy-dp','#0D1B2A'],['red','#CE0000'],['red-lt','#E80005'],['red-br','#FF3030']], prefix:'brand'},
+  teal: {el:'teal-swatches', steps:['50','100','200','300','400','500','600','700','800','900','950']},
+  navy: {el:'navy-swatches', steps:['50','100','200','300','400','500','600','700','800','900','950']},
+  slate: {el:'slate-swatches', steps:['0','25','50','100','200','300','400','500','600','700','800','900','950']},
+  emerald: {el:'emerald-swatches', steps:['50','100','200','300','400','500','600','700','800','900','950']},
+  red: {el:'red-swatches', steps:['50','100','200','300','400','500','600','700','800','900','950']},
+  amber: {el:'amber-swatches', steps:['50','100','200','300','400','500','600','700','800','900','950']},
+};
+
+for (const [name, cfg] of Object.entries(colorScales)) {
+  const container = document.getElementById(cfg.el);
+  if (!container) continue;
+  if (cfg.vars) {
+    cfg.vars.forEach(([n,hex]) => {
+      container.innerHTML += `<div class="swatch"><div class="color" style="background:${hex}"></div><div class="name">${n}</div><div class="hex">${hex}</div></div>`;
+    });
+  } else {
+    cfg.steps.forEach(step => {
+      const v = `--${name}-${step}`;
+      const hex = getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+      container.innerHTML += `<div class="swatch"><div class="color" style="background:var(${v})"></div><div class="name">${step}</div><div class="hex">${hex}</div></div>`;
+    });
+  }
+}
+
+// === Generate spacing bars ===
+const spacings = [[1,4],[2,8],[3,12],[4,16],[5,20],[6,24],[8,32],[10,40],[12,48],[16,64],[20,80],[24,96]];
+const spC = document.getElementById('sp-container');
+if (spC) spacings.forEach(([n,px]) => {
+  spC.innerHTML += `<div class="sp-row"><span class="tk">sp-${n}</span><span class="val">${px}px</span><div class="bar" style="width:${Math.min(px*3,500)}px"></div></div>`;
+});
+
+// === Generate grid demos ===
+const grids = [
+  {name:'Celular',cols:4,w:140,gap:3,pad:6,label:'<600dp · 4col · 24/16'},
+  {name:'Tablet',cols:8,w:240,gap:3,pad:5,label:'600-839dp · 8col · 24/24'},
+  {name:'Desktop',cols:12,w:360,gap:2,pad:5,label:'≥840dp · 12col · 32/24'},
+];
+const gridC = document.getElementById('grid-container');
+if (gridC) grids.forEach(g => {
+  let cols = '';
+  for(let i=0;i<g.cols;i++) cols += '<div class="col-v"></div>';
+  gridC.innerHTML += `<div class="flex flex-col items-center gap-2"><div class="grid-vis" style="width:${g.w}px;gap:${g.gap}px;padding:${g.pad}px">${cols}</div><div style="font:600 14px Inter;color:var(--slate-700)">${g.name}</div><div style="font:500 11px Inter;color:var(--teal-700)">${g.label}</div></div>`;
+});
+
+// === Generate icons ===
+const iconGroups = {
+  nav: [['inicio','house'],['busca','magnifying-glass'],['escala','calendar-blank'],['ia','sparkle'],['perfil','user-circle'],['voltar','arrow-left'],['fechar','x'],['seta','caret-right']],
+  dom: [['urgencias','siren'],['diluicoes','syringe'],['calculadoras','calculator'],['protocolos','clipboard-text'],['escores','chart-bar'],['conversores','arrows-left-right']],
+  alert: [['info','info'],['sucesso','check-circle'],['critico','warning-octagon'],['atencao','warning'],['rodape','note']],
+  act: [['favoritar','bookmark-simple'],['compartilhar','share-network'],['editar','pencil-simple'],['excluir','trash'],['adicionar','plus'],['copiar','copy'],['salvar','floppy-disk'],['link','arrow-square-out']],
+  form: [['dropdown','caret-down'],['erro','warning-circle'],['ver-senha','eye'],['ocultar','eye-slash'],['ok','check']],
+  sys: [['config','gear'],['notif','bell'],['ajuda','question'],['sair','sign-out'],['escuro','moon'],['claro','sun'],['cartao','credit-card']],
+  prem: [['bloqueado','lock'],['premium','crown'],['tempo','clock']],
+  med: [['batimento','heartbeat'],['socorro','first-aid'],['temp','thermometer-simple'],['frasco','flask'],['gota','drop'],['raio','lightning'],['timer','timer'],['medidor','gauge'],['esteto','stethoscope']],
+};
+
+for (const [group, icons] of Object.entries(iconGroups)) {
+  const lightC = document.getElementById(`icons-${group}-light`);
+  const darkC = document.getElementById(`icons-${group}-dark`);
+  if (!lightC || !darkC) continue;
+  icons.forEach(([name, ph]) => {
+    const html = `<div class="icon-item"><i class="ph ph-${ph}"></i><div class="iname">${name}</div></div>`;
+    lightC.innerHTML += html;
+    darkC.innerHTML += html;
+  });
+}
+
+// === Interatividade: Toggle Segmentado ===
+document.querySelectorAll('.toggle-seg').forEach(seg => {
+  seg.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      seg.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+});
+
+// === Interatividade: Checkbox ===
+document.querySelectorAll('.checkbox').forEach(cb => {
+  cb.addEventListener('click', () => {
+    cb.classList.toggle('on');
+    cb.classList.toggle('off');
+    cb.textContent = cb.classList.contains('on') ? '✓' : '';
+  });
+});
+
+// === Interatividade: Radio ===
+document.querySelectorAll('.radio-row').forEach(row => {
+  row.addEventListener('click', () => {
+    const group = row.closest('.radio-group');
+    if (!group) return;
+    group.querySelectorAll('.radio').forEach(r => { r.classList.remove('on'); r.classList.add('off') });
+    row.querySelector('.radio').classList.remove('off');
+    row.querySelector('.radio').classList.add('on');
+  });
+});
+
+// === Interatividade: Card Selection ===
+document.querySelectorAll('.card-selection').forEach(card => {
+  card.addEventListener('click', () => card.classList.toggle('selected'));
+});
+document.querySelectorAll('.card-feature').forEach(card => {
+  if (!card.classList.contains('locked')) {
+    card.addEventListener('click', () => card.classList.toggle('selected'));
+  }
+});
+
+// === Interatividade: Chip filter ===
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => chip.classList.toggle('active'));
+});
+
+// === Interatividade: Bookmark favorito ===
+document.querySelectorAll('.fav-bookmark').forEach(bm => {
+  bm.addEventListener('click', e => { e.stopPropagation(); bm.classList.toggle('saved') });
+});
+
+// === Interatividade: Password eye toggle ===
+document.querySelectorAll('.eye-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = btn.parentElement.querySelector('input');
+    if (!input) return;
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+    const icon = btn.querySelector('i');
+    icon.className = isPassword ? 'ph ph-eye' : 'ph ph-eye-slash';
+  });
+});
+</script>
+</body>
+</html>
