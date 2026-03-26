@@ -21,7 +21,7 @@ function validate(val: string, range: { min: number; max: number }): string {
   if (!val) return ''
   const n = parseFloat(val)
   if (isNaN(n) || n < range.min || n > range.max) {
-    return `Valor fora do range clínico: ${range.min}–${range.max}`
+    return `Valor fora da faixa clínica: ${range.min}–${range.max}`
   }
   return ''
 }

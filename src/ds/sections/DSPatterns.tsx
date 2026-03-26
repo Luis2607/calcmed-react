@@ -9,12 +9,18 @@ export default function DSPatterns() {
     <div>
       <h2 className="ds-section-title">Patterns</h2>
       <p className="ds-section-desc">
-        Padroes de interacao reutilizaveis: modais, bottom sheets, toasts, skeleton loading, empty states e feedback.
+        Padroes de interacao reutilizaveis que garantem consistencia em todo o app. Inclui modais de confirmacao,
+        bottom sheets para selecao, toasts de feedback, skeleton loading (sem spinners), empty states e tooltips.
+        Em contexto medico, cada padrao foi pensado para nao atrasar decisoes clinicas.
       </p>
 
       {/* Modal */}
       <div className="ds-subsection">
         <h3>Modal / Dialog</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Usado para acoes destrutivas ou confirmacoes criticas (excluir plantao, resetar calculo).
+          Sempre oferece opcao de cancelar. O overlay escurece o fundo para focar a atencao do medico.
+        </p>
         <button className="btn btn-md btn-primary" onClick={() => setShowModal(true)}>
           Abrir Modal Demo
         </button>
@@ -37,8 +43,12 @@ export default function DSPatterns() {
       {/* Bottom Sheet */}
       <div className="ds-subsection">
         <h3>Bottom Sheet</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Painel deslizante de baixo para cima, usado no mobile para selecao de opcoes ou detalhes
+          contextuais. O handle superior indica que pode ser arrastado para fechar.
+        </p>
         <DSPanel>
-          <div style={{ position: 'relative', height: 280, background: 'var(--bg)', borderRadius: 12, overflow: 'hidden' }}>
+          <div className="rounded-lg" style={{ position: 'relative', height: 280, background: 'var(--bg)', overflow: 'hidden' }}>
             <div className="p-4" style={{ opacity: 0.3 }}>
               <div className="t-corpo text-fg mb-2" style={{ fontWeight: 600 }}>Conteudo da tela</div>
               <div className="t-corpo-2 text-fg-2">Informacoes de fundo...</div>
@@ -76,6 +86,11 @@ export default function DSPatterns() {
       {/* Toasts */}
       <div className="ds-subsection">
         <h3>Toast / Snackbar</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Notificacoes temporarias para feedback imediato de acoes. Quatro variantes: sucesso (calculo salvo),
+          erro (falha ao processar), info (atualizacao disponivel) e warning (assinatura expirando).
+          Toasts usam aria-live para leitores de tela.
+        </p>
         <div className="flex flex-wrap mb-4 gap-3">
           <button className="btn btn-sm btn-primary" onClick={() => setShowToast('success')}>Toast Sucesso</button>
           <button className="btn btn-sm btn-danger" onClick={() => setShowToast('error')}>Toast Erro</button>
@@ -106,7 +121,7 @@ export default function DSPatterns() {
             <div className="toast toast-error">
               <i className="ph ph-x-circle" />
               <span className="toast-msg">Erro ao processar.</span>
-              <button className="toast-action">Retry</button>
+              <button className="toast-action">Tentar novamente</button>
             </div>
             <div className="toast toast-info">
               <i className="ph ph-info" />
@@ -123,6 +138,11 @@ export default function DSPatterns() {
       {/* Skeleton Loading */}
       <div className="ds-subsection">
         <h3>Skeleton Loading</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Placeholder animado que simula a estrutura do conteudo enquanto os dados carregam.
+          O CalcMed nunca usa spinners — skeletons reduzem a percepcao de espera e orientam
+          o medico sobre o que vai aparecer na tela.
+        </p>
         <DSPanel>
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-3">
@@ -142,6 +162,10 @@ export default function DSPatterns() {
       {/* Empty State */}
       <div className="ds-subsection">
         <h3>Empty State</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Tela exibida quando uma busca nao retorna resultados ou uma secao esta vazia.
+          Sempre inclui icone, mensagem explicativa e acao sugerida para orientar o proximo passo.
+        </p>
         <DSPanel>
           <div className="empty-state">
             <i className="ph ph-magnifying-glass empty-icon" />
@@ -154,10 +178,14 @@ export default function DSPatterns() {
 
       {/* Feedback Sent */}
       <div className="ds-subsection">
-        <h3>Feedback Sent</h3>
+        <h3>Feedback Enviado</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Confirmacao visual apos o envio de feedback ou formulario. Icone + mensagem de agradecimento
+          para fechar o ciclo da acao do usuario.
+        </p>
         <DSPanel>
           <div className="feedback-sent">
-            <div className="icon-circle flex items-center justify-center" style={{ width: 56, height: 56, borderRadius: '50%', background: 'var(--bg-elevated)' }}>
+            <div className="flex items-center justify-center rounded-full" style={{ width: 56, height: 56, background: 'var(--bg-elevated)' }}>
               <i className="ph ph-paper-plane-tilt" style={{ fontSize: 24, color: 'var(--fg-link)' }} />
             </div>
             <div className="msg">Seu feedback foi enviado com sucesso! Agradecemos a contribuicao.</div>
@@ -168,6 +196,10 @@ export default function DSPatterns() {
       {/* Tooltip */}
       <div className="ds-subsection">
         <h3>Tooltip</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Dica contextual exibida ao passar o mouse (desktop) sobre um elemento. Util para explicar
+          icones ou abreviacoes medicas sem ocupar espaco permanente na interface.
+        </p>
         <DSPanel>
           <div className="flex gap-6 pt-12">
             <button className="btn btn-sm btn-secondary" data-tooltip="Tooltip padrao (top)">Hover aqui</button>
@@ -179,6 +211,10 @@ export default function DSPatterns() {
       {/* List Item States */}
       <div className="ds-subsection">
         <h3>List Item — Estados</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Os tres estados possiveis de um item de lista: padrao (com hover), selecionado (fundo teal-50
+          em light / navy-800 em dark) e desabilitado (opacidade reduzida, sem interacao).
+        </p>
         <DSPanel>
           <div className="flex flex-col gap-1">
             <div className="list-item">
@@ -212,8 +248,12 @@ export default function DSPatterns() {
       {/* Tooltip Positions */}
       <div className="ds-subsection">
         <h3>Tooltip — Posicoes</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          As quatro posicoes disponiveis para tooltips. Use a posicao que nao sobreponha conteudo
+          importante na tela.
+        </p>
         <DSPanel>
-          <div className="flex gap-6 justify-center" style={{ padding: '16px 48px' }}>
+          <div className="flex gap-6 justify-center p-4">
             <button className="btn btn-sm btn-secondary tooltip-left" data-tooltip="Tooltip esquerda">Esquerda</button>
             <button className="btn btn-sm btn-secondary" data-tooltip="Tooltip topo (padrao)">Topo</button>
             <button className="btn btn-sm btn-secondary tooltip-bottom" data-tooltip="Tooltip embaixo">Embaixo</button>
@@ -225,6 +265,10 @@ export default function DSPatterns() {
       {/* Search Group Header */}
       <div className="ds-subsection">
         <h3>Cabecalho de Grupo de Busca</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Agrupa resultados de busca por dominio (Urgencias, Calculadoras, Diluicoes). O accent colorido
+          a esquerda identifica visualmente a categoria, acelerando a localizacao do resultado desejado.
+        </p>
         <DSPanel>
           <div className="flex flex-col gap-2">
             <div className="search-group-header">
@@ -253,7 +297,11 @@ export default function DSPatterns() {
 
       {/* Divider */}
       <div className="ds-subsection">
-        <h3>Dividers</h3>
+        <h3>Divisores</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Separadores visuais para agrupar conteudo. O divisor "ou" e usado em telas de login/cadastro.
+          O divisor simples separa itens de lista.
+        </p>
         <DSPanel>
           <div className="flex flex-col gap-4">
             <div className="divider-ou">

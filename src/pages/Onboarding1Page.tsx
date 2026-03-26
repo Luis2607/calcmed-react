@@ -36,13 +36,21 @@ export default function Onboarding1Page() {
         <div className="flex-1" />
 
         <div className="progress mb-4">Passo 1 de 2</div>
-        <Link
-          to="/onboarding/2"
-          className={`btn btn-lg btn-primary w-full text-center ${!selected ? 'disabled' : ''}`}
-          style={!selected ? { pointerEvents: 'none' } : undefined}
-        >
-          Continuar
-        </Link>
+        {selected ? (
+          <Link
+            to="/onboarding/2"
+            className="btn btn-lg btn-primary w-full text-center"
+          >
+            Continuar
+          </Link>
+        ) : (
+          <button
+            className="btn btn-lg btn-primary w-full text-center disabled"
+            disabled
+          >
+            Continuar
+          </button>
+        )}
       </div>
     </MobileFrame>
   )

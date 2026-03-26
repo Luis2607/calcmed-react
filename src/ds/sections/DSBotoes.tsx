@@ -8,7 +8,7 @@ function ButtonShowcase() {
     <div className="flex flex-col gap-6">
       {/* Primary */}
       <div>
-        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Primary</h4>
+        <div className="ds-demo-label">Primary</div>
         <div className="ds-demo-row">
           <button className="btn btn-lg btn-primary">Primary LG</button>
           <button className="btn btn-md btn-primary">Primary MD</button>
@@ -19,7 +19,7 @@ function ButtonShowcase() {
 
       {/* Ghost / Outline */}
       <div>
-        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Ghost (Outline)</h4>
+        <div className="ds-demo-label">Ghost (Outline)</div>
         <div className="ds-demo-row">
           <button className="btn btn-md btn-ghost">Ghost MD</button>
           <button className="btn btn-sm btn-ghost">Ghost SM</button>
@@ -29,7 +29,7 @@ function ButtonShowcase() {
 
       {/* Secondary */}
       <div>
-        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Secondary</h4>
+        <div className="ds-demo-label">Secondary</div>
         <div className="ds-demo-row">
           <button className="btn btn-md btn-secondary">Secondary</button>
           <button className="btn btn-md btn-secondary disabled">Disabled</button>
@@ -38,7 +38,7 @@ function ButtonShowcase() {
 
       {/* Text / Discrete */}
       <div>
-        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Text & Discrete</h4>
+        <div className="ds-demo-label">Text &amp; Discrete</div>
         <div className="ds-demo-row">
           <button className="btn-text">Text Link</button>
           <button className="btn-discrete">Discrete</button>
@@ -47,7 +47,7 @@ function ButtonShowcase() {
 
       {/* Danger */}
       <div>
-        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Danger</h4>
+        <div className="ds-demo-label">Danger</div>
         <div className="ds-demo-row">
           <button className="btn btn-md btn-danger">Danger</button>
         </div>
@@ -55,7 +55,7 @@ function ButtonShowcase() {
 
       {/* Social */}
       <div>
-        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Social</h4>
+        <div className="ds-demo-label">Social</div>
         <div className="ds-demo-row">
           <button className="btn btn-md btn-google"><span className="icon-google" /> Google</button>
           <button className="btn btn-md btn-apple"><span className="icon-apple" /> Apple</button>
@@ -64,7 +64,7 @@ function ButtonShowcase() {
 
       {/* Icon Only */}
       <div>
-        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Icon Only</h4>
+        <div className="ds-demo-label">Icon Only</div>
         <div className="ds-demo-row">
           <button className="btn btn-icon-only btn-primary"><i className="ph ph-plus" /></button>
           <button className="btn btn-icon-only btn-sm btn-primary"><i className="ph ph-plus" /></button>
@@ -74,7 +74,7 @@ function ButtonShowcase() {
 
       {/* Loading */}
       <div>
-        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Loading</h4>
+        <div className="ds-demo-label">Loading</div>
         <div className="ds-demo-row">
           <button
             className={`btn btn-md btn-primary${loading ? ' btn-loading' : ''}`}
@@ -91,14 +91,24 @@ function ButtonShowcase() {
 export default function DSBotoes() {
   return (
     <div>
-      <h2 className="ds-section-title">Botoes</h2>
+      <h2 className="ds-section-title">Botões</h2>
       <p className="ds-section-desc">
-        7 hierarquias visuais. 3 tamanhos (sm 36px, md 48px, lg 56px). Touch target minimo 48dp.
-        Classe base .btn combinada com variante (.btn-primary, .btn-ghost, etc.) e tamanho (.btn-sm, .btn-md, .btn-lg).
+        Botões são o principal ponto de interação do médico com o app. Em contexto de emergência,
+        cada toque precisa ser certeiro — por isso usamos touch targets de 48dp (ampliados para 52dp
+        em ações críticas). A hierarquia visual guia o olhar: Primary para a ação principal, Ghost
+        para secundária, Text para terciária. São 7 hierarquias visuais em 3 tamanhos (SM 36px, MD 48px,
+        LG 56px). A classe base <code>.btn</code> é combinada com a variante
+        (<code>.btn-primary</code>, <code>.btn-ghost</code>, etc.) e o tamanho
+        (<code>.btn-sm</code>, <code>.btn-md</code>, <code>.btn-lg</code>).
       </p>
 
       <div className="ds-subsection">
         <h3>Todas as Variantes</h3>
+        <p className="ds-subsection-desc">
+          Cada variante tem um papel semântico. Primary chama atenção para a ação principal da tela.
+          Ghost e Outline são usados para ações secundárias. Secondary serve de apoio com menor destaque.
+          Danger é reservado para ações destrutivas ou alertas de segurança. Social aparece apenas no login.
+        </p>
         <DSPanel>
           <ButtonShowcase />
         </DSPanel>
@@ -106,6 +116,11 @@ export default function DSBotoes() {
 
       <div className="ds-subsection">
         <h3>Full Width</h3>
+        <p className="ds-subsection-desc">
+          Botões de largura total são usados em contextos de confirmação (ex: "Calcular dose",
+          "Confirmar assinatura") onde o botão precisa ocupar toda a área disponível para reforçar
+          a ação principal. Aplicam a classe utilitária <code>.w-full</code>.
+        </p>
         <DSPanel>
           <div className="flex flex-col gap-3">
             <button className="btn btn-lg btn-primary w-full">Confirmar</button>
@@ -115,29 +130,66 @@ export default function DSBotoes() {
       </div>
 
       <div className="ds-subsection">
+        <h3>Estados Interativos</h3>
+        <p className="ds-subsection-desc">
+          Todos os botões possuem 5 estados visuais: default, hover (escurece levemente o fundo),
+          focus (anel de foco 2px teal para acessibilidade via teclado), disabled (opacidade 0.38,
+          sem interação) e loading (spinner animado, pointer-events desativado). O estado hover é
+          visível ao passar o cursor; o focus aparece na navegação por teclado.
+        </p>
+        <DSPanel>
+          <div className="flex flex-col gap-4">
+            <div>
+              <div className="ds-demo-label">Default</div>
+              <div className="ds-demo-row">
+                <button className="btn btn-md btn-primary">Default</button>
+              </div>
+            </div>
+            <div>
+              <div className="ds-demo-label">Disabled (classe .disabled)</div>
+              <div className="ds-demo-row">
+                <button className="btn btn-md btn-primary disabled">Disabled</button>
+                <button className="btn btn-md btn-ghost disabled">Disabled</button>
+                <button className="btn btn-md btn-secondary disabled">Disabled</button>
+              </div>
+            </div>
+            <div>
+              <div className="ds-demo-label">Loading (classe .btn-loading)</div>
+              <div className="ds-demo-row">
+                <button className="btn btn-md btn-primary btn-loading">Carregando...</button>
+              </div>
+            </div>
+          </div>
+        </DSPanel>
+      </div>
+
+      <div className="ds-subsection">
         <h3>Classes CSS</h3>
+        <p className="ds-subsection-desc">
+          Referência rápida de todas as classes disponíveis para composição de botões.
+        </p>
         <table className="ds-token-table">
           <thead>
-            <tr><th>Classe</th><th>Descricao</th></tr>
+            <tr><th>Classe</th><th>Descrição</th></tr>
           </thead>
           <tbody>
             {[
-              { cls: '.btn', desc: 'Base: inline-flex, gap 12px, font 600 16px, transitions' },
-              { cls: '.btn-sm', desc: 'Height 36px, radius 8px, padding 0 16px, font 14px' },
-              { cls: '.btn-md', desc: 'Height 48px, radius 12px, padding 0 24px' },
+              { cls: '.btn', desc: 'Base: inline-flex, gap 12px, font 600 16px, transições' },
+              { cls: '.btn-sm', desc: 'Altura 36px, radius 8px, padding 0 16px, font 14px' },
+              { cls: '.btn-md', desc: 'Altura 48px, radius 12px, padding 0 24px' },
               { cls: '.btn-lg', desc: 'Min-height 56px, radius pill, padding 16px 24px' },
-              { cls: '.btn-primary', desc: 'Fundo teal, texto branco' },
-              { cls: '.btn-ghost', desc: 'Outline teal, sem fundo' },
-              { cls: '.btn-outline', desc: 'Outline teal (sinonimo de ghost)' },
-              { cls: '.btn-secondary', desc: 'Fundo elevated, borda' },
-              { cls: '.btn-text', desc: 'Sem fundo/borda, cor link' },
-              { cls: '.btn-discrete', desc: 'Sem fundo/borda, cor fg-3' },
-              { cls: '.btn-danger', desc: 'Fundo vermelho' },
-              { cls: '.btn-google', desc: 'Fundo card, borda, icone Google' },
-              { cls: '.btn-apple', desc: 'Fundo preto, icone Apple' },
-              { cls: '.btn-icon-only', desc: 'Circular 48x48, sem padding' },
+              { cls: '.btn-primary', desc: 'Fundo teal, texto branco — ação principal' },
+              { cls: '.btn-ghost', desc: 'Outline teal, sem fundo — ação secundária' },
+              { cls: '.btn-outline', desc: 'Outline teal (sinônimo de ghost)' },
+              { cls: '.btn-secondary', desc: 'Fundo elevated, borda — apoio visual' },
+              { cls: '.btn-text', desc: 'Sem fundo/borda, cor link — ação terciária' },
+              { cls: '.btn-discrete', desc: 'Sem fundo/borda, cor fg-3 — ação discreta' },
+              { cls: '.btn-danger', desc: 'Fundo vermelho — ações destrutivas ou alertas' },
+              { cls: '.btn-google', desc: 'Fundo card, borda, ícone Google — login social' },
+              { cls: '.btn-apple', desc: 'Fundo preto, ícone Apple — login social' },
+              { cls: '.btn-icon-only', desc: 'Circular 48x48, sem padding — apenas ícone' },
               { cls: '.btn-loading', desc: 'Spinner animado, pointer-events none' },
-              { cls: '.disabled', desc: 'Fundo disabled, cor disabled' },
+              { cls: '.disabled', desc: 'Fundo disabled, cor disabled, opacidade 0.38' },
               { cls: '.w-full', desc: 'Largura 100%' },
             ].map(r => (
               <tr key={r.cls}>

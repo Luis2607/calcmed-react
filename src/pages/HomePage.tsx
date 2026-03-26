@@ -29,7 +29,7 @@ export default function HomePage() {
       <div className="screen-content flex-1 overflow-y-auto p-5 pb-8">
         <BannerEditorial
           tag="Novidade"
-          title="Cetoacidose Diabética atualizada — Novo protocolo 2026"
+          title="Cetoacidose Diabética atualizada - Novo protocolo 2026"
           description="Veja as mudanças e atualize sua prática clínica."
         />
 

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import MobileFrame from '../components/layout/MobileFrame'
 import BottomNav from '../components/layout/BottomNav'
 import UserCard from '../components/cards/UserCard'
@@ -51,12 +50,13 @@ export default function MenuPage() {
           />
         </MenuGroup>
 
-        <div className="t-texto-badge text-fg-3 mb-3 uppercase tracking-wide">Extras</div>
-        <MenuHeroCard
-          icon="brain"
-          title="Quiz CalcMed"
-          subtitle="Teste seus conhecimentos clínicos"
-        />
+        <MenuGroup label="Extras">
+          <MenuHeroCard
+            icon="brain"
+            title="Quiz CalcMed"
+            subtitle="Teste seus conhecimentos clínicos"
+          />
+        </MenuGroup>
 
         <MenuGroup label="Configurações">
           <ListItem
@@ -79,10 +79,13 @@ export default function MenuPage() {
             title="Sobre"
             trailing={<CaretRight size={16} />}
           />
-          <Link to="/" className="list-item">
-            <div className="list-icon text-danger"><SignOut size={20} /></div>
-            <div className="list-content"><div className="list-title text-danger">Sair</div></div>
-          </Link>
+          <ListItem
+            icon={<SignOut size={20} />}
+            iconClass="text-danger"
+            title="Sair"
+            href="/"
+            className="text-danger"
+          />
         </MenuGroup>
       </div>
 

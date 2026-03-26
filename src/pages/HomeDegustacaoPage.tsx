@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import MobileFrame from '../components/layout/MobileFrame'
 import HomeHeader from '../components/layout/HomeHeader'
 import SubheaderBar from '../components/layout/SubheaderBar'
@@ -8,7 +9,9 @@ import CardFeature from '../components/cards/CardFeature'
 import CardRecent from '../components/cards/CardRecent'
 import CategoryCollapse from '../components/cards/CategoryCollapse'
 import SectionHeader from '../components/ui/SectionHeader'
+import AlertCard from '../components/ui/AlertCard'
 import { favorites, recents, categories } from '../data/homeData'
+
 export default function HomeDegustacaoPage() {
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set(['IOT', 'DVA', 'CrCl', 'VM']))
 
@@ -26,9 +29,15 @@ export default function HomeDegustacaoPage() {
       <SubheaderBar tabs={['Adulto', 'Ped']} />
 
       <div className="screen-content flex-1 overflow-y-auto p-5 pb-8">
+        {/* Trial banner */}
+        <AlertCard level="warning" icon="warning" title="Modo degustação" className="mb-4">
+          Você tem <strong>3 usos gratuitos</strong> restantes em funcionalidades premium.{' '}
+          <Link to="/planos" className="btn-text">Assinar agora</Link>
+        </AlertCard>
+
         <BannerEditorial
           tag="Novidade"
-          title="Cetoacidose Diabética atualizada — Novo protocolo 2026"
+          title="Cetoacidose Diabética atualizada - Novo protocolo 2026"
           description="Veja as mudanças e atualize sua prática clínica."
         />
 

@@ -9,10 +9,10 @@ const primitiveScales: { title: string; prefix: string; steps: string[] }[] = [
   { title: 'Emerald (Success)', prefix: 'emerald', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
   { title: 'Red (Critical)', prefix: 'red', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
   { title: 'Amber (Warning)', prefix: 'amber', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
-  { title: 'Blue (Diluicoes)', prefix: 'blue', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
+  { title: 'Blue (Diluições)', prefix: 'blue', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
   { title: 'Purple (Protocolos)', prefix: 'purple', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
   { title: 'Indigo (Conversores)', prefix: 'indigo', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
-  { title: 'Rose (Urgencias)', prefix: 'rose', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
+  { title: 'Rose (Urgências)', prefix: 'rose', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
   { title: 'Orange (Calculadoras)', prefix: 'orange', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
   { title: 'Cyan (Escores)', prefix: 'cyan', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
 ]
@@ -29,8 +29,8 @@ const semanticInteractive = ['btn-primary', 'btn-primary-hover', 'btn-primary-ac
 const semanticFeedback = ['success', 'success-bg', 'success-border', 'danger', 'danger-bg', 'danger-border', 'warning', 'warning-bg', 'warning-border']
 
 const domains = [
-  { name: 'Urgencias', prefix: 'dom-urg', keys: ['dom-urg', 'dom-urg-bg', 'dom-urg-text'] },
-  { name: 'Diluicoes', prefix: 'dom-dil', keys: ['dom-dil', 'dom-dil-bg', 'dom-dil-text'] },
+  { name: 'Urgências', prefix: 'dom-urg', keys: ['dom-urg', 'dom-urg-bg', 'dom-urg-text'] },
+  { name: 'Diluições', prefix: 'dom-dil', keys: ['dom-dil', 'dom-dil-bg', 'dom-dil-text'] },
   { name: 'Calculadoras', prefix: 'dom-calc', keys: ['dom-calc', 'dom-calc-bg', 'dom-calc-text'] },
   { name: 'Protocolos', prefix: 'dom-prot', keys: ['dom-prot', 'dom-prot-bg', 'dom-prot-text'] },
   { name: 'Escores', prefix: 'dom-esc', keys: ['dom-esc', 'dom-esc-bg', 'dom-esc-text'] },
@@ -60,9 +60,7 @@ function SemanticRow({ tokens, label, rootEl }: { tokens: string[]; label: strin
   const swatches = tokens.map(t => ({ name: `--${t}`, value: getVar(t, rootEl) }))
   return (
     <div className="mb-4">
-      <div className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-        {label}
-      </div>
+      <div className="t-texto-badge text-fg-3 mb-2">{label}</div>
       <SwatchGrid swatches={swatches} />
     </div>
   )
@@ -93,13 +91,19 @@ export default function DSCores() {
     <div>
       <h2 className="ds-section-title">Cores</h2>
       <p className="ds-section-desc">
-        152 primitivos organizados em 12 escalas. 50 semanticos por modo (Light/Dark).
-        Dominios NUNCA usam cores de feedback. Cada escala vai de 50 (mais claro) a 950 (mais escuro).
+        Sistema de cores com 152 primitivos organizados em 12 escalas cromáticas, mais 50 tokens
+        semânticos por modo (Light/Dark). Cada escala vai de 50 (mais claro) a 950 (mais escuro).
+        No contexto médico, a precisão cromática é essencial: vermelho para alertas críticos,
+        âmbar para avisos e verde para confirmações de dose segura.
       </p>
 
       {/* Brand */}
       <div className="ds-subsection">
         <h3>Brand</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          As 6 cores institucionais do CalcMed. Navy transmite confiança clínica,
+          e vermelho identifica a marca e situações de urgência.
+        </p>
         <SwatchGrid swatches={brandSwatches} />
       </div>
 
@@ -113,14 +117,18 @@ export default function DSCores() {
 
       {/* Semantic Tokens — Light/Dark */}
       <div className="ds-subsection">
-        <h3>Tokens Semanticos</h3>
+        <h3>Tokens Semânticos</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Tokens semânticos mapeiam intenção (superfície, texto, borda, feedback) em vez de cor literal.
+          Isso permite a troca automática entre Light e Dark sem alterar nenhum componente.
+        </p>
         <div className="ds-dual">
           <div className="ds-panel light" ref={lightRef}>
             <div className="ds-mode-label">Light</div>
             <div className="light">
               {lightRef.current && (
                 <>
-                  <SemanticRow tokens={semanticSurfaces} label="Superficies" rootEl={lightRef.current} />
+                  <SemanticRow tokens={semanticSurfaces} label="Superfícies" rootEl={lightRef.current} />
                   <SemanticRow tokens={semanticText} label="Texto" rootEl={lightRef.current} />
                   <SemanticRow tokens={semanticBorders} label="Bordas" rootEl={lightRef.current} />
                   <SemanticRow tokens={semanticInteractive} label="Interativos" rootEl={lightRef.current} />
@@ -134,7 +142,7 @@ export default function DSCores() {
             <div className="dark">
               {darkRef.current && (
                 <>
-                  <SemanticRow tokens={semanticSurfaces} label="Superficies" rootEl={darkRef.current} />
+                  <SemanticRow tokens={semanticSurfaces} label="Superfícies" rootEl={darkRef.current} />
                   <SemanticRow tokens={semanticText} label="Texto" rootEl={darkRef.current} />
                   <SemanticRow tokens={semanticBorders} label="Bordas" rootEl={darkRef.current} />
                   <SemanticRow tokens={semanticInteractive} label="Interativos" rootEl={darkRef.current} />
@@ -148,9 +156,11 @@ export default function DSCores() {
 
       {/* Domain Colors */}
       <div className="ds-subsection">
-        <h3>Cores de Dominio</h3>
+        <h3>Cores de Domínio</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Cada dominio clinico possui cor propria, com variantes bg e text. Nunca misturar com cores de feedback.
+          Cada domínio clínico possui cor própria com variantes de fundo (bg) e texto (text).
+          Essas cores identificam visualmente a área do app em que o profissional está.
+          Nunca misture cores de domínio com cores de feedback para evitar ambiguidade clínica.
         </p>
         <div className="ds-dual">
           <div className="ds-panel light">
@@ -158,7 +168,7 @@ export default function DSCores() {
             <div className="light">
               {domains.map(d => (
                 <div key={d.name} className="mb-3">
-                  <div className="t-legenda text-fg-2 mb-1" style={{ fontWeight: 600 }}>{d.name}</div>
+                  <div className="t-texto-badge text-fg-2 mb-1">{d.name}</div>
                   <div className="ds-color-grid">
                     {d.keys.map(k => (
                       <div className="ds-swatch" key={k}>
@@ -176,7 +186,7 @@ export default function DSCores() {
             <div className="dark">
               {domains.map(d => (
                 <div key={d.name} className="mb-3">
-                  <div className="t-legenda text-fg-2 mb-1" style={{ fontWeight: 600 }}>{d.name}</div>
+                  <div className="t-texto-badge text-fg-2 mb-1">{d.name}</div>
                   <div className="ds-color-grid">
                     {d.keys.map(k => (
                       <div className="ds-swatch" key={k}>

@@ -27,7 +27,7 @@ export default function NotificacoesPage() {
         />
         <NotifItem
           icon="bell-ringing"
-          title="CalcMed atualizado — Confira as novidades"
+          title="CalcMed atualizado - Confira as novidades"
           meta="há 1 semana"
         />
         <NotifItem

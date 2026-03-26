@@ -33,7 +33,7 @@ export default function RecuperarPage() {
           <div className="icon-circle icon-circle-teal"><Envelope size={24} /></div>
           <div className="msg">Enviamos um link de recuperação para<br /><strong>luis@gmail.com</strong><br />Verifique sua caixa de entrada.</div>
         </div>
-        <Link to="/" className="btn btn-lg btn-primary w-full text-center mt-auto">Voltar para o login</Link>
+        <Link to="/app" className="btn btn-lg btn-primary w-full text-center mt-auto">Voltar para o login</Link>
       </div>
     </MobileFrame>
   )

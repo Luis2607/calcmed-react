@@ -27,7 +27,7 @@ export default function CalculadoraResultadoPage() {
         <AlertCard level="result" className="mb-4">
           <div className="alert-content text-center">
             <div className="result-value">72,5<span className="result-unit">mL/min</span></div>
-            <div className="result-badge mt-2">Estágio 2 — Redução leve</div>
+            <div className="result-badge mt-2">Estágio 2 - Redução leve</div>
           </div>
         </AlertCard>
 

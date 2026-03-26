@@ -13,36 +13,36 @@ interface NavGroup {
 
 const groups: NavGroup[] = [
   {
-    title: 'Fundacoes',
+    title: 'Funda\u00e7\u00f5es',
     items: [
       { label: 'Cores', path: 'cores' },
       { label: 'Tipografia', path: 'tipografia' },
-      { label: 'Espacamento', path: 'espacamento' },
+      { label: 'Espa\u00e7amento', path: 'espacamento' },
       { label: 'Grid', path: 'grid' },
-      { label: 'Elevacao', path: 'elevacao' },
+      { label: 'Eleva\u00e7\u00e3o', path: 'elevacao' },
       { label: 'Motion', path: 'motion' },
-      { label: 'Icones', path: 'icones' },
+      { label: '\u00cdcones', path: 'icones' },
     ],
   },
   {
     title: 'Componentes',
     items: [
-      { label: 'Botoes', path: 'botoes' },
+      { label: 'Bot\u00f5es', path: 'botoes' },
       { label: 'Inputs', path: 'inputs' },
       { label: 'Tags & Chips', path: 'tags' },
       { label: 'Cards', path: 'cards' },
       { label: 'Alertas', path: 'alertas' },
       { label: 'Chat / IA', path: 'chat' },
-      { label: 'Calendario', path: 'calendario' },
+      { label: 'Calend\u00e1rio', path: 'calendario' },
       { label: 'Categorias', path: 'categorias' },
       { label: 'Menu e Perfil', path: 'menu-perfil' },
       { label: 'Premium e Checkout', path: 'premium' },
     ],
   },
   {
-    title: 'Padroes',
+    title: 'Padr\u00f5es',
     items: [
-      { label: 'Navegacao', path: 'navegacao' },
+      { label: 'Navega\u00e7\u00e3o', path: 'navegacao' },
       { label: 'Patterns', path: 'patterns' },
       { label: 'Acessibilidade', path: 'acessibilidade' },
     ],
@@ -56,9 +56,9 @@ interface Props {
 
 export default function DSSidebar({ isOpen, onClose }: Props) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({
-    Fundacoes: true,
+    'Funda\u00e7\u00f5es': true,
     Componentes: true,
-    Padroes: true,
+    'Padr\u00f5es': true,
   })
 
   const toggle = (title: string) => {

@@ -39,7 +39,7 @@ export default function IAChatPage() {
         </ChatBubble>
 
         <ChatBubble>
-          <strong>Noradrenalina — Dose de ataque</strong><br /><br />
+          <strong>Noradrenalina - Dose de ataque</strong><br /><br />
           Iniciar com <strong>0,05 a 0,1 mcg/kg/min</strong> e titular conforme PAM alvo (&#8805;65 mmHg).<br /><br />
           <strong>Diluição padrão:</strong> 4 ampolas (16mg) + SF 234mL = 64 mcg/mL<br /><br />
           <em className="t-legenda text-fg-3">Fonte: Surviving Sepsis Campaign 2021</em>

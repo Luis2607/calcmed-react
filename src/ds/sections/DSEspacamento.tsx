@@ -26,13 +26,20 @@ const radiusTokens = [
 export default function DSEspacamento() {
   return (
     <div>
-      <h2 className="ds-section-title">Espacamento</h2>
+      <h2 className="ds-section-title">Espaçamento</h2>
       <p className="ds-section-desc">
-        Base 4px. Todos os valores sao multiplos de 4. 12 tokens de espacamento cobrindo de 4px a 96px.
+        Sistema de espaçamento com base de 4px. Todos os valores são múltiplos de 4, criando
+        um ritmo visual consistente em toda a interface. Os 12 tokens cobrem de 4px (micro-espaçamento
+        entre ícone e texto) até 96px (separação entre seções). Em telas médicas, espaçamento
+        adequado reduz erros de leitura e facilita a identificação rápida de informações críticas.
       </p>
 
       <div className="ds-subsection">
-        <h3>Escala de Espacamento</h3>
+        <h3>Escala de Espaçamento</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Use sempre os tokens (--sp-1 a --sp-24) em vez de valores fixos em pixels.
+          Isso permite ajustes globais de densidade sem alterar cada componente individualmente.
+        </p>
         {spacingTokens.map(s => (
           <div className="ds-spacing-bar" key={s.name}>
             <span className="label">--{s.name}</span>
@@ -44,6 +51,10 @@ export default function DSEspacamento() {
 
       <div className="ds-subsection">
         <h3>Border Radius</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          5 tokens de arredondamento, de sutil (4px para badges) até pill (100px para botões
+          de ação primária). O radius padrão para cards é --r-xl (16px), e para inputs é --r-lg (12px).
+        </p>
         <DSPanel title="Tokens de radius">
           <div className="flex gap-6 flex-wrap">
             {radiusTokens.map(r => (
@@ -58,8 +69,8 @@ export default function DSEspacamento() {
                   }}
                   className="mb-2"
                 />
-                <div className="t-legenda text-fg-2" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'" }}>--{r.name}</div>
-                <div className="t-texto-badge text-fg-3" style={{ fontFamily: "'JetBrains Mono'", fontWeight: 400 }}>{r.value}</div>
+                <div className="t-legenda text-fg-2 mb-1" style={{ fontFamily: "'JetBrains Mono'" }}>--{r.name}</div>
+                <div className="t-legenda text-fg-3" style={{ fontFamily: "'JetBrains Mono'" }}>{r.value}</div>
               </div>
             ))}
           </div>
@@ -67,18 +78,22 @@ export default function DSEspacamento() {
       </div>
 
       <div className="ds-subsection">
-        <h3>Classes Utilitarias</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }} className="gap-2">
+        <h3>Classes Utilitárias</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Classes de conveniência para aplicar espaçamento rapidamente. Todas consomem os tokens
+          CSS, mantendo a consistência do sistema.
+        </p>
+        <div className="ds-stat-grid">
           {[
-            { cls: '.p-1 a .p-8', desc: 'Padding' },
+            { cls: '.p-1 a .p-8', desc: 'Padding (todos os lados)' },
             { cls: '.px-4, .px-6, .px-8', desc: 'Padding horizontal' },
             { cls: '.py-2 a .py-6', desc: 'Padding vertical' },
             { cls: '.mt-1 a .mt-8', desc: 'Margin top' },
             { cls: '.mb-1 a .mb-6', desc: 'Margin bottom' },
             { cls: '.gap-1 a .gap-8', desc: 'Flex/Grid gap' },
           ].map(u => (
-            <div key={u.cls} style={{ borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg-surface)' }} className="p-3">
-              <div className="t-legenda mb-1" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'", color: 'var(--btn-primary)' }}>{u.cls}</div>
+            <div key={u.cls} className="ds-bp-card">
+              <div className="ds-token mb-1">{u.cls}</div>
               <div className="t-legenda text-fg-3">{u.desc}</div>
             </div>
           ))}

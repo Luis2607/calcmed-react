@@ -1,11 +1,11 @@
 import DSPanel from '../DSPanel'
 
-function CardFeatureDemo({ state, label }: { state: string; label: string }) {
+function CardFeatureDemo({ state, label, description }: { state: string; label: string; description: string }) {
   const stateClass = state === 'locked' ? 'locked' : state === 'trial' ? 'trial' : ''
   return (
     <div className="text-center" style={{ width: 140 }}>
       <div className={`card-feature ${stateClass} mb-2`}>
-        {state === 'premium' && (
+        {state === 'locked' && (
           <span className="tag-status premium" style={{ position: 'absolute', top: 8, left: 8 }}>PREMIUM</span>
         )}
         {state === 'trial' && (
@@ -17,7 +17,8 @@ function CardFeatureDemo({ state, label }: { state: string; label: string }) {
         <div className="feat-name">CrCl Cockcroft</div>
         <button className="feat-bookmark"><i className="ph ph-bookmark-simple" /></button>
       </div>
-      <span className="t-texto-badge text-fg-3" style={{ fontWeight: 500 }}>{label}</span>
+      <span className="t-texto-badge text-fg-2" style={{ fontWeight: 600 }}>{label}</span>
+      <div className="t-legenda text-fg-3 mt-1">{description}</div>
     </div>
   )
 }
@@ -27,31 +28,61 @@ export default function DSCards() {
     <div>
       <h2 className="ds-section-title">Cards</h2>
       <p className="ds-section-desc">
-        4 estados de card. Quanto mais paga, mais limpa a interface.
-        Free = sem restricao visual. Premium = overlay + lock. Trial = borda dashed. Assinante = limpo.
+        Cards são os containers visuais que apresentam funcionalidades, favoritos, histórico e planos
+        ao médico. No CalcMed, a regra de ouro é: quanto mais o usuário paga, mais limpa fica a
+        interface. Isso se traduz em 4 estados distintos que comunicam visualmente o nível de acesso,
+        sem necessidade de leitura. O médico identifica instantaneamente o que pode usar, o que está
+        bloqueado e o que está em período de teste.
       </p>
 
       {/* Card Feature - 4 states */}
       <div className="ds-subsection">
-        <h3>Card Feature — 4 Estados</h3>
+        <h3>Card Feature — 4 Estados de Acesso</h3>
+        <p className="ds-subsection-desc">
+          O card de funcionalidade é o componente mais presente no app. Seus 4 estados refletem a
+          estratégia de monetização: Free (sem restrição visual, acesso completo), Premium Bloqueado
+          (overlay escuro + ícone de cadeado + tag "PREMIUM", indica conteúdo pago), Degustação
+          (borda tracejada + tag "TRIAL", usuário está experimentando por tempo limitado) e Assinante
+          (visual limpo, sem tags nem overlays — a melhor experiência).
+        </p>
         <DSPanel>
           <div className="ds-demo-row" style={{ alignItems: 'flex-start' }}>
-            <CardFeatureDemo state="free" label="Gratuito" />
-            <CardFeatureDemo state="locked" label="Premium Bloqueado" />
-            <CardFeatureDemo state="trial" label="Degustacao" />
-            <CardFeatureDemo state="subscriber" label="Assinante" />
+            <CardFeatureDemo
+              state="free"
+              label="Gratuito"
+              description="Sem restrição visual. Acesso livre a todos."
+            />
+            <CardFeatureDemo
+              state="locked"
+              label="Premium Bloqueado"
+              description="Overlay escuro + cadeado. Requer assinatura."
+            />
+            <CardFeatureDemo
+              state="trial"
+              label="Degustação"
+              description="Borda tracejada. Acesso temporário limitado."
+            />
+            <CardFeatureDemo
+              state="subscriber"
+              label="Assinante"
+              description="Interface limpa. Melhor experiência possível."
+            />
           </div>
         </DSPanel>
       </div>
 
       {/* Card Selection */}
       <div className="ds-subsection">
-        <h3>Card Selection (Onboarding)</h3>
+        <h3>Card de Seleção (Onboarding)</h3>
+        <p className="ds-subsection-desc">
+          Usado durante o onboarding para o médico escolher sua especialidade. O card selecionado
+          recebe borda 2px teal. Altura mínima de 64px para touch target adequado.
+        </p>
         <DSPanel>
           <div className="flex flex-col gap-3">
             <div className="card-selection selected">
               <div className="icon-circle"><i className="ph ph-syringe" /></div>
-              <span className="card-text">Emergencia</span>
+              <span className="card-text">Emergência</span>
             </div>
             <div className="card-selection">
               <div className="icon-circle"><i className="ph ph-heartbeat" /></div>
@@ -59,7 +90,7 @@ export default function DSCards() {
             </div>
             <div className="card-selection">
               <div className="icon-circle"><i className="ph ph-first-aid" /></div>
-              <span className="card-text">Clinica Medica</span>
+              <span className="card-text">Clínica Médica</span>
             </div>
           </div>
         </DSPanel>
@@ -67,7 +98,11 @@ export default function DSCards() {
 
       {/* Card Recent */}
       <div className="ds-subsection">
-        <h3>Card Recent</h3>
+        <h3>Card de Recentes</h3>
+        <p className="ds-subsection-desc">
+          Exibe as últimas ferramentas acessadas com ícone de relógio, nome e tempo decorrido.
+          Permite ao médico retomar rapidamente um cálculo recente durante o plantão.
+        </p>
         <DSPanel>
           <div className="flex flex-col gap-2">
             <div className="card-recent">
@@ -86,12 +121,17 @@ export default function DSCards() {
 
       {/* Card Favorite */}
       <div className="ds-subsection">
-        <h3>Card Favorite (Meu Plantao)</h3>
+        <h3>Card Favorito (Meu Plantão)</h3>
+        <p className="ds-subsection-desc">
+          Cards verticais compactos para a seção "Meu Plantão" na Home. O médico marca seus
+          cálculos e diluições mais usados com o bookmark. A abreviação usa a cor do domínio.
+          O ícone preenchido (ph-fill) indica item salvo como favorito.
+        </p>
         <DSPanel>
           <div className="flex gap-3">
             <div className="card-favorite" style={{ width: 140 }}>
               <span className="fav-abbr" style={{ color: 'var(--dom-urg)' }}>IOT</span>
-              <span className="fav-name">Seq. Rapida Intubacao</span>
+              <span className="fav-name">Seq. Rápida Intubação</span>
               <i className="ph-fill ph-bookmark-simple fav-bookmark saved" />
             </div>
             <div className="card-favorite" style={{ width: 140 }}>
@@ -106,28 +146,36 @@ export default function DSCards() {
       {/* Banner Editorial */}
       <div className="ds-subsection">
         <h3>Banner Editorial</h3>
+        <p className="ds-subsection-desc">
+          Banner com gradiente teal para comunicações editoriais na Home: novidades, lançamentos
+          e destaques do app (ex: "CalcMed IA: seu copiloto clínico"). Inclui tag, título e descrição.
+        </p>
         <DSPanel>
           <div className="banner-editorial">
             <div className="banner-tag">Novidade</div>
-            <div className="banner-title">CalcMed IA: seu copiloto clinico</div>
-            <div className="banner-desc">Tire duvidas sobre doses e protocolos com inteligencia artificial.</div>
+            <div className="banner-title">CalcMed IA: seu copiloto clínico</div>
+            <div className="banner-desc">Tire dúvidas sobre doses e protocolos com inteligência artificial.</div>
           </div>
         </DSPanel>
       </div>
 
       {/* Plan Card */}
       <div className="ds-subsection">
-        <h3>Plan Card (Checkout)</h3>
+        <h3>Card de Plano (Checkout)</h3>
+        <p className="ds-subsection-desc">
+          Cards de seleção de plano na tela de checkout. O plano selecionado recebe borda 2px teal
+          e badge "MELHOR VALOR". O plano anual é o padrão selecionado (decisão de negócio confirmada).
+        </p>
         <DSPanel>
           <div className="flex gap-3">
             <div className="plan-card selected flex-1">
               <span className="tag-status premium plan-badge">MELHOR VALOR</span>
               <div className="t-subtitulo text-fg mb-1 mt-2">Anual</div>
-              <div className="t-preco-destaque">R$ 29,90<span className="t-corpo-2 text-fg-3">/mes</span></div>
+              <div className="t-preco-destaque">R$ 29,90<span className="t-corpo-2 text-fg-3">/mês</span></div>
             </div>
             <div className="plan-card flex-1">
               <div className="t-subtitulo text-fg mb-1">Mensal</div>
-              <div className="t-preco">R$ 49,90<span className="t-corpo-2 text-fg-3">/mes</span></div>
+              <div className="t-preco">R$ 49,90<span className="t-corpo-2 text-fg-3">/mês</span></div>
             </div>
           </div>
         </DSPanel>
@@ -136,11 +184,15 @@ export default function DSCards() {
       {/* Card Feature Mini */}
       <div className="ds-subsection">
         <h3>Card Feature Mini</h3>
+        <p className="ds-subsection-desc">
+          Versão compacta (80px) do card de funcionalidade para grids densos. Exibe ícone e nome
+          em formato vertical. Usado em seções como "Todas as calculadoras" onde o espaço é limitado.
+        </p>
         <DSPanel>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 80px)' }} className="gap-2">
             <div className="card-feature-mini">
               <i className="mini-icon ph ph-heartbeat icon-urg" />
-              <span className="mini-name">Seq. Rapida</span>
+              <span className="mini-name">Seq. Rápida</span>
             </div>
             <div className="card-feature-mini">
               <i className="mini-icon ph ph-drop icon-dil" />
@@ -169,24 +221,27 @@ export default function DSCards() {
       {/* Classes */}
       <div className="ds-subsection">
         <h3>Classes CSS</h3>
+        <p className="ds-subsection-desc">
+          Referência de todas as classes de cards, incluindo estados de acesso e variantes.
+        </p>
         <table className="ds-token-table">
           <thead>
-            <tr><th>Classe</th><th>Descricao</th></tr>
+            <tr><th>Classe</th><th>Descrição</th></tr>
           </thead>
           <tbody>
             {[
-              { cls: '.card-feature', desc: 'Card de funcionalidade com icone + nome' },
-              { cls: '.card-feature.locked', desc: 'Overlay escuro, pointer-events none' },
-              { cls: '.card-feature.trial', desc: 'Borda dashed' },
-              { cls: '.card-selection', desc: 'Card de selecao (onboarding), min-h 64px' },
-              { cls: '.card-selection.selected', desc: 'Borda 2px teal' },
-              { cls: '.card-recent', desc: 'Item horizontal com icone, nome e tempo' },
-              { cls: '.card-favorite', desc: 'Card vertical com abbr e nome' },
-              { cls: '.banner-editorial', desc: 'Banner gradiente teal com tag + titulo' },
-              { cls: '.plan-card', desc: 'Card de plano com borda e preco' },
-              { cls: '.plan-card.selected', desc: 'Borda 2px teal, badge posicionado' },
-              { cls: '.card-feature-mini', desc: 'Card mini 80px: flex column, icone + nome, fundo elevated' },
-              { cls: '.mini-icon', desc: 'Icone 24px do card mini' },
+              { cls: '.card-feature', desc: 'Card de funcionalidade com ícone + nome' },
+              { cls: '.card-feature.locked', desc: 'Premium bloqueado: overlay escuro, pointer-events none' },
+              { cls: '.card-feature.trial', desc: 'Degustação: borda tracejada (dashed)' },
+              { cls: '.card-selection', desc: 'Card de seleção (onboarding), min-height 64px' },
+              { cls: '.card-selection.selected', desc: 'Selecionado: borda 2px teal' },
+              { cls: '.card-recent', desc: 'Item horizontal com ícone relógio, nome e tempo' },
+              { cls: '.card-favorite', desc: 'Card vertical com abreviação e nome (Meu Plantão)' },
+              { cls: '.banner-editorial', desc: 'Banner gradiente teal com tag + título + descrição' },
+              { cls: '.plan-card', desc: 'Card de plano com borda e preço (Checkout)' },
+              { cls: '.plan-card.selected', desc: 'Selecionado: borda 2px teal, badge posicionado' },
+              { cls: '.card-feature-mini', desc: 'Card mini 80px: flex column, ícone + nome, fundo elevated' },
+              { cls: '.mini-icon', desc: 'Ícone 24px do card mini' },
               { cls: '.mini-name', desc: 'Nome: font 500 10px, cor fg-2' },
             ].map(r => (
               <tr key={r.cls}>

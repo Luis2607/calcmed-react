@@ -38,7 +38,7 @@ export default function EntradaPage() {
           </div>
           <div className="carousel-text mt-4">
             {slides.map((s, i) => (
-              <div key={i} className={`slide-text ${i === current ? 'active' : ''}`} style={{ display: i === current ? 'block' : 'none' }}>
+              <div key={i} className={`slide-text ${i === current ? 'active' : 'hidden'}`}>
                 {s.text}
               </div>
             ))}

@@ -80,7 +80,7 @@ export default function PremiumModalPage() {
           {/* Ações (3 níveis) */}
           <div className="modal-footer-col mt-4">
             <Link to="/planos" className="btn btn-lg btn-primary w-full text-center">
-              Assinar agora — R$149,90/ano
+              Assinar agora - R$149,90/ano
             </Link>
             <button className="btn btn-lg btn-ghost w-full text-center">
               Usar meu último acesso

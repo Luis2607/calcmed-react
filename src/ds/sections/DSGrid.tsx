@@ -7,11 +7,11 @@ const breakpoints = [
 ]
 
 const bpTokens = [
-  { name: '--bp-sm', value: '320px' },
-  { name: '--bp-md', value: '390px' },
-  { name: '--bp-lg', value: '428px' },
-  { name: '--bp-tablet', value: '768px' },
-  { name: '--bp-desktop', value: '1024px' },
+  { name: '--bp-sm', value: '320px', uso: 'Menor dispositivo suportado' },
+  { name: '--bp-md', value: '390px', uso: 'iPhone 14/15 (referência principal)' },
+  { name: '--bp-lg', value: '428px', uso: 'Dispositivos Android maiores' },
+  { name: '--bp-tablet', value: '768px', uso: 'Tablets em retrato' },
+  { name: '--bp-desktop', value: '1024px', uso: 'Desktop e tablets em paisagem' },
 ]
 
 export default function DSGrid() {
@@ -19,14 +19,20 @@ export default function DSGrid() {
     <div>
       <h2 className="ds-section-title">Grid</h2>
       <p className="ds-section-desc">
-        3 breakpoints. Mobile (&lt;600dp): 4 colunas, margin 24px, gutter 16px.
-        O grid e documentacional; no app mobile (390px), utilizamos 4 colunas com padding lateral de 20-24px.
+        Sistema de grid com 3 breakpoints responsivos. No app mobile (390px, referência iPhone 14),
+        utilizamos 4 colunas com padding lateral de 20-24px. O grid é documentacional: serve como
+        guia de alinhamento para o design, garantindo que elementos clínicos como cards de dose
+        e alertas mantenham proporções consistentes em qualquer tamanho de tela.
       </p>
 
       <div className="ds-subsection">
         <h3>Breakpoints</h3>
-        <DSPanel title="Visualizacao de colunas">
-          <div style={{ display: 'grid' }} className="gap-4">
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Cada breakpoint define número de colunas, margem lateral e gutter (espaço entre colunas).
+          A visualização abaixo mostra a proporção de colunas em cada faixa de tamanho.
+        </p>
+        <DSPanel title="Visualização de colunas">
+          <div className="flex flex-col gap-4">
             {breakpoints.map(bp => (
               <div className="ds-bp-card" key={bp.name}>
                 <h4>{bp.name} <span className="t-legenda text-fg-3" style={{ fontFamily: "'JetBrains Mono'" }}>({bp.range})</span></h4>
@@ -48,6 +54,10 @@ export default function DSGrid() {
 
       <div className="ds-subsection">
         <h3>Tokens de Breakpoint</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Tokens documentacionais que registram os valores de referência. Não são usados
+          em media queries CSS, mas servem como fonte única de verdade para o design.
+        </p>
         <table className="ds-token-table">
           <thead>
             <tr><th>Token</th><th>Valor</th><th>Uso</th></tr>
@@ -57,7 +67,7 @@ export default function DSGrid() {
               <tr key={t.name}>
                 <td><span className="ds-token">{t.name}</span></td>
                 <td className="t-legenda" style={{ fontFamily: "'JetBrains Mono'" }}>{t.value}</td>
-                <td className="text-fg-3">Documentacional (nao em media queries)</td>
+                <td className="text-fg-3">{t.uso}</td>
               </tr>
             ))}
           </tbody>
@@ -65,8 +75,12 @@ export default function DSGrid() {
       </div>
 
       <div className="ds-subsection">
-        <h3>Classes Utilitarias de Layout</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }} className="gap-2">
+        <h3>Classes Utilitárias de Layout</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Classes prontas para os padrões de layout mais comuns. Combine-as com as classes
+          de espaçamento (gap-*) para montar layouts rapidamente.
+        </p>
+        <div className="ds-stat-grid">
           {[
             { cls: '.grid-2col', desc: '2 colunas iguais, gap 12px' },
             { cls: '.grid-3col', desc: '3 colunas iguais, gap 12px' },
@@ -75,8 +89,8 @@ export default function DSGrid() {
             { cls: '.flex-col', desc: 'Flex column' },
             { cls: '.justify-between', desc: 'Space between' },
           ].map(u => (
-            <div key={u.cls} style={{ borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg-surface)' }} className="p-3">
-              <div className="t-legenda mb-1" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'", color: 'var(--btn-primary)' }}>{u.cls}</div>
+            <div key={u.cls} className="ds-bp-card">
+              <div className="ds-token mb-1">{u.cls}</div>
               <div className="t-legenda text-fg-3">{u.desc}</div>
             </div>
           ))}

@@ -30,7 +30,7 @@ export default function EmailPage() {
 
       <div className="bottom-sheet">
         <div className="sheet-header">
-          <Link to="/" className="back" aria-label="Voltar"><CaretLeft size={20} /></Link>
+          <Link to="/app" className="back" aria-label="Voltar"><CaretLeft size={20} /></Link>
           <div className="title">Entrar</div>
         </div>
         <div className="input-group">
@@ -44,13 +44,21 @@ export default function EmailPage() {
             onChange={e => setEmail(e.target.value)}
           />
         </div>
-        <Link
-          to="/login/senha"
-          className={`btn btn-md btn-primary w-full text-center ${!valid ? 'disabled' : ''}`}
-          style={!valid ? { pointerEvents: 'none' } : undefined}
-        >
-          Continuar
-        </Link>
+        {valid ? (
+          <Link
+            to="/login/senha"
+            className="btn btn-md btn-primary w-full text-center"
+          >
+            Continuar
+          </Link>
+        ) : (
+          <button
+            className="btn btn-md btn-primary w-full text-center disabled"
+            disabled
+          >
+            Continuar
+          </button>
+        )}
       </div>
     </MobileFrame>
   )
