@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import EntradaPage from './pages/EntradaPage'
 import EmailPage from './pages/EmailPage'
@@ -18,30 +19,74 @@ import EscalaNovoPlantaoPage from './pages/EscalaNovoPlantaoPage'
 import CalculadoraInputsPage from './pages/CalculadoraInputsPage'
 import CalculadoraResultadoPage from './pages/CalculadoraResultadoPage'
 
+const DSLayout = lazy(() => import('./ds/DSLayout'))
+const DSOverview = lazy(() => import('./ds/DSOverview'))
+const DSCores = lazy(() => import('./ds/sections/DSCores'))
+const DSTipografia = lazy(() => import('./ds/sections/DSTipografia'))
+const DSEspacamento = lazy(() => import('./ds/sections/DSEspacamento'))
+const DSGrid = lazy(() => import('./ds/sections/DSGrid'))
+const DSElevacao = lazy(() => import('./ds/sections/DSElevacao'))
+const DSMotion = lazy(() => import('./ds/sections/DSMotion'))
+const DSIcones = lazy(() => import('./ds/sections/DSIcones'))
+const DSBotoes = lazy(() => import('./ds/sections/DSBotoes'))
+const DSInputs = lazy(() => import('./ds/sections/DSInputs'))
+const DSTags = lazy(() => import('./ds/sections/DSTags'))
+const DSCards = lazy(() => import('./ds/sections/DSCards'))
+const DSAlertas = lazy(() => import('./ds/sections/DSAlertas'))
+const DSNavegacao = lazy(() => import('./ds/sections/DSNavegacao'))
+const DSPatterns = lazy(() => import('./ds/sections/DSPatterns'))
+const DSAcessibilidade = lazy(() => import('./ds/sections/DSAcessibilidade'))
+
 export default function App() {
   return (
-    <div className="mobile-page">
-      <Routes>
-        <Route path="/" element={<EntradaPage />} />
-        <Route path="/login/email" element={<EmailPage />} />
-        <Route path="/login/senha" element={<SenhaPage />} />
-        <Route path="/login/recuperar" element={<RecuperarPage />} />
-        <Route path="/onboarding/1" element={<Onboarding1Page />} />
-        <Route path="/onboarding/2" element={<Onboarding2Page />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/home/trial" element={<HomeDegustacaoPage />} />
-        <Route path="/busca" element={<BuscaPage />} />
-        <Route path="/premium" element={<PremiumModalPage />} />
-        <Route path="/planos" element={<PlanosPage />} />
-        <Route path="/notificacoes" element={<NotificacoesPage />} />
-        <Route path="/menu" element={<MenuPage />} />
-        <Route path="/ia" element={<IAChatPage />} />
-        <Route path="/escala" element={<EscalaCalendarioPage />} />
-        <Route path="/escala/novo" element={<EscalaNovoPlantaoPage />} />
-        <Route path="/calculadora/crcl" element={<CalculadoraInputsPage />} />
-        <Route path="/calculadora/crcl/resultado" element={<CalculadoraResultadoPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </div>
+    <Routes>
+      {/* Design System Documentation */}
+      <Route
+        path="/design-system"
+        element={
+          <Suspense fallback={<div style={{ padding: 40, textAlign: 'center', color: '#64748b' }}>Carregando Design System...</div>}>
+            <DSLayout />
+          </Suspense>
+        }
+      >
+        <Route index element={<Suspense fallback={null}><DSOverview /></Suspense>} />
+        <Route path="cores" element={<Suspense fallback={null}><DSCores /></Suspense>} />
+        <Route path="tipografia" element={<Suspense fallback={null}><DSTipografia /></Suspense>} />
+        <Route path="espacamento" element={<Suspense fallback={null}><DSEspacamento /></Suspense>} />
+        <Route path="grid" element={<Suspense fallback={null}><DSGrid /></Suspense>} />
+        <Route path="elevacao" element={<Suspense fallback={null}><DSElevacao /></Suspense>} />
+        <Route path="motion" element={<Suspense fallback={null}><DSMotion /></Suspense>} />
+        <Route path="icones" element={<Suspense fallback={null}><DSIcones /></Suspense>} />
+        <Route path="botoes" element={<Suspense fallback={null}><DSBotoes /></Suspense>} />
+        <Route path="inputs" element={<Suspense fallback={null}><DSInputs /></Suspense>} />
+        <Route path="tags" element={<Suspense fallback={null}><DSTags /></Suspense>} />
+        <Route path="cards" element={<Suspense fallback={null}><DSCards /></Suspense>} />
+        <Route path="alertas" element={<Suspense fallback={null}><DSAlertas /></Suspense>} />
+        <Route path="navegacao" element={<Suspense fallback={null}><DSNavegacao /></Suspense>} />
+        <Route path="patterns" element={<Suspense fallback={null}><DSPatterns /></Suspense>} />
+        <Route path="acessibilidade" element={<Suspense fallback={null}><DSAcessibilidade /></Suspense>} />
+      </Route>
+
+      {/* App Pages */}
+      <Route path="/" element={<div className="mobile-page"><EntradaPage /></div>} />
+      <Route path="/login/email" element={<div className="mobile-page"><EmailPage /></div>} />
+      <Route path="/login/senha" element={<div className="mobile-page"><SenhaPage /></div>} />
+      <Route path="/login/recuperar" element={<div className="mobile-page"><RecuperarPage /></div>} />
+      <Route path="/onboarding/1" element={<div className="mobile-page"><Onboarding1Page /></div>} />
+      <Route path="/onboarding/2" element={<div className="mobile-page"><Onboarding2Page /></div>} />
+      <Route path="/home" element={<div className="mobile-page"><HomePage /></div>} />
+      <Route path="/home/trial" element={<div className="mobile-page"><HomeDegustacaoPage /></div>} />
+      <Route path="/busca" element={<div className="mobile-page"><BuscaPage /></div>} />
+      <Route path="/premium" element={<div className="mobile-page"><PremiumModalPage /></div>} />
+      <Route path="/planos" element={<div className="mobile-page"><PlanosPage /></div>} />
+      <Route path="/notificacoes" element={<div className="mobile-page"><NotificacoesPage /></div>} />
+      <Route path="/menu" element={<div className="mobile-page"><MenuPage /></div>} />
+      <Route path="/ia" element={<div className="mobile-page"><IAChatPage /></div>} />
+      <Route path="/escala" element={<div className="mobile-page"><EscalaCalendarioPage /></div>} />
+      <Route path="/escala/novo" element={<div className="mobile-page"><EscalaNovoPlantaoPage /></div>} />
+      <Route path="/calculadora/crcl" element={<div className="mobile-page"><CalculadoraInputsPage /></div>} />
+      <Route path="/calculadora/crcl/resultado" element={<div className="mobile-page"><CalculadoraResultadoPage /></div>} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
