@@ -4,6 +4,34 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #e2e8f0;
+  background: var(--slate-200, #e2e8f0);
   margin: 0;
+}
+
+/* Landing page */
+.landing-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--brand-navy, #0d1b2a) 0%, var(--brand-navy-deep, #060e18) 100%);
+  margin: 0;
+  padding: var(--sp-6);
+}
+.landing-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg-card, #ffffff);
+  border-radius: var(--r-xl, 16px);
+  padding: var(--sp-10) var(--sp-8);
+  box-shadow: var(--shadow-4);
+  max-width: 420px;
+  width: 100%;
+}
+.landing-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  width: 100%;
 }

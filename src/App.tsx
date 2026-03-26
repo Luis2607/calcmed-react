@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import LandingPage from './pages/LandingPage'
 import EntradaPage from './pages/EntradaPage'
 import EmailPage from './pages/EmailPage'
 import SenhaPage from './pages/SenhaPage'
@@ -67,8 +68,11 @@ export default function App() {
         <Route path="acessibilidade" element={<Suspense fallback={null}><DSAcessibilidade /></Suspense>} />
       </Route>
 
+      {/* Landing */}
+      <Route path="/" element={<LandingPage />} />
+
       {/* App Pages */}
-      <Route path="/" element={<div className="mobile-page"><EntradaPage /></div>} />
+      <Route path="/app" element={<div className="mobile-page"><EntradaPage /></div>} />
       <Route path="/login/email" element={<div className="mobile-page"><EmailPage /></div>} />
       <Route path="/login/senha" element={<div className="mobile-page"><SenhaPage /></div>} />
       <Route path="/login/recuperar" element={<div className="mobile-page"><RecuperarPage /></div>} />
@@ -86,7 +90,7 @@ export default function App() {
       <Route path="/escala/novo" element={<div className="mobile-page"><EscalaNovoPlantaoPage /></div>} />
       <Route path="/calculadora/crcl" element={<div className="mobile-page"><CalculadoraInputsPage /></div>} />
       <Route path="/calculadora/crcl/resultado" element={<div className="mobile-page"><CalculadoraResultadoPage /></div>} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   )
 }
