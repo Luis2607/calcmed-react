@@ -9,8 +9,7 @@ import CardRecent from '../components/cards/CardRecent'
 import CategoryCollapse from '../components/cards/CategoryCollapse'
 import SectionHeader from '../components/ui/SectionHeader'
 import { favorites, recents, categories } from '../data/homeData'
-
-export default function HomePage() {
+export default function HomeDegustacaoPage() {
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set(['IOT', 'DVA', 'CrCl', 'VM']))
 
   const toggleBookmark = (abbr: string) => {
