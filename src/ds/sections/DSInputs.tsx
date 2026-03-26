@@ -5,7 +5,7 @@ function InputShowcase() {
   const [showPass, setShowPass] = useState(false)
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+    <div className="flex flex-col gap-6">
       {/* Default */}
       <div className="input-group">
         <label className="input-label">Nome completo</label>
@@ -72,7 +72,7 @@ function InputShowcase() {
       {/* Select */}
       <div className="input-group">
         <label className="input-label">Sexo</label>
-        <div className="select" style={{ width: '100%' }}>
+        <div className="select w-full">
           <span className="select-value">Masculino</span>
           <i className="ph ph-caret-down select-arrow" />
         </div>
@@ -100,10 +100,10 @@ export default function DSInputs() {
       <div className="ds-subsection">
         <h3>Controles Adicionais</h3>
         <DSPanel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div className="flex flex-col gap-5">
             {/* Toggle Segmented */}
             <div>
-              <div style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Toggle Segmentado</div>
+              <div className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Toggle Segmentado</div>
               <div className="toggle-seg">
                 <button className="tab active">Anual</button>
                 <button className="tab">Mensal</button>
@@ -112,18 +112,18 @@ export default function DSInputs() {
 
             {/* Checkbox */}
             <div>
-              <div style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Checkbox</div>
-              <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+              <div className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Checkbox</div>
+              <div className="flex items-center gap-3">
                 <div className="checkbox on">&#10003;</div>
-                <span style={{ font: "400 14px 'Inter'" }}>Selecionado</span>
+                <span className="t-corpo-2">Selecionado</span>
                 <div className="checkbox off" style={{ marginLeft: 16 }} />
-                <span style={{ font: "400 14px 'Inter'" }}>Nao selecionado</span>
+                <span className="t-corpo-2">Nao selecionado</span>
               </div>
             </div>
 
             {/* Radio */}
             <div>
-              <div style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Radio</div>
+              <div className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Radio</div>
               <div className="radio-group">
                 <div className="radio-row">
                   <div className="radio on" />
@@ -138,7 +138,7 @@ export default function DSInputs() {
 
             {/* Stepper */}
             <div>
-              <div style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Stepper</div>
+              <div className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Stepper</div>
               <div className="stepper">
                 <button className="stepper-btn"><i className="ph ph-minus" /></button>
                 <div className="stepper-value">72<span className="stepper-unit">kg</span></div>
@@ -148,11 +148,48 @@ export default function DSInputs() {
 
             {/* Search Bar */}
             <div>
-              <div style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Search Bar</div>
+              <div className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Search Bar</div>
               <div className="search-bar">
                 <i className="ph ph-magnifying-glass" />
                 <input className="search-input" placeholder="Buscar calculadora, droga..." />
               </div>
+            </div>
+          </div>
+        </DSPanel>
+      </div>
+
+      {/* Input with Icon */}
+      <div className="ds-subsection">
+        <h3>Input com Icone</h3>
+        <DSPanel>
+          <div className="flex flex-col gap-4">
+            <div className="input-group">
+              <label className="input-label">Buscar</label>
+              <div className="input-with-icon">
+                <i className="ph ph-magnifying-glass input-icon-left" />
+                <input className="input-field" placeholder="Buscar calculadora, droga..." />
+              </div>
+            </div>
+          </div>
+        </DSPanel>
+      </div>
+
+      {/* Select Dropdown Open */}
+      <div className="ds-subsection">
+        <h3>Select Dropdown (aberto)</h3>
+        <DSPanel>
+          <div style={{ position: 'relative', paddingBottom: 160 }}>
+            <div className="input-group">
+              <label className="input-label">Sexo</label>
+              <div className="select w-full">
+                <span className="select-value">Masculino</span>
+                <i className="ph ph-caret-up select-arrow" />
+              </div>
+            </div>
+            <div className="select-options" style={{ position: 'absolute', left: 0, right: 0, top: 72 }}>
+              <div className="select-option selected">Masculino</div>
+              <div className="select-option">Feminino</div>
+              <div className="select-option">Outro</div>
             </div>
           </div>
         </DSPanel>
@@ -181,10 +218,15 @@ export default function DSInputs() {
               { cls: '.select', desc: 'Dropdown: h48, radius 12px' },
               { cls: '.stepper', desc: 'Incremento numerico: -, valor, +' },
               { cls: '.search-bar', desc: 'Pill search: h48, radius pill' },
+              { cls: '.input-with-icon', desc: 'Container relativo para icone dentro do input' },
+              { cls: '.input-icon-left', desc: 'Icone posicionado a esquerda do campo' },
+              { cls: '.select-options', desc: 'Dropdown aberto: fundo card, shadow-3, radius lg' },
+              { cls: '.select-option', desc: 'Opcao do dropdown: padding, hover bg-hover' },
+              { cls: '.select-option.selected', desc: 'Selecionada: cor primary, font 600, checkmark' },
             ].map(r => (
               <tr key={r.cls}>
                 <td><span className="ds-token">{r.cls}</span></td>
-                <td style={{ color: 'var(--fg-2)' }}>{r.desc}</td>
+                <td className="text-fg-2">{r.desc}</td>
               </tr>
             ))}
           </tbody>

@@ -32,6 +32,11 @@ const groups: NavGroup[] = [
       { label: 'Tags & Chips', path: 'tags' },
       { label: 'Cards', path: 'cards' },
       { label: 'Alertas', path: 'alertas' },
+      { label: 'Chat / IA', path: 'chat' },
+      { label: 'Calendario', path: 'calendario' },
+      { label: 'Categorias', path: 'categorias' },
+      { label: 'Menu e Perfil', path: 'menu-perfil' },
+      { label: 'Premium e Checkout', path: 'premium' },
     ],
   },
   {

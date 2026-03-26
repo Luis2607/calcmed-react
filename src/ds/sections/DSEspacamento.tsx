@@ -1,3 +1,5 @@
+import DSPanel from '../DSPanel'
+
 const spacingTokens = [
   { name: 'sp-1', px: '4px' },
   { name: 'sp-2', px: '8px' },
@@ -42,29 +44,31 @@ export default function DSEspacamento() {
 
       <div className="ds-subsection">
         <h3>Border Radius</h3>
-        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-          {radiusTokens.map(r => (
-            <div key={r.name} style={{ textAlign: 'center' }}>
-              <div
-                style={{
-                  width: 64,
-                  height: 64,
-                  background: 'var(--teal-100)',
-                  border: '2px solid var(--teal-300)',
-                  borderRadius: `var(--${r.name})`,
-                  marginBottom: 8,
-                }}
-              />
-              <div style={{ font: "500 12px 'JetBrains Mono'", color: 'var(--fg-2)' }}>--{r.name}</div>
-              <div style={{ font: "400 11px 'JetBrains Mono'", color: 'var(--fg-3)' }}>{r.value}</div>
-            </div>
-          ))}
-        </div>
+        <DSPanel title="Tokens de radius">
+          <div className="flex gap-6 flex-wrap">
+            {radiusTokens.map(r => (
+              <div key={r.name} className="text-center">
+                <div
+                  style={{
+                    width: 64,
+                    height: 64,
+                    background: 'var(--teal-100)',
+                    border: '2px solid var(--teal-300)',
+                    borderRadius: `var(--${r.name})`,
+                  }}
+                  className="mb-2"
+                />
+                <div className="t-legenda text-fg-2" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'" }}>--{r.name}</div>
+                <div className="t-texto-badge text-fg-3" style={{ fontFamily: "'JetBrains Mono'", fontWeight: 400 }}>{r.value}</div>
+              </div>
+            ))}
+          </div>
+        </DSPanel>
       </div>
 
       <div className="ds-subsection">
         <h3>Classes Utilitarias</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 8 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }} className="gap-2">
           {[
             { cls: '.p-1 a .p-8', desc: 'Padding' },
             { cls: '.px-4, .px-6, .px-8', desc: 'Padding horizontal' },
@@ -73,9 +77,9 @@ export default function DSEspacamento() {
             { cls: '.mb-1 a .mb-6', desc: 'Margin bottom' },
             { cls: '.gap-1 a .gap-8', desc: 'Flex/Grid gap' },
           ].map(u => (
-            <div key={u.cls} style={{ padding: 12, borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg-surface)' }}>
-              <div style={{ font: "500 12px 'JetBrains Mono'", color: 'var(--btn-primary)', marginBottom: 4 }}>{u.cls}</div>
-              <div style={{ font: "400 12px 'Inter'", color: 'var(--fg-3)' }}>{u.desc}</div>
+            <div key={u.cls} style={{ borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg-surface)' }} className="p-3">
+              <div className="t-legenda mb-1" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'", color: 'var(--btn-primary)' }}>{u.cls}</div>
+              <div className="t-legenda text-fg-3">{u.desc}</div>
             </div>
           ))}
         </div>

@@ -15,10 +15,10 @@ export default function DSAlertas() {
       <div className="ds-subsection">
         <h3>5 Niveis Clinicos</h3>
         <DSPanel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div className="flex flex-col gap-4">
             {/* Level 1: Info */}
             <div>
-              <div style={{ font: "600 11px 'Inter'", color: 'var(--fg-3)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
+              <div className="t-texto-badge text-fg-3 mb-2" style={{ textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 600 }}>
                 Nivel 1 — Info (Preto/Cinza)
               </div>
               <AlertCard level="info" icon="info" title="Informacao geral">
@@ -28,7 +28,7 @@ export default function DSAlertas() {
 
             {/* Level 2: Result / Dose */}
             <div>
-              <div style={{ font: "600 11px 'Inter'", color: 'var(--fg-3)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
+              <div className="t-texto-badge text-fg-3 mb-2" style={{ textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 600 }}>
                 Nivel 2 — Resultado/Dose (Verde — PROTAGONISTA)
               </div>
               <AlertCard level="result" icon="check-circle" title="Dose calculada">
@@ -36,7 +36,7 @@ export default function DSAlertas() {
                   <span className="t-dose-valor" style={{ color: 'var(--success)' }}>150</span>
                   <span className="t-dose-unidade" style={{ color: 'var(--success)', marginLeft: 8 }}>mg</span>
                 </div>
-                <div style={{ marginTop: 4, font: "400 13px 'Inter'" }}>
+                <div className="mt-1 t-legenda">
                   Midazolam 0.3 mg/kg para paciente de 50kg
                 </div>
               </AlertCard>
@@ -44,7 +44,7 @@ export default function DSAlertas() {
 
             {/* Level 3: Critical */}
             <div>
-              <div style={{ font: "600 11px 'Inter'", color: 'var(--fg-3)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
+              <div className="t-texto-badge text-fg-3 mb-2" style={{ textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 600 }}>
                 Nivel 3 — Critico (Vermelho)
               </div>
               <AlertCard level="critical" icon="warning" title="Dose maxima excedida">
@@ -54,7 +54,7 @@ export default function DSAlertas() {
 
             {/* Level 4: Warning / Observation */}
             <div>
-              <div style={{ font: "600 11px 'Inter'", color: 'var(--fg-3)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
+              <div className="t-texto-badge text-fg-3 mb-2" style={{ textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 600 }}>
                 Nivel 4 — Observacao (Ambar)
               </div>
               <AlertCard level="warning" icon="info" title="Atencao">
@@ -64,7 +64,7 @@ export default function DSAlertas() {
 
             {/* Level 5: Footnote */}
             <div>
-              <div style={{ font: "600 11px 'Inter'", color: 'var(--fg-3)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
+              <div className="t-texto-badge text-fg-3 mb-2" style={{ textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 600 }}>
                 Nivel 5 — Rodape (Cinza)
               </div>
               <AlertCard level="footnote" icon="info" title="Fonte: Goodman & Gilman, 14a ed. Valores para adultos com funcao renal normal." />
@@ -77,7 +77,7 @@ export default function DSAlertas() {
       <div className="ds-subsection">
         <h3>Alertas Simples (classe .alert)</h3>
         <DSPanel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div className="flex flex-col gap-3">
             <div className="alert info">
               <div className="alert-title">Informacao</div>
               <div className="alert-body">Mensagem informativa padrao.</div>
@@ -105,7 +105,7 @@ export default function DSAlertas() {
       <div className="ds-subsection">
         <h3>Alerta Compacto</h3>
         <DSPanel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="flex flex-col gap-2">
             <div className="alert success compact">
               <i className="ph ph-check-circle" style={{ fontSize: 18 }} />
               <div className="alert-title">Salvo com sucesso</div>
@@ -137,8 +137,8 @@ export default function DSAlertas() {
             ].map(r => (
               <tr key={r.cls}>
                 <td><span className="ds-token">{r.cls}</span></td>
-                <td style={{ font: "600 13px 'JetBrains Mono'", color: 'var(--fg-2)' }}>{r.level}</td>
-                <td style={{ color: 'var(--fg-2)' }}>{r.use}</td>
+                <td className="t-legenda text-fg-2" style={{ fontWeight: 600, fontFamily: "'JetBrains Mono'" }}>{r.level}</td>
+                <td className="text-fg-2">{r.use}</td>
               </tr>
             ))}
           </tbody>

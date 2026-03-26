@@ -37,6 +37,11 @@ const DSAlertas = lazy(() => import('./ds/sections/DSAlertas'))
 const DSNavegacao = lazy(() => import('./ds/sections/DSNavegacao'))
 const DSPatterns = lazy(() => import('./ds/sections/DSPatterns'))
 const DSAcessibilidade = lazy(() => import('./ds/sections/DSAcessibilidade'))
+const DSChat = lazy(() => import('./ds/sections/DSChat'))
+const DSCalendario = lazy(() => import('./ds/sections/DSCalendario'))
+const DSCategorias = lazy(() => import('./ds/sections/DSCategorias'))
+const DSMenuPerfil = lazy(() => import('./ds/sections/DSMenu'))
+const DSPremiumCheckout = lazy(() => import('./ds/sections/DSPremiumModal'))
 
 export default function App() {
   return (
@@ -66,6 +71,11 @@ export default function App() {
         <Route path="navegacao" element={<Suspense fallback={null}><DSNavegacao /></Suspense>} />
         <Route path="patterns" element={<Suspense fallback={null}><DSPatterns /></Suspense>} />
         <Route path="acessibilidade" element={<Suspense fallback={null}><DSAcessibilidade /></Suspense>} />
+        <Route path="chat" element={<Suspense fallback={null}><DSChat /></Suspense>} />
+        <Route path="calendario" element={<Suspense fallback={null}><DSCalendario /></Suspense>} />
+        <Route path="categorias" element={<Suspense fallback={null}><DSCategorias /></Suspense>} />
+        <Route path="menu-perfil" element={<Suspense fallback={null}><DSMenuPerfil /></Suspense>} />
+        <Route path="premium" element={<Suspense fallback={null}><DSPremiumCheckout /></Suspense>} />
       </Route>
 
       {/* Landing */}

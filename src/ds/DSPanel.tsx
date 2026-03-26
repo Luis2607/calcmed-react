@@ -10,7 +10,7 @@ export default function DSPanel({ title, children, darkChildren }: DSPanelProps)
   return (
     <>
       {title && (
-        <h4 style={{ font: "600 14px/20px 'Inter'", color: 'var(--fg-2)', marginBottom: 12 }}>
+        <h4 className="t-corpo-2 text-fg-2 mb-3" style={{ fontWeight: 600 }}>
           {title}
         </h4>
       )}

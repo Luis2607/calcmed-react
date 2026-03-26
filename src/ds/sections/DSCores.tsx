@@ -59,8 +59,8 @@ function SwatchGrid({ swatches }: { swatches: Swatch[] }) {
 function SemanticRow({ tokens, label, rootEl }: { tokens: string[]; label: string; rootEl?: Element }) {
   const swatches = tokens.map(t => ({ name: `--${t}`, value: getVar(t, rootEl) }))
   return (
-    <div style={{ marginBottom: 16 }}>
-      <div style={{ font: "600 12px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+    <div className="mb-4">
+      <div className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6, textTransform: 'uppercase', letterSpacing: 0.5 }}>
         {label}
       </div>
       <SwatchGrid swatches={swatches} />
@@ -149,7 +149,7 @@ export default function DSCores() {
       {/* Domain Colors */}
       <div className="ds-subsection">
         <h3>Cores de Dominio</h3>
-        <p style={{ font: "400 14px 'Inter'", color: 'var(--fg-2)', marginBottom: 16 }}>
+        <p className="t-corpo-2 text-fg-2 mb-4">
           Cada dominio clinico possui cor propria, com variantes bg e text. Nunca misturar com cores de feedback.
         </p>
         <div className="ds-dual">
@@ -157,8 +157,8 @@ export default function DSCores() {
             <div className="ds-mode-label">Light</div>
             <div className="light">
               {domains.map(d => (
-                <div key={d.name} style={{ marginBottom: 12 }}>
-                  <div style={{ font: "600 12px 'Inter'", color: 'var(--fg-2)', marginBottom: 6 }}>{d.name}</div>
+                <div key={d.name} className="mb-3">
+                  <div className="t-legenda text-fg-2 mb-1" style={{ fontWeight: 600 }}>{d.name}</div>
                   <div className="ds-color-grid">
                     {d.keys.map(k => (
                       <div className="ds-swatch" key={k}>
@@ -175,8 +175,8 @@ export default function DSCores() {
             <div className="ds-mode-label">Dark</div>
             <div className="dark">
               {domains.map(d => (
-                <div key={d.name} style={{ marginBottom: 12 }}>
-                  <div style={{ font: "600 12px 'Inter'", color: 'var(--fg-2)', marginBottom: 6 }}>{d.name}</div>
+                <div key={d.name} className="mb-3">
+                  <div className="t-legenda text-fg-2 mb-1" style={{ fontWeight: 600 }}>{d.name}</div>
                   <div className="ds-color-grid">
                     {d.keys.map(k => (
                       <div className="ds-swatch" key={k}>

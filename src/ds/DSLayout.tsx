@@ -19,7 +19,7 @@ export default function DSLayout() {
       <DSSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <main className="ds-content">
-        <Suspense fallback={<div style={{ padding: 40, color: 'var(--fg-3)' }}>Carregando...</div>}>
+        <Suspense fallback={<div className="p-10 text-fg-3">Carregando...</div>}>
           <Outlet />
         </Suspense>
       </main>

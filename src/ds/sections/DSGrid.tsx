@@ -1,3 +1,5 @@
+import DSPanel from '../DSPanel'
+
 const breakpoints = [
   { name: 'Mobile', range: '<600dp', cols: 4, margin: '24px', gutter: '16px' },
   { name: 'Tablet', range: '600-1023dp', cols: 8, margin: '32px', gutter: '24px' },
@@ -23,23 +25,25 @@ export default function DSGrid() {
 
       <div className="ds-subsection">
         <h3>Breakpoints</h3>
-        <div style={{ display: 'grid', gap: 16 }}>
-          {breakpoints.map(bp => (
-            <div className="ds-bp-card" key={bp.name}>
-              <h4>{bp.name} <span style={{ font: "400 13px 'JetBrains Mono'", color: 'var(--fg-3)' }}>({bp.range})</span></h4>
-              <div className="ds-bp-specs">
-                <span className="ds-bp-spec">{bp.cols} colunas</span>
-                <span className="ds-bp-spec">margin: {bp.margin}</span>
-                <span className="ds-bp-spec">gutter: {bp.gutter}</span>
+        <DSPanel title="Visualizacao de colunas">
+          <div style={{ display: 'grid' }} className="gap-4">
+            {breakpoints.map(bp => (
+              <div className="ds-bp-card" key={bp.name}>
+                <h4>{bp.name} <span className="t-legenda text-fg-3" style={{ fontFamily: "'JetBrains Mono'" }}>({bp.range})</span></h4>
+                <div className="ds-bp-specs">
+                  <span className="ds-bp-spec">{bp.cols} colunas</span>
+                  <span className="ds-bp-spec">margin: {bp.margin}</span>
+                  <span className="ds-bp-spec">gutter: {bp.gutter}</span>
+                </div>
+                <div className="ds-grid-vis">
+                  {Array.from({ length: bp.cols }).map((_, i) => (
+                    <div className="col-v" key={i} />
+                  ))}
+                </div>
               </div>
-              <div className="ds-grid-vis">
-                {Array.from({ length: bp.cols }).map((_, i) => (
-                  <div className="col-v" key={i} />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </DSPanel>
       </div>
 
       <div className="ds-subsection">
@@ -52,8 +56,8 @@ export default function DSGrid() {
             {bpTokens.map(t => (
               <tr key={t.name}>
                 <td><span className="ds-token">{t.name}</span></td>
-                <td style={{ font: "400 13px 'JetBrains Mono'" }}>{t.value}</td>
-                <td style={{ color: 'var(--fg-3)' }}>Documentacional (nao em media queries)</td>
+                <td className="t-legenda" style={{ fontFamily: "'JetBrains Mono'" }}>{t.value}</td>
+                <td className="text-fg-3">Documentacional (nao em media queries)</td>
               </tr>
             ))}
           </tbody>
@@ -62,7 +66,7 @@ export default function DSGrid() {
 
       <div className="ds-subsection">
         <h3>Classes Utilitarias de Layout</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 8 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }} className="gap-2">
           {[
             { cls: '.grid-2col', desc: '2 colunas iguais, gap 12px' },
             { cls: '.grid-3col', desc: '3 colunas iguais, gap 12px' },
@@ -71,9 +75,9 @@ export default function DSGrid() {
             { cls: '.flex-col', desc: 'Flex column' },
             { cls: '.justify-between', desc: 'Space between' },
           ].map(u => (
-            <div key={u.cls} style={{ padding: 12, borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg-surface)' }}>
-              <div style={{ font: "500 12px 'JetBrains Mono'", color: 'var(--btn-primary)', marginBottom: 4 }}>{u.cls}</div>
-              <div style={{ font: "400 12px 'Inter'", color: 'var(--fg-3)' }}>{u.desc}</div>
+            <div key={u.cls} style={{ borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg-surface)' }} className="p-3">
+              <div className="t-legenda mb-1" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'", color: 'var(--btn-primary)' }}>{u.cls}</div>
+              <div className="t-legenda text-fg-3">{u.desc}</div>
             </div>
           ))}
         </div>

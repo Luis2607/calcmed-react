@@ -1,3 +1,5 @@
+import DSPanel from '../DSPanel'
+
 const typeStyles = [
   { cls: 't-titulo-pagina', label: 'Titulo Pagina', spec: "700 24px/32px 'Inter', ls: -0.48px", sample: 'Calculadora de Dose' },
   { cls: 't-titulo-secao', label: 'Titulo Secao', spec: "700 20px/28px 'Inter', ls: -0.2px", sample: 'Sequencia Rapida de Intubacao' },
@@ -31,35 +33,39 @@ export default function DSTipografia() {
 
       <div className="ds-subsection">
         <h3>Familias</h3>
-        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginBottom: 32 }}>
-          <div style={{ padding: 20, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--bg-surface)', flex: '1 1 200px' }}>
-            <div style={{ font: "600 16px 'Inter'", color: 'var(--fg)', marginBottom: 4 }}>Inter</div>
-            <div style={{ font: "400 13px 'Inter'", color: 'var(--fg-3)' }}>Interface, textos, rotulos</div>
+        <DSPanel title="Familias tipograficas">
+          <div className="flex gap-6 flex-wrap mb-8">
+            <div style={{ borderRadius: 12, border: '1px solid var(--border)', background: 'var(--bg-surface)', flex: '1 1 200px' }} className="p-5">
+              <div className="t-corpo text-fg mb-1" style={{ fontWeight: 600 }}>Inter</div>
+              <div className="t-legenda text-fg-3">Interface, textos, rotulos</div>
+            </div>
+            <div style={{ borderRadius: 12, border: '1px solid var(--border)', background: 'var(--bg-surface)', flex: '1 1 200px' }} className="p-5">
+              <div className="t-corpo text-fg mb-1" style={{ fontWeight: 600, fontFamily: "'JetBrains Mono'" }}>JetBrains Mono</div>
+              <div className="t-legenda text-fg-3">Doses, valores, codigos</div>
+            </div>
+            <div style={{ borderRadius: 12, border: '1px solid var(--border)', background: 'var(--bg-surface)', flex: '1 1 200px' }} className="p-5">
+              <div className="t-corpo text-fg mb-1" style={{ fontWeight: 600, fontFamily: "'Outfit'" }}>Outfit</div>
+              <div className="t-legenda text-fg-3">Marca, logotipo</div>
+            </div>
           </div>
-          <div style={{ padding: 20, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--bg-surface)', flex: '1 1 200px' }}>
-            <div style={{ font: "600 16px 'JetBrains Mono'", color: 'var(--fg)', marginBottom: 4 }}>JetBrains Mono</div>
-            <div style={{ font: "400 13px 'Inter'", color: 'var(--fg-3)' }}>Doses, valores, codigos</div>
-          </div>
-          <div style={{ padding: 20, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--bg-surface)', flex: '1 1 200px' }}>
-            <div style={{ font: "600 16px 'Outfit'", color: 'var(--fg)', marginBottom: 4 }}>Outfit</div>
-            <div style={{ font: "400 13px 'Inter'", color: 'var(--fg-3)' }}>Marca, logotipo</div>
-          </div>
-        </div>
+        </DSPanel>
       </div>
 
       <div className="ds-subsection">
         <h3>Estilos de Texto</h3>
-        {typeStyles.map(t => (
-          <div className="ds-type-row" key={t.cls}>
-            <div className="ds-type-meta">
-              <span className="ds-type-class">.{t.cls}</span>
-              <span className="ds-type-spec">{t.spec}</span>
+        <DSPanel title="Escala tipografica">
+          {typeStyles.map(t => (
+            <div className="ds-type-row" key={t.cls}>
+              <div className="ds-type-meta">
+                <span className="ds-type-class">.{t.cls}</span>
+                <span className="ds-type-spec">{t.spec}</span>
+              </div>
+              <div className={`${t.cls} text-fg`}>
+                {t.sample}
+              </div>
             </div>
-            <div className={t.cls} style={{ color: 'var(--fg)' }}>
-              {t.sample}
-            </div>
-          </div>
-        ))}
+          ))}
+        </DSPanel>
       </div>
     </div>
   )

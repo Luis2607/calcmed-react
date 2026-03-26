@@ -1,3 +1,5 @@
+import DSPanel from '../DSPanel'
+
 const iconCategories = [
   {
     title: 'Navegacao',
@@ -36,55 +38,61 @@ export default function DSIcones() {
 
       <div className="ds-subsection">
         <h3>Tamanhos</h3>
-        <div style={{ display: 'flex', gap: 24, alignItems: 'end', marginBottom: 24 }}>
-          {[
-            { cls: 'icon-sm', px: '16px' },
-            { cls: 'icon-md', px: '20px' },
-            { cls: 'icon-lg', px: '24px (padrao)' },
-            { cls: 'icon-xl', px: '32px' },
-            { cls: 'icon-2xl', px: '40px' },
-          ].map(s => (
-            <div key={s.cls} style={{ textAlign: 'center' }}>
-              <i className={`ph ph-heart ${s.cls}`} style={{ color: 'var(--fg)' }} />
-              <div style={{ font: "500 11px 'JetBrains Mono'", color: 'var(--fg-2)', marginTop: 4 }}>.{s.cls}</div>
-              <div style={{ font: "400 10px 'JetBrains Mono'", color: 'var(--fg-3)' }}>{s.px}</div>
-            </div>
-          ))}
-        </div>
+        <DSPanel title="Escala de tamanhos">
+          <div className="flex gap-6 items-end mb-6">
+            {[
+              { cls: 'icon-sm', px: '16px' },
+              { cls: 'icon-md', px: '20px' },
+              { cls: 'icon-lg', px: '24px (padrao)' },
+              { cls: 'icon-xl', px: '32px' },
+              { cls: 'icon-2xl', px: '40px' },
+            ].map(s => (
+              <div key={s.cls} className="text-center">
+                <i className={`ph ph-heart ${s.cls} text-fg`} />
+                <div className="t-texto-badge text-fg-2 mt-1" style={{ fontFamily: "'JetBrains Mono'", fontWeight: 500 }}>.{s.cls}</div>
+                <div className="t-texto-badge text-fg-3" style={{ fontFamily: "'JetBrains Mono'", fontWeight: 400, fontSize: 10 }}>{s.px}</div>
+              </div>
+            ))}
+          </div>
+        </DSPanel>
       </div>
 
       {iconCategories.map(cat => (
         <div className="ds-subsection" key={cat.title}>
           <h3>{cat.title}</h3>
-          <div className="ds-icon-grid">
-            {cat.icons.map(name => (
-              <div className="ds-icon-item" key={name}>
-                <i className={`ph ph-${name}`} />
-                <span className="iname">{name}</span>
-              </div>
-            ))}
-          </div>
+          <DSPanel title={cat.title}>
+            <div className="ds-icon-grid">
+              {cat.icons.map(name => (
+                <div className="ds-icon-item" key={name}>
+                  <i className={`ph ph-${name}`} />
+                  <span className="iname">{name}</span>
+                </div>
+              ))}
+            </div>
+          </DSPanel>
         </div>
       ))}
 
       <div className="ds-subsection">
         <h3>Cores de Dominio</h3>
-        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-          {[
-            { cls: 'icon-urg', domain: 'Urgencias', icon: 'syringe' },
-            { cls: 'icon-dil', domain: 'Diluicoes', icon: 'drop' },
-            { cls: 'icon-calc', domain: 'Calculadoras', icon: 'calculator' },
-            { cls: 'icon-prot', domain: 'Protocolos', icon: 'clipboard-text' },
-            { cls: 'icon-esc', domain: 'Escores', icon: 'chart-line' },
-            { cls: 'icon-conv', domain: 'Conversores', icon: 'arrows-left-right' },
-          ].map(d => (
-            <div key={d.cls} style={{ textAlign: 'center' }}>
-              <i className={`ph ph-${d.icon} ${d.cls}`} style={{ fontSize: 24 }} />
-              <div style={{ font: "500 11px 'Inter'", color: 'var(--fg-2)', marginTop: 4 }}>.{d.cls}</div>
-              <div style={{ font: "400 10px 'Inter'", color: 'var(--fg-3)' }}>{d.domain}</div>
-            </div>
-          ))}
-        </div>
+        <DSPanel title="Icones por dominio">
+          <div className="flex gap-6 flex-wrap">
+            {[
+              { cls: 'icon-urg', domain: 'Urgencias', icon: 'syringe' },
+              { cls: 'icon-dil', domain: 'Diluicoes', icon: 'drop' },
+              { cls: 'icon-calc', domain: 'Calculadoras', icon: 'calculator' },
+              { cls: 'icon-prot', domain: 'Protocolos', icon: 'clipboard-text' },
+              { cls: 'icon-esc', domain: 'Escores', icon: 'chart-line' },
+              { cls: 'icon-conv', domain: 'Conversores', icon: 'arrows-left-right' },
+            ].map(d => (
+              <div key={d.cls} className="text-center">
+                <i className={`ph ph-${d.icon} ${d.cls}`} style={{ fontSize: 24 }} />
+                <div className="t-texto-badge text-fg-2 mt-1" style={{ fontWeight: 500 }}>.{d.cls}</div>
+                <div className="t-texto-badge text-fg-3" style={{ fontWeight: 400, fontSize: 10 }}>{d.domain}</div>
+              </div>
+            ))}
+          </div>
+        </DSPanel>
       </div>
 
       <div className="ds-subsection">

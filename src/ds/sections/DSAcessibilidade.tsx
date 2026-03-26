@@ -14,27 +14,25 @@ export default function DSAcessibilidade() {
       <div className="ds-subsection">
         <h3>Touch Targets</h3>
         <DSPanel>
-          <div style={{ display: 'flex', gap: 32, alignItems: 'center', flexWrap: 'wrap' }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{
+          <div className="flex items-center flex-wrap gap-8">
+            <div className="text-center">
+              <div className="flex items-center justify-center" style={{
                 width: 48, height: 48, borderRadius: 12,
-                border: '2px dashed var(--btn-primary)', display: 'flex',
-                alignItems: 'center', justifyContent: 'center',
+                border: '2px dashed var(--btn-primary)',
                 font: "500 12px 'JetBrains Mono'", color: 'var(--btn-primary)',
               }}>48dp</div>
-              <div style={{ font: "500 11px 'Inter'", color: 'var(--fg-3)', marginTop: 4 }}>Padrao</div>
+              <div className="t-texto-badge text-fg-3 mt-1" style={{ fontWeight: 500 }}>Padrao</div>
             </div>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{
+            <div className="text-center">
+              <div className="flex items-center justify-center" style={{
                 width: 52, height: 52, borderRadius: 12,
-                border: '2px dashed var(--danger)', display: 'flex',
-                alignItems: 'center', justifyContent: 'center',
+                border: '2px dashed var(--danger)',
                 font: "500 12px 'JetBrains Mono'", color: 'var(--danger)',
               }}>52dp</div>
-              <div style={{ font: "500 11px 'Inter'", color: 'var(--fg-3)', marginTop: 4 }}>Emergencia</div>
+              <div className="t-texto-badge text-fg-3 mt-1" style={{ fontWeight: 500 }}>Emergencia</div>
             </div>
-            <div style={{ flex: 1, minWidth: 200 }}>
-              <p style={{ font: "400 14px/20px 'Inter'", color: 'var(--fg-2)' }}>
+            <div className="flex-1" style={{ minWidth: 200 }}>
+              <p className="t-corpo-2 text-fg-2">
                 Todos os botoes e alvos interativos possuem area minima de 48x48dp.
                 Em telas de emergencia (doses criticas, alertas), o target aumenta para 52x52dp.
               </p>
@@ -47,40 +45,40 @@ export default function DSAcessibilidade() {
       <div className="ds-subsection">
         <h3>Contraste</h3>
         <DSPanel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <div style={{ padding: 16, borderRadius: 8, background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ font: "600 14px 'Inter'", color: 'var(--fg)' }}>Texto primario (--fg)</span>
-                <span style={{ font: "500 13px 'JetBrains Mono'", color: 'var(--success)' }}>AAA 7:1+</span>
+          <div className="flex flex-col gap-4">
+            <div className="p-4" style={{ borderRadius: 8, background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
+              <div className="flex justify-between items-center">
+                <span className="t-corpo-2 text-fg" style={{ fontWeight: 600 }}>Texto primario (--fg)</span>
+                <span className="t-legenda" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'", color: 'var(--success)' }}>AAA 7:1+</span>
               </div>
-              <div style={{ font: "400 12px 'Inter'", color: 'var(--fg-3)', marginTop: 4 }}>
+              <div className="t-legenda text-fg-3 mt-1">
                 Texto clinico principal. Sempre AAA sobre bg e bg-card.
               </div>
             </div>
-            <div style={{ padding: 16, borderRadius: 8, background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ font: "600 14px 'Inter'", color: 'var(--fg-2)' }}>Texto secundario (--fg-2)</span>
-                <span style={{ font: "500 13px 'JetBrains Mono'", color: 'var(--success)' }}>AA 4.5:1+</span>
+            <div className="p-4" style={{ borderRadius: 8, background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
+              <div className="flex justify-between items-center">
+                <span className="t-corpo-2 text-fg-2" style={{ fontWeight: 600 }}>Texto secundario (--fg-2)</span>
+                <span className="t-legenda" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'", color: 'var(--success)' }}>AA 4.5:1+</span>
               </div>
-              <div style={{ font: "400 12px 'Inter'", color: 'var(--fg-3)', marginTop: 4 }}>
+              <div className="t-legenda text-fg-3 mt-1">
                 Descricoes, subtitulos. Minimo AA.
               </div>
             </div>
-            <div style={{ padding: 16, borderRadius: 8, background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ font: "600 14px 'Inter'", color: 'var(--fg-3)' }}>Texto terciario (--fg-3)</span>
-                <span style={{ font: "500 13px 'JetBrains Mono'", color: 'var(--warning)' }}>AA Large</span>
+            <div className="p-4" style={{ borderRadius: 8, background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
+              <div className="flex justify-between items-center">
+                <span className="t-corpo-2 text-fg-3" style={{ fontWeight: 600 }}>Texto terciario (--fg-3)</span>
+                <span className="t-legenda" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'", color: 'var(--warning)' }}>AA Large</span>
               </div>
-              <div style={{ font: "400 12px 'Inter'", color: 'var(--fg-3)', marginTop: 4 }}>
+              <div className="t-legenda text-fg-3 mt-1">
                 Placeholders, legendas. Somente textos grandes ou decorativos.
               </div>
             </div>
-            <div style={{ padding: 16, borderRadius: 8, background: 'var(--success-bg)', border: '1px solid var(--success-border)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className="p-4" style={{ borderRadius: 8, background: 'var(--success-bg)', border: '1px solid var(--success-border)' }}>
+              <div className="flex justify-between items-center">
                 <span className="t-dose-valor" style={{ color: 'var(--success)', fontSize: 24 }}>150 mg</span>
-                <span style={{ font: "500 13px 'JetBrains Mono'", color: 'var(--success)' }}>AAA 7:1+</span>
+                <span className="t-legenda" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'", color: 'var(--success)' }}>AAA 7:1+</span>
               </div>
-              <div style={{ font: "400 12px 'Inter'", color: 'var(--fg-3)', marginTop: 4 }}>
+              <div className="t-legenda text-fg-3 mt-1">
                 Doses calculadas. NUNCA abaixo de 20px. Contraste AAA obrigatorio.
               </div>
             </div>
@@ -92,7 +90,7 @@ export default function DSAcessibilidade() {
       <div className="ds-subsection">
         <h3>Focus Ring</h3>
         <DSPanel>
-          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+          <div className="flex gap-4 flex-wrap">
             <button
               className="btn btn-md btn-primary"
               style={{ outline: '2px solid var(--border-focus)', outlineOffset: 2 }}
@@ -105,7 +103,7 @@ export default function DSAcessibilidade() {
               defaultValue="Input com focus"
             />
           </div>
-          <div style={{ marginTop: 12, font: "400 13px 'Inter'", color: 'var(--fg-2)' }}>
+          <div className="mt-3 t-legenda text-fg-2">
             Focus ring: 2px solid var(--border-focus), offset 2px. Aplicado via :focus-visible em todos os interativos.
           </div>
         </DSPanel>
@@ -131,7 +129,7 @@ export default function DSAcessibilidade() {
             ].map(r => (
               <tr key={r.attr}>
                 <td><span className="ds-token">{r.attr}</span></td>
-                <td style={{ color: 'var(--fg-2)' }}>{r.use}</td>
+                <td className="text-fg-2">{r.use}</td>
               </tr>
             ))}
           </tbody>
@@ -179,11 +177,11 @@ export default function DSAcessibilidade() {
       {/* Emergency Context */}
       <div className="ds-subsection">
         <h3>Contexto de Emergencia</h3>
-        <div style={{ padding: 20, borderRadius: 12, border: '2px solid var(--danger)', background: 'var(--danger-bg)' }}>
-          <div style={{ font: "700 16px 'Inter'", color: 'var(--danger)', marginBottom: 8 }}>
+        <div className="p-5" style={{ borderRadius: 12, border: '2px solid var(--danger)', background: 'var(--danger-bg)' }}>
+          <div className="t-alerta-titulo mb-2" style={{ color: 'var(--danger)' }}>
             Regras para telas de emergencia
           </div>
-          <ul style={{ font: "400 14px/24px 'Inter'", color: 'var(--fg-2)', paddingLeft: 20 }}>
+          <ul className="t-corpo-2 text-fg-2" style={{ paddingLeft: 20, lineHeight: '24px' }}>
             <li>Touch target minimo 52dp (nao 48dp)</li>
             <li>Doses sempre em JetBrains Mono, minimo 20px</li>
             <li>Emergencia acessivel em maximo 2 toques</li>

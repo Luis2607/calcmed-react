@@ -51,8 +51,8 @@ export default function DSElevacao() {
             {shadows.map(s => (
               <tr key={s.level}>
                 <td><span className="ds-token">{s.token}</span></td>
-                <td style={{ font: "400 12px 'JetBrains Mono'", maxWidth: 300, wordBreak: 'break-all' }}>{s.value}</td>
-                <td style={{ color: 'var(--fg-3)', font: "400 13px 'Inter'" }}>
+                <td className="t-legenda" style={{ fontFamily: "'JetBrains Mono'", maxWidth: 300, wordBreak: 'break-all' }}>{s.value}</td>
+                <td className="t-legenda text-fg-3">
                   {s.level === 0 && 'Flat / sem elevacao'}
                   {s.level === 1 && 'Cards, items de lista'}
                   {s.level === 2 && 'Cards elevados, search bar'}
@@ -84,8 +84,8 @@ export default function DSElevacao() {
             ].map(z => (
               <tr key={z.token}>
                 <td><span className="ds-token">{z.token}</span></td>
-                <td style={{ font: "400 13px 'JetBrains Mono'" }}>{z.val}</td>
-                <td style={{ color: 'var(--fg-3)' }}>{z.use}</td>
+                <td className="t-legenda" style={{ fontFamily: "'JetBrains Mono'" }}>{z.val}</td>
+                <td className="text-fg-3">{z.use}</td>
               </tr>
             ))}
           </tbody>

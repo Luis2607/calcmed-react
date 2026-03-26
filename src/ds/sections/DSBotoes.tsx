@@ -5,10 +5,10 @@ function ButtonShowcase() {
   const [loading, setLoading] = useState(false)
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+    <div className="flex flex-col gap-6">
       {/* Primary */}
       <div>
-        <h4 style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Primary</h4>
+        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Primary</h4>
         <div className="ds-demo-row">
           <button className="btn btn-lg btn-primary">Primary LG</button>
           <button className="btn btn-md btn-primary">Primary MD</button>
@@ -19,7 +19,7 @@ function ButtonShowcase() {
 
       {/* Ghost / Outline */}
       <div>
-        <h4 style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Ghost (Outline)</h4>
+        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Ghost (Outline)</h4>
         <div className="ds-demo-row">
           <button className="btn btn-md btn-ghost">Ghost MD</button>
           <button className="btn btn-sm btn-ghost">Ghost SM</button>
@@ -29,7 +29,7 @@ function ButtonShowcase() {
 
       {/* Secondary */}
       <div>
-        <h4 style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Secondary</h4>
+        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Secondary</h4>
         <div className="ds-demo-row">
           <button className="btn btn-md btn-secondary">Secondary</button>
           <button className="btn btn-md btn-secondary disabled">Disabled</button>
@@ -38,7 +38,7 @@ function ButtonShowcase() {
 
       {/* Text / Discrete */}
       <div>
-        <h4 style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Text & Discrete</h4>
+        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Text & Discrete</h4>
         <div className="ds-demo-row">
           <button className="btn-text">Text Link</button>
           <button className="btn-discrete">Discrete</button>
@@ -47,7 +47,7 @@ function ButtonShowcase() {
 
       {/* Danger */}
       <div>
-        <h4 style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Danger</h4>
+        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Danger</h4>
         <div className="ds-demo-row">
           <button className="btn btn-md btn-danger">Danger</button>
         </div>
@@ -55,7 +55,7 @@ function ButtonShowcase() {
 
       {/* Social */}
       <div>
-        <h4 style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Social</h4>
+        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Social</h4>
         <div className="ds-demo-row">
           <button className="btn btn-md btn-google"><span className="icon-google" /> Google</button>
           <button className="btn btn-md btn-apple"><span className="icon-apple" /> Apple</button>
@@ -64,7 +64,7 @@ function ButtonShowcase() {
 
       {/* Icon Only */}
       <div>
-        <h4 style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Icon Only</h4>
+        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Icon Only</h4>
         <div className="ds-demo-row">
           <button className="btn btn-icon-only btn-primary"><i className="ph ph-plus" /></button>
           <button className="btn btn-icon-only btn-sm btn-primary"><i className="ph ph-plus" /></button>
@@ -74,7 +74,7 @@ function ButtonShowcase() {
 
       {/* Loading */}
       <div>
-        <h4 style={{ font: "600 13px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Loading</h4>
+        <h4 className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Loading</h4>
         <div className="ds-demo-row">
           <button
             className={`btn btn-md btn-primary${loading ? ' btn-loading' : ''}`}
@@ -107,7 +107,7 @@ export default function DSBotoes() {
       <div className="ds-subsection">
         <h3>Full Width</h3>
         <DSPanel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div className="flex flex-col gap-3">
             <button className="btn btn-lg btn-primary w-full">Confirmar</button>
             <button className="btn btn-lg btn-ghost w-full">Cancelar</button>
           </div>
@@ -142,7 +142,7 @@ export default function DSBotoes() {
             ].map(r => (
               <tr key={r.cls}>
                 <td><span className="ds-token">{r.cls}</span></td>
-                <td style={{ color: 'var(--fg-2)' }}>{r.desc}</td>
+                <td className="text-fg-2">{r.desc}</td>
               </tr>
             ))}
           </tbody>

@@ -3,21 +3,21 @@ import DSPanel from '../DSPanel'
 function CardFeatureDemo({ state, label }: { state: string; label: string }) {
   const stateClass = state === 'locked' ? 'locked' : state === 'trial' ? 'trial' : ''
   return (
-    <div style={{ width: 140, textAlign: 'center' }}>
-      <div className={`card-feature ${stateClass}`} style={{ marginBottom: 8 }}>
+    <div className="text-center" style={{ width: 140 }}>
+      <div className={`card-feature ${stateClass} mb-2`}>
         {state === 'premium' && (
           <span className="tag-status premium" style={{ position: 'absolute', top: 8, left: 8 }}>PREMIUM</span>
         )}
         {state === 'trial' && (
           <span className="tag-status experimentando" style={{ position: 'absolute', top: 8, left: 8 }}>TRIAL</span>
         )}
-        <div style={{ fontSize: 32, marginBottom: 4 }}>
+        <div className="mb-1" style={{ fontSize: 32 }}>
           <i className="ph ph-calculator" style={{ color: 'var(--dom-calc)' }} />
         </div>
         <div className="feat-name">CrCl Cockcroft</div>
         <button className="feat-bookmark"><i className="ph ph-bookmark-simple" /></button>
       </div>
-      <span style={{ font: "500 11px 'Inter'", color: 'var(--fg-3)' }}>{label}</span>
+      <span className="t-texto-badge text-fg-3" style={{ fontWeight: 500 }}>{label}</span>
     </div>
   )
 }
@@ -48,7 +48,7 @@ export default function DSCards() {
       <div className="ds-subsection">
         <h3>Card Selection (Onboarding)</h3>
         <DSPanel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div className="flex flex-col gap-3">
             <div className="card-selection selected">
               <div className="icon-circle"><i className="ph ph-syringe" /></div>
               <span className="card-text">Emergencia</span>
@@ -69,7 +69,7 @@ export default function DSCards() {
       <div className="ds-subsection">
         <h3>Card Recent</h3>
         <DSPanel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div className="flex flex-col gap-2">
             <div className="card-recent">
               <i className="ph ph-clock recent-icon" />
               <span className="recent-name">Clearance Creatinina</span>
@@ -88,7 +88,7 @@ export default function DSCards() {
       <div className="ds-subsection">
         <h3>Card Favorite (Meu Plantao)</h3>
         <DSPanel>
-          <div style={{ display: 'flex', gap: 12 }}>
+          <div className="flex gap-3">
             <div className="card-favorite" style={{ width: 140 }}>
               <span className="fav-abbr" style={{ color: 'var(--dom-urg)' }}>IOT</span>
               <span className="fav-name">Seq. Rapida Intubacao</span>
@@ -119,15 +119,48 @@ export default function DSCards() {
       <div className="ds-subsection">
         <h3>Plan Card (Checkout)</h3>
         <DSPanel>
-          <div style={{ display: 'flex', gap: 12 }}>
-            <div className="plan-card selected" style={{ flex: 1 }}>
+          <div className="flex gap-3">
+            <div className="plan-card selected flex-1">
               <span className="tag-status premium plan-badge">MELHOR VALOR</span>
-              <div style={{ font: "700 18px 'Inter'", color: 'var(--fg)', marginBottom: 4, marginTop: 8 }}>Anual</div>
-              <div className="t-preco-destaque">R$ 29,90<span style={{ font: "400 14px 'Inter'", color: 'var(--fg-3)' }}>/mes</span></div>
+              <div className="t-subtitulo text-fg mb-1 mt-2">Anual</div>
+              <div className="t-preco-destaque">R$ 29,90<span className="t-corpo-2 text-fg-3">/mes</span></div>
             </div>
-            <div className="plan-card" style={{ flex: 1 }}>
-              <div style={{ font: "700 18px 'Inter'", color: 'var(--fg)', marginBottom: 4 }}>Mensal</div>
-              <div className="t-preco">R$ 49,90<span style={{ font: "400 14px 'Inter'", color: 'var(--fg-3)' }}>/mes</span></div>
+            <div className="plan-card flex-1">
+              <div className="t-subtitulo text-fg mb-1">Mensal</div>
+              <div className="t-preco">R$ 49,90<span className="t-corpo-2 text-fg-3">/mes</span></div>
+            </div>
+          </div>
+        </DSPanel>
+      </div>
+
+      {/* Card Feature Mini */}
+      <div className="ds-subsection">
+        <h3>Card Feature Mini</h3>
+        <DSPanel>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 80px)' }} className="gap-2">
+            <div className="card-feature-mini">
+              <i className="mini-icon ph ph-heartbeat icon-urg" />
+              <span className="mini-name">Seq. Rapida</span>
+            </div>
+            <div className="card-feature-mini">
+              <i className="mini-icon ph ph-drop icon-dil" />
+              <span className="mini-name">Dobutamina</span>
+            </div>
+            <div className="card-feature-mini">
+              <i className="mini-icon ph ph-calculator icon-calc" />
+              <span className="mini-name">CrCl</span>
+            </div>
+            <div className="card-feature-mini">
+              <i className="mini-icon ph ph-file-text icon-prot" />
+              <span className="mini-name">ACLS</span>
+            </div>
+            <div className="card-feature-mini">
+              <i className="mini-icon ph ph-chart-bar icon-esc" />
+              <span className="mini-name">Glasgow</span>
+            </div>
+            <div className="card-feature-mini">
+              <i className="mini-icon ph ph-arrows-left-right icon-conv" />
+              <span className="mini-name">mEq/mL</span>
             </div>
           </div>
         </DSPanel>
@@ -152,10 +185,13 @@ export default function DSCards() {
               { cls: '.banner-editorial', desc: 'Banner gradiente teal com tag + titulo' },
               { cls: '.plan-card', desc: 'Card de plano com borda e preco' },
               { cls: '.plan-card.selected', desc: 'Borda 2px teal, badge posicionado' },
+              { cls: '.card-feature-mini', desc: 'Card mini 80px: flex column, icone + nome, fundo elevated' },
+              { cls: '.mini-icon', desc: 'Icone 24px do card mini' },
+              { cls: '.mini-name', desc: 'Nome: font 500 10px, cor fg-2' },
             ].map(r => (
               <tr key={r.cls}>
                 <td><span className="ds-token">{r.cls}</span></td>
-                <td style={{ color: 'var(--fg-2)' }}>{r.desc}</td>
+                <td className="text-fg-2">{r.desc}</td>
               </tr>
             ))}
           </tbody>

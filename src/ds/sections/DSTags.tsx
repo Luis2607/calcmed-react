@@ -88,9 +88,9 @@ export default function DSTags() {
       <div className="ds-subsection">
         <h3>Chips (Filtros)</h3>
         <DSPanel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div className="flex flex-col gap-4">
             <div>
-              <div style={{ font: "600 12px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Default / Active</div>
+              <div className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Default / Active</div>
               <div className="ds-demo-row">
                 <span className="chip">Todos</span>
                 <span className="chip active">Ativo</span>
@@ -98,13 +98,34 @@ export default function DSTags() {
               </div>
             </div>
             <div>
-              <div style={{ font: "600 12px 'Inter'", color: 'inherit', opacity: 0.6, marginBottom: 8 }}>Domain Colored</div>
+              <div className="t-legenda mb-2" style={{ fontWeight: 600, opacity: 0.6 }}>Domain Colored</div>
               <div className="ds-demo-row">
                 {domainTags.map(t => (
                   <span className={`chip ${t.cls}`} key={t.cls}>{t.label}</span>
                 ))}
               </div>
             </div>
+          </div>
+        </DSPanel>
+      </div>
+
+      {/* Dismissible Tag */}
+      <div className="ds-subsection">
+        <h3>Tag Dismissivel</h3>
+        <DSPanel>
+          <div className="ds-demo-row">
+            <span className="chip active tag-dismissible">
+              Urgencias
+              <button className="tag-x"><i className="ph ph-x" /></button>
+            </span>
+            <span className="chip tag-dismissible">
+              Diluicoes
+              <button className="tag-x"><i className="ph ph-x" /></button>
+            </span>
+            <span className="chip tag-dismissible">
+              Calculadoras
+              <button className="tag-x"><i className="ph ph-x" /></button>
+            </span>
           </div>
         </DSPanel>
       </div>
@@ -128,10 +149,12 @@ export default function DSTags() {
               { cls: '.tag-status.premium', desc: 'Fundo primary, texto on' },
               { cls: '.tag-status.experimentando', desc: 'Fundo success-bg, texto success' },
               { cls: '.tag-status.free', desc: 'Fundo elevated, texto fg-2' },
+              { cls: '.tag-dismissible', desc: 'Tag com padding-right reduzido para botao X' },
+              { cls: '.tag-x', desc: 'Botao X dentro da tag: 16px, opacity 0.6, hover 1' },
             ].map(r => (
               <tr key={r.cls}>
                 <td><span className="ds-token">{r.cls}</span></td>
-                <td style={{ color: 'var(--fg-2)' }}>{r.desc}</td>
+                <td className="text-fg-2">{r.desc}</td>
               </tr>
             ))}
           </tbody>
