@@ -1,13 +1,11 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
-type NavStatus = 'stable' | 'beta' | 'new' | 'deprecated'
+type NavStatus = 'beta' | 'new'
 
 const statusConfig: Record<NavStatus, { color: string; label: string }> = {
-  stable: { color: 'var(--success)', label: 'Est\u00e1vel' },
   beta: { color: 'var(--warning)', label: 'Beta' },
   new: { color: 'var(--primary)', label: 'Novo' },
-  deprecated: { color: 'var(--danger)', label: 'Deprecado' },
 }
 
 interface NavItem {
@@ -23,38 +21,46 @@ interface NavGroup {
 
 const groups: NavGroup[] = [
   {
-    title: 'Funda\u00e7\u00f5es',
+    title: '\u00c1tomos',
     items: [
-      { label: 'Cores', path: 'cores', status: 'stable' },
-      { label: 'Tipografia', path: 'tipografia', status: 'stable' },
-      { label: 'Espa\u00e7amento', path: 'espacamento', status: 'stable' },
-      { label: 'Grid', path: 'grid', status: 'stable' },
-      { label: 'Eleva\u00e7\u00e3o', path: 'elevacao', status: 'stable' },
-      { label: 'Motion', path: 'motion', status: 'stable' },
-      { label: '\u00cdcones', path: 'icones', status: 'stable' },
+      { label: 'Cores', path: 'cores' },
+      { label: 'Tipografia', path: 'tipografia' },
+      { label: 'Espa\u00e7amento', path: 'espacamento' },
+      { label: 'Grid', path: 'grid' },
+      { label: 'Eleva\u00e7\u00e3o', path: 'elevacao' },
+      { label: 'Anima\u00e7\u00f5es', path: 'motion' },
+      { label: '\u00cdcones', path: 'icones' },
     ],
   },
   {
-    title: 'Componentes',
+    title: 'Mol\u00e9culas',
     items: [
-      { label: 'Bot\u00f5es', path: 'botoes', status: 'stable' },
-      { label: 'Inputs', path: 'inputs', status: 'stable' },
-      { label: 'Tags & Chips', path: 'tags', status: 'stable' },
-      { label: 'Cards', path: 'cards', status: 'stable' },
-      { label: 'Alertas', path: 'alertas', status: 'stable' },
-      { label: 'Chat / IA', path: 'chat', status: 'stable' },
-      { label: 'Calend\u00e1rio', path: 'calendario', status: 'stable' },
-      { label: 'Categorias', path: 'categorias', status: 'stable' },
-      { label: 'Menu e Perfil', path: 'menu-perfil', status: 'stable' },
-      { label: 'Premium e Checkout', path: 'premium', status: 'stable' },
+      { label: 'Bot\u00f5es', path: 'botoes' },
+      { label: 'Campos de Entrada', path: 'inputs' },
+      { label: 'Controles de Sele\u00e7\u00e3o', path: 'selecao' },
+      { label: 'Tags e Chips', path: 'tags' },
+      { label: 'Alertas', path: 'alertas' },
     ],
   },
   {
-    title: 'Padr\u00f5es',
+    title: 'Organismos',
     items: [
-      { label: 'Navega\u00e7\u00e3o', path: 'navegacao', status: 'stable' },
-      { label: 'Patterns', path: 'patterns', status: 'stable' },
-      { label: 'Acessibilidade', path: 'acessibilidade', status: 'stable' },
+      { label: 'Cards', path: 'cards' },
+      { label: 'Categorias', path: 'categorias' },
+      { label: 'Chat e IA', path: 'chat' },
+      { label: 'Calend\u00e1rio', path: 'calendario' },
+      { label: 'Menu e Perfil', path: 'menu-perfil' },
+      { label: 'Premium e Checkout', path: 'premium' },
+    ],
+  },
+  {
+    title: 'Templates',
+    items: [
+      { label: 'Navega\u00e7\u00e3o', path: 'navegacao' },
+      { label: 'Overlays', path: 'overlays' },
+      { label: 'Estados de Conte\u00fado', path: 'estados' },
+      { label: 'Headers', path: 'headers' },
+      { label: 'Acessibilidade', path: 'acessibilidade' },
     ],
   },
 ]
@@ -66,13 +72,17 @@ interface Props {
 
 export default function DSSidebar({ isOpen, onClose }: Props) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({
-    'Funda\u00e7\u00f5es': true,
-    Componentes: true,
-    'Padr\u00f5es': true,
+    '\u00c1tomos': true,
+    'Mol\u00e9culas': false,
+    'Organismos': false,
+    'Templates': false,
   })
 
   const toggle = (title: string) => {
-    setExpanded(prev => ({ ...prev, [title]: !prev[title] }))
+    setExpanded(prev => {
+      const allClosed = Object.fromEntries(Object.keys(prev).map(k => [k, false]))
+      return { ...allClosed, [title]: !prev[title] }
+    })
   }
 
   return (
@@ -115,7 +125,7 @@ export default function DSSidebar({ isOpen, onClose }: Props) {
                     onClick={onClose}
                   >
                     <span>{item.label}</span>
-                    {item.status && item.status !== 'stable' && (
+                    {item.status && (
                       <span
                         className="ds-nav-status"
                         style={{
@@ -133,21 +143,6 @@ export default function DSSidebar({ isOpen, onClose }: Props) {
                       >
                         {statusConfig[item.status].label}
                       </span>
-                    )}
-                    {item.status === 'stable' && (
-                      <span
-                        className="ds-nav-status-dot"
-                        style={{
-                          display: 'inline-block',
-                          width: 6,
-                          height: 6,
-                          borderRadius: '50%',
-                          backgroundColor: 'var(--success)',
-                          marginLeft: 8,
-                          flexShrink: 0,
-                        }}
-                        title="Est\u00e1vel"
-                      />
                     )}
                   </NavLink>
                 ))}

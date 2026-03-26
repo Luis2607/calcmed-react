@@ -84,7 +84,7 @@ function InputShowcase() {
 export default function DSInputs() {
   return (
     <div>
-      <h2 className="ds-section-title">Inputs</h2>
+      <h2 className="ds-section-title">Campos de Entrada</h2>
       <p className="ds-section-desc">
         Inputs são os campos onde o médico insere dados clínicos — peso, dose, creatinina, idade.
         Em emergência, erros de digitação podem custar vidas. Por isso, todo input numérico possui
@@ -96,6 +96,14 @@ export default function DSInputs() {
       </p>
 
       <div className="ds-subsection">
+        <h3>Quando usar</h3>
+        <p className="ds-subsection-desc">
+          Use campos de entrada quando o médico precisa digitar informação: nome, e-mail, peso, dose,
+          observações. Para escolhas entre opções predefinidas, use Controles de Seleção.
+        </p>
+      </div>
+
+      <div className="ds-subsection">
         <h3>Todos os Tipos</h3>
         <p className="ds-subsection-desc">
           Campos de texto, email, numérico com unidade, senha com toggle de visibilidade,
@@ -104,72 +112,6 @@ export default function DSInputs() {
         </p>
         <DSPanel>
           <InputShowcase />
-        </DSPanel>
-      </div>
-
-      <div className="ds-subsection">
-        <h3>Controles Adicionais</h3>
-        <p className="ds-subsection-desc">
-          Além dos inputs tradicionais, o sistema inclui controles especializados: toggle segmentado
-          para alternância entre opções (ex: plano Anual/Mensal), checkbox e radio para seleções,
-          stepper numérico para ajuste preciso de valores (ex: peso em kg) e barra de busca.
-        </p>
-        <DSPanel>
-          <div className="flex flex-col gap-5">
-            {/* Toggle Segmented */}
-            <div>
-              <div className="ds-demo-label">Toggle Segmentado</div>
-              <div className="toggle-seg">
-                <button className="tab active">Anual</button>
-                <button className="tab">Mensal</button>
-              </div>
-            </div>
-
-            {/* Checkbox */}
-            <div>
-              <div className="ds-demo-label">Checkbox</div>
-              <div className="flex items-center gap-3">
-                <div className="checkbox on">&#10003;</div>
-                <span className="t-corpo-2">Selecionado</span>
-                <div className="checkbox off" style={{ marginLeft: 16 }} />
-                <span className="t-corpo-2">Não selecionado</span>
-              </div>
-            </div>
-
-            {/* Radio */}
-            <div>
-              <div className="ds-demo-label">Radio</div>
-              <div className="radio-group">
-                <div className="radio-row">
-                  <div className="radio on" />
-                  <span className="radio-label">Opção selecionada</span>
-                </div>
-                <div className="radio-row">
-                  <div className="radio off" />
-                  <span className="radio-label">Opção não selecionada</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Stepper */}
-            <div>
-              <div className="ds-demo-label">Stepper</div>
-              <div className="stepper">
-                <button className="stepper-btn"><i className="ph ph-minus" /></button>
-                <div className="stepper-value">72<span className="stepper-unit">kg</span></div>
-                <button className="stepper-btn"><i className="ph ph-plus" /></button>
-              </div>
-            </div>
-
-            {/* Search Bar */}
-            <div>
-              <div className="ds-demo-label">Search Bar</div>
-              <div className="search-bar">
-                <i className="ph ph-magnifying-glass" />
-                <input className="search-input" placeholder="Buscar calculadora, droga..." />
-              </div>
-            </div>
-          </div>
         </DSPanel>
       </div>
 
@@ -220,7 +162,7 @@ export default function DSInputs() {
 
       <div className="ds-subsection">
         <h3>Boas Práticas</h3>
-        <p className="ds-subsection-desc">Diretrizes para uso correto dos componentes em contexto clínico.</p>
+        <p className="ds-subsection-desc">Diretrizes para uso correto dos campos de entrada em contexto clínico.</p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <div>
             <div className="t-texto-badge text-success mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>Faça</div>
@@ -275,8 +217,6 @@ export default function DSInputs() {
               { cls: '.input-password', desc: 'Container com toggle de visibilidade (eye)' },
               { cls: '.textarea', desc: 'Min-height 96px, resize vertical' },
               { cls: '.select', desc: 'Dropdown: altura 48px, radius 12px' },
-              { cls: '.stepper', desc: 'Incremento numérico: botão -, valor, botão +' },
-              { cls: '.search-bar', desc: 'Busca pill: altura 48px, radius pill' },
               { cls: '.input-with-icon', desc: 'Container relativo para ícone dentro do input' },
               { cls: '.input-icon-left', desc: 'Ícone posicionado à esquerda do campo' },
               { cls: '.select-options', desc: 'Dropdown aberto: fundo card, shadow-3, radius lg' },

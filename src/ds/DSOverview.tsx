@@ -4,27 +4,27 @@ const principles = [
   {
     icon: 'ph-timer',
     title: 'Cada segundo conta',
-    desc: 'Em emergência, velocidade salva vidas. Toda funcionalidade crítica está a no máximo 2 toques da Home. Sem animações que atrasem informação clínica. Sem loading spinners — usamos skeleton screens.',
+    desc: 'Em emerg\u00eancia, velocidade salva vidas. Toda funcionalidade cr\u00edtica est\u00e1 a no m\u00e1ximo 2 toques da Home. Sem anima\u00e7\u00f5es que atrasem informa\u00e7\u00e3o cl\u00ednica. Sem loading spinners \u2014 usamos skeleton screens.',
   },
   {
     icon: 'ph-eye',
-    title: 'Legível a 1 metro',
-    desc: 'O médico consulta doses com as mãos ocupadas, o celular no balcão. Valores numéricos usam JetBrains Mono Bold em tamanho mínimo de 20px. O resultado é sempre o protagonista visual da tela.',
+    title: 'Leg\u00edvel a 1 metro',
+    desc: 'O m\u00e9dico consulta doses com as m\u00e3os ocupadas, o celular no balc\u00e3o. Valores num\u00e9ricos usam JetBrains Mono Bold em tamanho m\u00ednimo de 20px. O resultado \u00e9 sempre o protagonista visual da tela.',
   },
   {
     icon: 'ph-shield-check',
     title: 'Erro zero',
-    desc: 'Todo input numérico tem validação de faixa clínica. Alertas críticos em vermelho são impossíveis de ignorar. A hierarquia de 5 níveis garante que a informação mais importante nunca se perca.',
+    desc: 'Todo input num\u00e9rico tem valida\u00e7\u00e3o de faixa cl\u00ednica. Alertas cr\u00edticos em vermelho s\u00e3o imposs\u00edveis de ignorar. A hierarquia de 5 n\u00edveis garante que a informa\u00e7\u00e3o mais importante nunca se perca.',
   },
   {
     icon: 'ph-moon',
     title: 'Funciona no escuro',
-    desc: 'Plantões noturnos são a realidade. O dark mode não é um extra — é modo primário para muitos usuários. Cada token semântico tem par Light/Dark com a mesma qualidade visual.',
+    desc: 'Plant\u00f5es noturnos s\u00e3o a realidade. O dark mode n\u00e3o \u00e9 um extra \u2014 \u00e9 modo prim\u00e1rio para muitos usu\u00e1rios. Cada token sem\u00e2ntico tem par Light/Dark com a mesma qualidade visual.',
   },
   {
     icon: 'ph-hand-pointing',
-    title: 'Médico com luvas',
-    desc: 'Touch targets de 48dp no padrão, ampliados para 52dp em ações de emergência. Botões generosos, espaçamento que perdoa toques imprecisos. Projetado para mãos trêmulas, luvas cirúrgicas e pressa.',
+    title: 'M\u00e9dico com luvas',
+    desc: 'Touch targets de 48dp no padr\u00e3o, ampliados para 52dp em a\u00e7\u00f5es de emerg\u00eancia. Bot\u00f5es generosos, espa\u00e7amento que perdoa toques imprecisos. Projetado para m\u00e3os tr\u00eamulas, luvas cir\u00fargicas e pressa.',
   },
 ]
 
@@ -39,21 +39,26 @@ const stats = [
 ]
 
 const quickLinks = [
-  { icon: 'ph-palette', label: 'Cores', path: '/design-system/cores' },
-  { icon: 'ph-text-aa', label: 'Tipografia', path: '/design-system/tipografia' },
-  { icon: 'ph-arrows-out-line-horizontal', label: 'Espa\u00e7amento', path: '/design-system/espacamento' },
-  { icon: 'ph-grid-four', label: 'Grid', path: '/design-system/grid' },
-  { icon: 'ph-stack', label: 'Eleva\u00e7\u00e3o', path: '/design-system/elevacao' },
-  { icon: 'ph-play', label: 'Motion', path: '/design-system/motion' },
-  { icon: 'ph-phosphor-logo', label: '\u00cdcones', path: '/design-system/icones' },
-  { icon: 'ph-cursor-click', label: 'Bot\u00f5es', path: '/design-system/botoes' },
-  { icon: 'ph-textbox', label: 'Inputs', path: '/design-system/inputs' },
-  { icon: 'ph-tag', label: 'Tags & Chips', path: '/design-system/tags' },
-  { icon: 'ph-cards', label: 'Cards', path: '/design-system/cards' },
-  { icon: 'ph-warning', label: 'Alertas', path: '/design-system/alertas' },
-  { icon: 'ph-compass', label: 'Navega\u00e7\u00e3o', path: '/design-system/navegacao' },
-  { icon: 'ph-puzzle-piece', label: 'Patterns', path: '/design-system/patterns' },
-  { icon: 'ph-wheelchair', label: 'Acessibilidade', path: '/design-system/acessibilidade' },
+  // \u00c1tomos
+  { icon: 'ph-palette', label: 'Cores', path: '/design-system/cores', group: '\u00c1tomos' },
+  { icon: 'ph-text-aa', label: 'Tipografia', path: '/design-system/tipografia', group: '\u00c1tomos' },
+  { icon: 'ph-arrows-out-line-horizontal', label: 'Espa\u00e7amento', path: '/design-system/espacamento', group: '\u00c1tomos' },
+  { icon: 'ph-grid-four', label: 'Grid', path: '/design-system/grid', group: '\u00c1tomos' },
+  { icon: 'ph-stack', label: 'Eleva\u00e7\u00e3o', path: '/design-system/elevacao', group: '\u00c1tomos' },
+  { icon: 'ph-play', label: 'Anima\u00e7\u00f5es', path: '/design-system/motion', group: '\u00c1tomos' },
+  { icon: 'ph-phosphor-logo', label: '\u00cdcones', path: '/design-system/icones', group: '\u00c1tomos' },
+  // Mol\u00e9culas
+  { icon: 'ph-cursor-click', label: 'Bot\u00f5es', path: '/design-system/botoes', group: 'Mol\u00e9culas' },
+  { icon: 'ph-textbox', label: 'Campos de Entrada', path: '/design-system/inputs', group: 'Mol\u00e9culas' },
+  { icon: 'ph-tag', label: 'Tags e Chips', path: '/design-system/tags', group: 'Mol\u00e9culas' },
+  { icon: 'ph-warning', label: 'Alertas', path: '/design-system/alertas', group: 'Mol\u00e9culas' },
+  // Organismos
+  { icon: 'ph-cards', label: 'Cards', path: '/design-system/cards', group: 'Organismos' },
+  { icon: 'ph-chat-circle', label: 'Chat e IA', path: '/design-system/chat', group: 'Organismos' },
+  { icon: 'ph-calendar', label: 'Calend\u00e1rio', path: '/design-system/calendario', group: 'Organismos' },
+  // Templates
+  { icon: 'ph-compass', label: 'Navega\u00e7\u00e3o', path: '/design-system/navegacao', group: 'Templates' },
+  { icon: 'ph-wheelchair', label: 'Acessibilidade', path: '/design-system/acessibilidade', group: 'Templates' },
 ]
 
 export default function DSOverview() {
@@ -70,9 +75,7 @@ export default function DSOverview() {
       </div>
 
       <p className="ds-section-desc">
-        O Design System CalcMed foi constru\u00eddo com uma premissa: em urg\u00eancia m\u00e9dica, cada segundo conta.
-        Todas as decis\u00f5es de cor, tipografia, espa\u00e7amento e intera\u00e7\u00e3o priorizam tr\u00eas pilares:
-        legibilidade cl\u00ednica, velocidade de acesso e seguran\u00e7a do paciente.
+        Constru\u00edmos o Design System CalcMed com uma premissa: em urg\u00eancia m\u00e9dica, cada segundo conta. Cada decis\u00e3o de cor, tipografia e intera\u00e7\u00e3o existe para servir tr\u00eas pilares: legibilidade cl\u00ednica, velocidade de acesso e seguran\u00e7a do paciente.
       </p>
       <p className="ds-section-desc">
         A tipografia usa Inter para interface, JetBrains Mono para doses e valores num\u00e9ricos (onde
@@ -82,11 +85,11 @@ export default function DSOverview() {
         luvas cir\u00fargicas.
       </p>
 
-      {/* Princípios de Design */}
+      {/* Princ\u00edpios de Design */}
       <div className="mb-8">
-        <h3 className="t-titulo-secao mb-4">Princípios de Design</h3>
+        <h3 className="t-titulo-secao mb-4">Princ\u00edpios de Design</h3>
         <p className="ds-section-desc">
-          Cinco regras que guiam todas as decisões do sistema. Cada componente, token e padrão existe para servir a estes princípios.
+          Cinco regras que guiam todas as decis\u00f5es do sistema. Cada componente, token e padr\u00e3o existe para servir a estes princ\u00edpios.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
           {principles.map(p => (
@@ -131,7 +134,7 @@ export default function DSOverview() {
         ))}
       </div>
 
-      {/* Convenção de Nomenclatura */}
+      {/* Conven\u00e7\u00e3o de Nomenclatura */}
       <div className="mb-8" style={{ marginTop: 32 }}>
         <h3 className="t-titulo-secao mb-4">Conven\u00e7\u00e3o de Nomenclatura</h3>
         <p className="ds-section-desc">

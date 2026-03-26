@@ -5,9 +5,9 @@ export default function DSAcessibilidade() {
     <div>
       <h2 className="ds-section-title">Acessibilidade</h2>
       <p className="ds-section-desc">
-        O CalcMed e usado em contextos de emergencia medica, muitas vezes sob pressao e com iluminacao
-        adversa. Acessibilidade nao e opcional — e requisito clinico. Todo texto clinico segue WCAG AAA (7:1).
-        Touch targets sao de 48dp (padrao) e 52dp em telas de emergencia. Estas diretrizes sao obrigatorias
+        O CalcMed é usado em contextos de emergência médica, muitas vezes sob pressão e com iluminação
+        adversa. Acessibilidade não é opcional — é requisito clínico. Todo texto clínico segue WCAG AAA (7:1).
+        Touch targets são de 48dp (padrão) e 52dp em telas de emergência. Estas diretrizes são obrigatórias
         em todas as telas e componentes do app.
       </p>
 
@@ -15,8 +15,8 @@ export default function DSAcessibilidade() {
       <div className="ds-subsection">
         <h3>Touch Targets</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Areas minimas de toque para garantir precisao mesmo com maos tremulas, luvas ou telas molhadas.
-          Em emergencia, o target ampliado de 52dp reduz erros de toque em momentos criticos.
+          Áreas mínimas de toque para garantir precisão mesmo com mãos trêmulas, luvas ou telas molhadas.
+          Em emergência, o target ampliado de 52dp reduz erros de toque em momentos críticos.
         </p>
         <DSPanel>
           <div className="flex items-center flex-wrap gap-8">
@@ -26,7 +26,7 @@ export default function DSAcessibilidade() {
                 border: '2px dashed var(--btn-primary)',
                 font: "500 12px 'JetBrains Mono'", color: 'var(--btn-primary)',
               }}>48dp</div>
-              <div className="t-texto-badge text-fg-3 mt-1" style={{ fontWeight: 500 }}>Padrao</div>
+              <div className="t-texto-badge text-fg-3 mt-1" style={{ fontWeight: 500 }}>Padrão</div>
             </div>
             <div className="text-center">
               <div className="flex items-center justify-center rounded-lg" style={{
@@ -34,13 +34,13 @@ export default function DSAcessibilidade() {
                 border: '2px dashed var(--danger)',
                 font: "500 12px 'JetBrains Mono'", color: 'var(--danger)',
               }}>52dp</div>
-              <div className="t-texto-badge text-fg-3 mt-1" style={{ fontWeight: 500 }}>Emergencia</div>
+              <div className="t-texto-badge text-fg-3 mt-1" style={{ fontWeight: 500 }}>Emergência</div>
             </div>
             <div className="flex-1" style={{ minWidth: 200 }}>
               <p className="t-corpo-2 text-fg-2">
-                Todos os botoes e alvos interativos possuem area minima de 48x48dp.
-                Em telas de emergencia (doses criticas, alertas), o target aumenta para 52x52dp
-                para evitar erros de toque sob pressao.
+                Todos os botões e alvos interativos possuem área mínima de 48x48dp.
+                Em telas de emergência (doses críticas, alertas), o target aumenta para 52x52dp
+                para evitar erros de toque sob pressão.
               </p>
             </div>
           </div>
@@ -51,32 +51,32 @@ export default function DSAcessibilidade() {
       <div className="ds-subsection">
         <h3>Contraste</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Niveis de contraste por tipo de conteudo. Doses calculadas exigem AAA (7:1) obrigatorio
-          porque um erro de leitura pode ter consequencias clinicas graves.
+          Níveis de contraste por tipo de conteúdo. Doses calculadas exigem AAA (7:1) obrigatório
+          porque um erro de leitura pode ter consequências clínicas graves.
         </p>
         <DSPanel>
           <div className="flex flex-col gap-4">
             <div className="p-4 rounded" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
               <div className="flex justify-between items-center">
-                <span className="t-corpo-2 text-fg" style={{ fontWeight: 600 }}>Texto primario (--fg)</span>
+                <span className="t-corpo-2 text-fg" style={{ fontWeight: 600 }}>Texto primário (--fg)</span>
                 <span className="t-legenda" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'", color: 'var(--success)' }}>AAA 7:1+</span>
               </div>
               <div className="t-legenda text-fg-3 mt-1">
-                Texto clinico principal: nomes de drogas, titulos, valores. Sempre AAA sobre bg e bg-card.
+                Texto clínico principal: nomes de drogas, títulos, valores. Sempre AAA sobre bg e bg-card.
               </div>
             </div>
             <div className="p-4 rounded" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
               <div className="flex justify-between items-center">
-                <span className="t-corpo-2 text-fg-2" style={{ fontWeight: 600 }}>Texto secundario (--fg-2)</span>
+                <span className="t-corpo-2 text-fg-2" style={{ fontWeight: 600 }}>Texto secundário (--fg-2)</span>
                 <span className="t-legenda" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'", color: 'var(--success)' }}>AA 4.5:1+</span>
               </div>
               <div className="t-legenda text-fg-3 mt-1">
-                Descricoes, subtitulos, informacoes complementares. Minimo AA.
+                Descrições, subtítulos, informações complementares. Mínimo AA.
               </div>
             </div>
             <div className="p-4 rounded" style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
               <div className="flex justify-between items-center">
-                <span className="t-corpo-2 text-fg-3" style={{ fontWeight: 600 }}>Texto terciario (--fg-3)</span>
+                <span className="t-corpo-2 text-fg-3" style={{ fontWeight: 600 }}>Texto terciário (--fg-3)</span>
                 <span className="t-legenda" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'", color: 'var(--warning)' }}>AA Large</span>
               </div>
               <div className="t-legenda text-fg-3 mt-1">
@@ -89,7 +89,7 @@ export default function DSAcessibilidade() {
                 <span className="t-legenda" style={{ fontWeight: 500, fontFamily: "'JetBrains Mono'", color: 'var(--success)' }}>AAA 7:1+</span>
               </div>
               <div className="t-legenda text-fg-3 mt-1">
-                Doses calculadas. NUNCA abaixo de 20px. Contraste AAA obrigatorio — erro de leitura pode ser fatal.
+                Doses calculadas. NUNCA abaixo de 20px. Contraste AAA obrigatório — erro de leitura pode ser fatal.
               </div>
             </div>
           </div>
@@ -100,8 +100,8 @@ export default function DSAcessibilidade() {
       <div className="ds-subsection">
         <h3>Focus Ring</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Indicador visual de foco para navegacao por teclado. Aplicado automaticamente via :focus-visible
-          em todos os elementos interativos. Essencial para medicos que usam teclado ou tecnologias assistivas.
+          Indicador visual de foco para navegação por teclado. Aplicado automaticamente via :focus-visible
+          em todos os elementos interativos. Essencial para médicos que usam teclado ou tecnologias assistivas.
         </p>
         <DSPanel>
           <div className="flex gap-4 flex-wrap">
@@ -109,7 +109,7 @@ export default function DSAcessibilidade() {
               className="btn btn-md btn-primary"
               style={{ outline: '2px solid var(--border-focus)', outlineOffset: 2 }}
             >
-              Botao com focus
+              Botão com focus
             </button>
             <input
               className="input-field"
@@ -127,8 +127,8 @@ export default function DSAcessibilidade() {
       <div className="ds-subsection">
         <h3>Atributos ARIA</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Checklist de atributos ARIA obrigatorios por tipo de componente. Cada atributo deve ser implementado
-          conforme descrito — nao e sugestao, e requisito.
+          Checklist de atributos ARIA obrigatórios por tipo de componente. Cada atributo deve ser implementado
+          conforme descrito — não é sugestão, é requisito.
         </p>
         <table className="ds-token-table">
           <thead>
@@ -136,12 +136,12 @@ export default function DSAcessibilidade() {
           </thead>
           <tbody>
             {[
-              { attr: 'aria-label', use: 'Obrigatorio em botoes icon-only e acoes sem texto visivel' },
-              { attr: 'aria-live="polite"', use: 'Toasts de sucesso/info e alertas nao criticos' },
-              { attr: 'aria-live="assertive"', use: 'Alertas criticos (nivel 3) e erros de dose' },
-              { attr: 'role="alert"', use: 'Mensagens de erro em inputs e validacao de range' },
-              { attr: 'aria-expanded', use: 'Categorias colapsiveis, dropdowns, bottom sheets' },
-              { attr: 'aria-selected', use: 'Cards de selecao, chips ativos, tabs' },
+              { attr: 'aria-label', use: 'Obrigatório em botões icon-only e ações sem texto visível' },
+              { attr: 'aria-live="polite"', use: 'Toasts de sucesso/info e alertas não críticos' },
+              { attr: 'aria-live="assertive"', use: 'Alertas críticos (nível 3) e erros de dose' },
+              { attr: 'role="alert"', use: 'Mensagens de erro em inputs e validação de range' },
+              { attr: 'aria-expanded', use: 'Categorias colapsáveis, dropdowns, bottom sheets' },
+              { attr: 'aria-selected', use: 'Cards de seleção, chips ativos, tabs' },
               { attr: 'aria-disabled', use: 'Elementos desabilitados (complementar ao atributo disabled)' },
               { attr: 'aria-current="page"', use: 'Item ativo na bottom nav e sidebar' },
             ].map(r => (
@@ -158,32 +158,32 @@ export default function DSAcessibilidade() {
       <div className="ds-subsection">
         <h3>Leitor de Tela</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Diretrizes praticas para garantir que leitores de tela consigam transmitir informacoes clinicas
-          com precisao. Doses devem ser anunciadas com unidade e via de administracao.
+          Diretrizes práticas para garantir que leitores de tela consigam transmitir informações clínicas
+          com precisão. Doses devem ser anunciadas com unidade e via de administração.
         </p>
         <div className="ds-guideline do">
           <div className="ds-guideline-label">Fazer</div>
           <p>
-            Usar classe .sr-only para texto acessivel oculto visualmente.
+            Usar classe .sr-only para texto acessível oculto visualmente.
             Anunciar doses via aria-live incluindo valor, unidade e via (ex: "150 miligramas, intravenoso").
-            Descrever icones com aria-label descritivo.
+            Descrever ícones com aria-label descritivo.
           </p>
         </div>
         <div className="ds-guideline do">
           <div className="ds-guideline-label">Classe .sr-only</div>
           <p>
             position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0).
-            Conteudo fica invisivel mas acessivel ao leitor de tela. Usar para rotulos de secao,
-            descricoes de icones e contexto adicional de doses.
+            Conteúdo fica invisível mas acessível ao leitor de tela. Usar para rótulos de seção,
+            descrições de ícones e contexto adicional de doses.
           </p>
         </div>
         <div className="ds-guideline dont">
-          <div className="ds-guideline-label">Nao fazer</div>
+          <div className="ds-guideline-label">Não fazer</div>
           <p>
-            Usar display:none ou visibility:hidden para esconder conteudo que deve ser lido.
+            Usar display:none ou visibility:hidden para esconder conteúdo que deve ser lido.
             Remover focus ring via outline:none sem alternativa visual.
-            Usar apenas cor para transmitir estado (sempre adicionar icone ou texto).
-            Usar placeholder como substituto de label em campos de formulario.
+            Usar apenas cor para transmitir estado (sempre adicionar ícone ou texto).
+            Usar placeholder como substituto de label em campos de formulário.
           </p>
         </div>
       </div>
@@ -192,38 +192,38 @@ export default function DSAcessibilidade() {
       <div className="ds-subsection">
         <h3>Movimento Reduzido</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Respeito a preferencia do sistema operacional para reduzir animacoes. Importante para
-          usuarios com vestibulares sensiveis ou epilepsia fotossensivel.
+          Respeito à preferência do sistema operacional para reduzir animações. Importante para
+          usuários com vestibulares sensíveis ou epilepsia fotossensível.
         </p>
         <div className="ds-guideline do">
           <div className="ds-guideline-label">Implementado</div>
           <p>
-            @media(prefers-reduced-motion: reduce) desabilita todas as animacoes automaticamente.
-            Skeleton shimmer, toast-in, modal-scale-in, btn-spin — todos respeitam a preferencia.
-            Nenhuma animacao e essencial para compreensao do conteudo.
+            @media(prefers-reduced-motion: reduce) desabilita todas as animações automaticamente.
+            Skeleton shimmer, toast-in, modal-scale-in, btn-spin — todos respeitam a preferência.
+            Nenhuma animação é essencial para compreensão do conteúdo.
           </p>
         </div>
       </div>
 
       {/* Emergency Context */}
       <div className="ds-subsection">
-        <h3>Contexto de Emergencia</h3>
+        <h3>Contexto de Emergência</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Regras adicionais e inegociaveis para telas onde o medico calcula doses ou consulta protocolos
-          de emergencia. Estas regras existem porque erros nestas telas podem ser fatais.
+          Regras adicionais e inegociáveis para telas onde o médico calcula doses ou consulta protocolos
+          de emergência. Estas regras existem porque erros nestas telas podem ser fatais.
         </p>
         <div className="p-5 rounded-lg" style={{ border: '2px solid var(--danger)', background: 'var(--danger-bg)' }}>
           <div className="t-alerta-titulo mb-2" style={{ color: 'var(--danger)' }}>
-            Regras para telas de emergencia
+            Regras para telas de emergência
           </div>
           <ul className="t-corpo-2 text-fg-2" style={{ paddingLeft: 20, lineHeight: '24px' }}>
-            <li>Touch target minimo 52dp (nao 48dp)</li>
-            <li>Doses sempre em JetBrains Mono, minimo 20px, contraste AAA</li>
-            <li>Emergencia acessivel em maximo 2 toques a partir de qualquer tela</li>
-            <li>Contraste WCAG AAA (7:1) para todo texto clinico sem excecao</li>
-            <li>Alertas criticos com aria-live="assertive" e role="alert"</li>
-            <li>Nenhum elemento decorativo em telas de dose — foco total na informacao</li>
-            <li>Validacao de range clinico em todo input numerico antes de exibir resultado</li>
+            <li>Touch target mínimo 52dp (não 48dp)</li>
+            <li>Doses sempre em JetBrains Mono, mínimo 20px, contraste AAA</li>
+            <li>Emergência acessível em máximo 2 toques a partir de qualquer tela</li>
+            <li>Contraste WCAG AAA (7:1) para todo texto clínico sem exceção</li>
+            <li>Alertas críticos com aria-live="assertive" e role="alert"</li>
+            <li>Nenhum elemento decorativo em telas de dose — foco total na informação</li>
+            <li>Validação de range clínico em todo input numérico antes de exibir resultado</li>
           </ul>
         </div>
       </div>

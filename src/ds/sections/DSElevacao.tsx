@@ -28,21 +28,21 @@ function ElevationGrid({ bg }: { bg: string }) {
 export default function DSElevacao() {
   return (
     <div>
-      <h2 className="ds-section-title">Elevacao</h2>
+      <h2 className="ds-section-title">Elevação</h2>
       <p className="ds-section-desc">
-        Elevacao e o sistema de sombras que cria hierarquia visual entre camadas da interface.
-        No contexto medico, ela ajuda o profissional a distinguir rapidamente o conteudo principal
-        (cards de dose, alertas) de elementos secundarios. Sao 6 niveis (0 a 5): nivel 0 e flat,
-        nivel 5 e reservado para modais e overlays criticos. Em dark mode, as sombras tem menor
-        intensidade visual e a diferenciacao e feita por cor de superficie.
+        Elevação é o sistema de sombras que cria hierarquia visual entre camadas da interface.
+        No contexto médico, ela ajuda o profissional a distinguir rapidamente o conteúdo principal
+        (cards de dose, alertas) de elementos secundários. São 6 níveis (0 a 5): nível 0 é flat,
+        nível 5 é reservado para modais e overlays críticos. Em dark mode, as sombras têm menor
+        intensidade visual e a diferenciação é feita por cor de superfície.
       </p>
 
       <div className="ds-subsection">
-        <h3>Niveis de Sombra</h3>
+        <h3>Níveis de Sombra</h3>
         <p className="t-corpo-2 text-fg-2 mb-3">
-          Cada nivel representa uma camada de profundidade. Use niveis mais baixos para conteudo
-          estatico e niveis mais altos para elementos que exigem atencao imediata, como alertas
-          criticos e modais de confirmacao de dose.
+          Cada nível representa uma camada de profundidade. Use níveis mais baixos para conteúdo
+          estático e níveis mais altos para elementos que exigem atenção imediata, como alertas
+          críticos e modais de confirmação de dose.
         </p>
         <DSPanel>
           <ElevationGrid bg="var(--bg-card)" />
@@ -52,8 +52,8 @@ export default function DSElevacao() {
       <div className="ds-subsection">
         <h3>Tokens</h3>
         <p className="t-corpo-2 text-fg-2 mb-3">
-          Referencia completa dos tokens de sombra. Sempre use o token semantico (ex: var(--shadow-2))
-          em vez de valores literais, para garantir consistencia entre Light e Dark mode.
+          Referência completa dos tokens de sombra. Sempre use o token semântico (ex: var(--shadow-2))
+          em vez de valores literais, para garantir consistência entre Light e Dark mode.
         </p>
         <table className="ds-token-table">
           <thead>
@@ -65,7 +65,7 @@ export default function DSElevacao() {
                 <td><span className="ds-token">{s.token}</span></td>
                 <td className="t-valor-mono" style={{ maxWidth: 300, wordBreak: 'break-all' }}>{s.value}</td>
                 <td className="t-legenda text-fg-3">
-                  {s.level === 0 && 'Flat / sem elevacao'}
+                  {s.level === 0 && 'Flat / sem elevação'}
                   {s.level === 1 && 'Cards, itens de lista'}
                   {s.level === 2 && 'Cards elevados, search bar'}
                   {s.level === 3 && 'Dropdowns, tooltips'}
@@ -81,9 +81,9 @@ export default function DSElevacao() {
       <div className="ds-subsection">
         <h3>Escala de Z-Index</h3>
         <p className="t-corpo-2 text-fg-2 mb-3">
-          O z-index controla a ordem de empilhamento dos elementos. Em uma interface de emergencia,
-          e essencial que toasts de alerta e modais de confirmacao fiquem sempre visiveis acima de
-          qualquer outro conteudo. Use os tokens abaixo para evitar conflitos de camada.
+          O z-index controla a ordem de empilhamento dos elementos. Em uma interface de emergência,
+          é essencial que toasts de alerta e modais de confirmação fiquem sempre visíveis acima de
+          qualquer outro conteúdo. Use os tokens abaixo para evitar conflitos de camada.
         </p>
         <table className="ds-token-table">
           <thead>
@@ -91,9 +91,9 @@ export default function DSElevacao() {
           </thead>
           <tbody>
             {[
-              { token: '--z-base', val: '0', use: 'Conteudo padrao' },
+              { token: '--z-base', val: '0', use: 'Conteúdo padrão' },
               { token: '--z-sticky', val: '100', use: 'Headers sticky, FAB' },
-              { token: '--z-dropdown', val: '200', use: 'Dropdowns, opcoes de select' },
+              { token: '--z-dropdown', val: '200', use: 'Dropdowns, opções de select' },
               { token: '--z-overlay', val: '300', use: 'Overlay/scrim' },
               { token: '--z-modal', val: '400', use: 'Modais, dialogs' },
               { token: '--z-toast', val: '500', use: 'Toasts, snackbars' },

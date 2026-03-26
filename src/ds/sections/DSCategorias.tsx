@@ -5,19 +5,44 @@ export default function DSCategorias() {
     <div>
       <h2 className="ds-section-title">Categorias e Colapso</h2>
       <p className="ds-section-desc">
-        Sistema de categorias colaps\u00edveis da Home. Cada categoria agrupa funcionalidades por dom\u00ednio cl\u00ednico
-        (Urg\u00eancias, Dilui\u00e7\u00f5es, Calculadoras, etc.). O m\u00e9dico expande somente o que precisa, reduzindo
-        a sobrecarga visual durante o plant\u00e3o. As cores de dom\u00ednio facilitam a identifica\u00e7\u00e3o instant\u00e2nea
-        da \u00e1rea cl\u00ednica.
+        Sistema de categorias colaps{"\u00ed"}veis da Home. Cada categoria agrupa funcionalidades por dom{"\u00ed"}nio cl{"\u00ed"}nico
+        (Urg{"\u00ea"}ncias, Dilui{"\u00e7\u00f5"}es, Calculadoras, etc.). O m{"\u00e9"}dico expande somente o que precisa, reduzindo
+        a sobrecarga visual durante o plant{"\u00e3"}o.
       </p>
+      <p className="ds-section-desc">
+        As cores de dom{"\u00ed"}nio facilitam a identifica{"\u00e7\u00e3"}o instant{"\u00e2"}nea da {"\u00e1"}rea cl{"\u00ed"}nica.
+      </p>
+
+      {/* Quando usar */}
+      <div className="ds-subsection">
+        <h3>Quando usar</h3>
+        <div className="flex gap-8 mb-6">
+          <div className="flex-1">
+            <div className="t-texto-badge text-success mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>Use quando</div>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Agrupar 5 ou mais itens por dom{"\u00ed"}nio cl{"\u00ed"}nico na Home</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Expandir por padr{"\u00e3"}o a categoria mais usada pelo m{"\u00e9"}dico</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Reduzir sobrecarga visual em listas longas de funcionalidades</span></li>
+            </ul>
+          </div>
+          <div className="flex-1">
+            <div className="t-texto-badge text-danger mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>N{"\u00e3"}o use quando</div>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Houver 3 ou menos itens. Mostre-os diretamente sem colapso</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Esconder conte{"\u00fa"}do cr{"\u00ed"}tico de emerg{"\u00ea"}ncia. Ferramentas urgentes devem estar vis{"\u00ed"}veis</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Deixar todas as categorias colapsadas por padr{"\u00e3"}o. Sempre abra a mais relevante</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
       {/* Expanded vs Collapsed states */}
       <div className="ds-subsection">
         <h3>Estados: Expandido e Colapsado</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          A primeira categoria aparece expandida por padr\u00e3o para mostrar as funcionalidades dispon\u00edveis.
-          As demais ficam colapsadas, exibindo apenas o cabe\u00e7alho com \u00edcone, nome e contador.
-          O chevron rotaciona 90\u00b0 ao expandir, dando feedback visual imediato ao toque.
+          A primeira categoria aparece expandida por padr{"\u00e3"}o para mostrar as funcionalidades dispon{"\u00ed"}veis.
+          As demais ficam colapsadas, exibindo apenas o cabe{"\u00e7"}alho com {"\u00ed"}cone, nome e contador.
+          O chevron rotaciona 90{"\u00b0"} ao expandir, dando feedback visual imediato ao toque.
         </p>
         <DSPanel>
           <div className="flex flex-col gap-3">
@@ -25,7 +50,7 @@ export default function DSCategorias() {
             <div className="category-collapse">
               <div className="category-header">
                 <div className="cat-icon urg"><i className="ph ph-syringe" /></div>
-                <span className="cat-name">Urg\u00eancias</span>
+                <span className="cat-name">Urg{"\u00ea"}ncias</span>
                 <span className="cat-count">8</span>
                 <i className="ph ph-caret-right cat-chevron open" />
               </div>
@@ -33,7 +58,7 @@ export default function DSCategorias() {
                 <div className="flex flex-wrap gap-2">
                   <div className="card-feature-mini">
                     <i className="mini-icon ph ph-heartbeat icon-urg" />
-                    <span className="mini-name">Seq. R\u00e1pida</span>
+                    <span className="mini-name">Seq. R{"\u00e1"}pida</span>
                   </div>
                   <div className="card-feature-mini">
                     <i className="mini-icon ph ph-first-aid icon-urg" />
@@ -63,7 +88,7 @@ export default function DSCategorias() {
             <div className="category-collapse">
               <div className="category-header">
                 <div className="cat-icon dil"><i className="ph ph-drop" /></div>
-                <span className="cat-name">Dilui\u00e7\u00f5es</span>
+                <span className="cat-name">Dilui{"\u00e7\u00f5"}es</span>
                 <span className="cat-count">12</span>
                 <i className="ph ph-caret-right cat-chevron" />
               </div>
@@ -84,22 +109,22 @@ export default function DSCategorias() {
 
       {/* Section Header + Fav Scroll */}
       <div className="ds-subsection">
-        <h3>Cabe\u00e7alho de Se\u00e7\u00e3o e Favoritos</h3>
+        <h3>Cabe{"\u00e7"}alho de Se{"\u00e7\u00e3"}o e Favoritos</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          O cabe\u00e7alho de se\u00e7\u00e3o combina t\u00edtulo e link &ldquo;Ver todos&rdquo;. A \u00e1rea de favoritos
-          (&ldquo;Meu Plant\u00e3o&rdquo;) usa scroll horizontal com snap, permitindo acesso r\u00e1pido
-          \u00e0s calculadoras mais usadas pelo m\u00e9dico.
+          O cabe{"\u00e7"}alho de se{"\u00e7\u00e3"}o combina t{"\u00ed"}tulo e link {"\u201c"}Ver todos{"\u201d"}. A {"\u00e1"}rea de favoritos
+          ({"\u201c"}Meu Plant{"\u00e3"}o{"\u201d"}) usa scroll horizontal com snap, permitindo acesso r{"\u00e1"}pido
+          {"\u00e0"}s calculadoras mais usadas pelo m{"\u00e9"}dico.
         </p>
         <DSPanel>
           <div>
             <div className="section-header">
-              <h2>Meu Plant\u00e3o</h2>
+              <h2>Meu Plant{"\u00e3"}o</h2>
               <a href="#" onClick={e => e.preventDefault()}>Ver todos</a>
             </div>
             <div className="fav-scroll">
               <div className="card-favorite">
                 <span className="fav-abbr" style={{ color: 'var(--dom-urg)' }}>IOT</span>
-                <span className="fav-name">Seq. R\u00e1pida Intuba\u00e7\u00e3o</span>
+                <span className="fav-name">Seq. R{"\u00e1"}pida Intuba{"\u00e7\u00e3"}o</span>
                 <i className="ph-fill ph-bookmark-simple fav-bookmark saved" />
               </div>
               <div className="card-favorite">
@@ -122,7 +147,7 @@ export default function DSCategorias() {
         <h3>Classes CSS</h3>
         <table className="ds-token-table">
           <thead>
-            <tr><th>Classe</th><th>Descri\u00e7\u00e3o</th></tr>
+            <tr><th>Classe</th><th>Descri{"\u00e7\u00e3"}o</th></tr>
           </thead>
           <tbody>
             {[

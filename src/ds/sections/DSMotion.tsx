@@ -2,15 +2,15 @@ import { useState } from 'react'
 import DSPanel from '../DSPanel'
 
 const durations = [
-  { name: '--dur-fast', value: '100ms', use: 'Hover, focus, micro-interacoes' },
-  { name: '--dur-normal', value: '200ms', use: 'Transicoes padrao (botoes, inputs)' },
-  { name: '--dur-slow', value: '300ms', use: 'Modais, animacoes complexas' },
+  { name: '--dur-fast', value: '100ms', use: 'Hover, focus, micro-interações' },
+  { name: '--dur-normal', value: '200ms', use: 'Transições padrão (botões, inputs)' },
+  { name: '--dur-slow', value: '300ms', use: 'Modais, animações complexas' },
   { name: '--dur-sheet', value: '400ms', use: 'Bottom sheets, sidebars' },
 ]
 
 const easings = [
-  { name: '--ease-default', value: 'cubic-bezier(0.2, 0, 0, 1)', desc: 'Desaceleracao natural. Uso geral para transicoes de entrada e saida.' },
-  { name: '--ease-spring', value: 'cubic-bezier(0.34, 1.56, 0.64, 1)', desc: 'Bounce sutil. Ideal para modais, toasts e feedbacks de confirmacao.' },
+  { name: '--ease-default', value: 'cubic-bezier(0.2, 0, 0, 1)', desc: 'Desaceleração natural. Uso geral para transições de entrada e saída.' },
+  { name: '--ease-spring', value: 'cubic-bezier(0.34, 1.56, 0.64, 1)', desc: 'Bounce sutil. Ideal para modais, toasts e feedbacks de confirmação.' },
 ]
 
 export default function DSMotion() {
@@ -22,23 +22,23 @@ export default function DSMotion() {
 
   return (
     <div>
-      <h2 className="ds-section-title">Motion</h2>
+      <h2 className="ds-section-title">Animações</h2>
       <p className="ds-section-desc">
-        Motion e o sistema de animacoes e transicoes do CalcMed. Animacoes bem calibradas
-        dao feedback instantaneo ao profissional de saude, confirmando que uma acao foi registrada
-        (ex: dose calculada, alerta reconhecido). Sao 4 duracoes semanticas (fast, normal, slow, sheet)
-        e 2 curvas de easing. Todas as animacoes respeitam a preferencia do sistema operacional
-        via prefers-reduced-motion, desabilitando-se automaticamente quando necessario.
+        Animações é o sistema de animações e transições do CalcMed. Animações bem calibradas
+        dão feedback instantâneo ao profissional de saúde, confirmando que uma ação foi registrada
+        (ex: dose calculada, alerta reconhecido). São 4 durações semânticas (fast, normal, slow, sheet)
+        e 2 curvas de easing. Todas as animações respeitam a preferência do sistema operacional
+        via prefers-reduced-motion, desabilitando-se automaticamente quando necessário.
       </p>
 
       <div className="ds-subsection">
-        <h3>Duracoes</h3>
+        <h3>Durações</h3>
         <p className="t-corpo-2 text-fg-2 mb-3">
-          Cada duracao tem um proposito especifico. Use duracoes curtas (fast) para feedback
-          imediato em interacoes frequentes e duracoes longas (sheet) para transicoes de
-          paineis e navegacao, onde o usuario precisa acompanhar o movimento.
+          Cada duração tem um propósito específico. Use durações curtas (fast) para feedback
+          imediato em interações frequentes e durações longas (sheet) para transições de
+          painéis e navegação, onde o usuário precisa acompanhar o movimento.
         </p>
-        <DSPanel title="Duracoes de animacao">
+        <DSPanel title="Durações de animação">
           {durations.map(d => (
             <div className="ds-motion-row" key={d.name}>
               <span className="ds-motion-label">{d.name}</span>
@@ -59,9 +59,9 @@ export default function DSMotion() {
       <div className="ds-subsection">
         <h3>Curvas de Easing</h3>
         <p className="t-corpo-2 text-fg-2 mb-3">
-          As curvas de easing definem a aceleracao e desaceleracao das animacoes.
-          Uma curva bem escolhida torna a interface mais natural e previsivel,
-          reduzindo a carga cognitiva em situacoes de estresse clinico.
+          As curvas de easing definem a aceleração e desaceleração das animações.
+          Uma curva bem escolhida torna a interface mais natural e previsível,
+          reduzindo a carga cognitiva em situações de estresse clínico.
         </p>
         <DSPanel title="Curvas de easing">
           {easings.map(e => (
@@ -79,9 +79,9 @@ export default function DSMotion() {
       <div className="ds-subsection">
         <h3>Tokens de Opacidade</h3>
         <p className="t-corpo-2 text-fg-2 mb-3">
-          Opacidade semantica para estados interativos e overlays. Valores padronizados
-          garantem consistencia visual em toda a aplicacao e atendem aos requisitos de
-          contraste WCAG para elementos desabilitados e sobreposicoes.
+          Opacidade semântica para estados interativos e overlays. Valores padronizados
+          garantem consistência visual em toda a aplicação e atendem aos requisitos de
+          contraste WCAG para elementos desabilitados e sobreposições.
         </p>
         <DSPanel title="Tokens de opacidade">
           <div className="flex gap-4 flex-wrap">
@@ -109,15 +109,15 @@ export default function DSMotion() {
       <div className="ds-subsection">
         <h3>Reduced Motion</h3>
         <p className="t-corpo-2 text-fg-2 mb-3">
-          Acessibilidade de movimento e obrigatoria. Usuarios com sensibilidade a animacoes
+          Acessibilidade de movimento é obrigatória. Usuários com sensibilidade a animações
           (vestibular disorders) podem desativar movimentos no sistema operacional, e o CalcMed
-          respeita essa preferencia automaticamente.
+          respeita essa preferência automaticamente.
         </p>
         <div className="ds-guideline do">
           <div className="ds-guideline-label">Implementado</div>
           <p>
-            A media query @media(prefers-reduced-motion: reduce) desabilita todas as animacoes
-            e transicoes automaticamente. O efeito shimmer dos skeletons tambem e desabilitado.
+            A media query @media(prefers-reduced-motion: reduce) desabilita todas as animações
+            e transições automaticamente. O efeito shimmer dos skeletons também é desabilitado.
           </p>
         </div>
       </div>

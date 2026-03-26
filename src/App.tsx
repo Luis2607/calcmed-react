@@ -36,11 +36,15 @@ const DSCards = lazy(() => import('./ds/sections/DSCards'))
 const DSAlertas = lazy(() => import('./ds/sections/DSAlertas'))
 const DSNavegacao = lazy(() => import('./ds/sections/DSNavegacao'))
 const DSPatterns = lazy(() => import('./ds/sections/DSPatterns'))
+const DSOverlays = lazy(() => import('./ds/sections/DSOverlays'))
+const DSEstados = lazy(() => import('./ds/sections/DSEstados'))
+const DSHeaders = lazy(() => import('./ds/sections/DSHeaders'))
 const DSAcessibilidade = lazy(() => import('./ds/sections/DSAcessibilidade'))
 const DSChat = lazy(() => import('./ds/sections/DSChat'))
 const DSCalendario = lazy(() => import('./ds/sections/DSCalendario'))
 const DSCategorias = lazy(() => import('./ds/sections/DSCategorias'))
 const DSMenuPerfil = lazy(() => import('./ds/sections/DSMenu'))
+const DSSelecao = lazy(() => import('./ds/sections/DSSelecao'))
 const DSPremiumCheckout = lazy(() => import('./ds/sections/DSPremiumModal'))
 
 export default function App() {
@@ -65,11 +69,15 @@ export default function App() {
         <Route path="icones" element={<Suspense fallback={null}><DSIcones /></Suspense>} />
         <Route path="botoes" element={<Suspense fallback={null}><DSBotoes /></Suspense>} />
         <Route path="inputs" element={<Suspense fallback={null}><DSInputs /></Suspense>} />
+        <Route path="selecao" element={<Suspense fallback={null}><DSSelecao /></Suspense>} />
         <Route path="tags" element={<Suspense fallback={null}><DSTags /></Suspense>} />
         <Route path="cards" element={<Suspense fallback={null}><DSCards /></Suspense>} />
         <Route path="alertas" element={<Suspense fallback={null}><DSAlertas /></Suspense>} />
         <Route path="navegacao" element={<Suspense fallback={null}><DSNavegacao /></Suspense>} />
         <Route path="patterns" element={<Suspense fallback={null}><DSPatterns /></Suspense>} />
+        <Route path="overlays" element={<Suspense fallback={null}><DSOverlays /></Suspense>} />
+        <Route path="estados" element={<Suspense fallback={null}><DSEstados /></Suspense>} />
+        <Route path="headers" element={<Suspense fallback={null}><DSHeaders /></Suspense>} />
         <Route path="acessibilidade" element={<Suspense fallback={null}><DSAcessibilidade /></Suspense>} />
         <Route path="chat" element={<Suspense fallback={null}><DSChat /></Suspense>} />
         <Route path="calendario" element={<Suspense fallback={null}><DSCalendario /></Suspense>} />
