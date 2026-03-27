@@ -82,9 +82,9 @@ interface Props {
 export default function DSSidebar({ isOpen, onClose, search = '', onNavigate }: Props) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({
     'Átomos': true,
-    'Moléculas': true,
-    'Organismos': true,
-    'Templates': true,
+    'Moléculas': false,
+    'Organismos': false,
+    'Templates': false,
   })
 
   const isSearching = search.trim().length > 0
@@ -104,7 +104,11 @@ export default function DSSidebar({ isOpen, onClose, search = '', onNavigate }: 
   }, [isSearching, normalizedSearch])
 
   const toggle = (title: string) => {
-    setExpanded(prev => ({ ...prev, [title]: !prev[title] }))
+    setExpanded(prev => {
+      const isCurrentlyOpen = prev[title]
+      const allClosed = Object.fromEntries(Object.keys(prev).map(k => [k, false]))
+      return { ...allClosed, [title]: !isCurrentlyOpen }
+    })
   }
 
   const handleNavClick = () => {

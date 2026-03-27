@@ -293,7 +293,7 @@ button { font-family: inherit }
 }
 .btn.w-full { display: flex }
 .btn-md { height: 48px; border-radius: var(--r-lg); padding: 0 var(--sp-6) }
-.btn-lg { min-height: 56px; border-radius: var(--r-pill); padding: var(--sp-4) var(--sp-6) }
+.btn-lg { min-height: 56px; border-radius: var(--r-xl); padding: var(--sp-4) var(--sp-6) }
 .btn-primary { background: var(--btn-primary); color: var(--fg-on) }
 .btn-primary:hover { background: var(--btn-primary-hover) }
 .btn-primary:active { background: var(--btn-primary-active); transform: scale(.98) }
