@@ -17,6 +17,9 @@ export default function DSOverlays() {
       {/* Quando usar cada um */}
       <div className="ds-subsection">
         <h3>Quando usar cada um</h3>
+        <p className="ds-subsection-desc">
+          Escolha o overlay adequado ao nível de interrupção necessário. Modal bloqueia tudo, Bottom Sheet permite contexto parcial, Toast não bloqueia nada.
+        </p>
         <DSPanel>
           <div className="flex flex-col gap-4">
             <div className="flex items-start gap-3">
@@ -47,7 +50,7 @@ export default function DSOverlays() {
       {/* Modal */}
       <div className="ds-subsection">
         <h3>Modal / Dialog</h3>
-        <p className="t-corpo-2 text-fg-2 mb-4">
+        <p className="ds-subsection-desc">
           Usado para ações destrutivas ou confirmações críticas (excluir plantão, resetar cálculo).
           Sempre oferece opção de cancelar. O overlay escurece o fundo para focar a atenção do médico.
         </p>
@@ -73,7 +76,7 @@ export default function DSOverlays() {
       {/* Bottom Sheet */}
       <div className="ds-subsection">
         <h3>Bottom Sheet</h3>
-        <p className="t-corpo-2 text-fg-2 mb-4">
+        <p className="ds-subsection-desc">
           Painel deslizante de baixo para cima, usado no mobile para seleção de opções ou detalhes
           contextuais. O handle superior indica que pode ser arrastado para fechar.
         </p>
@@ -116,7 +119,7 @@ export default function DSOverlays() {
       {/* Toasts */}
       <div className="ds-subsection">
         <h3>Toast / Snackbar</h3>
-        <p className="t-corpo-2 text-fg-2 mb-4">
+        <p className="ds-subsection-desc">
           Notificações temporárias para feedback imediato de ações. Quatro variantes: sucesso (cálculo salvo),
           erro (falha ao processar), info (atualização disponível) e warning (assinatura expirando).
           Toasts usam aria-live para leitores de tela.
@@ -163,6 +166,24 @@ export default function DSOverlays() {
             </div>
           </div>
         </DSPanel>
+      </div>
+
+      {/* Quando usar / Quando não usar */}
+      <div className="ds-subsection">
+        <h3>Quando usar / Quando não usar</h3>
+        <p className="ds-subsection-desc">
+          Diretrizes para escolher o overlay correto em cada situação clínica.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div className="ds-guideline do">
+            <div className="ds-guideline-label">Quando usar</div>
+            <p>Modal para confirmações destrutivas (excluir, resetar). Bottom Sheet para seleções contextuais (escolher droga, filtrar). Toast para feedback não-bloqueante (salvo, erro, info).</p>
+          </div>
+          <div className="ds-guideline dont">
+            <div className="ds-guideline-label">Quando não usar</div>
+            <p>Modal para informações que não exigem decisão (use Toast). Bottom Sheet quando há apenas 2 opções (use Toggle). Toast para erros críticos que exigem ação (use Modal). Qualquer overlay sem botão de dispensar durante emergência.</p>
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import Button from '../components/ui/Button'
 
 export default function LandingPage() {
   return (
@@ -15,12 +15,12 @@ export default function LandingPage() {
           Escolha o que deseja visualizar
         </p>
         <div className="landing-buttons mt-8">
-          <Link to="/app" className="btn btn-lg btn-primary w-full text-center landing-btn">
+          <Button variant="primary" size="lg" href="/app" fullWidth className="landing-btn">
             <i className="ph ph-device-mobile" /> Prototipo do App
-          </Link>
-          <Link to="/design-system" className="btn btn-lg btn-ghost w-full text-center landing-btn">
+          </Button>
+          <Button variant="ghost" size="lg" href="/design-system" fullWidth className="landing-btn">
             <i className="ph ph-palette" /> Design System
-          </Link>
+          </Button>
         </div>
         <div className="landing-stats mt-6">
           <span>18 telas interativas</span>

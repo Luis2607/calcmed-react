@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CaretLeft } from '@phosphor-icons/react'
 import MobileFrame from '../components/layout/MobileFrame'
+import Button from '../components/ui/Button'
 
 const features = [
   { abbr: 'IOT', name: 'Intubação', domain: 'urg' },
@@ -53,9 +54,9 @@ export default function Onboarding2Page() {
         <div className="flex-1 min-h-6" />
 
         <div className="progress mb-3">Passo 2 de 2</div>
-        <Link to="/home" className="btn btn-lg btn-primary w-full text-center">Continuar</Link>
+        <Button variant="primary" size="lg" href="/home" fullWidth>Continuar</Button>
         <div className="text-center mt-3">
-          <Link to="/home" className="btn-discrete">Agora não, quero explorar</Link>
+          <Button variant="discrete" href="/home">Agora não, quero explorar</Button>
         </div>
       </div>
     </MobileFrame>

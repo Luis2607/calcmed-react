@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import MobileFrame from '../components/layout/MobileFrame'
 import PageHeader from '../components/layout/PageHeader'
 import InputField from '../components/forms/InputField'
+import Button from '../components/ui/Button'
 import { CalendarBlank, CaretDown } from '@phosphor-icons/react'
 
 const shiftTypes = ['PS', 'UTI', 'Enfermaria', 'Outro']
@@ -62,7 +62,7 @@ export default function EscalaNovoPlantaoPage() {
         </div>
 
         {/* Botão */}
-        <Link to="/escala" className="btn btn-lg btn-primary w-full text-center">Salvar Plantão</Link>
+        <Button variant="primary" size="lg" href="/escala" fullWidth>Salvar Plantão</Button>
       </div>
     </MobileFrame>
   )

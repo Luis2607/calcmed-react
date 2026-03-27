@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { User, Baby, Users } from '@phosphor-icons/react'
 import MobileFrame from '../components/layout/MobileFrame'
+import Button from '../components/ui/Button'
 
 const options = [
   { id: 'adulto', label: 'Adulto', icon: User },
@@ -37,19 +37,13 @@ export default function Onboarding1Page() {
 
         <div className="progress mb-4">Passo 1 de 2</div>
         {selected ? (
-          <Link
-            to="/onboarding/2"
-            className="btn btn-lg btn-primary w-full text-center"
-          >
+          <Button variant="primary" size="lg" href="/onboarding/2" fullWidth>
             Continuar
-          </Link>
+          </Button>
         ) : (
-          <button
-            className="btn btn-lg btn-primary w-full text-center disabled"
-            disabled
-          >
+          <Button variant="primary" size="lg" fullWidth disabled>
             Continuar
-          </button>
+          </Button>
         )}
       </div>
     </MobileFrame>

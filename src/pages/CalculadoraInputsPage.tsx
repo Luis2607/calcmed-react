@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react'
-import { Link } from 'react-router-dom'
 import MobileFrame from '../components/layout/MobileFrame'
 import PageHeader from '../components/layout/PageHeader'
 import BottomNav from '../components/layout/BottomNav'
 import InputField from '../components/forms/InputField'
 import SegmentedControl from '../components/forms/SegmentedControl'
+import Button from '../components/ui/Button'
 
 interface FieldState {
   value: string
@@ -118,13 +118,13 @@ export default function CalculadoraInputsPage() {
       {/* CTA FIXO */}
       <div className="sticky-footer">
         {isValid ? (
-          <Link to="/calculadora/crcl/resultado" className="btn btn-lg btn-primary w-full text-center">
+          <Button variant="primary" size="lg" href="/calculadora/crcl/resultado" fullWidth>
             Calcular
-          </Link>
+          </Button>
         ) : (
-          <button className="btn btn-lg btn-primary w-full text-center disabled" disabled>
+          <Button variant="primary" size="lg" fullWidth disabled>
             Calcular
-          </button>
+          </Button>
         )}
       </div>
 

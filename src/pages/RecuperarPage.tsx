@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { CaretLeft, Envelope } from '@phosphor-icons/react'
 import MobileFrame from '../components/layout/MobileFrame'
+import Button from '../components/ui/Button'
 
 export default function RecuperarPage() {
   return (
@@ -33,7 +34,7 @@ export default function RecuperarPage() {
           <div className="icon-circle icon-circle-teal"><Envelope size={24} /></div>
           <div className="msg">Enviamos um link de recuperação para<br /><strong>luis@gmail.com</strong><br />Verifique sua caixa de entrada.</div>
         </div>
-        <Link to="/app" className="btn btn-lg btn-primary w-full text-center mt-auto">Voltar para o login</Link>
+        <Button variant="primary" size="lg" href="/app" fullWidth className="mt-auto">Voltar para o login</Button>
       </div>
     </MobileFrame>
   )

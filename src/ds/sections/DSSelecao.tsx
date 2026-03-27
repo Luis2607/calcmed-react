@@ -172,7 +172,7 @@ export default function DSSelecao() {
         <div className="flex flex-col gap-3 mb-4">
           <div className="flex gap-2 items-start">
             <i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} />
-            <span className="t-corpo-2"><strong>Quando usar:</strong> Apenas 2 estados. A mudança tem efeito imediato (não precisa de botão &lsquo;Salvar&rsquo;).</span>
+            <span className="t-corpo-2"><strong>Quando usar:</strong> Apenas 2 estados. A mudança tem efeito imediato (não precisa de botão "Salvar").</span>
           </div>
           <div className="flex gap-2 items-start">
             <i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} />

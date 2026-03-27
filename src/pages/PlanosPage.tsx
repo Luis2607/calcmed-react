@@ -3,6 +3,7 @@ import MobileFrame from '../components/layout/MobileFrame'
 import PageHeader from '../components/layout/PageHeader'
 import BottomNav from '../components/layout/BottomNav'
 import PlanCard from '../components/cards/PlanCard'
+import Button from '../components/ui/Button'
 import { Tag, ShieldCheck } from '@phosphor-icons/react'
 
 export default function PlanosPage() {
@@ -57,7 +58,7 @@ export default function PlanosPage() {
           {showCoupon && (
             <div className="flex gap-3 mt-3">
               <input className="input-field flex-1 uppercase" type="text" placeholder="Digite o cupom" />
-              <button className="btn btn-md btn-primary">Aplicar</button>
+              <Button variant="primary" size="md">Aplicar</Button>
             </div>
           )}
         </div>
@@ -71,9 +72,9 @@ export default function PlanosPage() {
 
       {/* CTA FIXO */}
       <div className="sticky-footer">
-        <button className="btn btn-lg btn-primary w-full text-center">
+        <Button variant="primary" size="lg" fullWidth>
           Assinar Plano {selected === 'anual' ? 'Anual' : 'Mensal'}
-        </button>
+        </Button>
       </div>
 
       <BottomNav />

@@ -1,6 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import MobileFrame from '../components/layout/MobileFrame'
 import HomeHeader from '../components/layout/HomeHeader'
+import Button from '../components/ui/Button'
 import { CheckCircle } from '@phosphor-icons/react'
 
 export default function PremiumModalPage() {
@@ -79,15 +80,15 @@ export default function PremiumModalPage() {
 
           {/* Ações (3 níveis) */}
           <div className="modal-footer-col mt-4">
-            <Link to="/planos" className="btn btn-lg btn-primary w-full text-center">
+            <Button variant="primary" size="lg" href="/planos" fullWidth>
               Assinar agora - R$149,90/ano
-            </Link>
-            <button className="btn btn-lg btn-ghost w-full text-center">
+            </Button>
+            <Button variant="ghost" size="lg" fullWidth>
               Usar meu último acesso
-            </button>
-            <button className="btn-discrete" onClick={() => navigate(-1)}>
+            </Button>
+            <Button variant="discrete" onClick={() => navigate(-1)}>
               Agora não
-            </button>
+            </Button>
           </div>
         </div>
       </div>

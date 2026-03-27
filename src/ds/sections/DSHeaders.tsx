@@ -12,7 +12,7 @@ export default function DSHeaders() {
       {/* Page Header */}
       <div className="ds-subsection">
         <h3>Page Header</h3>
-        <p className="t-corpo-2 text-fg-2 mb-4">
+        <p className="ds-subsection-desc">
           Cabeçalho principal com gradiente navy da marca. Usado na página inicial do design system
           para apresentar métricas e identidade visual. Aparece apenas em telas de alto nível (Home, Overview).
         </p>
@@ -31,7 +31,7 @@ export default function DSHeaders() {
       {/* Nav Header */}
       <div className="ds-subsection">
         <h3>Nav Header (Interno)</h3>
-        <p className="t-corpo-2 text-fg-2 mb-4">
+        <p className="ds-subsection-desc">
           Header de páginas internas com botão de voltar e título da seção. Essencial para orientar
           o médico sobre onde ele está dentro da hierarquia de calculadoras e protocolos.
           Usado em todas as telas que não são a Home.
@@ -53,7 +53,7 @@ export default function DSHeaders() {
       {/* Home Header */}
       <div className="ds-subsection">
         <h3>Home Header</h3>
-        <p className="t-corpo-2 text-fg-2 mb-4">
+        <p className="ds-subsection-desc">
           Cabeçalho sticky da tela inicial com avatar, saudação personalizada e ícone de notificações.
           O ponto vermelho indica notificações não lidas. Usado exclusivamente na Home para criar
           uma experiência personalizada ao abrir o app.
@@ -76,7 +76,7 @@ export default function DSHeaders() {
       {/* Dots / Progress */}
       <div className="ds-subsection">
         <h3>Indicadores de Progresso</h3>
-        <p className="t-corpo-2 text-fg-2 mb-4">
+        <p className="ds-subsection-desc">
           Dots para indicar página atual em carrosséis ou onboarding. Texto de progresso para
           fluxos com etapas definidas (ex: checkout em 2 passos). Aparecem dentro do header
           de telas sequenciais.
@@ -104,7 +104,7 @@ export default function DSHeaders() {
       {/* FAB */}
       <div className="ds-subsection">
         <h3>FAB (Botão Flutuante)</h3>
-        <p className="t-corpo-2 text-fg-2 mb-4">
+        <p className="ds-subsection-desc">
           Botão de ação flutuante (Floating Action Button) para a ação principal da tela.
           Círculo de 56px com sombra nível 3. Usado na escala para adicionar novos plantões.
           Posicionado no canto inferior direito, acima da bottom nav.
@@ -124,7 +124,7 @@ export default function DSHeaders() {
       {/* Segmented Control */}
       <div className="ds-subsection">
         <h3>Controle Segmentado</h3>
-        <p className="t-corpo-2 text-fg-2 mb-4">
+        <p className="ds-subsection-desc">
           Alternância entre 2 ou 3 opções mutuamente exclusivas. Usado no checkout (Anual/Mensal)
           e na escala (Próximos/Histórico/Estatísticas). A opção ativa recebe fundo primary.
           Aparece tipicamente logo abaixo do header como filtro de conteúdo.
@@ -142,6 +142,24 @@ export default function DSHeaders() {
             </div>
           </div>
         </DSPanel>
+      </div>
+
+      {/* Quando usar / Quando não usar */}
+      <div className="ds-subsection">
+        <h3>Quando usar / Quando não usar</h3>
+        <p className="ds-subsection-desc">
+          Diretrizes para escolher o header correto em cada contexto de navegação.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div className="ds-guideline do">
+            <div className="ds-guideline-label">Quando usar</div>
+            <p>Page Header apenas na overview/landing do DS. Nav Header em todas as telas internas com botão voltar. Home Header exclusivamente na tela inicial com saudação personalizada. FAB para a ação principal da tela (máximo 1 por tela). Controle Segmentado para filtrar conteúdo com 2-3 opções.</p>
+          </div>
+          <div className="ds-guideline dont">
+            <div className="ds-guideline-label">Quando não usar</div>
+            <p>Page Header em telas internas (muito pesado visualmente). Nav Header sem botão voltar (o médico precisa saber como sair). FAB para ações secundárias ou quando já existe CTA no conteúdo. Controle Segmentado com 4+ opções (use tabs). Dots de progresso fora de fluxos sequenciais.</p>
+          </div>
+        </div>
       </div>
     </div>
   )

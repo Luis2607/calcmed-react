@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import MobileFrame from '../components/layout/MobileFrame'
+import Button from '../components/ui/Button'
 
 const slides = [
   { bg: '/assets/slide-1.png', text: 'Doses calculadas em segundos no PS' },
@@ -53,18 +53,18 @@ export default function EntradaPage() {
 
       {/* Bottom Sheet */}
       <div className="bottom-sheet bottom-sheet-compact pb-8">
-        <Link to="/onboarding/1" className="btn btn-lg btn-google w-full">
+        <Button variant="google" size="lg" href="/onboarding/1" fullWidth>
           <span className="icon-google" /> Entrar com Google
-        </Link>
-        <Link to="/onboarding/1" className="btn btn-lg btn-apple w-full">
+        </Button>
+        <Button variant="apple" size="lg" href="/onboarding/1" fullWidth>
           <span className="icon-apple" /> Entrar com Apple
-        </Link>
+        </Button>
         <div className="divider-ou"><div className="line" /><span className="text">ou</span><div className="line" /></div>
         <div className="text-center">
-          <Link to="/login/email" className="btn-text">Entrar com e-mail</Link>
+          <Button variant="text" href="/login/email">Entrar com e-mail</Button>
         </div>
         <div className="text-center">
-          <button className="btn-discrete">Suporte</button>
+          <Button variant="discrete">Suporte</Button>
         </div>
       </div>
     </MobileFrame>

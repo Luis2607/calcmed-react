@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom'
 import MobileFrame from '../components/layout/MobileFrame'
 import PageHeader from '../components/layout/PageHeader'
 import BottomNav from '../components/layout/BottomNav'
 import AlertCard from '../components/ui/AlertCard'
 import Chip from '../components/ui/Chip'
+import Button from '../components/ui/Button'
 
 export default function CalculadoraResultadoPage() {
   return (
@@ -52,7 +52,7 @@ export default function CalculadoraResultadoPage() {
         </div>
 
         {/* Recalcular */}
-        <Link to="/calculadora/crcl" className="btn btn-lg btn-ghost w-full text-center">Recalcular</Link>
+        <Button variant="ghost" size="lg" href="/calculadora/crcl" fullWidth>Recalcular</Button>
       </div>
 
       <BottomNav />

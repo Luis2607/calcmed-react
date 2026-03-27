@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CaretLeft, Eye, EyeSlash } from '@phosphor-icons/react'
 import MobileFrame from '../components/layout/MobileFrame'
+import Button from '../components/ui/Button'
 
 export default function SenhaPage() {
   const [show, setShow] = useState(false)
@@ -44,9 +45,9 @@ export default function SenhaPage() {
             </button>
           </div>
         </div>
-        <Link to="/onboarding/1" className="btn btn-md btn-primary w-full text-center">Entrar</Link>
+        <Button variant="primary" size="md" href="/onboarding/1" fullWidth>Entrar</Button>
         <div className="text-center">
-          <Link to="/login/recuperar" className="btn-text">Esqueci minha senha</Link>
+          <Button variant="text" href="/login/recuperar">Esqueci minha senha</Button>
         </div>
       </div>
     </MobileFrame>

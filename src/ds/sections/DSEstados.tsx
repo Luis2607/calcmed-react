@@ -43,7 +43,7 @@ export default function DSEstados() {
       {/* Skeleton Loading */}
       <div className="ds-subsection">
         <h3>Skeleton Loading</h3>
-        <p className="t-corpo-2 text-fg-2 mb-4">
+        <p className="ds-subsection-desc">
           Placeholder animado que simula a estrutura do conteúdo enquanto os dados carregam.
           O CalcMed nunca usa spinners — skeletons reduzem a percepção de espera e orientam
           o médico sobre o que vai aparecer na tela.
@@ -67,7 +67,7 @@ export default function DSEstados() {
       {/* Empty State */}
       <div className="ds-subsection">
         <h3>Empty State</h3>
-        <p className="t-corpo-2 text-fg-2 mb-4">
+        <p className="ds-subsection-desc">
           Tela exibida quando uma busca não retorna resultados ou uma seção está vazia.
           Sempre inclui ícone, mensagem explicativa e ação sugerida para orientar o próximo passo.
         </p>
@@ -84,7 +84,7 @@ export default function DSEstados() {
       {/* Feedback Sent */}
       <div className="ds-subsection">
         <h3>Feedback Enviado</h3>
-        <p className="t-corpo-2 text-fg-2 mb-4">
+        <p className="ds-subsection-desc">
           Confirmação visual após o envio de feedback ou formulário. Ícone + mensagem de agradecimento
           para fechar o ciclo da ação do usuário.
         </p>
@@ -96,6 +96,24 @@ export default function DSEstados() {
             <div className="msg">Seu feedback foi enviado com sucesso! Agradecemos a contribuição.</div>
           </div>
         </DSPanel>
+      </div>
+
+      {/* Quando usar / Quando não usar */}
+      <div className="ds-subsection">
+        <h3>Quando usar / Quando não usar</h3>
+        <p className="ds-subsection-desc">
+          Diretrizes para garantir que todo conteúdo tenha um estado visual adequado.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div className="ds-guideline do">
+            <div className="ds-guideline-label">Quando usar</div>
+            <p>Skeleton sempre que dados levam mais de 300ms para carregar. Empty state quando lista/busca retorna zero resultados. Feedback enviado após formulários e ações assíncronas (salvar plantão, enviar feedback).</p>
+          </div>
+          <div className="ds-guideline dont">
+            <div className="ds-guideline-label">Quando não usar</div>
+            <p>Spinner em lugar de skeleton (proibido no CalcMed). Tela em branco sem mensagem enquanto carrega. Empty state sem ação sugerida (sempre ofereça próximo passo). Feedback enviado para ações instantâneas (use toast).</p>
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CaretLeft } from '@phosphor-icons/react'
 import MobileFrame from '../components/layout/MobileFrame'
+import Button from '../components/ui/Button'
 
 export default function EmailPage() {
   const [email, setEmail] = useState('')
@@ -45,19 +46,13 @@ export default function EmailPage() {
           />
         </div>
         {valid ? (
-          <Link
-            to="/login/senha"
-            className="btn btn-md btn-primary w-full text-center"
-          >
+          <Button variant="primary" size="md" href="/login/senha" fullWidth>
             Continuar
-          </Link>
+          </Button>
         ) : (
-          <button
-            className="btn btn-md btn-primary w-full text-center disabled"
-            disabled
-          >
+          <Button variant="primary" size="md" fullWidth disabled>
             Continuar
-          </button>
+          </Button>
         )}
       </div>
     </MobileFrame>
