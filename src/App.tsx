@@ -47,6 +47,9 @@ const DSCategorias = lazy(() => import('./ds/sections/DSCategorias'))
 const DSMenuPerfil = lazy(() => import('./ds/sections/DSMenu'))
 const DSSelecao = lazy(() => import('./ds/sections/DSSelecao'))
 const DSPremiumCheckout = lazy(() => import('./ds/sections/DSPremiumModal'))
+const DSWriting = lazy(() => import('./ds/sections/DSWriting'))
+const DSClinico = lazy(() => import('./ds/sections/DSClinico'))
+const DSChangelog = lazy(() => import('./ds/sections/DSChangelog'))
 
 export default function App() {
   return (
@@ -86,6 +89,9 @@ export default function App() {
         <Route path="categorias" element={<Suspense fallback={null}><DSCategorias /></Suspense>} />
         <Route path="menu-perfil" element={<Suspense fallback={null}><DSMenuPerfil /></Suspense>} />
         <Route path="premium" element={<Suspense fallback={null}><DSPremiumCheckout /></Suspense>} />
+        <Route path="clinico" element={<Suspense fallback={null}><DSClinico /></Suspense>} />
+        <Route path="writing" element={<Suspense fallback={null}><DSWriting /></Suspense>} />
+        <Route path="changelog" element={<Suspense fallback={null}><DSChangelog /></Suspense>} />
       </Route>
 
       {/* Landing */}

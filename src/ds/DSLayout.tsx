@@ -13,6 +13,7 @@ const pathLabels: Record<string, { group: string; label: string }> = {
   elevacao: { group: 'Átomos', label: 'Elevação' },
   motion: { group: 'Átomos', label: 'Animações' },
   icones: { group: 'Átomos', label: 'Ícones' },
+  writing: { group: 'Átomos', label: 'Tom de Voz e Escrita' },
   botoes: { group: 'Moléculas', label: 'Botões' },
   inputs: { group: 'Moléculas', label: 'Campos de Entrada' },
   selecao: { group: 'Moléculas', label: 'Controles de Seleção' },
@@ -24,19 +25,22 @@ const pathLabels: Record<string, { group: string; label: string }> = {
   calendario: { group: 'Organismos', label: 'Calendário' },
   'menu-perfil': { group: 'Organismos', label: 'Menu e Perfil' },
   premium: { group: 'Organismos', label: 'Premium e Checkout' },
+  clinico: { group: 'Organismos', label: 'Componentes Clínicos' },
   navegacao: { group: 'Templates', label: 'Navegação' },
   patterns: { group: 'Templates', label: 'Listas e Utilitários' },
   overlays: { group: 'Templates', label: 'Overlays e Diálogos' },
   estados: { group: 'Templates', label: 'Estados de Conteúdo' },
   headers: { group: 'Templates', label: 'Headers' },
   acessibilidade: { group: 'Templates', label: 'Acessibilidade' },
+  changelog: { group: 'Meta', label: 'Changelog' },
 }
 
 const sectionOrder = [
-  'brand', 'cores', 'tipografia', 'espacamento', 'grid', 'elevacao', 'motion', 'icones',
+  'brand', 'cores', 'tipografia', 'espacamento', 'grid', 'elevacao', 'motion', 'icones', 'writing',
   'botoes', 'inputs', 'selecao', 'tags', 'alertas',
-  'cards', 'categorias', 'chat', 'calendario', 'menu-perfil', 'premium',
+  'cards', 'categorias', 'chat', 'calendario', 'menu-perfil', 'premium', 'clinico',
   'navegacao', 'patterns', 'overlays', 'estados', 'headers', 'acessibilidade',
+  'changelog',
 ]
 
 /* ── Breadcrumb component ── */
@@ -104,6 +108,7 @@ function DSPrevNext({ slug }: { slug: string | undefined }) {
 export default function DSLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [search, setSearch] = useState('')
+  const [darkMode, setDarkMode] = useState(false)
   const location = useLocation()
 
   // Extract the current section slug from the path
@@ -116,7 +121,7 @@ export default function DSLayout() {
   }, [location.pathname])
 
   return (
-    <div className="ds-layout">
+    <div className={`ds-layout ${darkMode ? 'dark' : 'light'}`}>
       <button
         className="ds-mobile-toggle"
         onClick={() => setSidebarOpen(true)}
@@ -130,6 +135,8 @@ export default function DSLayout() {
         onClose={() => setSidebarOpen(false)}
         search={search}
         onNavigate={() => setSearch('')}
+        darkMode={darkMode}
+        onToggleDark={() => setDarkMode(!darkMode)}
       />
 
       {/* Search input rendered as overlay on top of sidebar nav area */}

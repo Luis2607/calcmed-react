@@ -31,6 +31,7 @@ const groups: NavGroup[] = [
       { label: 'Elevação', path: 'elevacao' },
       { label: 'Animações', path: 'motion' },
       { label: 'Ícones', path: 'icones' },
+      { label: 'Tom de Voz e Escrita', path: 'writing' },
     ],
   },
   {
@@ -52,6 +53,7 @@ const groups: NavGroup[] = [
       { label: 'Calendário', path: 'calendario' },
       { label: 'Menu e Perfil', path: 'menu-perfil' },
       { label: 'Premium e Checkout', path: 'premium' },
+      { label: 'Componentes Clínicos', path: 'clinico', status: 'new' },
     ],
   },
   {
@@ -77,9 +79,11 @@ interface Props {
   onClose: () => void
   search?: string
   onNavigate?: () => void
+  darkMode?: boolean
+  onToggleDark?: () => void
 }
 
-export default function DSSidebar({ isOpen, onClose, search = '', onNavigate }: Props) {
+export default function DSSidebar({ isOpen, onClose, search = '', onNavigate, darkMode = false, onToggleDark }: Props) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({
     'Átomos': true,
     'Moléculas': false,
@@ -125,6 +129,14 @@ export default function DSSidebar({ isOpen, onClose, search = '', onNavigate }: 
             Calc<span className="dot">.</span>Med
           </NavLink>
           <span className="ds-header-label">Design System</span>
+          <button
+            className="ds-theme-toggle"
+            onClick={onToggleDark}
+            title={darkMode ? 'Modo claro' : 'Modo escuro'}
+            aria-label={darkMode ? 'Modo claro' : 'Modo escuro'}
+          >
+            <i className={`ph ${darkMode ? 'ph-sun' : 'ph-moon'}`} />
+          </button>
         </div>
 
         <NavLink to="/home" className="ds-back-link" onClick={handleNavClick}>
@@ -191,6 +203,17 @@ export default function DSSidebar({ isOpen, onClose, search = '', onNavigate }: 
             </div>
           )}
         </nav>
+
+        <div className="ds-sidebar-footer">
+          <NavLink
+            to="/design-system/changelog"
+            className={({ isActive }) => `ds-nav-item ds-changelog-link${isActive ? ' active' : ''}`}
+            onClick={handleNavClick}
+          >
+            <i className="ph ph-clock-counter-clockwise" />
+            <span>Changelog</span>
+          </NavLink>
+        </div>
       </aside>
     </>
   )

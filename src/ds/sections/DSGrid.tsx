@@ -1,5 +1,13 @@
 import DSPanel from '../DSPanel'
 
+const responsiveBehaviors = [
+  { component: 'Cards grid', mobile: '2 colunas (grid-2col)', tablet: '3 colunas', desktop: '4 colunas' },
+  { component: 'Bottom nav', mobile: 'Visivel (fixa no bottom)', tablet: 'Visivel', desktop: 'Oculta (sidebar substitui)' },
+  { component: 'Sidebar', mobile: 'Oculta (hamburger menu)', tablet: 'Oculta (hamburger menu)', desktop: 'Visivel, 260px fixa' },
+  { component: 'Input fields', mobile: 'Full-width', tablet: 'Full-width', desktop: 'max-width 480px' },
+  { component: 'Modal', mobile: 'Full-width bottom sheet', tablet: 'Centralizado, max 480px', desktop: 'Centralizado, max 560px' },
+]
+
 const breakpoints = [
   { name: 'Mobile', range: '<600dp', cols: 4, margin: '24px', gutter: '16px' },
   { name: 'Tablet', range: '600-1023dp', cols: 8, margin: '32px', gutter: '24px' },
@@ -120,6 +128,51 @@ export default function DSGrid() {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="ds-subsection">
+        <h3>Comportamento Responsivo</h3>
+        <p className="t-corpo-2 text-fg-2 mb-4">
+          Cada componente se adapta ao contexto do dispositivo. No plantao, o medico usa celular.
+          No consultorio, pode usar tablet ou desktop. O DS garante que a experiencia clinica
+          seja consistente em qualquer tela.
+        </p>
+        <table className="ds-token-table">
+          <thead>
+            <tr>
+              <th>Componente</th>
+              <th>Mobile (&lt;600px)</th>
+              <th>Tablet (600-839px)</th>
+              <th>Desktop (840px+)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {responsiveBehaviors.map(r => (
+              <tr key={r.component}>
+                <td><strong>{r.component}</strong></td>
+                <td className="t-legenda">{r.mobile}</td>
+                <td className="t-legenda">{r.tablet}</td>
+                <td className="t-legenda">{r.desktop}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <DSPanel title="Media queries ativas no design-system.css">
+          <div className="flex flex-col gap-3">
+            <div className="ds-bp-card">
+              <div className="ds-token mb-1">@media (min-width: 600px)</div>
+              <div className="t-legenda text-fg-3">
+                Grid 2col vira 3col. Bottom sheet ganha max-width 480px centralizado. Modal max 480px.
+              </div>
+            </div>
+            <div className="ds-bp-card">
+              <div className="ds-token mb-1">@media (min-width: 840px)</div>
+              <div className="t-legenda text-fg-3">
+                Grid 2col vira 4col. Bottom nav oculta (sidebar substitui). Inputs limitados a 480px. Modal max 560px com border-radius.
+              </div>
+            </div>
+          </div>
+        </DSPanel>
       </div>
     </div>
   )

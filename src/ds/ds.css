@@ -786,3 +786,139 @@
   .ds-breadcrumb { display: none }
   .ds-nav-item, .ds-quick-link { box-shadow: none !important }
 }
+
+/* ── Theme Toggle Button ── */
+.ds-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--fg-2);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+.ds-theme-toggle:hover {
+  background: var(--bg-hover);
+  color: var(--fg);
+}
+
+/* ── Sidebar Footer (Changelog link) ── */
+.ds-sidebar-footer {
+  margin-top: auto;
+  padding: var(--sp-4) 0;
+  border-top: 1px solid var(--border);
+}
+.ds-changelog-link {
+  display: flex !important;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.ds-changelog-link i {
+  font-size: 16px;
+}
+
+/* ── Changelog Section ── */
+.ds-changelog-timeline {
+  position: relative;
+  padding-left: var(--sp-8);
+}
+.ds-changelog-timeline::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--border);
+  border-radius: 1px;
+}
+
+.ds-changelog-entry {
+  position: relative;
+  margin-bottom: var(--sp-8);
+}
+.ds-changelog-entry:last-child {
+  margin-bottom: 0;
+}
+
+.ds-changelog-dot {
+  position: absolute;
+  left: calc(-1 * var(--sp-8) + 6px);
+  top: 10px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--btn-primary);
+  border: 2px solid var(--bg);
+  z-index: 1;
+}
+.ds-changelog-entry:first-child .ds-changelog-dot {
+  width: 14px;
+  height: 14px;
+  left: calc(-1 * var(--sp-8) + 5px);
+  top: 9px;
+  box-shadow: 0 0 0 3px rgba(0, 121, 147, 0.2);
+}
+
+.ds-changelog-card {
+  padding: var(--sp-6);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 0.25s var(--ease-default), transform 0.25s var(--ease-default);
+}
+.ds-changelog-card:hover {
+  box-shadow: var(--shadow-2);
+  transform: translateY(-1px);
+}
+
+.ds-changelog-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.ds-changelog-version {
+  font: 700 20px/28px 'JetBrains Mono', monospace;
+  color: var(--btn-primary);
+}
+
+.ds-changelog-date {
+  font: 400 13px/20px 'Inter', sans-serif;
+  color: var(--fg-3);
+}
+
+.ds-changelog-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ds-changelog-card li {
+  position: relative;
+  padding: var(--sp-1) 0 var(--sp-1) var(--sp-5);
+  font: 400 14px/22px 'Inter', sans-serif;
+  color: var(--fg-2);
+}
+.ds-changelog-card li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--btn-primary);
+  opacity: 0.5;
+}
+.ds-changelog-card li + li {
+  border-top: 1px solid var(--border-subtle);
+}

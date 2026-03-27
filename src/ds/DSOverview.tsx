@@ -48,6 +48,7 @@ const quickLinks = [
   { icon: 'ph-stack', label: 'Elevação', path: '/design-system/elevacao', group: 'Átomos' },
   { icon: 'ph-play', label: 'Animações', path: '/design-system/motion', group: 'Átomos' },
   { icon: 'ph-phosphor-logo', label: 'Ícones', path: '/design-system/icones', group: 'Átomos' },
+  { icon: 'ph-pen-nib', label: 'Tom de Voz e Escrita', path: '/design-system/writing', group: 'Átomos' },
   // Moléculas
   { icon: 'ph-cursor-click', label: 'Botões', path: '/design-system/botoes', group: 'Moléculas' },
   { icon: 'ph-textbox', label: 'Campos de Entrada', path: '/design-system/inputs', group: 'Moléculas' },
@@ -57,6 +58,7 @@ const quickLinks = [
   { icon: 'ph-cards', label: 'Cards', path: '/design-system/cards', group: 'Organismos' },
   { icon: 'ph-chat-circle', label: 'Chat e IA', path: '/design-system/chat', group: 'Organismos' },
   { icon: 'ph-calendar', label: 'Calendário', path: '/design-system/calendario', group: 'Organismos' },
+  { icon: 'ph-heartbeat', label: 'Componentes Clínicos', path: '/design-system/clinico', group: 'Organismos' },
   // Templates
   { icon: 'ph-compass', label: 'Navegação', path: '/design-system/navegacao', group: 'Templates' },
   { icon: 'ph-wheelchair', label: 'Acessibilidade', path: '/design-system/acessibilidade', group: 'Templates' },

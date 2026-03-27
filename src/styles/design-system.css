@@ -1594,3 +1594,22 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
   color: var(--btn-primary); border-bottom-color: var(--btn-primary);
   font-weight: 600;
 }
+
+/* ================================================================
+   RESPONSIVE — Breakpoints reais
+   ================================================================ */
+
+/* Tablet (600-839px) */
+@media (min-width: 600px) {
+  .grid-2col { grid-template-columns: repeat(3, 1fr) }
+  .bottom-sheet { max-width: 480px; margin: 0 auto; border-radius: var(--r-xl) var(--r-xl) 0 0 }
+  .modal { max-width: 480px }
+}
+
+/* Desktop (840px+) */
+@media (min-width: 840px) {
+  .grid-2col { grid-template-columns: repeat(4, 1fr) }
+  .bottom-nav { display: none }
+  .input-field { max-width: 480px }
+  .modal { max-width: 560px; border-radius: var(--r-xl) }
+}
