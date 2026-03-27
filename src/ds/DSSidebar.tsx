@@ -5,7 +5,7 @@ type NavStatus = 'beta' | 'new'
 
 const statusConfig: Record<NavStatus, { color: string; label: string }> = {
   beta: { color: 'var(--warning)', label: 'Beta' },
-  new: { color: 'var(--primary)', label: 'Novo' },
+  new: { color: 'var(--btn-primary)', label: 'Novo' },
 }
 
 interface NavItem {
@@ -58,7 +58,8 @@ const groups: NavGroup[] = [
     title: 'Templates',
     items: [
       { label: 'Navegação', path: 'navegacao' },
-      { label: 'Overlays', path: 'overlays' },
+      { label: 'Listas e Utilitários', path: 'patterns' },
+      { label: 'Overlays e Diálogos', path: 'overlays' },
       { label: 'Estados de Conteúdo', path: 'estados' },
       { label: 'Headers', path: 'headers' },
       { label: 'Acessibilidade', path: 'acessibilidade' },

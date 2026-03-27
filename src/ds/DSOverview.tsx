@@ -105,7 +105,7 @@ export default function DSOverview() {
             >
               <i
                 className={`ph ${p.icon}`}
-                style={{ fontSize: 24, color: 'var(--primary)', display: 'block', marginBottom: 12 }}
+                style={{ fontSize: 24, color: 'var(--btn-primary)', display: 'block', marginBottom: 12 }}
               />
               <div className="t-titulo-card" style={{ fontWeight: 700, marginBottom: 8 }}>{p.title}</div>
               <p className="t-corpo-2 text-fg-2" style={{ margin: 0 }}>{p.desc}</p>
@@ -152,7 +152,7 @@ export default function DSOverview() {
           >
             <i
               className="ph ph-tag"
-              style={{ fontSize: 24, color: 'var(--primary)', display: 'block', marginBottom: 12 }}
+              style={{ fontSize: 24, color: 'var(--btn-primary)', display: 'block', marginBottom: 12 }}
             />
             <div className="t-titulo-card" style={{ fontWeight: 700, marginBottom: 8 }}>Semântico, não literal</div>
             <p className="t-corpo-2" style={{ margin: 0, marginBottom: 8 }}>
@@ -172,7 +172,7 @@ export default function DSOverview() {
           >
             <i
               className="ph ph-sort-ascending"
-              style={{ fontSize: 24, color: 'var(--primary)', display: 'block', marginBottom: 12 }}
+              style={{ fontSize: 24, color: 'var(--btn-primary)', display: 'block', marginBottom: 12 }}
             />
             <div className="t-titulo-card" style={{ fontWeight: 700, marginBottom: 8 }}>Contexto primeiro, propriedade depois</div>
             <p className="t-corpo-2" style={{ margin: 0, marginBottom: 8 }}>
@@ -192,7 +192,7 @@ export default function DSOverview() {
           >
             <i
               className="ph ph-chart-line-up"
-              style={{ fontSize: 24, color: 'var(--primary)', display: 'block', marginBottom: 12 }}
+              style={{ fontSize: 24, color: 'var(--btn-primary)', display: 'block', marginBottom: 12 }}
             />
             <div className="t-titulo-card" style={{ fontWeight: 700, marginBottom: 8 }}>Escala numérica para intensidade</div>
             <p className="t-corpo-2" style={{ margin: 0, marginBottom: 8 }}>

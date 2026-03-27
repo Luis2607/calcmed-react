@@ -25,6 +25,7 @@ const pathLabels: Record<string, { group: string; label: string }> = {
   'menu-perfil': { group: 'Organismos', label: 'Menu e Perfil' },
   premium: { group: 'Organismos', label: 'Premium e Checkout' },
   navegacao: { group: 'Templates', label: 'Navegação' },
+  patterns: { group: 'Templates', label: 'Listas e Utilitários' },
   overlays: { group: 'Templates', label: 'Overlays e Diálogos' },
   estados: { group: 'Templates', label: 'Estados de Conteúdo' },
   headers: { group: 'Templates', label: 'Headers' },
@@ -35,7 +36,7 @@ const sectionOrder = [
   'brand', 'cores', 'tipografia', 'espacamento', 'grid', 'elevacao', 'motion', 'icones',
   'botoes', 'inputs', 'selecao', 'tags', 'alertas',
   'cards', 'categorias', 'chat', 'calendario', 'menu-perfil', 'premium',
-  'navegacao', 'overlays', 'estados', 'headers', 'acessibilidade',
+  'navegacao', 'patterns', 'overlays', 'estados', 'headers', 'acessibilidade',
 ]
 
 /* ── Breadcrumb component ── */
@@ -145,7 +146,7 @@ export default function DSLayout() {
 
       <main className="ds-content">
         {!isOverview && <DSBreadcrumb slug={slug} />}
-        <Suspense fallback={<div className="p-10 text-fg-3">Carregando...</div>}>
+        <Suspense fallback={<div className="p-8 text-fg-3">Carregando...</div>}>
           <Outlet />
         </Suspense>
         {!isOverview && <DSPrevNext slug={slug} />}

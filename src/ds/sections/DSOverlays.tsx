@@ -30,7 +30,7 @@ export default function DSOverlays() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <i className="ph ph-arrows-down-up" style={{ fontSize: 20, color: 'var(--primary)', flexShrink: 0, marginTop: 2 }} />
+              <i className="ph ph-arrows-down-up" style={{ fontSize: 20, color: 'var(--btn-primary)', flexShrink: 0, marginTop: 2 }} />
               <div>
                 <div className="t-corpo text-fg" style={{ fontWeight: 600 }}>Bottom Sheet</div>
                 <div className="t-corpo-2 text-fg-2">Seleções contextuais, opções adicionais. Permite ver a tela abaixo parcialmente.</div>
