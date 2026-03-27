@@ -1626,7 +1626,5 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
 /* Desktop (840px+) */
 @media (min-width: 840px) {
   .grid-2col { grid-template-columns: repeat(4, 1fr) }
-  .bottom-nav { display: none }
-  .input-field { max-width: 480px }
   .modal { max-width: 560px; border-radius: var(--r-xl) }
 }

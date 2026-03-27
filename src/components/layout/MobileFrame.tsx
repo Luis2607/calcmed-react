@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useTheme } from '../../contexts/ThemeContext'
 
 interface Props {
   children: ReactNode
@@ -7,8 +8,9 @@ interface Props {
 }
 
 export default function MobileFrame({ children, className = '', darkFrame }: Props) {
+  const { resolvedTheme } = useTheme()
   return (
-    <div className={`mobile-frame light ${darkFrame ? 'dark-frame' : ''} ${className}`}>
+    <div className={`mobile-frame ${resolvedTheme} ${darkFrame ? 'dark-frame' : ''} ${className}`}>
       {children}
     </div>
   )
