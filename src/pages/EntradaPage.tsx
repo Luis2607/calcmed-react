@@ -45,7 +45,15 @@ export default function EntradaPage() {
           </div>
           <div className="dots mt-3">
             {slides.map((_, i) => (
-              <div key={i} className={i === current ? 'active' : 'inactive'} onClick={() => setCurrent(i)} />
+              <div
+                key={i}
+                className={i === current ? 'active' : 'inactive'}
+                role="button"
+                tabIndex={0}
+                aria-label={`Slide ${i + 1} de ${slides.length}`}
+                onClick={() => setCurrent(i)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setCurrent(i); } }}
+              />
             ))}
           </div>
         </div>

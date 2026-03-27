@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom'
 import { CaretLeft } from '@phosphor-icons/react'
 import MobileFrame from '../components/layout/MobileFrame'
 import Button from '../components/ui/Button'
+import InputField from '../components/forms/InputField'
 
 export default function EmailPage() {
   const [email, setEmail] = useState('')
+  const [touched, setTouched] = useState(false)
   const valid = email.includes('@') && email.includes('.')
+  const showError = touched && email.length > 0 && !valid
 
   return (
     <MobileFrame darkFrame>
@@ -34,17 +37,15 @@ export default function EmailPage() {
           <Link to="/app" className="back" aria-label="Voltar"><CaretLeft size={20} /></Link>
           <div className="title">Entrar</div>
         </div>
-        <div className="input-group">
-          <label htmlFor="email" className="input-label">Seu e-mail</label>
-          <input
-            className="input-field"
-            id="email"
-            type="email"
-            placeholder="medico@hospital.com"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-        </div>
+        <InputField
+          id="email"
+          label="Seu e-mail"
+          type="email"
+          placeholder="medico@hospital.com"
+          value={email}
+          onChange={(val) => { setEmail(val); if (!touched) setTouched(true); }}
+          error={showError ? 'Insira um e-mail válido' : undefined}
+        />
         {valid ? (
           <Button variant="primary" size="md" href="/login/senha" fullWidth>
             Continuar

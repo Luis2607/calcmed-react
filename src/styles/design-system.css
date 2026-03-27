@@ -1031,6 +1031,12 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
   padding: var(--sp-2) 0; margin-top: var(--sp-4);
 }
 .search-group-header .group-accent { width: 3px; height: 16px; border-radius: 2px }
+.search-group-header .group-accent.urg { background: var(--dom-urg) }
+.search-group-header .group-accent.dil { background: var(--dom-dil) }
+.search-group-header .group-accent.calc { background: var(--dom-calc) }
+.search-group-header .group-accent.prot { background: var(--dom-prot) }
+.search-group-header .group-accent.esc { background: var(--dom-esc) }
+.search-group-header .group-accent.conv { background: var(--dom-conv) }
 .search-group-header .group-name { font: 600 13px 'Inter'; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.5px }
 .chip.active { background: var(--btn-primary); color: var(--fg-on); border-color: var(--btn-primary) }
 .dark .chip.active { background: var(--btn-accent); border-color: var(--btn-accent) }

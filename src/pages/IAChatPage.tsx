@@ -24,7 +24,7 @@ export default function IAChatPage() {
       </div>
 
       {/* CHAT AREA */}
-      <div className="chat-area">
+      <div className="chat-area" role="log" aria-live="polite">
         <ChatBubble>
           Olá, Dr. Rafael. Como posso ajudar no seu plantão?
         </ChatBubble>

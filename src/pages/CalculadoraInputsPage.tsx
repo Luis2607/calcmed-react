@@ -103,8 +103,9 @@ export default function CalculadoraInputsPage() {
         />
 
         <div className="input-group mb-6">
-          <label className="input-label mb-2">Sexo</label>
+          <label id="sexo-label" className="input-label mb-2" htmlFor="sexo">Sexo</label>
           <SegmentedControl
+            id="sexo"
             options={[
               { value: 'M', label: 'Masculino' },
               { value: 'F', label: 'Feminino' },

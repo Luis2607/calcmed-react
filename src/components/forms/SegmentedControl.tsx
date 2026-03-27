@@ -2,11 +2,12 @@ interface Props {
   options: { value: string; label: string }[]
   value: string
   onChange: (val: string) => void
+  id?: string
 }
 
-export default function SegmentedControl({ options, value, onChange }: Props) {
+export default function SegmentedControl({ options, value, onChange, id }: Props) {
   return (
-    <div className="segmented">
+    <div className="segmented" id={id} role="radiogroup" aria-labelledby={id ? `${id}-label` : undefined}>
       {options.map(opt => (
         <button
           key={opt.value}

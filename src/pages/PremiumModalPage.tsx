@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import MobileFrame from '../components/layout/MobileFrame'
 import HomeHeader from '../components/layout/HomeHeader'
@@ -6,6 +7,42 @@ import { CheckCircle } from '@phosphor-icons/react'
 
 export default function PremiumModalPage() {
   const navigate = useNavigate()
+  const modalRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const modal = modalRef.current
+    if (!modal) return
+
+    // Focus the modal on mount
+    modal.focus()
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key !== 'Tab' || !modal) return
+
+      const focusable = modal.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+      if (focusable.length === 0) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+      }
+    }
+
+    modal.addEventListener('keydown', handleKeyDown)
+    return () => modal.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   return (
     <MobileFrame className="relative">
@@ -15,7 +52,14 @@ export default function PremiumModalPage() {
 
       {/* OVERLAY + MODAL */}
       <div className="modal-overlay from-bottom">
-        <div className="modal-premium-sheet">
+        <div
+          ref={modalRef}
+          className="modal-premium-sheet"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="premium-modal-title"
+          tabIndex={-1}
+        >
           {/* Tag PREMIUM topo */}
           <div className="text-center p-5 pb-0">
             <span className="tag-status premium">PREMIUM</span>
@@ -29,7 +73,7 @@ export default function PremiumModalPage() {
 
           {/* Título */}
           <div className="text-center p-5 pb-0">
-            <h2 className="t-titulo-pagina">Seu teste está acabando</h2>
+            <h2 id="premium-modal-title" className="t-titulo-pagina">Seu teste está acabando</h2>
           </div>
 
           {/* Destaque uso restante */}

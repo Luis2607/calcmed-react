@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom'
 import { CaretLeft, Eye, EyeSlash } from '@phosphor-icons/react'
 import MobileFrame from '../components/layout/MobileFrame'
 import Button from '../components/ui/Button'
+import InputField from '../components/forms/InputField'
 
 export default function SenhaPage() {
   const [show, setShow] = useState(false)
+  const [password, setPassword] = useState('')
 
   return (
     <MobileFrame darkFrame>
@@ -39,7 +41,15 @@ export default function SenhaPage() {
         <div className="input-group">
           <label htmlFor="password" className="input-label sr-only">Senha</label>
           <div className="input-password">
-            <input className="input-field" id="password" type={show ? 'text' : 'password'} placeholder="••••••••" />
+            <InputField
+              id="password"
+              label="Senha"
+              type={show ? 'text' : 'password'}
+              placeholder="••••••••"
+              value={password}
+              onChange={setPassword}
+              className="sr-only-label"
+            />
             <button className="eye-toggle" type="button" onClick={() => setShow(!show)} aria-label="Mostrar ou ocultar senha">
               {show ? <Eye size={20} /> : <EyeSlash size={20} />}
             </button>

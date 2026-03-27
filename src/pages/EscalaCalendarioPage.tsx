@@ -15,7 +15,7 @@ interface DayProps {
 function DayCell({ num, today, otherMonth, dotColor }: DayProps) {
   const classes = ['day-cell', today && 'today', otherMonth && 'other-month'].filter(Boolean).join(' ')
   return (
-    <div className={classes}>
+    <div className={classes} role="gridcell">
       <span className="day-num">{num}</span>
       {dotColor && <span className="day-dot" style={{ background: dotColor }} />}
     </div>
@@ -27,7 +27,7 @@ export default function EscalaCalendarioPage() {
     <MobileFrame className="relative">
       {/* HEADER */}
       <div className="home-header">
-        <div className="t-alerta-titulo flex-1">Minha Escala</div>
+        <div className="t-titulo-secao flex-1">Minha Escala</div>
       </div>
 
       <TabBar tabs={['Calendário', 'Histórico', 'Hospitais']} />
@@ -35,13 +35,13 @@ export default function EscalaCalendarioPage() {
       <div className="screen-content flex-1 overflow-y-auto">
         {/* Calendar nav */}
         <div className="calendar-nav">
-          <button className="nav-arrow"><CaretLeft size={16} /></button>
+          <button className="nav-arrow" aria-label="Mês anterior"><CaretLeft size={16} /></button>
           <span className="month-title">Março 2026</span>
-          <button className="nav-arrow"><CaretRight size={16} /></button>
+          <button className="nav-arrow" aria-label="Próximo mês"><CaretRight size={16} /></button>
         </div>
 
         {/* Calendar grid */}
-        <div className="calendar-grid">
+        <div className="calendar-grid" role="grid">
           {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(d => (
             <div key={d} className="day-header">{d}</div>
           ))}
@@ -124,7 +124,7 @@ export default function EscalaCalendarioPage() {
       </div>
 
       {/* FAB */}
-      <Link to="/escala/novo" className="fab"><Plus size={24} /></Link>
+      <Link to="/escala/novo" className="fab" aria-label="Adicionar plantão"><Plus size={24} /></Link>
 
       <BottomNav />
     </MobileFrame>

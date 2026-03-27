@@ -43,6 +43,7 @@ export default function Onboarding2Page() {
               tabIndex={0}
               aria-selected={selected.has(f.abbr)}
               onClick={() => toggle(f.abbr)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(f.abbr); } }}
             >
               <span className={`tag-abbr ${f.domain}`}>{f.abbr}</span>
               <span className="feat-name">{f.name}</span>

@@ -26,6 +26,7 @@ export default function Onboarding1Page() {
               tabIndex={0}
               aria-selected={selected === id}
               onClick={() => setSelected(id)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(id); } }}
             >
               <div className="icon-circle"><Icon size={22} /></div>
               <span className="card-text">{label}</span>

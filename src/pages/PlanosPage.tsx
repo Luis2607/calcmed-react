@@ -3,6 +3,7 @@ import MobileFrame from '../components/layout/MobileFrame'
 import PageHeader from '../components/layout/PageHeader'
 import BottomNav from '../components/layout/BottomNav'
 import PlanCard from '../components/cards/PlanCard'
+import InputField from '../components/forms/InputField'
 import Button from '../components/ui/Button'
 import { Tag, ShieldCheck } from '@phosphor-icons/react'
 
@@ -48,16 +49,16 @@ export default function PlanosPage() {
 
         {/* Cupom */}
         <div className="mb-6">
-          <a
-            href="#"
+          <button
+            type="button"
             className="btn-text t-corpo-2"
-            onClick={e => { e.preventDefault(); setShowCoupon(v => !v) }}
+            onClick={() => setShowCoupon(v => !v)}
           >
             <Tag size={16} className="mr-1" /> Tem cupom?
-          </a>
+          </button>
           {showCoupon && (
-            <div className="flex gap-3 mt-3">
-              <input className="input-field flex-1 uppercase" type="text" placeholder="Digite o cupom" />
+            <div className="flex gap-3 mt-3 items-end">
+              <InputField id="cupom" label="Código do cupom" placeholder="Digite o cupom" className="flex-1" />
               <Button variant="primary" size="md">Aplicar</Button>
             </div>
           )}

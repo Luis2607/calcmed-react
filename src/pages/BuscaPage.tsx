@@ -4,8 +4,9 @@ import BottomNav from '../components/layout/BottomNav'
 import SearchInput from '../components/forms/SearchInput'
 import SectionHeader from '../components/ui/SectionHeader'
 import ListItem from '../components/ui/ListItem'
+import Chip from '../components/ui/Chip'
 import { ClockCounterClockwise, CaretRight, MagnifyingGlass } from '@phosphor-icons/react'
-import { searchDb, domColors } from '../data/homeData'
+import { searchDb } from '../data/homeData'
 
 function normalize(str: string) {
   return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -79,9 +80,12 @@ export default function BuscaPage() {
             <SectionHeader title="Acesso rápido" />
             <div className="flex gap-2 flex-wrap">
               {quickChips.map(c => (
-                <span key={c.label} className={`chip ${c.domain}`} onClick={() => setQuery(c.label)}>
-                  {c.label}
-                </span>
+                <Chip
+                  key={c.label}
+                  label={c.label}
+                  domain={c.domain as 'urg' | 'dil' | 'calc' | 'prot' | 'esc' | 'conv'}
+                  onClick={() => setQuery(c.label)}
+                />
               ))}
             </div>
           </div>
@@ -93,7 +97,7 @@ export default function BuscaPage() {
             {Object.entries(grouped).map(([grupo, data]) => (
               <div key={grupo}>
                 <div className="search-group-header">
-                  <div className="group-accent" style={{ background: domColors[data.dominio] }} />
+                  <div className={`group-accent ${data.dominio}`} />
                   <span className="group-name">{grupo}</span>
                 </div>
                 <div className="flex flex-col gap-1 mb-2">

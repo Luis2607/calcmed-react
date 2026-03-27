@@ -17,17 +17,17 @@ export default function CalculadoraResultadoPage() {
       <div className="screen-content flex-1 overflow-y-auto p-5">
         {/* Resumo dos inputs */}
         <div className="flex flex-wrap gap-3 mb-5">
-          <span className="chip">65 anos</span>
-          <span className="chip">70 kg</span>
-          <span className="chip">Cr 1,2 mg/dL</span>
-          <span className="chip">Masculino</span>
+          <Chip label="65 anos" />
+          <Chip label="70 kg" />
+          <Chip label="Cr 1,2 mg/dL" />
+          <Chip label="Masculino" />
         </div>
 
         {/* RESULTADO (PROTAGONISTA) */}
         <AlertCard level="result" className="mb-4">
           <div className="alert-content text-center">
-            <div className="result-value">72,5<span className="result-unit">mL/min</span></div>
-            <div className="result-badge mt-2">Estágio 2 - Redução leve</div>
+            <div className="t-dose-valor">72,5<span className="t-dose-unidade ml-2">mL/min</span></div>
+            <div className="tag-status mt-2">Estágio 2 - Redução leve</div>
           </div>
         </AlertCard>
 
