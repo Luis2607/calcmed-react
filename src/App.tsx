@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { useTheme } from './contexts/ThemeContext'
 import LandingPage from './pages/LandingPage'
 import EntradaPage from './pages/EntradaPage'
 import EmailPage from './pages/EmailPage'
@@ -52,6 +53,8 @@ const DSClinico = lazy(() => import('./ds/sections/DSClinico'))
 const DSChangelog = lazy(() => import('./ds/sections/DSChangelog'))
 
 export default function App() {
+  const { resolvedTheme } = useTheme()
+
   return (
     <Routes>
       {/* Design System Documentation */}
@@ -98,24 +101,24 @@ export default function App() {
       <Route path="/" element={<LandingPage />} />
 
       {/* App Pages */}
-      <Route path="/app" element={<div className="mobile-page"><EntradaPage /></div>} />
-      <Route path="/login/email" element={<div className="mobile-page"><EmailPage /></div>} />
-      <Route path="/login/senha" element={<div className="mobile-page"><SenhaPage /></div>} />
-      <Route path="/login/recuperar" element={<div className="mobile-page"><RecuperarPage /></div>} />
-      <Route path="/onboarding/1" element={<div className="mobile-page"><Onboarding1Page /></div>} />
-      <Route path="/onboarding/2" element={<div className="mobile-page"><Onboarding2Page /></div>} />
-      <Route path="/home" element={<div className="mobile-page"><HomePage /></div>} />
-      <Route path="/home/trial" element={<div className="mobile-page"><HomeDegustacaoPage /></div>} />
-      <Route path="/busca" element={<div className="mobile-page"><BuscaPage /></div>} />
-      <Route path="/premium" element={<div className="mobile-page"><PremiumModalPage /></div>} />
-      <Route path="/planos" element={<div className="mobile-page"><PlanosPage /></div>} />
-      <Route path="/notificacoes" element={<div className="mobile-page"><NotificacoesPage /></div>} />
-      <Route path="/menu" element={<div className="mobile-page"><MenuPage /></div>} />
-      <Route path="/ia" element={<div className="mobile-page"><IAChatPage /></div>} />
-      <Route path="/escala" element={<div className="mobile-page"><EscalaCalendarioPage /></div>} />
-      <Route path="/escala/novo" element={<div className="mobile-page"><EscalaNovoPlantaoPage /></div>} />
-      <Route path="/calculadora/crcl" element={<div className="mobile-page"><CalculadoraInputsPage /></div>} />
-      <Route path="/calculadora/crcl/resultado" element={<div className="mobile-page"><CalculadoraResultadoPage /></div>} />
+      <Route path="/app" element={<div className={`mobile-page ${resolvedTheme}`}><EntradaPage /></div>} />
+      <Route path="/login/email" element={<div className={`mobile-page ${resolvedTheme}`}><EmailPage /></div>} />
+      <Route path="/login/senha" element={<div className={`mobile-page ${resolvedTheme}`}><SenhaPage /></div>} />
+      <Route path="/login/recuperar" element={<div className={`mobile-page ${resolvedTheme}`}><RecuperarPage /></div>} />
+      <Route path="/onboarding/1" element={<div className={`mobile-page ${resolvedTheme}`}><Onboarding1Page /></div>} />
+      <Route path="/onboarding/2" element={<div className={`mobile-page ${resolvedTheme}`}><Onboarding2Page /></div>} />
+      <Route path="/home" element={<div className={`mobile-page ${resolvedTheme}`}><HomePage /></div>} />
+      <Route path="/home/trial" element={<div className={`mobile-page ${resolvedTheme}`}><HomeDegustacaoPage /></div>} />
+      <Route path="/busca" element={<div className={`mobile-page ${resolvedTheme}`}><BuscaPage /></div>} />
+      <Route path="/premium" element={<div className={`mobile-page ${resolvedTheme}`}><PremiumModalPage /></div>} />
+      <Route path="/planos" element={<div className={`mobile-page ${resolvedTheme}`}><PlanosPage /></div>} />
+      <Route path="/notificacoes" element={<div className={`mobile-page ${resolvedTheme}`}><NotificacoesPage /></div>} />
+      <Route path="/menu" element={<div className={`mobile-page ${resolvedTheme}`}><MenuPage /></div>} />
+      <Route path="/ia" element={<div className={`mobile-page ${resolvedTheme}`}><IAChatPage /></div>} />
+      <Route path="/escala" element={<div className={`mobile-page ${resolvedTheme}`}><EscalaCalendarioPage /></div>} />
+      <Route path="/escala/novo" element={<div className={`mobile-page ${resolvedTheme}`}><EscalaNovoPlantaoPage /></div>} />
+      <Route path="/calculadora/crcl" element={<div className={`mobile-page ${resolvedTheme}`}><CalculadoraInputsPage /></div>} />
+      <Route path="/calculadora/crcl/resultado" element={<div className={`mobile-page ${resolvedTheme}`}><CalculadoraResultadoPage /></div>} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   )

@@ -108,7 +108,7 @@
   --bg:#f8fafc; --bg-surface:#ffffff; --bg-card:#ffffff;
   --bg-elevated:#f1f5f9; --bg-hover:#f1f5f9; --bg-overlay:rgba(0,0,0,0.50);
   /* Text */
-  --fg:#0f172a; --fg-2:#475569; --fg-3:#94a3b8;
+  --fg:#0f172a; --fg-2:#475569; --fg-3:#64748b;
   --fg-disabled:#cbd5e1; --fg-on:#ffffff; --fg-link:#007993;
   /* Borders */
   --border:#e2e8f0; --border-subtle:#f1f5f9;
@@ -134,7 +134,7 @@
 .dark {
   --bg:#0d1b2a; --bg-surface:#111c2e; --bg-card:#1a2942;
   --bg-elevated:#223249; --bg-hover:#364c72; --bg-overlay:rgba(0,0,0,0.60);
-  --fg:#f1f5f9; --fg-2:#94a3b8; --fg-3:#64748b;
+  --fg:#f1f5f9; --fg-2:#94a3b8; --fg-3:#94a3b8;
   --fg-disabled:#475569; --fg-on:#ffffff; --fg-link:#00b4d8;
   --border:#2a3f5f; --border-subtle:#223249;
   --border-focus:#00b4d8; --border-error:#f87171;
@@ -358,7 +358,7 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
 .conv { background: var(--dom-conv-bg); color: var(--dom-conv-text) }
 
 .tag-status.premium { background: var(--btn-primary); color: var(--fg-on) }
-.tag-status.experimentando { background: var(--success-bg); color: var(--success) }
+.tag-status.teste { background: var(--success-bg); color: var(--success) }
 .tag-status.novo { background: var(--red-500); color: white }
 .tag-status.atualizado { background: var(--success-bg); color: var(--success) }
 .tag-status.warning { background: var(--warning-bg); color: var(--warning) }
@@ -390,6 +390,8 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
   position: absolute; top: var(--sp-3); right: var(--sp-3);
   font-size: 14px; color: var(--fg-3); cursor: pointer;
   background: none; border: none; padding: var(--sp-1);
+  min-width: 44px; min-height: 44px;
+  display: flex; align-items: center; justify-content: center;
 }
 .card-feature .feat-bookmark.saved { color: var(--btn-accent) }
 
@@ -850,6 +852,15 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
 .select:focus-visible, .search-bar:focus-visible {
   outline: 2px solid var(--border-focus); outline-offset: 2px;
 }
+
+/* --- Theme toggle button --- */
+.btn-icon-toggle {
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: var(--r-md);
+  border: none; background: transparent; color: var(--fg-2);
+  cursor: pointer; transition: all var(--dur-fast) var(--ease-default);
+}
+.btn-icon-toggle:hover { background: var(--bg-hover); color: var(--fg) }
 
 /* --- Button variants faltantes --- */
 .btn-sm { height: 36px; border-radius: var(--r-md); padding: 0 var(--sp-4); font-size: 14px }
@@ -1329,7 +1340,7 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
 }
 
 /* ================================================================
-   38. MODAL PREMIUM — degustacao sheet
+   38. MODAL PREMIUM — teste sheet
    ================================================================ */
 .modal-premium-sheet {
   width: 100%; max-width: 100%;

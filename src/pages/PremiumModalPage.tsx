@@ -29,7 +29,7 @@ export default function PremiumModalPage() {
 
           {/* Título */}
           <div className="text-center p-5 pb-0">
-            <h2 className="t-titulo-pagina">Sua degustação está acabando</h2>
+            <h2 className="t-titulo-pagina">Seu teste está acabando</h2>
           </div>
 
           {/* Destaque uso restante */}

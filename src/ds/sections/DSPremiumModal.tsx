@@ -16,7 +16,7 @@ export default function DSPremiumModal() {
           <div className="flex-1">
             <div className="t-texto-badge text-success mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>Use quando</div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">O período de degustação expirar ou uma funcionalidade estiver bloqueada</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">O período de teste expirar ou uma funcionalidade estiver bloqueada</span></li>
               <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">O usuário tentar acessar conteúdo premium pela primeira vez</span></li>
               <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">SEMPRE incluir o botão {"\u201c"}Agora não{"\u201d"} visível sem scroll e com touch target de 48dp</span></li>
             </ul>
@@ -63,7 +63,7 @@ export default function DSPremiumModal() {
             {/* Usage box */}
             <div className="modal-usage-box">
               <div className="flex-1">
-                <div className="t-corpo-2 text-fg" style={{ fontWeight: 600 }}>Degustações restantes</div>
+                <div className="t-corpo-2 text-fg" style={{ fontWeight: 600 }}>Testes restantes</div>
                 <div className="t-legenda text-fg-3 mt-1">Você usou 2 de 3 disponíveis</div>
               </div>
               <div className="t-titulo-pagina" style={{ fontFamily: "'JetBrains Mono'", color: 'var(--warning)' }}>1</div>

@@ -12,7 +12,7 @@ export default function NotificacoesPage() {
         <NotifItem
           icon="warning-circle"
           iconClass="text-warning"
-          title="Sua degustação de DHE expira amanhã"
+          title="Seu teste de DHE expira amanhã"
           meta="há 1 dia"
           unread
           variant="warning"

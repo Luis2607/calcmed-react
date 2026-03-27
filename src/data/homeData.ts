@@ -1,5 +1,5 @@
 export type Domain = 'urg' | 'dil' | 'calc' | 'prot' | 'esc' | 'conv'
-export type Status = 'free' | 'premium'
+export type Status = 'free' | 'premium' | 'teste' | 'assinante'
 
 export interface Feature {
   abbr: string

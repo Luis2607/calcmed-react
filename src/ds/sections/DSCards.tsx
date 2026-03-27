@@ -9,7 +9,7 @@ function CardFeatureDemo({ state, label, description }: { state: string; label: 
           <span className="tag-status premium" style={{ position: 'absolute', top: 8, left: 8 }}>PREMIUM</span>
         )}
         {state === 'trial' && (
-          <span className="tag-status experimentando" style={{ position: 'absolute', top: 8, left: 8 }}>TRIAL</span>
+          <span className="tag-status teste" style={{ position: 'absolute', top: 8, left: 8 }}>TRIAL</span>
         )}
         <div className="mb-1" style={{ fontSize: 32 }}>
           <i className="ph ph-calculator" style={{ color: 'var(--dom-calc)' }} />
@@ -70,8 +70,8 @@ export default function DSCards() {
           (overlay escuro + ícone de cadeado + tag {"\u201c"}PREMIUM{"\u201d"}, indica conteúdo pago).
         </p>
         <p className="ds-subsection-desc">
-          Degustação
-          (borda tracejada + tag {"\u201c"}TRIAL{"\u201d"}, usuário está experimentando por tempo limitado) e Assinante
+          Teste
+          (borda tracejada + tag {"\u201c"}TRIAL{"\u201d"}, usuário está em teste por tempo limitado) e Assinante
           (visual limpo, sem tags nem overlays — a melhor experiência).
         </p>
         <DSPanel>
@@ -88,7 +88,7 @@ export default function DSCards() {
             />
             <CardFeatureDemo
               state="trial"
-              label="Degustação"
+              label="Teste"
               description="Borda tracejada. Acesso temporário limitado."
             />
             <CardFeatureDemo
@@ -295,7 +295,7 @@ export default function DSCards() {
             {[
               { cls: '.card-feature', desc: 'Card de funcionalidade com ícone + nome' },
               { cls: '.card-feature.locked', desc: 'Premium bloqueado: overlay escuro, pointer-events none' },
-              { cls: '.card-feature.trial', desc: 'Degustação: borda tracejada (dashed)' },
+              { cls: '.card-feature.trial', desc: 'Teste: borda tracejada (dashed)' },
               { cls: '.card-selection', desc: 'Card de seleção (onboarding), min-height 64px' },
               { cls: '.card-selection.selected', desc: 'Selecionado: borda 2px teal' },
               { cls: '.card-recent', desc: 'Item horizontal com ícone relógio, nome e tempo' },

@@ -11,7 +11,7 @@ const domainTags = [
 
 const statusTags = [
   { cls: 'premium', label: 'PREMIUM' },
-  { cls: 'experimentando', label: 'EXPERIMENTANDO' },
+  { cls: 'teste', label: 'TESTE' },
   { cls: 'free', label: 'GRATUITO' },
   { cls: 'novo', label: 'NOVO' },
   { cls: 'atualizado', label: 'ATUALIZADO' },
@@ -38,7 +38,7 @@ export default function DSTags() {
       </p>
       <p className="ds-section-desc">
         As tags de status indicam o nível de acesso
-        do usuário (Premium, Gratuito, Experimentando). Os chips funcionam como filtros interativos
+        do usuário (Premium, Gratuito, Teste). Os chips funcionam como filtros interativos
         que o médico ativa/desativa para refinar buscas. Em contexto de plantão, essa categorização
         visual acelera a localização da ferramenta certa.
       </p>
@@ -87,7 +87,7 @@ export default function DSTags() {
         <h3>Tag de Status</h3>
         <p className="ds-subsection-desc">
           Comunicam o nível de acesso de cada funcionalidade. {"\u201c"}PREMIUM{"\u201d"} indica conteúdo bloqueado,
-          {"\u201c"}EXPERIMENTANDO{"\u201d"} mostra que o usuário está em período de degustação, {"\u201c"}GRATUITO{"\u201d"} confirma
+          {"\u201c"}TESTE{"\u201d"} mostra que o usuário está em período de teste, {"\u201c"}GRATUITO{"\u201d"} confirma
           acesso livre.
         </p>
         <p className="ds-subsection-desc">
@@ -210,7 +210,7 @@ export default function DSTags() {
               { cls: '.chip.active', desc: 'Chip ativo: fundo primary, texto branco' },
               { cls: '.urg, .dil, .calc, ...', desc: 'Cor de domínio (background + texto)' },
               { cls: '.tag-status.premium', desc: 'Fundo primary, texto branco \u2014 conteúdo pago' },
-              { cls: '.tag-status.experimentando', desc: 'Fundo success-bg, texto success \u2014 período trial' },
+              { cls: '.tag-status.teste', desc: 'Fundo success-bg, texto success \u2014 período teste' },
               { cls: '.tag-status.free', desc: 'Fundo elevated, texto fg-2 \u2014 acesso gratuito' },
               { cls: '.tag-dismissible', desc: 'Tag com padding-right reduzido para botão X' },
               { cls: '.tag-x', desc: 'Botão X dentro da tag: 16px, opacidade 0.6, hover 1' },

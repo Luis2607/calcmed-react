@@ -30,7 +30,7 @@ export default function HomeDegustacaoPage() {
 
       <div className="screen-content flex-1 overflow-y-auto p-5 pb-8">
         {/* Trial banner */}
-        <AlertCard level="warning" icon="warning" title="Modo degustação" className="mb-4">
+        <AlertCard level="warning" icon="warning" title="Modo teste" className="mb-4">
           Você tem <strong>3 usos gratuitos</strong> restantes em funcionalidades premium.{' '}
           <Link to="/planos" className="btn-text">Assinar agora</Link>
         </AlertCard>
