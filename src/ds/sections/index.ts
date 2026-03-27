@@ -1,3 +1,4 @@
+export { default as DSBrand } from './DSBrand'
 export { default as DSCores } from './DSCores'
 export { default as DSTipografia } from './DSTipografia'
 export { default as DSEspacamento } from './DSEspacamento'

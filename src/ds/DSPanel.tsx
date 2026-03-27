@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react'
 
 interface DSPanelProps {
-  /** T\u00edtulo opcional exibido acima dos pain\u00e9is Light/Dark */
+  /** Título opcional exibido acima dos painéis Light/Dark */
   title?: string
-  /** Conte\u00fado renderizado no painel Light (e no Dark, se darkChildren n\u00e3o for fornecido) */
+  /** Conteúdo renderizado no painel Light (e no Dark, se darkChildren não for fornecido) */
   children: ReactNode
-  /** Conte\u00fado alternativo para o painel Dark. Se omitido, replica children. */
+  /** Conteúdo alternativo para o painel Dark. Se omitido, replica children. */
   darkChildren?: ReactNode
 }
 

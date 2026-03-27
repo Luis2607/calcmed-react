@@ -144,6 +144,9 @@
   font-weight: 500;
   border-right: 2px solid var(--btn-primary);
 }
+.dark .ds-nav-item.active {
+  background: rgba(0,180,216,0.10);
+}
 
 /* ── Content Area ── */
 .ds-content {
@@ -286,7 +289,7 @@
   margin-bottom: var(--sp-4);
 }
 .ds-panel.light .ds-mode-label { color: var(--slate-400) }
-.ds-panel.dark .ds-mode-label { color: var(--slate-500) }
+.ds-panel.dark .ds-mode-label { color: var(--slate-400) }
 
 /* ── Color Swatch Grid ── */
 .ds-color-grid {
@@ -616,6 +619,23 @@
   background: rgba(0,180,216,0.15);
   color: var(--teal-300);
 }
+
+/* ── Dark mode contrast fixes for DS panels ── */
+.ds-panel.dark .ds-swatch .name { color: var(--slate-300) }
+.ds-panel.dark .ds-swatch .hex { color: var(--slate-400) }
+.ds-panel.dark .ds-type-class { background: rgba(0,180,216,0.15); color: var(--teal-300) }
+.ds-panel.dark .ds-type-spec { color: var(--slate-400) }
+.ds-panel.dark .ds-spacing-bar .label { color: var(--slate-300) }
+.ds-panel.dark .ds-spacing-bar .px { color: var(--slate-400) }
+.ds-panel.dark .ds-spacing-bar .bar { background: rgba(0,180,216,0.20); border-color: rgba(0,180,216,0.30) }
+.ds-panel.dark .ds-elevation-card { background: var(--navy-800); color: var(--slate-300) }
+.ds-panel.dark .ds-grid-vis { background: var(--navy-900) }
+.ds-panel.dark .ds-grid-vis .col-v { background: rgba(0,180,216,0.30) }
+.ds-panel.dark .ds-icon-item i { color: var(--slate-100) }
+.ds-panel.dark .ds-icon-item .iname { color: var(--slate-400) }
+.ds-panel.dark .ds-demo-label { color: var(--slate-400) }
+.ds-panel.dark .ds-guideline { background: var(--navy-800); border-color: var(--navy-700) }
+.ds-panel.dark .ds-guideline p { color: var(--slate-300) }
 
 /* ── Guideline Box ── */
 .ds-guideline {

@@ -9,10 +9,10 @@ const primitiveScales: { title: string; prefix: string; steps: string[] }[] = [
   { title: 'Emerald (Success)', prefix: 'emerald', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
   { title: 'Red (Critical)', prefix: 'red', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
   { title: 'Amber (Warning)', prefix: 'amber', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
-  { title: 'Blue (Dilui\u00e7\u00f5es)', prefix: 'blue', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
+  { title: 'Blue (Diluições)', prefix: 'blue', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
   { title: 'Purple (Protocolos)', prefix: 'purple', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
   { title: 'Indigo (Conversores)', prefix: 'indigo', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
-  { title: 'Rose (Urg\u00eancias)', prefix: 'rose', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
+  { title: 'Rose (Urgências)', prefix: 'rose', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
   { title: 'Orange (Calculadoras)', prefix: 'orange', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
   { title: 'Cyan (Escores)', prefix: 'cyan', steps: ['50','100','200','300','400','500','600','700','800','900','950'] },
 ]
@@ -29,8 +29,8 @@ const semanticInteractive = ['btn-primary', 'btn-primary-hover', 'btn-primary-ac
 const semanticFeedback = ['success', 'success-bg', 'success-border', 'danger', 'danger-bg', 'danger-border', 'warning', 'warning-bg', 'warning-border']
 
 const domains = [
-  { name: 'Urg\u00eancias', prefix: 'dom-urg', keys: ['dom-urg', 'dom-urg-bg', 'dom-urg-text'] },
-  { name: 'Dilui\u00e7\u00f5es', prefix: 'dom-dil', keys: ['dom-dil', 'dom-dil-bg', 'dom-dil-text'] },
+  { name: 'Urgências', prefix: 'dom-urg', keys: ['dom-urg', 'dom-urg-bg', 'dom-urg-text'] },
+  { name: 'Diluições', prefix: 'dom-dil', keys: ['dom-dil', 'dom-dil-bg', 'dom-dil-text'] },
   { name: 'Calculadoras', prefix: 'dom-calc', keys: ['dom-calc', 'dom-calc-bg', 'dom-calc-text'] },
   { name: 'Protocolos', prefix: 'dom-prot', keys: ['dom-prot', 'dom-prot-bg', 'dom-prot-text'] },
   { name: 'Escores', prefix: 'dom-esc', keys: ['dom-esc', 'dom-esc-bg', 'dom-esc-text'] },
@@ -91,12 +91,12 @@ export default function DSCores() {
     <div>
       <h2 className="ds-section-title">Cores</h2>
       <p className="ds-section-desc">
-        Sistema de cores com 152 primitivos organizados em 12 escalas crom{"\u00e1"}ticas, mais 50 tokens
-        sem{"\u00e2"}nticos por modo (Light/Dark). Cada escala vai de 50 (mais claro) a 950 (mais escuro).
+        Sistema de cores com 152 primitivos organizados em 12 escalas cromáticas, mais 50 tokens
+        semânticos por modo (Light/Dark). Cada escala vai de 50 (mais claro) a 950 (mais escuro).
       </p>
       <p className="ds-section-desc">
-        No contexto m{"\u00e9"}dico, a precis{"\u00e3"}o crom{"\u00e1"}tica {"\u00e9"} essencial: vermelho para alertas cr{"\u00ed"}ticos,
-        {"\u00e2"}mbar para avisos e verde para confirma{"\u00e7\u00f5"}es de dose segura.
+        No contexto médico, a precisão cromática é essencial: vermelho para alertas críticos,
+        âmbar para avisos e verde para confirmações de dose segura.
       </p>
 
       {/* Quando usar */}
@@ -106,17 +106,17 @@ export default function DSCores() {
           <div className="flex-1">
             <div className="t-texto-badge text-success mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>Use quando</div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Precisar identificar visualmente um dom{"\u00ed"}nio cl{"\u00ed"}nico (Urg{"\u00ea"}ncias, Dilui{"\u00e7\u00f5"}es, etc.) com cor de dom{"\u00ed"}nio</span></li>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Comunicar feedback de sistema (sucesso, erro, aviso) com tokens sem{"\u00e2"}nticos de feedback</span></li>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Trocar automaticamente entre Light e Dark usando tokens sem{"\u00e2"}nticos em vez de cor literal</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Precisar identificar visualmente um domínio clínico (Urgências, Diluições, etc.) com cor de domínio</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Comunicar feedback de sistema (sucesso, erro, aviso) com tokens semânticos de feedback</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Trocar automaticamente entre Light e Dark usando tokens semânticos em vez de cor literal</span></li>
             </ul>
           </div>
           <div className="flex-1">
-            <div className="t-texto-badge text-danger mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>N{"\u00e3"}o use quando</div>
+            <div className="t-texto-badge text-danger mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>Não use quando</div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">A cor for apenas decorativa ou de branding. Nesse caso, use tokens de brand</span></li>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Misturar cores de dom{"\u00ed"}nio com cores de feedback. Isso gera ambiguidade cl{"\u00ed"}nica</span></li>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Usar primitivos (teal-500) diretamente em componentes. Prefira sempre o token sem{"\u00e2"}ntico correspondente</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Misturar cores de domínio com cores de feedback. Isso gera ambiguidade clínica</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Usar primitivos (teal-500) diretamente em componentes. Prefira sempre o token semântico correspondente</span></li>
             </ul>
           </div>
         </div>
@@ -126,8 +126,8 @@ export default function DSCores() {
       <div className="ds-subsection">
         <h3>Brand</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          As 6 cores institucionais do CalcMed. Navy transmite confian{"\u00e7"}a cl{"\u00ed"}nica,
-          e vermelho identifica a marca e situa{"\u00e7\u00f5"}es de urg{"\u00ea"}ncia.
+          As 6 cores institucionais do CalcMed. Navy transmite confiança clínica,
+          e vermelho identifica a marca e situações de urgência.
         </p>
         <SwatchGrid swatches={brandSwatches} />
       </div>
@@ -142,10 +142,10 @@ export default function DSCores() {
 
       {/* Semantic Tokens */}
       <div className="ds-subsection">
-        <h3>Tokens Sem{"\u00e2"}nticos</h3>
+        <h3>Tokens Semânticos</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Tokens sem{"\u00e2"}nticos mapeiam inten{"\u00e7\u00e3"}o (superf{"\u00ed"}cie, texto, borda, feedback) em vez de cor literal.
-          Isso permite a troca autom{"\u00e1"}tica entre Light e Dark sem alterar nenhum componente.
+          Tokens semânticos mapeiam intenção (superfície, texto, borda, feedback) em vez de cor literal.
+          Isso permite a troca automática entre Light e Dark sem alterar nenhum componente.
         </p>
         <div className="ds-dual">
           <div className="ds-panel light" ref={lightRef}>
@@ -153,7 +153,7 @@ export default function DSCores() {
             <div className="light">
               {lightRef.current && (
                 <>
-                  <SemanticRow tokens={semanticSurfaces} label="Superf\u00edcies" rootEl={lightRef.current} />
+                  <SemanticRow tokens={semanticSurfaces} label="Superfícies" rootEl={lightRef.current} />
                   <SemanticRow tokens={semanticText} label="Texto" rootEl={lightRef.current} />
                   <SemanticRow tokens={semanticBorders} label="Bordas" rootEl={lightRef.current} />
                   <SemanticRow tokens={semanticInteractive} label="Interativos" rootEl={lightRef.current} />
@@ -167,7 +167,7 @@ export default function DSCores() {
             <div className="dark">
               {darkRef.current && (
                 <>
-                  <SemanticRow tokens={semanticSurfaces} label="Superf\u00edcies" rootEl={darkRef.current} />
+                  <SemanticRow tokens={semanticSurfaces} label="Superfícies" rootEl={darkRef.current} />
                   <SemanticRow tokens={semanticText} label="Texto" rootEl={darkRef.current} />
                   <SemanticRow tokens={semanticBorders} label="Bordas" rootEl={darkRef.current} />
                   <SemanticRow tokens={semanticInteractive} label="Interativos" rootEl={darkRef.current} />
@@ -181,13 +181,13 @@ export default function DSCores() {
 
       {/* Domain Colors */}
       <div className="ds-subsection">
-        <h3>Cores de Dom{"\u00ed"}nio</h3>
+        <h3>Cores de Domínio</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Cada dom{"\u00ed"}nio cl{"\u00ed"}nico possui cor pr{"\u00f3"}pria com variantes de fundo (bg) e texto (text).
-          Essas cores identificam visualmente a {"\u00e1"}rea do app em que o profissional est{"\u00e1"}.
+          Cada domínio clínico possui cor própria com variantes de fundo (bg) e texto (text).
+          Essas cores identificam visualmente a área do app em que o profissional está.
         </p>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Nunca misture cores de dom{"\u00ed"}nio com cores de feedback para evitar ambiguidade cl{"\u00ed"}nica.
+          Nunca misture cores de domínio com cores de feedback para evitar ambiguidade clínica.
         </p>
         <div className="ds-dual">
           <div className="ds-panel light">

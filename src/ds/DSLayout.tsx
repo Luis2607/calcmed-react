@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback, Suspense } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import DSSidebar from './DSSidebar'
 import './ds.css'
 
 /* ── Path metadata for breadcrumbs & prev/next ── */
 const pathLabels: Record<string, { group: string; label: string }> = {
+  brand: { group: 'Átomos', label: 'Marca e Identidade' },
   cores: { group: 'Átomos', label: 'Cores' },
   tipografia: { group: 'Átomos', label: 'Tipografia' },
   espacamento: { group: 'Átomos', label: 'Espaçamento' },
@@ -31,7 +32,7 @@ const pathLabels: Record<string, { group: string; label: string }> = {
 }
 
 const sectionOrder = [
-  'cores', 'tipografia', 'espacamento', 'grid', 'elevacao', 'motion', 'icones',
+  'brand', 'cores', 'tipografia', 'espacamento', 'grid', 'elevacao', 'motion', 'icones',
   'botoes', 'inputs', 'selecao', 'tags', 'alertas',
   'cards', 'categorias', 'chat', 'calendario', 'menu-perfil', 'premium',
   'navegacao', 'overlays', 'estados', 'headers', 'acessibilidade',
@@ -99,37 +100,6 @@ function DSPrevNext({ slug }: { slug: string | undefined }) {
   )
 }
 
-/* ── Sidebar search filter (DOM-based, does not touch DSSidebar) ── */
-function useSidebarSearch(search: string) {
-  const filterSidebar = useCallback((query: string) => {
-    const groups = document.querySelectorAll<HTMLElement>('.ds-nav-group')
-    const lowerQuery = query.toLowerCase().trim()
-
-    groups.forEach(group => {
-      const items = group.querySelectorAll<HTMLElement>('.ds-nav-item')
-      let visibleCount = 0
-
-      items.forEach(item => {
-        const text = (item.textContent ?? '').toLowerCase()
-        if (!lowerQuery || text.includes(lowerQuery)) {
-          item.style.display = ''
-          visibleCount++
-        } else {
-          item.style.display = 'none'
-        }
-      })
-
-      // Hide entire group if no items match
-      group.style.display = visibleCount === 0 && lowerQuery ? 'none' : ''
-    })
-  }, [])
-
-  useEffect(() => {
-    filterSidebar(search)
-    return () => filterSidebar('')
-  }, [search, filterSidebar])
-}
-
 export default function DSLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [search, setSearch] = useState('')
@@ -138,8 +108,6 @@ export default function DSLayout() {
   // Extract the current section slug from the path
   const slug = location.pathname.replace('/design-system/', '').replace('/design-system', '') || undefined
   const isOverview = !slug || slug === '' || slug === '/'
-
-  useSidebarSearch(search)
 
   // Clear search when navigating
   useEffect(() => {
@@ -156,14 +124,19 @@ export default function DSLayout() {
         <i className="ph ph-list" />
       </button>
 
-      <DSSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <DSSidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        search={search}
+        onNavigate={() => setSearch('')}
+      />
 
       {/* Search input rendered as overlay on top of sidebar nav area */}
       <div className="ds-search-wrapper">
         <input
           type="text"
           className="ds-search"
-          placeholder="Buscar seção..."
+          placeholder="Buscar componente..."
           value={search}
           onChange={e => setSearch(e.target.value)}
           aria-label="Buscar seções do Design System"

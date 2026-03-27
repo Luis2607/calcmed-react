@@ -150,6 +150,12 @@
   --dom-prot:#c084fc; --dom-prot-bg:#3b0764; --dom-prot-text:#d8b4fe;
   --dom-esc:#22d3ee; --dom-esc-bg:#083344; --dom-esc-text:#67e8f9;
   --dom-conv:#818cf8; --dom-conv-bg:#1e1b4b; --dom-conv-text:#a5b4fc;
+  /* Elevation shadows more visible on dark backgrounds */
+  --shadow-1:0 1px 3px rgba(0,0,0,0.30);
+  --shadow-2:0 2px 6px rgba(0,0,0,0.35), 0 1px 3px rgba(0,0,0,0.20);
+  --shadow-3:0 4px 12px rgba(0,0,0,0.40), 0 2px 6px rgba(0,0,0,0.25);
+  --shadow-4:0 8px 20px rgba(0,0,0,0.45), 0 4px 10px rgba(0,0,0,0.30);
+  --shadow-5:0 12px 28px rgba(0,0,0,0.50), 0 6px 14px rgba(0,0,0,0.35);
 }
 
 /* ================================================================
@@ -178,6 +184,7 @@
    ================================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
 body { font-family: 'Inter', sans-serif; background: var(--slate-100); color: var(--slate-900); -webkit-font-smoothing: antialiased }
+body.dark { background: var(--bg); color: var(--fg) }
 button { font-family: inherit }
 
 /* ================================================================
@@ -199,31 +206,32 @@ button { font-family: inherit }
 /* Sticky nav */
 .ds-nav {
   display: flex; gap: var(--sp-1); padding: var(--sp-3) var(--sp-8);
-  background: white; border-bottom: 1px solid var(--slate-200);
+  background: var(--bg-surface); border-bottom: 1px solid var(--border);
   overflow-x: auto; position: sticky; top: 0; z-index: 100;
 }
 .ds-nav a {
   padding: var(--sp-2) var(--sp-3); border-radius: var(--r-md);
   text-decoration: none; font-size: 13px; font-weight: 500;
-  color: var(--slate-600); white-space: nowrap; transition: all .15s;
+  color: var(--fg-2); white-space: nowrap; transition: all .15s;
 }
-.ds-nav a:hover { background: var(--slate-100); color: var(--slate-900) }
+.ds-nav a:hover { background: var(--bg-hover); color: var(--fg) }
 .ds-nav a.active { background: var(--teal-700); color: white }
 
 /* Section */
 .ds-section { margin-bottom: var(--sp-16); scroll-margin-top: 56px }
-.ds-section > h2 { font-size: 32px; font-weight: 700; color: var(--slate-900); margin-bottom: 2px }
+.ds-section > h2 { font-size: 32px; font-weight: 700; color: var(--fg); margin-bottom: 2px }
 .ds-section > .role { font-size: 14px; font-weight: 500; color: var(--teal-700); margin-bottom: var(--sp-6) }
-.ds-section h3 { font-size: 16px; font-weight: 600; color: var(--slate-600); margin: var(--sp-6) 0 var(--sp-3) }
+.dark .ds-section > .role { color: var(--teal-300) }
+.ds-section h3 { font-size: 16px; font-weight: 600; color: var(--fg-2); margin: var(--sp-6) 0 var(--sp-3) }
 
 /* Dual panel (Light | Dark) */
 .dual { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); margin-bottom: var(--sp-6) }
 .panel { border-radius: var(--r-xl); padding: var(--sp-6); border: 1px solid var(--border) }
-.panel.light { background: var(--slate-50) }
+.panel.light { background: var(--bg-surface) }
 .panel.dark { background: var(--navy-950); border-color: var(--navy-700) }
 .mode-label { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: var(--sp-4) }
 .light .mode-label { color: var(--slate-400) }
-.dark .mode-label { color: var(--slate-500) }
+.dark .mode-label { color: var(--slate-400) }
 
 .flex { display: flex }
 .flex-col { flex-direction: column }
@@ -240,28 +248,38 @@ button { font-family: inherit }
 .item { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2) }
 .item .lbl { font-size: 10px; font-weight: 500 }
 .light .item .lbl { color: var(--slate-500) }
-.dark .item .lbl { color: var(--slate-500) }
+.dark .item .lbl { color: var(--slate-400) }
 
 /* Color swatch */
 .swatch { width: 56px; text-align: center }
 .swatch .color { width: 48px; height: 36px; border-radius: var(--r-md); border: 1px solid rgba(0,0,0,.05); margin: 0 auto }
 .swatch .name { font-size: 9px; font-weight: 500; color: var(--slate-600); margin-top: 2px }
+.dark .swatch .name { color: var(--slate-300) }
 .swatch .hex { font-size: 8px; color: var(--slate-400); font-family: 'JetBrains Mono' }
 
 /* Spacing bar */
 .sp-row { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: 6px }
 .sp-row .tk { font: 600 11px 'JetBrains Mono'; color: var(--slate-700); width: 60px }
+.dark .sp-row .tk { color: var(--slate-300) }
 .sp-row .val { font: 500 11px 'Inter'; color: var(--teal-700); width: 32px }
+.dark .sp-row .val { color: var(--teal-300) }
 .sp-row .bar { height: 14px; border-radius: var(--r-sm); background: var(--teal-100); border: 1px solid var(--teal-200) }
+.dark .sp-row .bar { background: rgba(0,180,216,0.20); border-color: rgba(0,180,216,0.30) }
 
 /* Grid visual */
 .grid-vis { border-radius: var(--r-md); display: flex; padding: 4px; background: var(--slate-100) }
+.dark .grid-vis { background: var(--navy-900) }
 .grid-vis .col-v { background: var(--teal-200); border-radius: 2px; height: 44px; flex: 1 }
+.dark .grid-vis .col-v { background: rgba(0,180,216,0.30) }
 
 /* Elevation card */
 .elev { width: 88px; height: 56px; border-radius: var(--r-lg); display: flex; flex-direction: column; align-items: center; justify-content: center }
 .elev .n { font-size: 11px; font-weight: 700 }
 .elev .dp { font-size: 9px }
+/* Dark mode overrides for elevation cards inside DS panels */
+.dark .elev { background: var(--bg-card) }
+.dark .elev .n { color: var(--fg) }
+.dark .elev .dp { color: var(--fg-2) }
 
 /* ================================================================
    6. COMPONENTES — Classes CSS reutilizaveis
@@ -535,6 +553,7 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
 .grid-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--sp-3)}
 /* Page wrapper (centra mobile-frame no viewport) */
 .mobile-page{display:flex;justify-content:center;align-items:center;min-height:100vh;background:var(--slate-200);margin:0}
+.dark .mobile-page{background:var(--slate-900)}
 
 /* Reduced motion */
 @media(prefers-reduced-motion:reduce){
@@ -1259,6 +1278,7 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
    34. ICON CIRCLE VARIANTES
    ================================================================ */
 .icon-circle-teal { background: var(--teal-50); color: var(--btn-primary) }
+.dark .icon-circle-teal { background: rgba(0,180,216,0.15); color: var(--teal-300) }
 .icon-circle-warning { background: var(--warning-bg); color: var(--warning) }
 .icon-circle-success { background: var(--success-bg); color: var(--success) }
 .icon-circle-danger { background: var(--danger-bg); color: var(--danger) }
@@ -1273,6 +1293,7 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
 }
 .notif-item:hover { background: var(--bg-hover) }
 .notif-unread { background: var(--teal-50) }
+.dark .notif-unread { background: rgba(0,180,216,0.10); color: var(--fg) }
 .notif-unread-warning { background: var(--warning-bg) }
 .notif-dot {
   width: 8px; height: 8px; border-radius: 50%;
@@ -1378,6 +1399,7 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
   background: var(--teal-50); border-radius: var(--r-lg);
   font: 400 12px/16px 'Inter'; color: var(--fg-2);
 }
+.dark .disclaimer-card { background: rgba(0,180,216,0.10); color: var(--fg-2) }
 .disclaimer-card i { color: var(--btn-primary); font-size: 16px; flex-shrink: 0; margin-top: 1px }
 
 /* ================================================================
@@ -1495,6 +1517,7 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
 
 /* Nivel 1: Info (preto) */
 .alert-card.alert-info { background: var(--slate-50); border: 1px solid var(--border) }
+.dark .alert-card.alert-info { background: var(--bg-card) }
 .alert-card.alert-info .alert-icon { color: var(--fg-2) }
 .alert-card.alert-info .alert-title { color: var(--fg) }
 .alert-card.alert-info .alert-body { color: var(--fg-2) }

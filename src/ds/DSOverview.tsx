@@ -4,60 +4,61 @@ const principles = [
   {
     icon: 'ph-timer',
     title: 'Cada segundo conta',
-    desc: 'Em emerg\u00eancia, velocidade salva vidas. Toda funcionalidade cr\u00edtica est\u00e1 a no m\u00e1ximo 2 toques da Home. Sem anima\u00e7\u00f5es que atrasem informa\u00e7\u00e3o cl\u00ednica. Sem loading spinners \u2014 usamos skeleton screens.',
+    desc: 'Em emergência, velocidade salva vidas. Toda funcionalidade crítica está a no máximo 2 toques da Home. Sem animações que atrasem informação clínica. Sem loading spinners \u2014 usamos skeleton screens.',
   },
   {
     icon: 'ph-eye',
-    title: 'Leg\u00edvel a 1 metro',
-    desc: 'O m\u00e9dico consulta doses com as m\u00e3os ocupadas, o celular no balc\u00e3o. Valores num\u00e9ricos usam JetBrains Mono Bold em tamanho m\u00ednimo de 20px. O resultado \u00e9 sempre o protagonista visual da tela.',
+    title: 'Legível a 1 metro',
+    desc: 'O médico consulta doses com as mãos ocupadas, o celular no balcão. Valores numéricos usam JetBrains Mono Bold em tamanho mínimo de 20px. O resultado é sempre o protagonista visual da tela.',
   },
   {
     icon: 'ph-shield-check',
     title: 'Erro zero',
-    desc: 'Todo input num\u00e9rico tem valida\u00e7\u00e3o de faixa cl\u00ednica. Alertas cr\u00edticos em vermelho s\u00e3o imposs\u00edveis de ignorar. A hierarquia de 5 n\u00edveis garante que a informa\u00e7\u00e3o mais importante nunca se perca.',
+    desc: 'Todo input numérico tem validação de faixa clínica. Alertas críticos em vermelho são impossíveis de ignorar. A hierarquia de 5 níveis garante que a informação mais importante nunca se perca.',
   },
   {
     icon: 'ph-moon',
     title: 'Funciona no escuro',
-    desc: 'Plant\u00f5es noturnos s\u00e3o a realidade. O dark mode n\u00e3o \u00e9 um extra \u2014 \u00e9 modo prim\u00e1rio para muitos usu\u00e1rios. Cada token sem\u00e2ntico tem par Light/Dark com a mesma qualidade visual.',
+    desc: 'Plantões noturnos são a realidade. O dark mode não é um extra \u2014 é modo primário para muitos usuários. Cada token semântico tem par Light/Dark com a mesma qualidade visual.',
   },
   {
     icon: 'ph-hand-pointing',
-    title: 'M\u00e9dico com luvas',
-    desc: 'Touch targets de 48dp no padr\u00e3o, ampliados para 52dp em a\u00e7\u00f5es de emerg\u00eancia. Bot\u00f5es generosos, espa\u00e7amento que perdoa toques imprecisos. Projetado para m\u00e3os tr\u00eamulas, luvas cir\u00fargicas e pressa.',
+    title: 'Médico com luvas',
+    desc: 'Touch targets de 48dp no padrão, ampliados para 52dp em ações de emergência. Botões generosos, espaçamento que perdoa toques imprecisos. Projetado para mãos trêmulas, luvas cirúrgicas e pressa.',
   },
 ]
 
 const stats = [
   { value: '152', label: 'Tokens primitivos' },
-  { value: '50', label: 'Tokens sem\u00e2nticos' },
+  { value: '50', label: 'Tokens semânticos' },
   { value: '250+', label: 'Classes CSS' },
   { value: '7:1', label: 'Contraste WCAG AAA' },
-  { value: '48dp', label: 'Touch target m\u00ednimo' },
+  { value: '48dp', label: 'Touch target mínimo' },
   { value: '18', label: 'Telas redesenhadas' },
   { value: '28', label: 'Componentes React' },
 ]
 
 const quickLinks = [
-  // \u00c1tomos
-  { icon: 'ph-palette', label: 'Cores', path: '/design-system/cores', group: '\u00c1tomos' },
-  { icon: 'ph-text-aa', label: 'Tipografia', path: '/design-system/tipografia', group: '\u00c1tomos' },
-  { icon: 'ph-arrows-out-line-horizontal', label: 'Espa\u00e7amento', path: '/design-system/espacamento', group: '\u00c1tomos' },
-  { icon: 'ph-grid-four', label: 'Grid', path: '/design-system/grid', group: '\u00c1tomos' },
-  { icon: 'ph-stack', label: 'Eleva\u00e7\u00e3o', path: '/design-system/elevacao', group: '\u00c1tomos' },
-  { icon: 'ph-play', label: 'Anima\u00e7\u00f5es', path: '/design-system/motion', group: '\u00c1tomos' },
-  { icon: 'ph-phosphor-logo', label: '\u00cdcones', path: '/design-system/icones', group: '\u00c1tomos' },
-  // Mol\u00e9culas
-  { icon: 'ph-cursor-click', label: 'Bot\u00f5es', path: '/design-system/botoes', group: 'Mol\u00e9culas' },
-  { icon: 'ph-textbox', label: 'Campos de Entrada', path: '/design-system/inputs', group: 'Mol\u00e9culas' },
-  { icon: 'ph-tag', label: 'Tags e Chips', path: '/design-system/tags', group: 'Mol\u00e9culas' },
-  { icon: 'ph-warning', label: 'Alertas', path: '/design-system/alertas', group: 'Mol\u00e9culas' },
+  // Átomos
+  { icon: 'ph-fingerprint', label: 'Marca e Identidade', path: '/design-system/brand', group: 'Átomos' },
+  { icon: 'ph-palette', label: 'Cores', path: '/design-system/cores', group: 'Átomos' },
+  { icon: 'ph-text-aa', label: 'Tipografia', path: '/design-system/tipografia', group: 'Átomos' },
+  { icon: 'ph-arrows-out-line-horizontal', label: 'Espaçamento', path: '/design-system/espacamento', group: 'Átomos' },
+  { icon: 'ph-grid-four', label: 'Grid', path: '/design-system/grid', group: 'Átomos' },
+  { icon: 'ph-stack', label: 'Elevação', path: '/design-system/elevacao', group: 'Átomos' },
+  { icon: 'ph-play', label: 'Animações', path: '/design-system/motion', group: 'Átomos' },
+  { icon: 'ph-phosphor-logo', label: 'Ícones', path: '/design-system/icones', group: 'Átomos' },
+  // Moléculas
+  { icon: 'ph-cursor-click', label: 'Botões', path: '/design-system/botoes', group: 'Moléculas' },
+  { icon: 'ph-textbox', label: 'Campos de Entrada', path: '/design-system/inputs', group: 'Moléculas' },
+  { icon: 'ph-tag', label: 'Tags e Chips', path: '/design-system/tags', group: 'Moléculas' },
+  { icon: 'ph-warning', label: 'Alertas', path: '/design-system/alertas', group: 'Moléculas' },
   // Organismos
   { icon: 'ph-cards', label: 'Cards', path: '/design-system/cards', group: 'Organismos' },
   { icon: 'ph-chat-circle', label: 'Chat e IA', path: '/design-system/chat', group: 'Organismos' },
-  { icon: 'ph-calendar', label: 'Calend\u00e1rio', path: '/design-system/calendario', group: 'Organismos' },
+  { icon: 'ph-calendar', label: 'Calendário', path: '/design-system/calendario', group: 'Organismos' },
   // Templates
-  { icon: 'ph-compass', label: 'Navega\u00e7\u00e3o', path: '/design-system/navegacao', group: 'Templates' },
+  { icon: 'ph-compass', label: 'Navegação', path: '/design-system/navegacao', group: 'Templates' },
   { icon: 'ph-wheelchair', label: 'Acessibilidade', path: '/design-system/acessibilidade', group: 'Templates' },
 ]
 
@@ -75,21 +76,21 @@ export default function DSOverview() {
       </div>
 
       <p className="ds-section-desc">
-        Constru\u00edmos o Design System CalcMed com uma premissa: em urg\u00eancia m\u00e9dica, cada segundo conta. Cada decis\u00e3o de cor, tipografia e intera\u00e7\u00e3o existe para servir tr\u00eas pilares: legibilidade cl\u00ednica, velocidade de acesso e seguran\u00e7a do paciente.
+        Construímos o Design System CalcMed com uma premissa: em urgência médica, cada segundo conta. Cada decisão de cor, tipografia e interação existe para servir três pilares: legibilidade clínica, velocidade de acesso e segurança do paciente.
       </p>
       <p className="ds-section-desc">
-        A tipografia usa Inter para interface, JetBrains Mono para doses e valores num\u00e9ricos (onde
-        clareza \u00e9 cr\u00edtica), e Outfit para a marca. O espa\u00e7amento segue base 4px com grid de 8px.
-        O contraste atinge WCAG AAA (7:1) em todo texto cl\u00ednico. Touch targets de 48dp s\u00e3o ampliados
-        para 52dp em contextos de emerg\u00eancia, garantindo precis\u00e3o mesmo com m\u00e3os tr\u00eamulas ou
-        luvas cir\u00fargicas.
+        A tipografia usa Inter para interface, JetBrains Mono para doses e valores numéricos (onde
+        clareza é crítica), e Outfit para a marca. O espaçamento segue base 4px com grid de 8px.
+        O contraste atinge WCAG AAA (7:1) em todo texto clínico. Touch targets de 48dp são ampliados
+        para 52dp em contextos de emergência, garantindo precisão mesmo com mãos trêmulas ou
+        luvas cirúrgicas.
       </p>
 
-      {/* Princ\u00edpios de Design */}
+      {/* Princípios de Design */}
       <div className="mb-8">
-        <h3 className="t-titulo-secao mb-4">Princ\u00edpios de Design</h3>
+        <h3 className="t-titulo-secao mb-4">Princípios de Design</h3>
         <p className="ds-section-desc">
-          Cinco regras que guiam todas as decis\u00f5es do sistema. Cada componente, token e padr\u00e3o existe para servir a estes princ\u00edpios.
+          Cinco regras que guiam todas as decisões do sistema. Cada componente, token e padrão existe para servir a estes princípios.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
           {principles.map(p => (
@@ -124,7 +125,7 @@ export default function DSOverview() {
       </div>
 
       {/* Quick links */}
-      <h3 className="t-titulo-secao mb-4">Navega\u00e7\u00e3o r\u00e1pida</h3>
+      <h3 className="t-titulo-secao mb-4">Navegação rápida</h3>
       <div className="ds-quick-links">
         {quickLinks.map(l => (
           <Link to={l.path} className="ds-quick-link" key={l.path}>
@@ -134,11 +135,11 @@ export default function DSOverview() {
         ))}
       </div>
 
-      {/* Conven\u00e7\u00e3o de Nomenclatura */}
+      {/* Convenção de Nomenclatura */}
       <div className="mb-8" style={{ marginTop: 32 }}>
-        <h3 className="t-titulo-secao mb-4">Conven\u00e7\u00e3o de Nomenclatura</h3>
+        <h3 className="t-titulo-secao mb-4">Convenção de Nomenclatura</h3>
         <p className="ds-section-desc">
-          Entender a l\u00f3gica por tr\u00e1s dos nomes permite que voc\u00ea preve\u00e7a o token correto sem consultar a documenta\u00e7\u00e3o.
+          Entender a lógica por trás dos nomes permite que você preveja o token correto sem consultar a documentação.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
           <div
@@ -153,12 +154,12 @@ export default function DSOverview() {
               className="ph ph-tag"
               style={{ fontSize: 24, color: 'var(--primary)', display: 'block', marginBottom: 12 }}
             />
-            <div className="t-titulo-card" style={{ fontWeight: 700, marginBottom: 8 }}>Sem\u00e2ntico, n\u00e3o literal</div>
+            <div className="t-titulo-card" style={{ fontWeight: 700, marginBottom: 8 }}>Semântico, não literal</div>
             <p className="t-corpo-2" style={{ margin: 0, marginBottom: 8 }}>
               <span className="ds-token">--btn-primary</span> em vez de <span className="ds-token">--teal-600</span>
             </p>
             <p className="t-corpo-2 text-fg-2" style={{ margin: 0 }}>
-              Por qu\u00ea: se a cor prim\u00e1ria mudar de teal para azul, voc\u00ea n\u00e3o precisa renomear 200 refer\u00eancias.
+              Por quê: se a cor primária mudar de teal para azul, você não precisa renomear 200 referências.
             </p>
           </div>
           <div
@@ -178,7 +179,7 @@ export default function DSOverview() {
               <span className="ds-token">--bg-surface</span>, <span className="ds-token">--fg-2</span>, <span className="ds-token">--dom-urg-text</span>
             </p>
             <p className="t-corpo-2 text-fg-2" style={{ margin: 0 }}>
-              Por qu\u00ea: agrupamento natural. Todos os backgrounds come\u00e7am com <span className="ds-token">--bg</span>, todos os foregrounds com <span className="ds-token">--fg</span>.
+              Por quê: agrupamento natural. Todos os backgrounds começam com <span className="ds-token">--bg</span>, todos os foregrounds com <span className="ds-token">--fg</span>.
             </p>
           </div>
           <div
@@ -193,12 +194,12 @@ export default function DSOverview() {
               className="ph ph-chart-line-up"
               style={{ fontSize: 24, color: 'var(--primary)', display: 'block', marginBottom: 12 }}
             />
-            <div className="t-titulo-card" style={{ fontWeight: 700, marginBottom: 8 }}>Escala num\u00e9rica para intensidade</div>
+            <div className="t-titulo-card" style={{ fontWeight: 700, marginBottom: 8 }}>Escala numérica para intensidade</div>
             <p className="t-corpo-2" style={{ margin: 0, marginBottom: 8 }}>
               <span className="ds-token">--shadow-0</span> a <span className="ds-token">--shadow-5</span>, <span className="ds-token">--sp-1</span> a <span className="ds-token">--sp-24</span>
             </p>
             <p className="t-corpo-2 text-fg-2" style={{ margin: 0 }}>
-              Por qu\u00ea: progress\u00e3o previs\u00edvel. Quanto maior o n\u00famero, maior a intensidade.
+              Por quê: progressão previsível. Quanto maior o número, maior a intensidade.
             </p>
           </div>
         </div>

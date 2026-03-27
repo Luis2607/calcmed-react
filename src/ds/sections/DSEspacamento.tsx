@@ -26,14 +26,14 @@ const radiusTokens = [
 export default function DSEspacamento() {
   return (
     <div>
-      <h2 className="ds-section-title">Espa{"\u00e7"}amento</h2>
+      <h2 className="ds-section-title">Espaçamento</h2>
       <p className="ds-section-desc">
-        Sistema de espa{"\u00e7"}amento com base de 4px. Todos os valores s{"\u00e3"}o m{"\u00fa"}ltiplos de 4, criando
+        Sistema de espaçamento com base de 4px. Todos os valores são múltiplos de 4, criando
         um ritmo visual consistente em toda a interface.
       </p>
       <p className="ds-section-desc">
-        Os 12 tokens cobrem de 4px (micro-espa{"\u00e7"}amento entre {"\u00ed"}cone e texto) at{"\u00e9"} 96px (separa{"\u00e7\u00e3"}o entre se{"\u00e7\u00f5"}es).
-        Em telas m{"\u00e9"}dicas, espa{"\u00e7"}amento adequado reduz erros de leitura e facilita a identifica{"\u00e7\u00e3"}o r{"\u00e1"}pida de informa{"\u00e7\u00f5"}es cr{"\u00ed"}ticas.
+        Os 12 tokens cobrem de 4px (micro-espaçamento entre ícone e texto) até 96px (separação entre seções).
+        Em telas médicas, espaçamento adequado reduz erros de leitura e facilita a identificação rápida de informações críticas.
       </p>
 
       {/* Quando usar */}
@@ -43,24 +43,24 @@ export default function DSEspacamento() {
           <div className="flex-1">
             <div className="t-texto-badge text-success mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>Use quando</div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Separar campos de formul{"\u00e1"}rio com sp-4 (16px) para manter agrupamento visual</span></li>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Definir padding de se{"\u00e7\u00e3"}o com sp-6 (24px) para respira{"\u00e7\u00e3"}o visual adequada</span></li>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Separar se{"\u00e7\u00f5"}es principais com sp-8 (32px) para criar hierarquia clara</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Separar campos de formulário com sp-4 (16px) para manter agrupamento visual</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Definir padding de seção com sp-6 (24px) para respiração visual adequada</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Separar seções principais com sp-8 (32px) para criar hierarquia clara</span></li>
             </ul>
           </div>
           <div className="flex-1">
-            <div className="t-texto-badge text-danger mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>N{"\u00e3"}o use quando</div>
+            <div className="t-texto-badge text-danger mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>Não use quando</div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Usar valores de pixel avulsos (ex: 13px, 17px). Sempre use os tokens do sistema</span></li>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Comprimir espa{"\u00e7"}amento entre campos de dose. Erros de leitura podem custar vidas</span></li>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Usar sp-1 (4px) como separa{"\u00e7\u00e3"}o entre se{"\u00e7\u00f5"}es. Reserve para micro-espa{"\u00e7"}amento apenas</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Comprimir espaçamento entre campos de dose. Erros de leitura podem custar vidas</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Usar sp-1 (4px) como separação entre seções. Reserve para micro-espaçamento apenas</span></li>
             </ul>
           </div>
         </div>
       </div>
 
       <div className="ds-subsection">
-        <h3>Escala de Espa{"\u00e7"}amento</h3>
+        <h3>Escala de Espaçamento</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
           Use sempre os tokens (--sp-1 a --sp-24) em vez de valores fixos em pixels.
           Isso permite ajustes globais de densidade sem alterar cada componente individualmente.
@@ -77,8 +77,8 @@ export default function DSEspacamento() {
       <div className="ds-subsection">
         <h3>Border Radius</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          5 tokens de arredondamento, de sutil (4px para badges) at{"\u00e9"} pill (100px para bot{"\u00f5"}es
-          de a{"\u00e7\u00e3"}o prim{"\u00e1"}ria). O radius padr{"\u00e3"}o para cards {"\u00e9"} --r-xl (16px), e para inputs {"\u00e9"} --r-lg (12px).
+          5 tokens de arredondamento, de sutil (4px para badges) até pill (100px para botões
+          de ação primária). O radius padrão para cards é --r-xl (16px), e para inputs é --r-lg (12px).
         </p>
         <DSPanel title="Tokens de radius">
           <div className="flex gap-6 flex-wrap">
@@ -103,10 +103,10 @@ export default function DSEspacamento() {
       </div>
 
       <div className="ds-subsection">
-        <h3>Classes Utilit{"\u00e1"}rias</h3>
+        <h3>Classes Utilitárias</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Classes de conveni{"\u00ea"}ncia para aplicar espa{"\u00e7"}amento rapidamente. Todas consomem os tokens
-          CSS, mantendo a consist{"\u00ea"}ncia do sistema.
+          Classes de conveniência para aplicar espaçamento rapidamente. Todas consomem os tokens
+          CSS, mantendo a consistência do sistema.
         </p>
         <div className="ds-stat-grid">
           {[

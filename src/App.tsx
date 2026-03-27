@@ -22,6 +22,7 @@ import CalculadoraResultadoPage from './pages/CalculadoraResultadoPage'
 
 const DSLayout = lazy(() => import('./ds/DSLayout'))
 const DSOverview = lazy(() => import('./ds/DSOverview'))
+const DSBrand = lazy(() => import('./ds/sections/DSBrand'))
 const DSCores = lazy(() => import('./ds/sections/DSCores'))
 const DSTipografia = lazy(() => import('./ds/sections/DSTipografia'))
 const DSEspacamento = lazy(() => import('./ds/sections/DSEspacamento'))
@@ -60,6 +61,7 @@ export default function App() {
         }
       >
         <Route index element={<Suspense fallback={null}><DSOverview /></Suspense>} />
+        <Route path="brand" element={<Suspense fallback={null}><DSBrand /></Suspense>} />
         <Route path="cores" element={<Suspense fallback={null}><DSCores /></Suspense>} />
         <Route path="tipografia" element={<Suspense fallback={null}><DSTipografia /></Suspense>} />
         <Route path="espacamento" element={<Suspense fallback={null}><DSEspacamento /></Suspense>} />
