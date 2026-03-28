@@ -2,12 +2,18 @@ import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import MobileFrame from '../components/layout/MobileFrame'
 import HomeHeader from '../components/layout/HomeHeader'
+import BottomNav from '../components/layout/BottomNav'
 import Button from '../components/ui/Button'
 import { CheckCircle } from '@phosphor-icons/react'
+import { useLayout } from '../contexts/LayoutContext'
 
 export default function PremiumModalPage() {
   const navigate = useNavigate()
+  const { layoutMode } = useLayout()
+  const isWeb = layoutMode === 'web'
   const modalRef = useRef<HTMLDivElement>(null)
+
+  const dismiss = () => navigate(-1)
 
   useEffect(() => {
     const modal = modalRef.current
@@ -17,6 +23,13 @@ export default function PremiumModalPage() {
     modal.focus()
 
     function handleKeyDown(e: KeyboardEvent) {
+      // Escape closes modal (doctor may be in emergency)
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        navigate(-1)
+        return
+      }
+
       if (e.key !== 'Tab' || !modal) return
 
       const focusable = modal.querySelectorAll<HTMLElement>(
@@ -42,7 +55,7 @@ export default function PremiumModalPage() {
 
     modal.addEventListener('keydown', handleKeyDown)
     return () => modal.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [navigate])
 
   return (
     <MobileFrame className="relative">
@@ -51,7 +64,8 @@ export default function PremiumModalPage() {
       <div className="screen-content flex-1 blur-bg-soft" />
 
       {/* OVERLAY + MODAL */}
-      <div className="modal-overlay from-bottom">
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+      <div className="modal-overlay from-bottom" onClick={dismiss}>
         <div
           ref={modalRef}
           className="modal-premium-sheet"
@@ -59,6 +73,7 @@ export default function PremiumModalPage() {
           aria-modal="true"
           aria-labelledby="premium-modal-title"
           tabIndex={-1}
+          onClick={e => e.stopPropagation()}
         >
           {/* Tag PREMIUM topo */}
           <div className="text-center p-5 pb-0">
@@ -124,18 +139,19 @@ export default function PremiumModalPage() {
 
           {/* Ações (3 níveis) */}
           <div className="modal-footer-col mt-4">
-            <Button variant="primary" size="lg" href="/planos" fullWidth>
+            <Button variant="primary" size="lg" href="/planos" fullWidth className="btn-pulse-cta">
               Assinar agora - R$149,90/ano
             </Button>
             <Button variant="ghost" size="lg" fullWidth>
               Usar meu último acesso
             </Button>
-            <Button variant="discrete" onClick={() => navigate(-1)}>
+            <Button variant="discrete" size="md" onClick={dismiss}>
               Agora não
             </Button>
           </div>
         </div>
       </div>
+      {isWeb && <BottomNav />}
     </MobileFrame>
   )
 }

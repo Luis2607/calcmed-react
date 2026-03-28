@@ -86,12 +86,12 @@ export default function DSTags() {
       <div className="ds-subsection">
         <h3>Tag de Status</h3>
         <p className="ds-subsection-desc">
-          Comunicam o nível de acesso de cada funcionalidade. {"\u201c"}PREMIUM{"\u201d"} indica conteúdo bloqueado,
-          {"\u201c"}TESTE{"\u201d"} mostra que o usuário está em período de teste, {"\u201c"}GRATUITO{"\u201d"} confirma
+          Comunicam o nível de acesso de cada funcionalidade. "PREMIUM" indica conteúdo bloqueado,
+          "TESTE" mostra que o usuário está em período de teste, "GRATUITO" confirma
           acesso livre.
         </p>
         <p className="ds-subsection-desc">
-          {"\u201c"}NOVO{"\u201d"} e {"\u201c"}ATUALIZADO{"\u201d"} destacam novidades, e {"\u201c"}EXPIRA HOJE{"\u201d"} alerta sobre
+          "NOVO" e "ATUALIZADO" destacam novidades, e "EXPIRA HOJE" alerta sobre
           fim do trial. Formato retangular, font 700 10px uppercase.
         </p>
         <DSPanel>
@@ -124,7 +124,7 @@ export default function DSTags() {
         <h3>Tag de Contagem</h3>
         <p className="ds-subsection-desc">
           Badge numérico para indicar quantidade de itens (ex: resultados de busca, favoritos,
-          notificações). Fundo elevated com número centralizado. Valores acima de 99 exibem {"\u201c"}99+{"\u201d"}.
+          notificações). Fundo elevated com número centralizado. Valores acima de 99 exibem "99+".
         </p>
         <DSPanel>
           <div className="ds-demo-row">
@@ -202,16 +202,16 @@ export default function DSTags() {
           </thead>
           <tbody>
             {[
-              { cls: '.tag-domain', desc: 'Pill com padding 4px 12px, font 600 12px \u2014 identifica domínio clínico' },
-              { cls: '.tag-status', desc: 'Retangular, font 700 10px uppercase \u2014 nível de acesso' },
-              { cls: '.tag-abbr', desc: 'Quadrado arredondado, font 700 18px \u2014 sigla médica' },
-              { cls: '.tag-count', desc: 'Badge numérico, fundo elevated \u2014 contagem de itens' },
-              { cls: '.chip', desc: 'Filtro interativo, radius pill, borda \u2014 toque para ativar' },
+              { cls: '.tag-domain', desc: 'Pill com padding 4px 12px, font 600 12px — identifica domínio clínico' },
+              { cls: '.tag-status', desc: 'Retangular, font 700 10px uppercase — nível de acesso' },
+              { cls: '.tag-abbr', desc: 'Quadrado arredondado, font 700 18px — sigla médica' },
+              { cls: '.tag-count', desc: 'Badge numérico, fundo elevated — contagem de itens' },
+              { cls: '.chip', desc: 'Filtro interativo, radius pill, borda — toque para ativar' },
               { cls: '.chip.active', desc: 'Chip ativo: fundo primary, texto branco' },
               { cls: '.urg, .dil, .calc, ...', desc: 'Cor de domínio (background + texto)' },
-              { cls: '.tag-status.premium', desc: 'Fundo primary, texto branco \u2014 conteúdo pago' },
-              { cls: '.tag-status.teste', desc: 'Fundo success-bg, texto success \u2014 período teste' },
-              { cls: '.tag-status.free', desc: 'Fundo elevated, texto fg-2 \u2014 acesso gratuito' },
+              { cls: '.tag-status.premium', desc: 'Fundo primary, texto branco — conteúdo pago' },
+              { cls: '.tag-status.teste', desc: 'Fundo success-bg, texto success — período teste' },
+              { cls: '.tag-status.free', desc: 'Fundo elevated, texto fg-2 — acesso gratuito' },
               { cls: '.tag-dismissible', desc: 'Tag com padding-right reduzido para botão X' },
               { cls: '.tag-x', desc: 'Botão X dentro da tag: 16px, opacidade 0.6, hover 1' },
             ].map(r => (

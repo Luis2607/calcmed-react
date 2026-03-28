@@ -676,18 +676,29 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
    17. BANNER EDITORIAL — Card destaque na home
    ================================================================ */
 .banner-editorial {
+  display: flex; align-items: center; gap: var(--sp-3);
   border-radius: var(--r-xl); padding: var(--sp-5);
+  min-height: 100px;
   background: linear-gradient(135deg, var(--teal-700), var(--teal-900));
   color: white; position: relative; overflow: hidden;
   cursor: pointer; transition: transform .15s;
+  text-decoration: none;
 }
 .banner-editorial:hover { transform: scale(1.01) }
+.banner-editorial .banner-body { flex: 1; min-width: 0 }
 .banner-editorial .banner-tag {
   font: 600 10px 'Inter'; text-transform: uppercase; letter-spacing: 1px;
   color: var(--teal-200); margin-bottom: var(--sp-2);
 }
 .banner-editorial .banner-title { font: 600 16px/22px 'Inter'; color: white }
 .banner-editorial .banner-desc { font: 400 13px/18px 'Inter'; color: rgba(255,255,255,0.7); margin-top: var(--sp-2) }
+.banner-editorial .banner-chevron {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8);
+  transition: background .15s;
+}
+.banner-editorial:hover .banner-chevron { background: rgba(255,255,255,0.2) }
 
 /* Dark variant */
 .dark .banner-editorial { background: linear-gradient(135deg, var(--navy-700), var(--navy-800)) }
@@ -799,8 +810,7 @@ a.btn, a.btn-text, a.btn-discrete, a.card-feature { text-decoration: none }
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: var(--sp-3);
 }
-.section-header h2 { font: 700 18px/24px 'Inter'; color: var(--fg) }
-.section-header a { font: 500 14px 'Inter'; color: var(--fg-link); text-decoration: none }
+.section-header h2 { font: 700 20px/28px 'Inter'; color: var(--fg); letter-spacing: -0.2px }
 .fav-scroll {
   display: flex; gap: var(--sp-3); overflow-x: auto;
   padding-bottom: var(--sp-2); scroll-snap-type: x mandatory;

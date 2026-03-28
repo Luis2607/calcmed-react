@@ -78,17 +78,18 @@ interface Props {
   isOpen: boolean
   onClose: () => void
   search?: string
+  onSearch?: (value: string) => void
   onNavigate?: () => void
   darkMode?: boolean
   onToggleDark?: () => void
 }
 
-export default function DSSidebar({ isOpen, onClose, search = '', onNavigate, darkMode = false, onToggleDark }: Props) {
+export default function DSSidebar({ isOpen, onClose, search = '', onSearch, onNavigate, darkMode = false, onToggleDark }: Props) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({
     'Átomos': true,
-    'Moléculas': false,
-    'Organismos': false,
-    'Templates': false,
+    'Moléculas': true,
+    'Organismos': true,
+    'Templates': true,
   })
 
   const isSearching = search.trim().length > 0
@@ -108,11 +109,7 @@ export default function DSSidebar({ isOpen, onClose, search = '', onNavigate, da
   }, [isSearching, normalizedSearch])
 
   const toggle = (title: string) => {
-    setExpanded(prev => {
-      const isCurrentlyOpen = prev[title]
-      const allClosed = Object.fromEntries(Object.keys(prev).map(k => [k, false]))
-      return { ...allClosed, [title]: !isCurrentlyOpen }
-    })
+    setExpanded(prev => ({ ...prev, [title]: !prev[title] }))
   }
 
   const handleNavClick = () => {
@@ -143,6 +140,19 @@ export default function DSSidebar({ isOpen, onClose, search = '', onNavigate, da
           <i className="ph ph-arrow-left" />
           Voltar ao App
         </NavLink>
+
+        {onSearch && (
+          <div className="ds-search-area">
+            <input
+              type="text"
+              className="ds-search"
+              placeholder="Buscar componente..."
+              value={search}
+              onChange={e => onSearch(e.target.value)}
+              aria-label="Buscar seções do Design System"
+            />
+          </div>
+        )}
 
         <nav>
           {filteredGroups.map(group => {

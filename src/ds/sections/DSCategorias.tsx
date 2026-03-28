@@ -111,8 +111,8 @@ export default function DSCategorias() {
       <div className="ds-subsection">
         <h3>Cabeçalho de Seção e Favoritos</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          O cabeçalho de seção combina título e link {"\u201c"}Ver todos{"\u201d"}. A área de favoritos
-          ({"\u201c"}Meu Plantão{"\u201d"}) usa scroll horizontal com snap, permitindo acesso rápido
+          O cabeçalho de seção combina título e link "Ver todos". A área de favoritos
+          ("Meu Plantão") usa scroll horizontal com snap, permitindo acesso rápido
           às calculadoras mais usadas pelo médico.
         </p>
         <DSPanel>

@@ -11,6 +11,9 @@ export default function SegmentedControl({ options, value, onChange, id }: Props
       {options.map(opt => (
         <button
           key={opt.value}
+          type="button"
+          role="radio"
+          aria-checked={value === opt.value}
           className={`seg-option ${value === opt.value ? 'active' : ''}`}
           onClick={() => onChange(opt.value)}
         >

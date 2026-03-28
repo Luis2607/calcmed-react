@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import MobileFrame from '../components/layout/MobileFrame'
+import AuthWebLayout from '../components/layout/AuthWebLayout'
 import Button from '../components/ui/Button'
+import { useLayout } from '../contexts/LayoutContext'
 
 const slides = [
   { bg: '/assets/slide-1.png', text: 'Doses calculadas em segundos no PS' },
@@ -9,18 +11,55 @@ const slides = [
 ]
 
 export default function EntradaPage() {
+  const { layoutMode } = useLayout()
   const [current, setCurrent] = useState(0)
 
   useEffect(() => {
+    if (layoutMode === 'web') return // skip carousel in web mode
     const timer = setInterval(() => setCurrent(i => (i + 1) % 3), 5000)
     return () => clearInterval(timer)
-  }, [])
+  }, [layoutMode])
+
+  if (layoutMode === 'web') {
+    return (
+      <AuthWebLayout>
+        {/* Header */}
+        <div className="mb-6">
+          <h2 className="t-titulo-pagina">Bem-vindo ao CalcMed</h2>
+          <p className="t-corpo-2 text-fg-2 mt-2">Acesse sua conta para começar</p>
+        </div>
+
+        {/* Social login */}
+        <div className="flex flex-col gap-3">
+          <Button variant="google" size="md" href="/onboarding/1" fullWidth>
+            <span className="icon-google" /> Entrar com Google
+          </Button>
+          <Button variant="apple" size="md" href="/onboarding/1" fullWidth>
+            <span className="icon-apple" /> Entrar com Apple
+          </Button>
+        </div>
+
+        {/* Divider */}
+        <div className="divider-ou" role="separator"><div className="line" aria-hidden="true" /><span className="text">ou</span><div className="line" aria-hidden="true" /></div>
+
+        {/* Email */}
+        <Button variant="ghost" size="md" href="/login/email" fullWidth>
+          Entrar com e-mail
+        </Button>
+
+        {/* Support */}
+        <div className="text-center mt-4">
+          <Button variant="discrete">Precisa de ajuda?</Button>
+        </div>
+      </AuthWebLayout>
+    )
+  }
 
   return (
     <MobileFrame darkFrame>
       {/* Hero */}
       <div className="hero-dark flex-1">
-        <div className="carousel-bg">
+        <div className="carousel-bg" aria-hidden="true">
           {slides.map((s, i) => (
             <div
               key={i}
@@ -36,9 +75,9 @@ export default function EntradaPage() {
             <div className="t-marca">Calc<span className="dot">.</span>Med</div>
             <div className="t-texto-badge brand-sub mt-1">Urgência e Emergência</div>
           </div>
-          <div className="carousel-text mt-4">
+          <div className="carousel-text mt-4" aria-live="polite" aria-atomic="true">
             {slides.map((s, i) => (
-              <div key={i} className={`slide-text ${i === current ? 'active' : 'hidden'}`}>
+              <div key={i} className={`slide-text ${i === current ? 'active' : ''}`}>
                 {s.text}
               </div>
             ))}
@@ -67,7 +106,7 @@ export default function EntradaPage() {
         <Button variant="apple" size="lg" href="/onboarding/1" fullWidth>
           <span className="icon-apple" /> Entrar com Apple
         </Button>
-        <div className="divider-ou"><div className="line" /><span className="text">ou</span><div className="line" /></div>
+        <div className="divider-ou" role="separator"><div className="line" aria-hidden="true" /><span className="text">ou</span><div className="line" aria-hidden="true" /></div>
         <div className="text-center">
           <Button variant="text" href="/login/email">Entrar com e-mail</Button>
         </div>

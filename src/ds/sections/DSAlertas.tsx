@@ -147,7 +147,7 @@ export default function DSAlertas() {
         <h3>Alerta Compacto</h3>
         <p className="ds-subsection-desc">
           Versão inline horizontal para feedbacks rápidos dentro de formulários ou após ações
-          (ex: {"\u201c"}Salvo com sucesso{"\u201d"}, {"\u201c"}Erro ao salvar{"\u201d"}).
+          (ex: "Salvo com sucesso", "Erro ao salvar").
           Podem incluir botão de fechar (X). Usados como toasts ou notificações efêmeras na interface.
         </p>
         <DSPanel>
@@ -213,11 +213,11 @@ export default function DSAlertas() {
           <tbody>
             {[
               { cls: '.alert-card.alert-info', level: '1', use: 'Contexto geral, informações sobre o medicamento' },
-              { cls: '.alert-card.alert-result', level: '2', use: 'Dose calculada \u2014 protagonista visual da tela' },
+              { cls: '.alert-card.alert-result', level: '2', use: 'Dose calculada — protagonista visual da tela' },
               { cls: '.alert-card.alert-critical', level: '3', use: 'Alertas de segurança, limites excedidos' },
               { cls: '.alert-card.alert-warning', level: '4', use: 'Observações clínicas, ajustes necessários' },
               { cls: '.alert-card.alert-footnote', level: '5', use: 'Fontes bibliográficas, disclaimers, notas' },
-              { cls: '.alert.compact', level: '\u2014', use: 'Versão inline horizontal para feedback de sistema' },
+              { cls: '.alert.compact', level: '—', use: 'Versão inline horizontal para feedback de sistema' },
             ].map(r => (
               <tr key={r.cls}>
                 <td><span className="ds-token">{r.cls}</span></td>

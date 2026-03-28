@@ -134,22 +134,11 @@ export default function DSLayout() {
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         search={search}
+        onSearch={setSearch}
         onNavigate={() => setSearch('')}
         darkMode={darkMode}
         onToggleDark={() => setDarkMode(!darkMode)}
       />
-
-      {/* Search input rendered as overlay on top of sidebar nav area */}
-      <div className="ds-search-wrapper">
-        <input
-          type="text"
-          className="ds-search"
-          placeholder="Buscar componente..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          aria-label="Buscar seções do Design System"
-        />
-      </div>
 
       <main className="ds-content">
         {!isOverview && <DSBreadcrumb slug={slug} />}

@@ -2,8 +2,8 @@ import DSPanel from '../DSPanel'
 
 const responsiveBehaviors = [
   { component: 'Cards grid', mobile: '2 colunas (grid-2col)', tablet: '3 colunas', desktop: '4 colunas' },
-  { component: 'Bottom nav', mobile: 'Visivel (fixa no bottom)', tablet: 'Visivel', desktop: 'Oculta (sidebar substitui)' },
-  { component: 'Sidebar', mobile: 'Oculta (hamburger menu)', tablet: 'Oculta (hamburger menu)', desktop: 'Visivel, 260px fixa' },
+  { component: 'Bottom nav', mobile: 'Visível (fixa no bottom)', tablet: 'Visível', desktop: 'Oculta (sidebar substitui)' },
+  { component: 'Sidebar', mobile: 'Oculta (hamburger menu)', tablet: 'Oculta (hamburger menu)', desktop: 'Visível, 260px fixa' },
   { component: 'Input fields', mobile: 'Full-width', tablet: 'Full-width', desktop: 'max-width 480px' },
   { component: 'Modal', mobile: 'Full-width bottom sheet', tablet: 'Centralizado, max 480px', desktop: 'Centralizado, max 560px' },
 ]
@@ -133,8 +133,8 @@ export default function DSGrid() {
       <div className="ds-subsection">
         <h3>Comportamento Responsivo</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          Cada componente se adapta ao contexto do dispositivo. No plantao, o medico usa celular.
-          No consultorio, pode usar tablet ou desktop. O DS garante que a experiencia clinica
+          Cada componente se adapta ao contexto do dispositivo. No plantão, o médico usa celular.
+          No consultório, pode usar tablet ou desktop. O DS garante que a experiência clínica
           seja consistente em qualquer tela.
         </p>
         <table className="ds-token-table">

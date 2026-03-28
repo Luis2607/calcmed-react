@@ -1,3 +1,5 @@
+import type { KeyboardEvent } from 'react'
+
 interface Props {
   period: 'Anual' | 'Mensal'
   price: string
@@ -10,8 +12,23 @@ interface Props {
 }
 
 export default function PlanCard({ period, price, suffix, dailyPrice, savings, selected, badge, onClick }: Props) {
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      onClick?.()
+    }
+  }
+
   return (
-    <div className={`plan-card ${selected ? 'selected' : ''}`} onClick={onClick}>
+    <div
+      className={`plan-card ${selected ? 'selected' : ''}`}
+      onClick={onClick}
+      role="radio"
+      aria-checked={selected}
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      aria-label={`Plano ${period}, ${price}${suffix}${dailyPrice ? `, ${dailyPrice}` : ''}${savings ? `, ${savings}` : ''}`}
+    >
       {badge && (
         <div className="plan-badge">
           <span className="tag-status premium">{badge}</span>

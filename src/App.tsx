@@ -1,6 +1,8 @@
-import { lazy, Suspense } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { lazy, Suspense, useEffect, useRef, useCallback } from 'react'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useTheme } from './contexts/ThemeContext'
+import { useLayout } from './contexts/LayoutContext'
+
 import LandingPage from './pages/LandingPage'
 import EntradaPage from './pages/EntradaPage'
 import EmailPage from './pages/EmailPage'
@@ -9,7 +11,6 @@ import RecuperarPage from './pages/RecuperarPage'
 import Onboarding1Page from './pages/Onboarding1Page'
 import Onboarding2Page from './pages/Onboarding2Page'
 import HomePage from './pages/HomePage'
-import HomeDegustacaoPage from './pages/HomeDegustacaoPage'
 import BuscaPage from './pages/BuscaPage'
 import PremiumModalPage from './pages/PremiumModalPage'
 import PlanosPage from './pages/PlanosPage'
@@ -52,74 +53,199 @@ const DSWriting = lazy(() => import('./ds/sections/DSWriting'))
 const DSClinico = lazy(() => import('./ds/sections/DSClinico'))
 const DSChangelog = lazy(() => import('./ds/sections/DSChangelog'))
 
-export default function App() {
-  const { resolvedTheme } = useTheme()
+/* ----------------------------------------------------------------
+   Navigation progress bar (NProgress-style)
+   ---------------------------------------------------------------- */
+function NavigationProgress() {
+  const location = useLocation()
+  const barRef = useRef<HTMLDivElement>(null)
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const prevPath = useRef(location.pathname)
+
+  useEffect(() => {
+    if (location.pathname === prevPath.current) return
+    prevPath.current = location.pathname
+
+    const wrap = wrapRef.current
+    const bar = barRef.current
+    if (!wrap || !bar) return
+
+    // Start
+    wrap.classList.add('active')
+    bar.style.transition = 'none'
+    bar.style.width = '0%'
+
+    // Force reflow
+    void bar.offsetWidth
+
+    // Animate to 80%
+    bar.style.transition = 'width 300ms cubic-bezier(0.2,0,0,1)'
+    bar.style.width = '80%'
+
+    // Complete after a tick
+    const t1 = setTimeout(() => {
+      bar.style.transition = 'width 150ms cubic-bezier(0.2,0,0,1)'
+      bar.style.width = '100%'
+    }, 200)
+
+    // Hide
+    const t2 = setTimeout(() => {
+      wrap.classList.remove('active')
+      bar.style.width = '0%'
+    }, 400)
+
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+    }
+  }, [location.pathname])
 
   return (
-    <Routes>
-      {/* Design System Documentation */}
-      <Route
-        path="/design-system"
-        element={
-          <Suspense fallback={<div style={{ padding: 40, textAlign: 'center', color: '#64748b' }}>Carregando Design System...</div>}>
-            <DSLayout />
-          </Suspense>
-        }
-      >
-        <Route index element={<Suspense fallback={null}><DSOverview /></Suspense>} />
-        <Route path="brand" element={<Suspense fallback={null}><DSBrand /></Suspense>} />
-        <Route path="cores" element={<Suspense fallback={null}><DSCores /></Suspense>} />
-        <Route path="tipografia" element={<Suspense fallback={null}><DSTipografia /></Suspense>} />
-        <Route path="espacamento" element={<Suspense fallback={null}><DSEspacamento /></Suspense>} />
-        <Route path="grid" element={<Suspense fallback={null}><DSGrid /></Suspense>} />
-        <Route path="elevacao" element={<Suspense fallback={null}><DSElevacao /></Suspense>} />
-        <Route path="motion" element={<Suspense fallback={null}><DSMotion /></Suspense>} />
-        <Route path="icones" element={<Suspense fallback={null}><DSIcones /></Suspense>} />
-        <Route path="botoes" element={<Suspense fallback={null}><DSBotoes /></Suspense>} />
-        <Route path="inputs" element={<Suspense fallback={null}><DSInputs /></Suspense>} />
-        <Route path="selecao" element={<Suspense fallback={null}><DSSelecao /></Suspense>} />
-        <Route path="tags" element={<Suspense fallback={null}><DSTags /></Suspense>} />
-        <Route path="cards" element={<Suspense fallback={null}><DSCards /></Suspense>} />
-        <Route path="alertas" element={<Suspense fallback={null}><DSAlertas /></Suspense>} />
-        <Route path="navegacao" element={<Suspense fallback={null}><DSNavegacao /></Suspense>} />
-        <Route path="patterns" element={<Suspense fallback={null}><DSPatterns /></Suspense>} />
-        <Route path="overlays" element={<Suspense fallback={null}><DSOverlays /></Suspense>} />
-        <Route path="estados" element={<Suspense fallback={null}><DSEstados /></Suspense>} />
-        <Route path="headers" element={<Suspense fallback={null}><DSHeaders /></Suspense>} />
-        <Route path="acessibilidade" element={<Suspense fallback={null}><DSAcessibilidade /></Suspense>} />
-        <Route path="chat" element={<Suspense fallback={null}><DSChat /></Suspense>} />
-        <Route path="calendario" element={<Suspense fallback={null}><DSCalendario /></Suspense>} />
-        <Route path="categorias" element={<Suspense fallback={null}><DSCategorias /></Suspense>} />
-        <Route path="menu-perfil" element={<Suspense fallback={null}><DSMenuPerfil /></Suspense>} />
-        <Route path="premium" element={<Suspense fallback={null}><DSPremiumCheckout /></Suspense>} />
-        <Route path="clinico" element={<Suspense fallback={null}><DSClinico /></Suspense>} />
-        <Route path="writing" element={<Suspense fallback={null}><DSWriting /></Suspense>} />
-        <Route path="changelog" element={<Suspense fallback={null}><DSChangelog /></Suspense>} />
-      </Route>
+    <div ref={wrapRef} className="nav-progress" aria-hidden="true">
+      <div ref={barRef} className="nav-progress-bar" />
+    </div>
+  )
+}
 
-      {/* Landing */}
-      <Route path="/" element={<LandingPage />} />
+/* ----------------------------------------------------------------
+   Scroll restoration
+   ---------------------------------------------------------------- */
+function ScrollRestoration() {
+  const location = useLocation()
+  const scrollPositions = useRef<Record<string, number>>({})
+  const prevKey = useRef<string>('')
 
-      {/* App Pages */}
-      <Route path="/app" element={<div className={`mobile-page ${resolvedTheme}`}><EntradaPage /></div>} />
-      <Route path="/login/email" element={<div className={`mobile-page ${resolvedTheme}`}><EmailPage /></div>} />
-      <Route path="/login/senha" element={<div className={`mobile-page ${resolvedTheme}`}><SenhaPage /></div>} />
-      <Route path="/login/recuperar" element={<div className={`mobile-page ${resolvedTheme}`}><RecuperarPage /></div>} />
-      <Route path="/onboarding/1" element={<div className={`mobile-page ${resolvedTheme}`}><Onboarding1Page /></div>} />
-      <Route path="/onboarding/2" element={<div className={`mobile-page ${resolvedTheme}`}><Onboarding2Page /></div>} />
-      <Route path="/home" element={<div className={`mobile-page ${resolvedTheme}`}><HomePage /></div>} />
-      <Route path="/home/trial" element={<div className={`mobile-page ${resolvedTheme}`}><HomeDegustacaoPage /></div>} />
-      <Route path="/busca" element={<div className={`mobile-page ${resolvedTheme}`}><BuscaPage /></div>} />
-      <Route path="/premium" element={<div className={`mobile-page ${resolvedTheme}`}><PremiumModalPage /></div>} />
-      <Route path="/planos" element={<div className={`mobile-page ${resolvedTheme}`}><PlanosPage /></div>} />
-      <Route path="/notificacoes" element={<div className={`mobile-page ${resolvedTheme}`}><NotificacoesPage /></div>} />
-      <Route path="/menu" element={<div className={`mobile-page ${resolvedTheme}`}><MenuPage /></div>} />
-      <Route path="/ia" element={<div className={`mobile-page ${resolvedTheme}`}><IAChatPage /></div>} />
-      <Route path="/escala" element={<div className={`mobile-page ${resolvedTheme}`}><EscalaCalendarioPage /></div>} />
-      <Route path="/escala/novo" element={<div className={`mobile-page ${resolvedTheme}`}><EscalaNovoPlantaoPage /></div>} />
-      <Route path="/calculadora/crcl" element={<div className={`mobile-page ${resolvedTheme}`}><CalculadoraInputsPage /></div>} />
-      <Route path="/calculadora/crcl/resultado" element={<div className={`mobile-page ${resolvedTheme}`}><CalculadoraResultadoPage /></div>} />
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+  const saveScroll = useCallback(() => {
+    if (prevKey.current) {
+      scrollPositions.current[prevKey.current] = window.scrollY
+    }
+  }, [])
+
+  useEffect(() => {
+    // Save previous position
+    saveScroll()
+    prevKey.current = location.key
+
+    // Restore or scroll to top
+    const saved = scrollPositions.current[location.key]
+    if (saved !== undefined) {
+      window.scrollTo(0, saved)
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }, [location.key, saveScroll])
+
+  // Save on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (prevKey.current) {
+        scrollPositions.current[prevKey.current] = window.scrollY
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return null
+}
+
+/* ----------------------------------------------------------------
+   Page transition wrapper — fades in on route change
+   ---------------------------------------------------------------- */
+function AnimatedRoutes({ children }: { children: React.ReactNode }) {
+  const location = useLocation()
+
+  return (
+    <div key={location.key} className="page-transition-wrapper">
+      {children}
+    </div>
+  )
+}
+
+
+function PageWrapper({ children }: { children: React.ReactNode }) {
+  const { resolvedTheme } = useTheme()
+  const { layoutMode } = useLayout()
+
+  if (layoutMode === 'web') {
+    return <>{children}</>
+  }
+
+  return <div className={`mobile-page ${resolvedTheme}`}>{children}</div>
+}
+
+export default function App() {
+  return (
+    <>
+      <NavigationProgress />
+      <ScrollRestoration />
+      <AnimatedRoutes>
+        <Routes>
+          {/* Design System Documentation */}
+          <Route
+            path="/design-system"
+            element={
+              <Suspense fallback={<div className="ds-loading-fallback">Carregando Design System...</div>}>
+                <DSLayout />
+              </Suspense>
+            }
+          >
+            <Route index element={<Suspense fallback={null}><DSOverview /></Suspense>} />
+            <Route path="brand" element={<Suspense fallback={null}><DSBrand /></Suspense>} />
+            <Route path="cores" element={<Suspense fallback={null}><DSCores /></Suspense>} />
+            <Route path="tipografia" element={<Suspense fallback={null}><DSTipografia /></Suspense>} />
+            <Route path="espacamento" element={<Suspense fallback={null}><DSEspacamento /></Suspense>} />
+            <Route path="grid" element={<Suspense fallback={null}><DSGrid /></Suspense>} />
+            <Route path="elevacao" element={<Suspense fallback={null}><DSElevacao /></Suspense>} />
+            <Route path="motion" element={<Suspense fallback={null}><DSMotion /></Suspense>} />
+            <Route path="icones" element={<Suspense fallback={null}><DSIcones /></Suspense>} />
+            <Route path="botoes" element={<Suspense fallback={null}><DSBotoes /></Suspense>} />
+            <Route path="inputs" element={<Suspense fallback={null}><DSInputs /></Suspense>} />
+            <Route path="selecao" element={<Suspense fallback={null}><DSSelecao /></Suspense>} />
+            <Route path="tags" element={<Suspense fallback={null}><DSTags /></Suspense>} />
+            <Route path="cards" element={<Suspense fallback={null}><DSCards /></Suspense>} />
+            <Route path="alertas" element={<Suspense fallback={null}><DSAlertas /></Suspense>} />
+            <Route path="navegacao" element={<Suspense fallback={null}><DSNavegacao /></Suspense>} />
+            <Route path="patterns" element={<Suspense fallback={null}><DSPatterns /></Suspense>} />
+            <Route path="overlays" element={<Suspense fallback={null}><DSOverlays /></Suspense>} />
+            <Route path="estados" element={<Suspense fallback={null}><DSEstados /></Suspense>} />
+            <Route path="headers" element={<Suspense fallback={null}><DSHeaders /></Suspense>} />
+            <Route path="acessibilidade" element={<Suspense fallback={null}><DSAcessibilidade /></Suspense>} />
+            <Route path="chat" element={<Suspense fallback={null}><DSChat /></Suspense>} />
+            <Route path="calendario" element={<Suspense fallback={null}><DSCalendario /></Suspense>} />
+            <Route path="categorias" element={<Suspense fallback={null}><DSCategorias /></Suspense>} />
+            <Route path="menu-perfil" element={<Suspense fallback={null}><DSMenuPerfil /></Suspense>} />
+            <Route path="premium" element={<Suspense fallback={null}><DSPremiumCheckout /></Suspense>} />
+            <Route path="clinico" element={<Suspense fallback={null}><DSClinico /></Suspense>} />
+            <Route path="writing" element={<Suspense fallback={null}><DSWriting /></Suspense>} />
+            <Route path="changelog" element={<Suspense fallback={null}><DSChangelog /></Suspense>} />
+          </Route>
+
+          {/* Landing */}
+          <Route path="/" element={<LandingPage />} />
+
+          {/* App Pages */}
+          <Route path="/app" element={<PageWrapper><EntradaPage /></PageWrapper>} />
+          <Route path="/login/email" element={<PageWrapper><EmailPage /></PageWrapper>} />
+          <Route path="/login/senha" element={<PageWrapper><SenhaPage /></PageWrapper>} />
+          <Route path="/login/recuperar" element={<PageWrapper><RecuperarPage /></PageWrapper>} />
+          <Route path="/onboarding/1" element={<PageWrapper><Onboarding1Page /></PageWrapper>} />
+          <Route path="/onboarding/2" element={<PageWrapper><Onboarding2Page /></PageWrapper>} />
+          <Route path="/home" element={<PageWrapper><HomePage /></PageWrapper>} />
+          <Route path="/home/trial" element={<PageWrapper><HomePage /></PageWrapper>} />
+          <Route path="/busca" element={<PageWrapper><BuscaPage /></PageWrapper>} />
+          <Route path="/premium" element={<PageWrapper><PremiumModalPage /></PageWrapper>} />
+          <Route path="/planos" element={<PageWrapper><PlanosPage /></PageWrapper>} />
+          <Route path="/notificacoes" element={<PageWrapper><NotificacoesPage /></PageWrapper>} />
+          <Route path="/menu" element={<PageWrapper><MenuPage /></PageWrapper>} />
+          <Route path="/ia" element={<PageWrapper><IAChatPage /></PageWrapper>} />
+          <Route path="/escala" element={<PageWrapper><EscalaCalendarioPage /></PageWrapper>} />
+          <Route path="/escala/novo" element={<PageWrapper><EscalaNovoPlantaoPage /></PageWrapper>} />
+          <Route path="/calculadora/crcl" element={<PageWrapper><CalculadoraInputsPage /></PageWrapper>} />
+          <Route path="/calculadora/crcl/resultado" element={<PageWrapper><CalculadoraResultadoPage /></PageWrapper>} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </AnimatedRoutes>
+    </>
   )
 }

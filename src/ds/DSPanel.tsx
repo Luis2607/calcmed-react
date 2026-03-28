@@ -24,7 +24,7 @@ export default function DSPanel({ title, children, darkChildren }: DSPanelProps)
         </div>
         <div className="ds-panel dark">
           <div className="ds-mode-label">Dark</div>
-          <div className="dark">{darkChildren ?? children}</div>
+          <div className="dark text-fg">{darkChildren ?? children}</div>
         </div>
       </div>
     </>

@@ -18,14 +18,14 @@ export default function DSPremiumModal() {
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">O período de teste expirar ou uma funcionalidade estiver bloqueada</span></li>
               <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">O usuário tentar acessar conteúdo premium pela primeira vez</span></li>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">SEMPRE incluir o botão {"\u201c"}Agora não{"\u201d"} visível sem scroll e com touch target de 48dp</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-check-circle" style={{ color: 'var(--success)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">SEMPRE incluir o botão "Agora não" visível sem scroll e com touch target de 48dp</span></li>
             </ul>
           </div>
           <div className="flex-1">
             <div className="t-texto-badge text-danger mb-3" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>Não use quando</div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">O médico estiver no meio de um cálculo de dose ativo. Nunca interromper</span></li>
-              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Esconder ou dificultar o dismiss ({"\u201c"}Agora não{"\u201d"}). Pode custar segundos críticos</span></li>
+              <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Esconder ou dificultar o dismiss ("Agora não"). Pode custar segundos críticos</span></li>
               <li className="flex gap-2 items-start mb-2"><i className="ph ph-x-circle" style={{ color: 'var(--danger)', flexShrink: 0, marginTop: 2 }} /><span className="t-corpo-2">Exibir modal premium repetidamente na mesma sessão. Respeite a frequência</span></li>
             </ul>
           </div>
@@ -35,7 +35,7 @@ export default function DSPremiumModal() {
       <div className="ds-guideline do mb-4">
         <div className="ds-guideline-label">Regra crítica</div>
         <p>
-          O botão {"\u201c"}Agora não{"\u201d"} é obrigatório em todo modal de conversão.
+          O botão "Agora não" é obrigatório em todo modal de conversão.
           O médico pode estar no meio de uma emergência real quando o modal aparece.
         </p>
         <p>
@@ -107,7 +107,7 @@ export default function DSPremiumModal() {
       <div className="ds-subsection">
         <h3>Cards de Plano</h3>
         <p className="t-corpo-2 text-fg-2 mb-4">
-          O plano anual vem pré-selecionado (borda teal + badge {"\u201c"}Melhor valor{"\u201d"}) por ser a opção
+          O plano anual vem pré-selecionado (borda teal + badge "Melhor valor") por ser a opção
           mais vantajosa. O plano mensal aparece sem destaque, permitindo comparação rápida.
         </p>
         <DSPanel>

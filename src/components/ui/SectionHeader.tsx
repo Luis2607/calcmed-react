@@ -1,6 +1,6 @@
 interface Props {
   title: string
-  action?: { label: string; href?: string; onClick?: () => void }
+  action?: { label: string; onClick?: () => void }
 }
 
 export default function SectionHeader({ title, action }: Props) {
@@ -8,7 +8,13 @@ export default function SectionHeader({ title, action }: Props) {
     <div className="section-header">
       <h2>{title}</h2>
       {action && (
-        <a href={action.href || '#'} onClick={action.onClick}>{action.label}</a>
+        <button
+          className="section-header-action"
+          onClick={action.onClick}
+          type="button"
+        >
+          {action.label}
+        </button>
       )}
     </div>
   )

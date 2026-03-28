@@ -64,7 +64,7 @@ export default function DSBrand() {
             <span className="t-marca" style={{ fontSize: 32 }}>
               Calc<span className="dot">.</span>Med
             </span>
-            <span className="t-texto-badge" style={{ letterSpacing: 2 }}>
+            <span className="t-texto-badge text-fg-2" style={{ letterSpacing: 2 }}>
               URGÊNCIA E EMERGÊNCIA
             </span>
           </div>
@@ -84,11 +84,51 @@ export default function DSBrand() {
             <span className="t-marca" style={{ fontSize: 28 }}>
               Calc<span className="dot">.</span>Med
             </span>
-            <span className="t-texto-badge" style={{ letterSpacing: 2, fontSize: 10 }}>
+            <span className="t-texto-badge text-fg-2" style={{ letterSpacing: 2, fontSize: 10 }}>
               URGÊNCIA E EMERGÊNCIA
             </span>
           </div>
         </DSPanel>
+      </div>
+
+      {/* ── Aplicações da Logo ── */}
+      <div className="ds-subsection">
+        <h3>Aplicações da Logo</h3>
+        <p className="ds-subsection-desc">
+          Todas as combinações oficiais de ícone + texto. Cada versão tem variante para fundo claro e escuro.
+          Use lockup horizontal em headers e barras de navegação. Use lockup vertical em splash screens, login e materiais impressos.
+        </p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          {/* Horizontal claro */}
+          <div className="rounded-xl p-6 flex items-center gap-4" style={{ background: 'var(--slate-50)', border: '1px solid var(--border)', minHeight: 100 }}>
+            <img src="/assets/Icone.svg" alt="Ícone" width={48} height={48} />
+            <div>
+              <div style={{ font: "700 24px 'Outfit'", color: '#0f172a' }}>Calc<span style={{ color: '#dc2626' }}>.</span>Med</div>
+              <div style={{ font: "600 9px 'Inter'", color: '#64748b', letterSpacing: 2, textTransform: 'uppercase' }}>Urgência e Emergência</div>
+            </div>
+          </div>
+          {/* Horizontal escuro */}
+          <div className="rounded-xl p-6 flex items-center gap-4" style={{ background: 'var(--brand-navy)', border: '1px solid var(--navy-700)', minHeight: 100 }}>
+            <img src="/assets/Icone.svg" alt="Ícone" width={48} height={48} />
+            <div>
+              <div style={{ font: "700 24px 'Outfit'", color: '#ffffff' }}>Calc<span style={{ color: '#dc2626' }}>.</span>Med</div>
+              <div style={{ font: "600 9px 'Inter'", color: '#94a3b8', letterSpacing: 2, textTransform: 'uppercase' }}>Urgência e Emergência</div>
+            </div>
+          </div>
+          {/* Vertical claro */}
+          <div className="rounded-xl p-8 flex flex-col items-center gap-3" style={{ background: 'var(--slate-50)', border: '1px solid var(--border)', minHeight: 180 }}>
+            <img src="/assets/Icone.svg" alt="Ícone" width={64} height={64} />
+            <div style={{ font: "700 28px 'Outfit'", color: '#0f172a' }}>Calc<span style={{ color: '#dc2626' }}>.</span>Med</div>
+            <div style={{ font: "600 9px 'Inter'", color: '#64748b', letterSpacing: 2, textTransform: 'uppercase' }}>Urgência e Emergência</div>
+          </div>
+          {/* Vertical escuro */}
+          <div className="rounded-xl p-8 flex flex-col items-center gap-3" style={{ background: 'var(--brand-navy)', border: '1px solid var(--navy-700)', minHeight: 180 }}>
+            <img src="/assets/Icone.svg" alt="Ícone" width={64} height={64} />
+            <div style={{ font: "700 28px 'Outfit'", color: '#ffffff' }}>Calc<span style={{ color: '#dc2626' }}>.</span>Med</div>
+            <div style={{ font: "600 9px 'Inter'", color: '#94a3b8', letterSpacing: 2, textTransform: 'uppercase' }}>Urgência e Emergência</div>
+          </div>
+        </div>
       </div>
 
       {/* ── Cores da Marca ── */}
@@ -115,7 +155,7 @@ export default function DSBrand() {
                 }}
               />
               <div className="p-4">
-                <div className="t-corpo" style={{ fontWeight: 700, marginBottom: 4 }}>{c.name}</div>
+                <div className="t-corpo text-fg" style={{ fontWeight: 700, marginBottom: 4 }}>{c.name}</div>
                 <code className="ds-token">{c.token}</code>
                 <span className="t-corpo-2 text-fg-2" style={{ display: 'block', marginTop: 4 }}>{c.hex}</span>
                 <p className="t-corpo-2 text-fg-2" style={{ margin: '8px 0 0' }}>{c.desc}</p>
@@ -165,7 +205,7 @@ export default function DSBrand() {
             </div>
             <ul style={{ margin: 0, paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
               {doRules.map((rule, i) => (
-                <li key={i} className="t-corpo-2">{rule}</li>
+                <li key={i} className="t-corpo-2 text-fg-2">{rule}</li>
               ))}
             </ul>
           </div>
@@ -184,7 +224,7 @@ export default function DSBrand() {
             </div>
             <ul style={{ margin: 0, paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
               {dontRules.map((rule, i) => (
-                <li key={i} className="t-corpo-2">{rule}</li>
+                <li key={i} className="t-corpo-2 text-fg-2">{rule}</li>
               ))}
             </ul>
           </div>
@@ -254,39 +294,53 @@ export default function DSBrand() {
       <div className="ds-subsection">
         <h3>Downloads</h3>
         <p className="ds-subsection-desc">
-          Arquivos de marca disponíveis para uso em materiais e implementações.
+          Todos os assets oficiais da marca em SVG vetorial. Clique no botão para baixar.
+          Use o ícone para favicons e app icons. Use as logos para headers, splashscreens e materiais.
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
           {[
-            { label: 'Ícone SVG', file: 'Icone.svg' },
-            { label: 'Logo colorida', file: 'logo-colorida.svg' },
-            { label: 'Logo branca', file: 'logo-branca.svg' },
+            { label: 'Ícone', desc: 'App icon, favicon, avatar', file: 'Icone.svg', darkBg: false },
+            { label: 'Lockup Horizontal — Claro', desc: 'Ícone + texto. Headers, toolbars em fundo claro', file: 'lockup-horizontal-color.svg', darkBg: false },
+            { label: 'Lockup Horizontal — Escuro', desc: 'Ícone + texto. Nav bar, fundo navy, dark mode', file: 'lockup-horizontal-white.svg', darkBg: true },
+            { label: 'Lockup Vertical — Claro', desc: 'Ícone + texto empilhado. Splash, onboarding claro', file: 'lockup-vertical-color.svg', darkBg: false },
+            { label: 'Lockup Vertical — Escuro', desc: 'Ícone + texto empilhado. Splash, hero dark, login', file: 'lockup-vertical-white.svg', darkBg: true },
           ].map(asset => (
             <div
               key={asset.file}
               className="bg-surface rounded-xl"
               style={{
                 border: '1px solid var(--border)',
-                padding: 24,
-                textAlign: 'center',
+                overflow: 'hidden',
               }}
             >
               <div
-                className="flex items-center justify-center rounded-lg mb-3"
+                className="flex items-center justify-center"
                 style={{
-                  height: 80,
-                  background: asset.file === 'logo-branca.svg' ? 'var(--brand-navy, #0d1b2a)' : undefined,
+                  height: 120,
+                  background: asset.darkBg ? 'var(--brand-navy, #0d1b2a)' : 'var(--slate-50)',
+                  borderBottom: '1px solid var(--border)',
                 }}
               >
                 <img
                   src={`/assets/${asset.file}`}
                   alt={asset.label}
-                  style={{ maxHeight: 56, maxWidth: '80%' }}
+                  style={{ maxHeight: 72, maxWidth: '80%' }}
                 />
               </div>
-              <div className="t-corpo-2" style={{ fontWeight: 600 }}>{asset.label}</div>
-              <div className="t-corpo-2 text-fg-3" style={{ fontSize: 11 }}>{asset.file}</div>
+              <div style={{ padding: 16 }}>
+                <div className="t-corpo text-fg" style={{ fontWeight: 600 }}>{asset.label}</div>
+                <div className="t-legenda text-fg-3 mb-3">{asset.desc}</div>
+                <a
+                  href={`/assets/${asset.file}`}
+                  download={asset.file}
+                  className="btn btn-sm btn-ghost w-full"
+                  style={{ textDecoration: 'none', textAlign: 'center', display: 'flex', justifyContent: 'center', gap: 8 }}
+                >
+                  <i className="ph ph-download-simple" />
+                  Baixar SVG
+                </a>
+              </div>
             </div>
           ))}
         </div>

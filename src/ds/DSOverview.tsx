@@ -4,7 +4,7 @@ const principles = [
   {
     icon: 'ph-timer',
     title: 'Cada segundo conta',
-    desc: 'Em emergência, velocidade salva vidas. Toda funcionalidade crítica está a no máximo 2 toques da Home. Sem animações que atrasem informação clínica. Sem loading spinners \u2014 usamos skeleton screens.',
+    desc: 'Em emergência, velocidade salva vidas. Toda funcionalidade crítica está a no máximo 2 toques da Home. Sem animações que atrasem informação clínica. Sem loading spinners -- usamos skeleton screens.',
   },
   {
     icon: 'ph-eye',
@@ -19,7 +19,7 @@ const principles = [
   {
     icon: 'ph-moon',
     title: 'Funciona no escuro',
-    desc: 'Plantões noturnos são a realidade. O dark mode não é um extra \u2014 é modo primário para muitos usuários. Cada token semântico tem par Light/Dark com a mesma qualidade visual.',
+    desc: 'Plantões noturnos são a realidade. O dark mode não é um extra -- é modo primário para muitos usuários. Cada token semântico tem par Light/Dark com a mesma qualidade visual.',
   },
   {
     icon: 'ph-hand-pointing',
@@ -109,7 +109,7 @@ export default function DSOverview() {
                 className={`ph ${p.icon}`}
                 style={{ fontSize: 24, color: 'var(--btn-primary)', display: 'block', marginBottom: 12 }}
               />
-              <div className="t-titulo-card" style={{ fontWeight: 700, marginBottom: 8 }}>{p.title}</div>
+              <div className="t-corpo text-fg" style={{ fontWeight: 700, marginBottom: 8 }}>{p.title}</div>
               <p className="t-corpo-2 text-fg-2" style={{ margin: 0 }}>{p.desc}</p>
             </div>
           ))}
@@ -156,7 +156,7 @@ export default function DSOverview() {
               className="ph ph-tag"
               style={{ fontSize: 24, color: 'var(--btn-primary)', display: 'block', marginBottom: 12 }}
             />
-            <div className="t-titulo-card" style={{ fontWeight: 700, marginBottom: 8 }}>Semântico, não literal</div>
+            <div className="t-corpo text-fg" style={{ fontWeight: 700, marginBottom: 8 }}>Semântico, não literal</div>
             <p className="t-corpo-2" style={{ margin: 0, marginBottom: 8 }}>
               <span className="ds-token">--btn-primary</span> em vez de <span className="ds-token">--teal-600</span>
             </p>
@@ -176,7 +176,7 @@ export default function DSOverview() {
               className="ph ph-sort-ascending"
               style={{ fontSize: 24, color: 'var(--btn-primary)', display: 'block', marginBottom: 12 }}
             />
-            <div className="t-titulo-card" style={{ fontWeight: 700, marginBottom: 8 }}>Contexto primeiro, propriedade depois</div>
+            <div className="t-corpo text-fg" style={{ fontWeight: 700, marginBottom: 8 }}>Contexto primeiro, propriedade depois</div>
             <p className="t-corpo-2" style={{ margin: 0, marginBottom: 8 }}>
               <span className="ds-token">--bg-surface</span>, <span className="ds-token">--fg-2</span>, <span className="ds-token">--dom-urg-text</span>
             </p>
@@ -196,7 +196,7 @@ export default function DSOverview() {
               className="ph ph-chart-line-up"
               style={{ fontSize: 24, color: 'var(--btn-primary)', display: 'block', marginBottom: 12 }}
             />
-            <div className="t-titulo-card" style={{ fontWeight: 700, marginBottom: 8 }}>Escala numérica para intensidade</div>
+            <div className="t-corpo text-fg" style={{ fontWeight: 700, marginBottom: 8 }}>Escala numérica para intensidade</div>
             <p className="t-corpo-2" style={{ margin: 0, marginBottom: 8 }}>
               <span className="ds-token">--shadow-0</span> a <span className="ds-token">--shadow-5</span>, <span className="ds-token">--sp-1</span> a <span className="ds-token">--sp-24</span>
             </p>

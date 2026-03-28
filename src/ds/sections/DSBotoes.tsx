@@ -215,8 +215,8 @@ export default function DSBotoes() {
       <div className="ds-subsection">
         <h3>Full Width</h3>
         <p className="ds-subsection-desc">
-          Botões de largura total são usados em contextos de confirmação (ex: {"\u201c"}Calcular dose{"\u201d"},
-          {"\u201c"}Confirmar assinatura{"\u201d"}) onde o botão precisa ocupar toda a área disponível para reforçar
+          Botões de largura total são usados em contextos de confirmação (ex: "Calcular dose",
+          "Confirmar assinatura") onde o botão precisa ocupar toda a área disponível para reforçar
           a ação principal. Aplicam a classe utilitária <code>.w-full</code>.
         </p>
         <DSPanel>
@@ -311,16 +311,16 @@ export default function DSBotoes() {
               { cls: '.btn-sm', desc: 'Altura 36px, radius 8px, padding 0 16px, font 14px' },
               { cls: '.btn-md', desc: 'Altura 48px, radius 12px, padding 0 24px' },
               { cls: '.btn-lg', desc: 'Min-height 56px, radius pill, padding 16px 24px' },
-              { cls: '.btn-primary', desc: 'Fundo teal, texto branco \u2014 ação principal' },
-              { cls: '.btn-ghost', desc: 'Outline teal, sem fundo \u2014 ação secundária' },
+              { cls: '.btn-primary', desc: 'Fundo teal, texto branco — ação principal' },
+              { cls: '.btn-ghost', desc: 'Outline teal, sem fundo — ação secundária' },
               { cls: '.btn-outline', desc: 'Outline teal (sinônimo de ghost)' },
-              { cls: '.btn-secondary', desc: 'Fundo elevated, borda \u2014 apoio visual' },
-              { cls: '.btn-text', desc: 'Sem fundo/borda, cor link \u2014 ação terciária' },
-              { cls: '.btn-discrete', desc: 'Sem fundo/borda, cor fg-3 \u2014 ação discreta' },
-              { cls: '.btn-danger', desc: 'Fundo vermelho \u2014 ações destrutivas ou alertas' },
-              { cls: '.btn-google', desc: 'Fundo card, borda, ícone Google \u2014 login social' },
-              { cls: '.btn-apple', desc: 'Fundo preto, ícone Apple \u2014 login social' },
-              { cls: '.btn-icon-only', desc: 'Circular 48x48, sem padding \u2014 apenas ícone' },
+              { cls: '.btn-secondary', desc: 'Fundo elevated, borda — apoio visual' },
+              { cls: '.btn-text', desc: 'Sem fundo/borda, cor link — ação terciária' },
+              { cls: '.btn-discrete', desc: 'Sem fundo/borda, cor fg-3 — ação discreta' },
+              { cls: '.btn-danger', desc: 'Fundo vermelho — ações destrutivas ou alertas' },
+              { cls: '.btn-google', desc: 'Fundo card, borda, ícone Google — login social' },
+              { cls: '.btn-apple', desc: 'Fundo preto, ícone Apple — login social' },
+              { cls: '.btn-icon-only', desc: 'Circular 48x48, sem padding — apenas ícone' },
               { cls: '.btn-loading', desc: 'Spinner animado, pointer-events none' },
               { cls: '.disabled', desc: 'Fundo disabled, cor disabled, opacidade 0.38' },
               { cls: '.w-full', desc: 'Largura 100%' },

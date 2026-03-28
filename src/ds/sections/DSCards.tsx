@@ -1,21 +1,17 @@
 import DSPanel from '../DSPanel'
 
-function CardFeatureDemo({ state, label, description }: { state: string; label: string; description: string }) {
+function CardFeatureDemo({ state, label, description, saved }: { state: string; label: string; description: string; saved?: boolean }) {
   const stateClass = state === 'locked' ? 'locked' : state === 'trial' ? 'trial' : ''
   return (
-    <div className="text-center" style={{ width: 140 }}>
+    <div style={{ width: 160 }}>
       <div className={`card-feature ${stateClass} mb-2`}>
-        {state === 'locked' && (
-          <span className="tag-status premium" style={{ position: 'absolute', top: 8, left: 8 }}>PREMIUM</span>
-        )}
-        {state === 'trial' && (
-          <span className="tag-status teste" style={{ position: 'absolute', top: 8, left: 8 }}>TRIAL</span>
-        )}
-        <div className="mb-1" style={{ fontSize: 32 }}>
-          <i className="ph ph-calculator" style={{ color: 'var(--dom-calc)' }} />
-        </div>
-        <div className="feat-name">CrCl Cockcroft</div>
-        <button className="feat-bookmark"><i className="ph ph-bookmark-simple" /></button>
+        {state === 'locked' && <span className="tag-status premium">PREMIUM</span>}
+        {state === 'trial' && <span className="tag-status teste">TESTE</span>}
+        <span className="tag-abbr calc">CrCl</span>
+        <span className="feat-name">Clearance de Creatinina</span>
+        <button className={`feat-bookmark ${saved ? 'saved' : ''}`}>
+          <i className={`ph ${saved ? 'ph-bookmark-simple-fill' : 'ph-bookmark-simple'}`} />
+        </button>
       </div>
       <span className="t-texto-badge text-fg-2" style={{ fontWeight: 600 }}>{label}</span>
       <div className="t-legenda text-fg-3 mt-1">{description}</div>
@@ -67,11 +63,11 @@ export default function DSCards() {
         <p className="ds-subsection-desc">
           O card de funcionalidade é o componente mais presente no app. Seus 4 estados refletem a
           estratégia de monetização: Free (sem restrição visual, acesso completo), Premium Bloqueado
-          (overlay escuro + ícone de cadeado + tag {"\u201c"}PREMIUM{"\u201d"}, indica conteúdo pago).
+          (overlay escuro + ícone de cadeado + tag "PREMIUM", indica conteúdo pago).
         </p>
         <p className="ds-subsection-desc">
           Teste
-          (borda tracejada + tag {"\u201c"}TRIAL{"\u201d"}, usuário está em teste por tempo limitado) e Assinante
+          (borda tracejada + tag "TRIAL", usuário está em teste por tempo limitado) e Assinante
           (visual limpo, sem tags nem overlays — a melhor experiência).
         </p>
         <DSPanel>
@@ -148,42 +144,23 @@ export default function DSCards() {
         </DSPanel>
       </div>
 
-      {/* Card Favorite */}
-      <div className="ds-subsection">
-        <h3>Card Favorito (Meu Plantão)</h3>
-        <p className="ds-subsection-desc">
-          Cards verticais compactos para a seção {"\u201c"}Meu Plantão{"\u201d"} na Home. O médico marca seus
-          cálculos e diluições mais usados com o bookmark.
-          A abreviação usa a cor do domínio. O ícone preenchido (ph-fill) indica item salvo como favorito.
-        </p>
-        <DSPanel>
-          <div className="flex gap-3">
-            <div className="card-favorite" style={{ width: 140 }}>
-              <span className="fav-abbr" style={{ color: 'var(--dom-urg)' }}>IOT</span>
-              <span className="fav-name">Seq. Rápida Intubação</span>
-              <i className="ph-fill ph-bookmark-simple fav-bookmark saved" />
-            </div>
-            <div className="card-favorite" style={{ width: 140 }}>
-              <span className="fav-abbr" style={{ color: 'var(--dom-calc)' }}>CrCl</span>
-              <span className="fav-name">Cockcroft-Gault</span>
-              <i className="ph ph-bookmark-simple fav-bookmark" />
-            </div>
-          </div>
-        </DSPanel>
-      </div>
-
       {/* Banner Editorial */}
       <div className="ds-subsection">
         <h3>Banner Editorial</h3>
         <p className="ds-subsection-desc">
           Banner com gradiente teal para comunicações editoriais na Home: novidades, lançamentos
-          e destaques do app (ex: {"\u201c"}CalcMed IA: seu copiloto clínico{"\u201d"}). Inclui tag, título e descrição.
+          e destaques do app (ex: "CalcMed IA: seu copiloto clínico"). Inclui tag, título e descrição.
         </p>
         <DSPanel>
           <div className="banner-editorial">
-            <div className="banner-tag">Novidade</div>
-            <div className="banner-title">CalcMed IA: seu copiloto clínico</div>
-            <div className="banner-desc">Tire dúvidas sobre doses e protocolos com inteligência artificial.</div>
+            <div className="banner-body">
+              <div className="banner-tag">Novidade</div>
+              <div className="banner-title">CalcMed IA: seu copiloto clínico</div>
+              <div className="banner-desc">Tire dúvidas sobre doses e protocolos com inteligência artificial.</div>
+            </div>
+            <div className="banner-chevron" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 4.5L13 10L7.5 15.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
           </div>
         </DSPanel>
       </div>
@@ -193,7 +170,7 @@ export default function DSCards() {
         <h3>Card de Plano (Checkout)</h3>
         <p className="ds-subsection-desc">
           Cards de seleção de plano na tela de checkout. O plano selecionado recebe borda 2px teal
-          e badge {"\u201c"}MELHOR VALOR{"\u201d"}. O plano anual é o padrão selecionado (decisão de negócio confirmada).
+          e badge "MELHOR VALOR". O plano anual é o padrão selecionado (decisão de negócio confirmada).
         </p>
         <DSPanel>
           <div className="flex gap-3">
@@ -215,7 +192,7 @@ export default function DSCards() {
         <h3>Card Feature Mini</h3>
         <p className="ds-subsection-desc">
           Versão compacta (80px) do card de funcionalidade para grids densos. Exibe ícone e nome
-          em formato vertical. Usado em seções como {"\u201c"}Todas as calculadoras{"\u201d"} onde o espaço é limitado.
+          em formato vertical. Usado em seções como "Todas as calculadoras" onde o espaço é limitado.
         </p>
         <DSPanel>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 80px)' }} className="gap-2">

@@ -61,6 +61,10 @@
   z-index: 1;
   animation: landing-card-in 0.5s cubic-bezier(0.2, 0, 0, 1) both;
 }
+.dark .landing-card {
+  border: 1px solid var(--navy-700);
+  box-shadow: var(--shadow-3);
+}
 
 @keyframes landing-card-in {
   from {
@@ -82,6 +86,10 @@
   padding: 1px 8px;
   border-radius: var(--r-pill, 100px);
   letter-spacing: 0.5px;
+}
+.dark .landing-version {
+  background: var(--bg-elevated);
+  color: var(--fg-2);
 }
 
 .landing-buttons {
@@ -115,4 +123,1294 @@
   border-radius: 50%;
   background: var(--fg-3);
   opacity: 0.5;
+}
+
+/* ================================================================
+   WEB / DESKTOP LAYOUT MODE
+   ================================================================ */
+
+/* Web page wrapper — no centering frame, full viewport */
+.web-page {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  background: var(--bg, #ffffff);
+  margin: 0;
+}
+
+/* Web layout container (replaces mobile-frame) */
+.web-layout {
+  min-height: 100vh;
+  width: 100%;
+  padding-left: 260px;
+  background: var(--bg, #ffffff);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.web-layout.dark-frame {
+  background: var(--brand-navy-deep);
+}
+
+/* --- Web Sidebar (Notion/Linear quality) --- */
+.web-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface, #ffffff);
+  border-right: 1px solid var(--border, #e2e8f0);
+  z-index: 100;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: width 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+.web-sidebar:hover {
+  scrollbar-color: var(--border, #e2e8f0) transparent;
+}
+.web-sidebar::-webkit-scrollbar { width: 4px; }
+.web-sidebar::-webkit-scrollbar-thumb { background: transparent; border-radius: 4px; }
+.web-sidebar:hover::-webkit-scrollbar-thumb { background: var(--border, #e2e8f0); }
+
+/* Sidebar logo */
+.web-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2, 8px);
+  font: 700 18px/1 'Outfit', sans-serif;
+  color: var(--fg, #0f172a);
+  padding: var(--sp-4, 16px) var(--sp-5, 20px) var(--sp-5, 20px);
+  flex-shrink: 0;
+}
+.web-sidebar-logo-icon {
+  flex-shrink: 0;
+  border-radius: var(--r-sm, 4px);
+}
+.web-sidebar-logo .dot {
+  color: var(--brand-red, #ef4444);
+}
+
+/* Sidebar sections */
+.web-sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1, 4px);
+  padding: 0 var(--sp-3, 12px);
+}
+.web-sidebar-section-label {
+  font: 600 11px/16px 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--fg-3, #94a3b8);
+  padding: var(--sp-3, 12px) var(--sp-3, 12px) var(--sp-1, 4px);
+  user-select: none;
+}
+
+/* Sidebar nav items */
+.web-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3, 12px);
+  padding: var(--sp-2, 8px) var(--sp-3, 12px);
+  border-radius: var(--r-md, 8px);
+  color: var(--fg-2, #475569);
+  text-decoration: none;
+  font: 500 14px/20px 'Inter', sans-serif;
+  cursor: pointer;
+  transition: background 0.1s ease, color 0.1s ease;
+  position: relative;
+  min-height: 36px;
+}
+.web-sidebar-item:hover {
+  background: var(--bg-hover, #f1f5f9);
+  color: var(--fg, #0f172a);
+}
+.web-sidebar-item:active {
+  background: var(--bg-elevated, #e2e8f0);
+}
+.web-sidebar-item svg {
+  flex-shrink: 0;
+  color: var(--fg-3, #94a3b8);
+  transition: color 0.1s ease;
+}
+.web-sidebar-item:hover svg {
+  color: var(--fg-2, #475569);
+}
+
+/* Active indicator — left accent bar */
+.web-sidebar-item-indicator {
+  position: absolute;
+  left: -12px;
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+
+/* Active state */
+.web-sidebar-item.active {
+  background: var(--bg-hover, #f1f5f9);
+  color: var(--fg, #0f172a);
+  font-weight: 600;
+}
+.web-sidebar-item.active svg {
+  color: var(--btn-accent, #00b4d8);
+}
+.web-sidebar-item.active .web-sidebar-item-indicator {
+  background: var(--btn-accent, #00b4d8);
+}
+
+/* Item label */
+.web-sidebar-item-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Badge dot (notification) */
+.web-sidebar-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-red, #ef4444);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px var(--bg-surface, #ffffff);
+}
+
+/* Sidebar divider */
+.web-sidebar-divider {
+  height: 1px;
+  background: var(--border, #e2e8f0);
+  margin: var(--sp-3, 12px) var(--sp-5, 20px);
+  flex-shrink: 0;
+}
+
+/* Sidebar footer */
+.web-sidebar-footer {
+  margin-top: auto;
+  flex-shrink: 0;
+  padding-bottom: var(--sp-4, 16px);
+}
+.web-sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3, 12px);
+  padding: var(--sp-3, 12px) var(--sp-5, 20px);
+}
+.web-sidebar-user svg {
+  flex-shrink: 0;
+  color: var(--fg-3, #94a3b8);
+}
+.web-sidebar-user-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.web-sidebar-user-name {
+  font: 600 13px/18px 'Inter', sans-serif;
+  color: var(--fg, #0f172a);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.web-sidebar-user-plan {
+  font: 500 11px/16px 'Inter', sans-serif;
+  color: var(--btn-accent, #00b4d8);
+}
+.web-sidebar-logout {
+  margin-top: auto;
+  padding: var(--sp-3) var(--sp-3);
+  border-top: 1px solid var(--border);
+}
+.web-sidebar-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  border: none;
+  background: none;
+  color: var(--fg-3);
+  font: 500 14px/20px 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-default);
+}
+.web-sidebar-logout-btn:hover {
+  color: var(--danger);
+  background: var(--danger-bg);
+}
+
+/* Dark mode adjustments — sidebar */
+.dark .web-sidebar {
+  background: var(--bg-surface);
+  border-color: var(--border);
+}
+.dark .web-sidebar-logo {
+  color: var(--fg);
+}
+.dark .web-sidebar-section-label {
+  color: var(--fg-3);
+}
+.dark .web-sidebar-item {
+  color: var(--fg-2);
+}
+.dark .web-sidebar-item svg {
+  color: var(--fg-3);
+}
+.dark .web-sidebar-item:hover {
+  background: var(--bg-hover);
+  color: var(--fg);
+}
+.dark .web-sidebar-item:hover svg {
+  color: var(--fg-2);
+}
+.dark .web-sidebar-item:active {
+  background: var(--bg-hover);
+}
+.dark .web-sidebar-item.active {
+  background: var(--bg-hover);
+  color: var(--btn-accent);
+}
+.dark .web-sidebar-item.active svg {
+  color: var(--btn-accent);
+}
+.dark .web-sidebar-divider {
+  background: var(--border-subtle);
+}
+.dark .web-sidebar-user-name {
+  color: var(--fg);
+}
+.dark .web-sidebar-user svg {
+  color: var(--fg-3);
+}
+.dark .web-sidebar-logout {
+  border-top-color: var(--border-subtle);
+}
+.dark .web-sidebar-logout-btn {
+  color: var(--fg-3);
+}
+.dark .web-sidebar-logout-btn:hover {
+  color: var(--danger);
+  background: var(--danger-bg);
+}
+.dark .web-sidebar-badge-dot {
+  box-shadow: 0 0 0 2px var(--bg-surface);
+}
+.dark .web-sidebar:hover {
+  scrollbar-color: var(--border-subtle) transparent;
+}
+.dark .web-sidebar:hover::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+}
+
+/* --- Content area offset for sidebar --- */
+.web-layout .screen-content,
+.web-layout .bottom-sheet {
+
+
+  max-width: none;
+  padding: var(--sp-6) var(--sp-8);
+}
+
+.web-layout .screen-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* --- Layout toggle button (floating, bottom-right) --- */
+.layout-toggle {
+  position: fixed;
+  bottom: var(--sp-6, 24px);
+  right: var(--sp-6, 24px);
+  z-index: 9999;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--border, #e2e8f0);
+  background: var(--bg-surface, #ffffff);
+  color: var(--fg-2, #475569);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-3, 0 4px 12px rgba(0,0,0,0.1));
+  transition: all 0.15s ease-out;
+}
+
+.layout-toggle:hover {
+  background: var(--bg-hover, #f1f5f9);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-4, 0 8px 24px rgba(0,0,0,0.12));
+}
+
+.layout-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Hide toggle on small screens */
+@media (max-width: 767px) {
+  .layout-toggle {
+    display: none;
+  }
+}
+
+/* ================================================================
+   AUTH WEB SPLIT LAYOUT (Jobsly-style)
+   ================================================================ */
+
+.auth-web-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.auth-web-visual {
+  flex: 0 0 35%;
+  max-width: 35%;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.auth-web-carousel {
+  position: absolute;
+  inset: 0;
+}
+
+.auth-web-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s var(--ease-default);
+}
+.auth-web-slide.active { opacity: 1; }
+
+.auth-web-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(13,27,42,0.7) 0%, rgba(13,27,42,0.85) 60%, rgba(13,27,42,0.95) 100%);
+  z-index: 1;
+}
+
+.auth-web-brand {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: var(--sp-10);
+  text-align: center;
+  gap: var(--sp-4);
+}
+
+.auth-web-brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+.auth-web-slide-text {
+  font: 700 24px/32px 'Inter', sans-serif;
+  color: white;
+  max-width: 400px;
+  text-align: center;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--sp-6);
+}
+
+.auth-web-brand .t-marca { color: white; font-size: 32px }
+.auth-web-brand .t-marca .dot { color: var(--brand-red) }
+.auth-web-brand .brand-sub {
+  color: var(--slate-400); letter-spacing: 2px; text-transform: uppercase;
+}
+
+.auth-web-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: var(--slate-100);
+  padding: var(--sp-24) var(--sp-10) var(--sp-10);
+  min-height: 100vh;
+  overflow-y: auto;
+}
+.dark .auth-web-form {
+  background: var(--bg);
+}
+
+.auth-web-form-footer {
+  margin-top: auto;
+  padding-top: var(--sp-12);
+  text-align: center;
+  font: 400 12px/16px 'Inter', sans-serif;
+  letter-spacing: 0.24px;
+  color: var(--fg-3);
+  opacity: 0.5;
+}
+.dark .auth-web-form-footer {
+  color: var(--fg-2);
+  opacity: 0.6;
+}
+
+.auth-web-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font: 500 14px/20px 'Inter', sans-serif;
+  color: var(--fg-3);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: var(--sp-4);
+  transition: color var(--dur-fast) var(--ease-default);
+}
+.auth-web-back:hover { color: var(--fg-2) }
+.dark .auth-web-back { color: var(--fg-2) }
+.dark .auth-web-back:hover { color: var(--fg) }
+
+.auth-web-form-inner {
+  width: 100%;
+  max-width: 480px;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  background: var(--bg-card);
+  padding: var(--sp-12) var(--sp-10);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-3);
+  border: none;
+  animation: auth-fade-in var(--dur-normal) var(--ease-default) both;
+}
+.dark .auth-web-form-inner {
+  background: var(--bg-card);
+  box-shadow: none;
+  border: 1px solid var(--navy-700);
+}
+
+.auth-web-form-inner .grid-2col {
+  grid-template-columns: 1fr 1fr !important;
+}
+
+/* --- Title bigger for web --- */
+.auth-web-form-inner h1,
+.auth-web-form-inner h2 {
+  font: 700 30px/36px 'Inter', sans-serif;
+  letter-spacing: -0.6px;
+  color: var(--fg);
+}
+
+/* --- Divider stronger inside card --- */
+.auth-web-form-inner .divider-ou .line {
+  background: var(--border);
+}
+.dark .auth-web-form-inner .divider-ou .line {
+  background: var(--navy-600);
+}
+.auth-web-form-inner .divider-ou {
+  margin: var(--sp-1) 0;
+}
+
+/* --- CTA footer pushed to bottom inside auth form --- */
+.auth-web-cta-footer {
+  margin-top: auto;
+  padding-top: var(--sp-8);
+}
+
+/* --- Card-feature compact inside auth form --- */
+.auth-web-form-inner .card-feature {
+  padding: var(--sp-3) var(--sp-4);
+  gap: var(--sp-1);
+}
+.auth-web-form-inner .card-feature .tag-abbr {
+  font-size: 16px;
+  padding: 4px 10px;
+}
+.auth-web-form-inner .card-feature .feat-name {
+  font-size: 12px;
+}
+.auth-web-form-inner .grid-2col {
+  gap: var(--sp-2) !important;
+}
+
+/* --- Responsive breakpoints for auth web layout --- */
+@media (max-width: 1024px) {
+  .auth-web-visual { flex: 0 0 35%; max-width: 35% }
+  .auth-web-form { padding-top: var(--sp-16) }
+}
+@media (max-width: 768px) {
+  .auth-web-layout { flex-direction: column }
+  .auth-web-visual { min-height: 30vh; flex: none; max-width: 100% }
+  .auth-web-form { min-height: auto; flex: 1; padding-top: var(--sp-8) }
+  .auth-web-brand { padding: var(--sp-6) }
+  .auth-web-slide-text { font-size: 18px }
+}
+
+/* --- Viewport height safety --- */
+@media (max-height: 800px) {
+  .auth-web-form { padding-top: var(--sp-16) }
+}
+@media (max-height: 650px) {
+  .auth-web-form { padding-top: var(--sp-10) }
+}
+
+/* ================================================================
+   WEB HOME — Desktop-native overrides
+   ================================================================ */
+
+/* Header: add search bar space, wider padding */
+.web-layout .home-header {
+
+
+  padding: var(--sp-4) var(--sp-8);
+  gap: var(--sp-4);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-surface);
+}
+
+/* Web search bar inside header */
+.web-header-search {
+  display: none;
+}
+.web-layout .web-header-search {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2, 8px);
+  flex: 1;
+  max-width: 480px;
+  height: 40px;
+  padding: 0 var(--sp-4, 16px);
+  border-radius: var(--r-xl, 16px);
+  background: var(--bg-elevated, #f1f5f9);
+  border: 1px solid var(--border, #e2e8f0);
+  color: var(--fg-3, #94a3b8);
+  font: 400 14px/20px 'Inter', sans-serif;
+  cursor: pointer;
+  transition: border-color var(--dur-fast, 0.1s) var(--ease-default, ease);
+}
+.web-layout .web-header-search:hover {
+  border-color: var(--border-focus, #94a3b8);
+}
+.web-layout .web-header-search svg {
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+.dark .web-header-search {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  color: var(--fg-3);
+}
+
+/* SubheaderBar: align left in web, no centering */
+.web-layout .subheader-bar {
+  justify-content: flex-start;
+  padding-left: var(--sp-8, 32px);
+  border-bottom: 1px solid var(--border, #e2e8f0);
+}
+
+/* Banner: full width on desktop, taller for visual weight */
+.web-layout .banner-editorial {
+  max-width: 100%;
+  min-height: 120px;
+  padding: var(--sp-8, 32px);
+}
+
+/* Meu Plantao: grid instead of horizontal scroll on web */
+.web-layout .fav-scroll {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--sp-3, 12px);
+  overflow-x: visible;
+  padding-bottom: 0;
+}
+.web-layout .fav-scroll .card-favorite,
+.web-layout .fav-scroll .card-feature {
+  width: auto;
+  flex-shrink: unset;
+  scroll-snap-align: unset;
+}
+
+/* Recents: 2-column grid on web */
+.web-layout .recents-list-web {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2, 8px);
+}
+
+/* Categories: 4-column grid inside expanded categories on web */
+.web-layout .category-body .grid-2col {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* --- Two-column Home grid (main + aside) --- */
+.web-layout .home-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: var(--sp-6);
+  align-items: start;
+}
+
+/* Main column spacing */
+.web-layout .home-main-col > * + * {
+  margin-top: var(--sp-6, 24px);
+}
+
+/* Aside column: sticky sidebar feel */
+.web-layout .home-aside-col {
+  position: sticky;
+  top: var(--sp-8, 32px);
+}
+
+/* In the aside, fav-scroll as single column vertical list */
+.web-layout .home-aside-col .fav-scroll {
+  grid-template-columns: 1fr;
+}
+
+/* Recents in aside: 2 columns */
+.web-layout .home-aside-col .recents-list-web {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* --- Onboarding2 compact cards --- */
+.onboarding-grid .card-feature {
+  padding: var(--sp-2) var(--sp-2) var(--sp-3);
+  gap: var(--sp-1);
+}
+.onboarding-grid .card-feature .tag-abbr {
+  margin-top: var(--sp-3);
+  font-size: 16px;
+  padding: 4px 10px;
+}
+.onboarding-grid .card-feature .feat-name {
+  font-size: 11px;
+  line-height: 14px;
+}
+.onboarding-grid .card-feature .feat-bookmark {
+  top: var(--sp-1);
+  right: var(--sp-1);
+  min-width: 48px;
+  min-height: 48px;
+  font-size: 16px;
+}
+.onboarding-grid {
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: var(--sp-2) !important;
+  overflow-x: hidden;
+}
+
+/* ================================================================
+   WEB BUSCA — wider results, chips in single row
+   ================================================================ */
+.web-layout .screen-content .busca-suggestion {
+  max-width: 800px;
+}
+
+/* Quick-access chips: single row, no wrap */
+.web-layout .screen-content [role="group"][aria-label="Atalhos de busca"] {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: var(--sp-3, 12px);
+  padding-bottom: var(--sp-2);
+}
+
+/* Results list: wider, capped, with more breathing room */
+.web-layout .screen-content [role="region"][aria-label*="resultados"] {
+  max-width: 800px;
+}
+.web-layout .screen-content .search-group-header {
+  padding: var(--sp-3, 12px) 0;
+}
+.web-layout .screen-content .list-item {
+  padding: var(--sp-3, 12px) var(--sp-4, 16px);
+}
+
+/* Recent search items: wider */
+.web-layout .screen-content nav[aria-label="Buscas recentes"] .list-item {
+  padding: var(--sp-3, 12px) var(--sp-4, 16px);
+}
+
+/* ================================================================
+   WEB CALCULADORA — wider centered form + split result
+   ================================================================ */
+/* Inputs page: centered, wider inputs */
+.web-layout .screen-content .input-group,
+.web-layout .screen-content .mb-5:has(.input-field),
+.web-layout .screen-content .mb-6:has(.segmented) {
+  max-width: 560px;
+}
+
+/* Calculadora result page: center the result card content */
+.web-layout .screen-content [aria-label="Resultado do cálculo"] {
+  max-width: 560px;
+}
+.web-layout .screen-content [aria-label="Resultado do cálculo"] .alert-card {
+  padding: var(--sp-8, 32px) var(--sp-6, 24px);
+}
+.web-layout .screen-content .t-dose-valor {
+  font-size: 48px;
+}
+.web-layout .screen-content .result-badge {
+  font-size: 16px;
+  padding: var(--sp-2, 8px) var(--sp-4, 16px);
+}
+
+/* Info/Warning cards wider on desktop */
+.web-layout .screen-content .alert-card {
+  max-width: 560px;
+}
+
+/* Params chips wider spacing */
+.web-layout .screen-content [aria-label="Parâmetros utilizados"] {
+  max-width: 560px;
+  gap: var(--sp-3, 12px);
+}
+
+/* Sticky footer: offset for sidebar + max-width */
+.web-layout .sticky-footer {
+
+  max-width: none;
+  padding: var(--sp-5, 20px) var(--sp-10, 40px);
+}
+
+/* ================================================================
+   WEB ESCALA — Calendar + shifts side by side (reinforced)
+   ================================================================ */
+/* Make sure escala-layout actually goes horizontal */
+.web-layout .escala-layout {
+  display: flex;
+  flex-direction: row;
+  gap: var(--sp-8, 32px);
+  align-items: flex-start;
+}
+.web-layout .escala-calendar-col {
+  flex: 0 0 460px;
+  max-width: 520px;
+}
+.web-layout .escala-shifts-col {
+  flex: 1;
+  min-width: 260px;
+  padding-top: 0;
+}
+
+/* Calendar cells taller on desktop */
+.web-layout .calendar-grid .day-cell {
+  min-height: 56px;
+  font-size: 14px;
+}
+.web-layout .calendar-grid .day-header {
+  font-size: 13px;
+  padding: var(--sp-2, 8px) 0;
+}
+.web-layout .calendar-nav {
+  padding: var(--sp-4, 16px) var(--sp-2, 8px);
+}
+.web-layout .calendar-nav .month-title {
+  font-size: 18px;
+}
+.web-layout .calendar-legend {
+  padding: var(--sp-4, 16px) var(--sp-2, 8px);
+  gap: var(--sp-4, 16px);
+}
+
+/* FAB: fixed bottom-right on desktop */
+.web-layout .fab {
+  position: fixed;
+  bottom: var(--sp-8, 32px);
+  right: var(--sp-8, 32px);
+  z-index: 50;
+}
+
+/* TabBar: offset for sidebar */
+.web-layout .tabs {
+
+  max-width: none;
+  padding: 0 var(--sp-8, 32px);
+}
+
+/* ================================================================
+   WEB IA CHAT — centered, spacious bubbles
+   ================================================================ */
+.web-layout .chat-area {
+  max-width: 980px;
+  padding: var(--sp-8, 32px) var(--sp-10, 40px);
+
+}
+
+/* Chat bubbles: wider max, more padding */
+.web-layout .chat-bubble {
+  max-width: 720px;
+  padding: var(--sp-4, 16px) var(--sp-5, 20px);
+  line-height: 1.6;
+}
+.web-layout .chat-bubble.ia {
+  border-radius: var(--r-xl, 16px) var(--r-xl, 16px) var(--r-xl, 16px) var(--r-sm, 4px);
+}
+.web-layout .chat-bubble.user {
+  border-radius: var(--r-xl, 16px) var(--r-xl, 16px) var(--r-sm, 4px) var(--r-xl, 16px);
+}
+
+/* Chat input bar: stretch to content width, centered */
+.web-layout .chat-input-bar {
+  max-width: 980px;
+
+  padding: var(--sp-4, 16px) var(--sp-10, 40px);
+}
+.web-layout .chat-input-bar input {
+  font-size: 15px;
+  padding: var(--sp-3, 12px) var(--sp-5, 20px);
+}
+
+/* Disclaimer: match chat width */
+.web-layout .disclaimer-card {
+  max-width: 980px;
+
+  padding: var(--sp-3, 12px) var(--sp-5, 20px);
+}
+
+/* Chat suggestions: more horizontal space */
+.web-layout .chat-suggestions {
+  gap: var(--sp-3, 12px);
+}
+.web-layout .chat-suggestions .chip {
+  font-size: 14px;
+  padding: var(--sp-3, 12px) var(--sp-4, 16px);
+}
+
+/* ================================================================
+   WEB MENU — centered card layout, wider items
+   ================================================================ */
+.web-layout .menu-screen {
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--sp-8, 32px) var(--sp-6, 24px);
+}
+
+/* List items inside menu groups: more padding */
+.web-layout .menu-screen .menu-group .list-item {
+  padding: var(--sp-4, 16px) var(--sp-5, 20px);
+  min-height: 56px;
+}
+
+/* User card: wider, more padding */
+.web-layout .menu-screen .user-card {
+  padding: var(--sp-5, 20px);
+}
+
+/* Hero card: wider */
+.web-layout .menu-screen .menu-hero-card {
+  padding: var(--sp-6, 24px);
+}
+
+/* Sair wrapper: match group width */
+.web-layout .menu-screen .menu-sair-wrapper .list-item {
+  padding: var(--sp-4, 16px) var(--sp-5, 20px);
+}
+
+/* ================================================================
+   WEB PLANOS — plan cards side by side, wider form
+   ================================================================ */
+.web-layout .planos-screen {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--sp-8, 32px) var(--sp-6, 24px);
+}
+
+/* Plan cards: side by side grid */
+.web-layout .plan-cards-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4, 16px);
+  align-items: start;
+}
+.web-layout .plan-cards-group > .mb-3,
+.web-layout .plan-cards-group > .mb-6 {
+  margin-bottom: 0;
+}
+
+/* Plan card hover: slight lift on desktop */
+.web-layout .plan-card {
+  transition: border-color var(--dur-fast, 0.1s) ease, transform var(--dur-fast, 0.1s) ease, box-shadow var(--dur-fast, 0.1s) ease;
+}
+.web-layout .plan-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-3, 0 4px 12px rgba(0,0,0,0.08));
+}
+
+/* Coupon form: wider */
+.web-layout .planos-screen .flex.gap-3.items-end {
+  max-width: 480px;
+}
+
+/* Trust footer: wider centering */
+.web-layout .planos-screen .flex.items-center.justify-center {
+  padding: var(--sp-4, 16px) 0;
+}
+
+/* ================================================================
+   WEB NOTIFICACOES — centered list, more padding
+   ================================================================ */
+.web-layout .screen-content .notif-section-label {
+  max-width: 640px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  padding: var(--sp-5, 20px) 0 var(--sp-2, 8px);
+}
+.web-layout .screen-content .notif-divider {
+  max-width: 640px;
+}
+.web-layout .screen-content .notif-item {
+  max-width: 640px;
+  padding: var(--sp-4, 16px) var(--sp-5, 20px);
+  border-radius: var(--r-lg, 12px);
+  transition: background var(--dur-fast, 0.1s) ease;
+}
+.web-layout .screen-content .notif-item:hover {
+  background: var(--bg-hover, #f1f5f9);
+}
+
+/* Empty state: centered */
+.web-layout .screen-content .empty-state {
+  max-width: 640px;
+}
+
+/* ================================================================
+   WEB PREMIUM MODAL — centered dialog instead of bottom sheet
+   ================================================================ */
+.web-layout .modal-overlay {
+  align-items: center;
+  justify-content: center;
+}
+.web-layout .modal-overlay.from-bottom {
+  align-items: center;
+}
+.web-layout .modal-premium-sheet {
+  max-width: 480px;
+  width: 100%;
+  border-radius: var(--r-xl, 16px);
+  max-height: 85vh;
+  box-shadow: var(--shadow-5, 0 24px 48px rgba(0,0,0,0.2));
+}
+
+/* Benefits: more padding on desktop */
+.web-layout .modal-benefits {
+  padding: 0 var(--sp-6, 24px);
+  gap: var(--sp-5, 20px);
+}
+.web-layout .modal-benefit-row {
+  gap: var(--sp-4, 16px);
+}
+
+/* Usage box: more generous */
+.web-layout .modal-usage-box {
+  margin: var(--sp-5, 20px) var(--sp-6, 24px);
+  padding: var(--sp-5, 20px) var(--sp-6, 24px);
+}
+
+/* Footer buttons: more padding */
+.web-layout .modal-footer-col {
+  padding: var(--sp-5, 20px) var(--sp-6, 24px) var(--sp-6, 24px);
+}
+
+/* ================================================================
+   WEB — ALL PAGES: Global desktop-native polish
+   ================================================================ */
+
+/* Content fills available space */
+.web-layout .screen-content {
+  max-width: none;
+  padding: var(--sp-6) var(--sp-8);
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Comfortable vertical spacing between sections */
+.web-layout .screen-content > * + * {
+  margin-top: var(--sp-8, 32px);
+}
+
+/* Headers: full width */
+.web-layout .home-header {
+  padding: var(--sp-4) var(--sp-8);
+  border-bottom: 1px solid var(--border);
+}
+
+.web-layout .page-header {
+  padding: var(--sp-4) var(--sp-8);
+}
+
+.web-layout .subheader-bar {
+  padding-left: var(--sp-8);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Hide bottom nav on web — sidebar replaces it */
+.web-layout .bottom-nav {
+  display: none;
+}
+
+/* Section headers: larger text on desktop */
+.web-layout .section-header h2 {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+/* Bottom sheet becomes a centered modal on desktop */
+.web-layout .bottom-sheet {
+
+  max-width: 560px;
+  border-radius: var(--r-xl, 16px);
+}
+
+/* Scrollbar styling for content areas on web */
+.web-layout .screen-content::-webkit-scrollbar { width: 6px; }
+.web-layout .screen-content::-webkit-scrollbar-thumb {
+  background: transparent; border-radius: 4px;
+}
+.web-layout .screen-content:hover::-webkit-scrollbar-thumb {
+  background: var(--border, #e2e8f0);
+}
+.web-layout .screen-content {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.web-layout .screen-content:hover {
+  scrollbar-color: var(--border, #e2e8f0) transparent;
+}
+
+/* Novo Plantao form: wider, centered on desktop */
+.web-layout .novo-plantao-form {
+  max-width: 560px;
+}
+
+/* Escala Novo Plantao page: wider inputs */
+.web-layout .novo-plantao-form .input-group {
+  max-width: 100%;
+}
+.web-layout .novo-plantao-form .flex.gap-4 {
+  max-width: 100%;
+}
+
+/* ================================================================
+   WEB DARK MODE — sidebar + content refinements
+   ================================================================ */
+.dark.web-layout .screen-content:hover {
+  scrollbar-color: var(--border-subtle, #334155) transparent;
+}
+.dark.web-layout .screen-content:hover::-webkit-scrollbar-thumb {
+  background: var(--border-subtle, #334155);
+}
+.dark .web-layout .notif-item:hover {
+  background: var(--bg-hover);
+}
+.dark .web-layout .plan-card:hover {
+  box-shadow: var(--shadow-3);
+}
+
+/* ================================================================
+   PAGE TRANSITIONS — fade on route change
+   ================================================================ */
+.page-transition-wrapper {
+  width: 100%;
+  animation: page-fade-in 150ms var(--ease-default, cubic-bezier(0.2,0,0,1)) both;
+}
+@keyframes page-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ================================================================
+   NAVIGATION PROGRESS BAR — NProgress-style top bar
+   ================================================================ */
+.nav-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms;
+}
+.nav-progress.active {
+  opacity: 1;
+}
+.nav-progress-bar {
+  height: 100%;
+  background: var(--btn-primary, #00b4d8);
+  width: 0%;
+  transition: width 300ms var(--ease-default, cubic-bezier(0.2,0,0,1));
+  box-shadow: 0 0 8px rgba(0, 180, 216, 0.4);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .page-transition-wrapper {
+    animation: none;
+  }
+  .nav-progress-bar {
+    transition: none;
+  }
+}
+
+/* ================================================================
+   DARK MODE — App-level page overrides
+   ================================================================ */
+
+/* Landing page dark: deeper glow */
+.dark .landing-page {
+  background: linear-gradient(135deg, var(--brand-navy-deep, #060e18) 0%, #030912 100%);
+}
+.dark .landing-card {
+  border: 1px solid var(--navy-600);
+  background: linear-gradient(180deg, var(--bg-card) 0%, rgba(26,41,66,0.92) 100%);
+  box-shadow: var(--shadow-4), 0 0 60px rgba(0,0,0,0.5);
+}
+.dark .landing-btn:hover {
+  box-shadow: 0 4px 16px rgba(0,180,216,0.25);
+}
+
+/* Auth web form — dark polish */
+.dark .auth-web-form {
+  background: var(--bg);
+}
+.dark .auth-web-form-inner {
+  background: linear-gradient(180deg, var(--bg-card) 0%, rgba(26,41,66,0.92) 100%);
+  border: 1px solid var(--navy-600);
+  box-shadow: var(--shadow-3), inset 0 1px 0 rgba(255,255,255,0.03);
+}
+.dark .auth-web-form-inner .divider-ou .line {
+  background: var(--navy-600);
+}
+
+/* Web layout borders in dark */
+.dark .web-layout .home-header {
+  border-bottom-color: var(--navy-700);
+}
+.dark .web-layout .subheader-bar {
+  border-bottom-color: var(--navy-700);
+}
+
+/* Dark mobile page background */
+.dark .mobile-page {
+  background: var(--navy-950);
+}
+
+/* Nav progress glow in dark */
+.dark .nav-progress-bar {
+  box-shadow: 0 0 12px rgba(0, 180, 216, 0.5);
+}
+
+/* Sidebar Adulto/Ped toggle */
+.web-sidebar-toggle {
+  display: flex;
+  margin: var(--sp-3) var(--sp-3) var(--sp-2);
+  padding: var(--sp-1);
+  background: var(--bg-elevated);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+}
+.web-sidebar-toggle-btn {
+  flex: 1;
+  padding: var(--sp-2) var(--sp-3);
+  border: none;
+  background: none;
+  border-radius: var(--r-md);
+  font: 500 13px/18px 'Inter', sans-serif;
+  color: var(--fg-3);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-default);
+}
+.web-sidebar-toggle-btn.active {
+  background: var(--bg-card);
+  color: var(--fg);
+  font-weight: 600;
+  box-shadow: var(--shadow-1);
+}
+.web-sidebar-toggle-btn:hover:not(.active) {
+  color: var(--fg-2);
+}
+.dark .web-sidebar-toggle {
+  background: var(--bg-card);
+  border-color: var(--navy-700);
+}
+.dark .web-sidebar-toggle-btn.active {
+  background: var(--bg-elevated);
+  color: var(--fg);
+}
+
+/* Hide SubheaderBar on web — toggle is in sidebar */
+.web-layout .subheader-bar { display: none !important; }
+
+/* Web Home aside containers */
+.web-layout .aside-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--sp-5);
+  margin-bottom: var(--sp-4);
+}
+.web-layout .aside-card .section-header {
+  margin-bottom: var(--sp-3);
+}
+.web-layout .aside-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.web-layout .aside-card-list .card-feature {
+  border: 1px solid var(--border);
+}
+.web-layout .aside-card-list .card-recent {
+  border: 1px solid var(--border);
+}
+.web-layout .home-aside-col {
+  position: sticky;
+  top: var(--sp-6);
+  align-self: start;
+}
+/* Main col fills remaining space */
+.web-layout .home-main-col {
+  min-width: 0;
+}
+/* Dark mode aside containers */
+.dark .web-layout .aside-card {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+
+/* Home page: content fills all available space */
+.web-layout .home-content-grid {
+  grid-template-columns: 1fr 300px;
+}
+.web-layout .banner-editorial {
+  max-width: none;
 }

@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import { Bell, Sun, Moon } from '@phosphor-icons/react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Bell, Sun, Moon, MagnifyingGlass } from '@phosphor-icons/react'
 import { useTheme } from '../../contexts/ThemeContext'
 import Avatar from '../ui/Avatar'
 
@@ -11,13 +11,25 @@ interface Props {
 
 export default function HomeHeader({ greeting = 'Bom dia,', userName = 'Dr. Rafael', blur }: Props) {
   const { resolvedTheme, toggleTheme } = useTheme()
+  const navigate = useNavigate()
 
   return (
     <div className={`home-header ${blur ? 'blur-bg' : ''}`}>
       <Avatar initials="RF" size="sm" />
       <div className="flex-1">
-        <div className="t-legenda text-fg-3">{greeting}</div>
+        <div className="t-legenda text-fg-2">{greeting}</div>
         <div className="t-alerta-titulo">{userName}</div>
+      </div>
+      <div
+        className="web-header-search"
+        role="button"
+        tabIndex={0}
+        onClick={() => navigate('/busca')}
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('/busca') } }}
+        aria-label="Buscar calculadoras, protocolos, escores..."
+      >
+        <MagnifyingGlass size={18} />
+        <span>Buscar calculadoras, protocolos, escores...</span>
       </div>
       <button
         className="btn-icon-toggle"
@@ -26,9 +38,9 @@ export default function HomeHeader({ greeting = 'Bom dia,', userName = 'Dr. Rafa
       >
         {resolvedTheme === 'dark' ? <Sun size={22} /> : <Moon size={22} />}
       </button>
-      <Link to="/notificacoes" className="notif-wrap">
-        <Bell size={22} className="text-fg-3" />
-        <div className="notif-dot" />
+      <Link to="/notificacoes" className="notif-wrap" aria-label="Notificações (novas)">
+        <Bell size={22} />
+        <div className="notif-dot" aria-hidden="true" />
       </Link>
     </div>
   )

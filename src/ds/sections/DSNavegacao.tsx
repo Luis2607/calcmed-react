@@ -50,6 +50,8 @@ export default function DSNavegacao() {
         <p className="t-corpo-2 text-fg-2 mb-4">
           Navegação lateral com 260px expandida e 64px colapsada. Exibe rótulos de seção, badges de novidade
           e divisores para agrupar itens. Ideal para telas maiores onde o médico consulta dados com mais espaço.
+          No rodapé da sidebar, um botão "Sair" (com ícone SignOut) é exibido empurrado para o fundo via margin-top: auto,
+          separado por border-top, e apresenta hover com cor danger para indicar ação destrutiva.
         </p>
         <DSPanel>
           <div className="flex gap-6">

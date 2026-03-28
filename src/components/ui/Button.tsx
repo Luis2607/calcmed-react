@@ -34,8 +34,8 @@ export default function Button({
     className,
   ].filter(Boolean).join(' ')
 
-  if (href) {
-    return <Link to={href} className={classes}>{children}</Link>
+  if (href && !disabled) {
+    return <Link to={href} className={classes} aria-disabled={disabled}>{children}</Link>
   }
 
   return (

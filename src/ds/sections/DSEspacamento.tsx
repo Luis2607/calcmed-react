@@ -80,7 +80,29 @@ export default function DSEspacamento() {
           5 tokens de arredondamento, de sutil (4px para badges) até pill (100px para botões
           de ação primária). O radius padrão para cards é --r-xl (16px), e para inputs é --r-lg (12px).
         </p>
-        <DSPanel title="Tokens de radius">
+        <DSPanel
+          title="Tokens de radius"
+          darkChildren={
+            <div className="flex gap-6 flex-wrap">
+              {radiusTokens.map(r => (
+                <div key={r.name} className="text-center">
+                  <div
+                    style={{
+                      width: 64,
+                      height: 64,
+                      background: 'rgba(0,180,216,0.20)',
+                      border: '2px solid rgba(0,180,216,0.40)',
+                      borderRadius: `var(--${r.name})`,
+                    }}
+                    className="mb-2"
+                  />
+                  <div className="t-legenda text-fg-2 mb-1" style={{ fontFamily: "'JetBrains Mono'" }}>--{r.name}</div>
+                  <div className="t-legenda text-fg-3" style={{ fontFamily: "'JetBrains Mono'" }}>{r.value}</div>
+                </div>
+              ))}
+            </div>
+          }
+        >
           <div className="flex gap-6 flex-wrap">
             {radiusTokens.map(r => (
               <div key={r.name} className="text-center">

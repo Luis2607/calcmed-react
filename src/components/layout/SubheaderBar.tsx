@@ -11,11 +11,13 @@ export default function SubheaderBar({ tabs, defaultActive = 0, onChange }: Prop
 
   return (
     <div className="subheader-bar">
-      <div className="toggle-seg">
+      <div className="toggle-seg" role="tablist">
         {tabs.map((label, i) => (
           <button
             key={label}
             className={`tab ${i === active ? 'active' : ''}`}
+            role="tab"
+            aria-selected={i === active}
             onClick={() => { setActive(i); onChange?.(i) }}
           >
             {label}
