@@ -37,10 +37,10 @@ export default function BottomNav() {
 
     return (
       <nav className="web-sidebar" aria-label="Navegacao principal">
-        <div className="web-sidebar-logo">
+        <Link to="/home" className="web-sidebar-logo" style={{ textDecoration: 'none', color: 'inherit' }}>
           <img src="/assets/Icone.svg" width={24} height={24} alt="" aria-hidden="true" className="web-sidebar-logo-icon" />
           <span>Calc<span className="dot">.</span>Med</span>
-        </div>
+        </Link>
 
         {/* Toggle Adulto/Ped */}
         <div className="web-sidebar-toggle" role="tablist" aria-label="Modo clinico">

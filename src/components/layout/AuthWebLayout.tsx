@@ -67,7 +67,7 @@ export default function AuthWebLayout({ children }: Props) {
           {children}
         </div>
         <div className="auth-web-form-footer">
-          <span className="t-legenda text-fg-3">&copy; {new Date().getFullYear()} CalcMed</span>
+          <span className="t-legenda text-fg-3">&copy; {new Date().getFullYear()} CalcMed &middot; Termos de Uso &middot; Privacidade</span>
         </div>
       </main>
     </div>

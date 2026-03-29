@@ -11,7 +11,7 @@ export interface Feature {
 export const favorites: Feature[] = [
   { abbr: 'IOT', domain: 'urg', name: 'Intubação', status: 'free' },
   { abbr: 'DVA', domain: 'dil', name: 'Drogas Vasoativas', status: 'free' },
-  { abbr: 'CrCl', domain: 'calc', name: 'Clearance Creatinina', status: 'free' },
+  { abbr: 'CrCl', domain: 'calc', name: 'Clearance de Creatinina', status: 'free' },
   { abbr: 'VM', domain: 'urg', name: 'Ventilação Mecânica', status: 'free' },
 ]
 
@@ -64,7 +64,7 @@ export const categories: Category[] = [
   {
     icon: 'calculator', domain: 'calc', name: 'Calculadoras', count: 11,
     items: [
-      { abbr: 'CrCl', domain: 'calc', name: 'Clearance Creatinina', status: 'free' },
+      { abbr: 'CrCl', domain: 'calc', name: 'Clearance de Creatinina', status: 'free' },
       { abbr: 'IMC', domain: 'calc', name: 'Índice Massa Corp.', status: 'free' },
       { abbr: 'Na+', domain: 'calc', name: 'Sódio Corrigido', status: 'free' },
       { abbr: 'K+', domain: 'calc', name: 'Potássio Corrigido', status: 'free' },

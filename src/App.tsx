@@ -8,6 +8,13 @@ import EntradaPage from './pages/EntradaPage'
 import EmailPage from './pages/EmailPage'
 import SenhaPage from './pages/SenhaPage'
 import RecuperarPage from './pages/RecuperarPage'
+import CriarContaPage from './pages/CriarContaPage'
+import VerificarEmailPage from './pages/VerificarEmailPage'
+import RecuperarInputPage from './pages/RecuperarInputPage'
+import NovaSenhaPage from './pages/NovaSenhaPage'
+import SenhaAlteradaPage from './pages/SenhaAlteradaPage'
+import ContaBloqueadaPage from './pages/ContaBloqueadaPage'
+import PerfilInicialPage from './pages/PerfilInicialPage'
 import Onboarding1Page from './pages/Onboarding1Page'
 import Onboarding2Page from './pages/Onboarding2Page'
 import HomePage from './pages/HomePage'
@@ -16,6 +23,13 @@ import PremiumModalPage from './pages/PremiumModalPage'
 import PlanosPage from './pages/PlanosPage'
 import NotificacoesPage from './pages/NotificacoesPage'
 import MenuPage from './pages/MenuPage'
+import NovidadesPage from './pages/NovidadesPage'
+import PassometroPage from './pages/PassometroPage'
+import DividirDescansoPage from './pages/DividirDescansoPage'
+import MinhasAnotacoesPage from './pages/MinhasAnotacoesPage'
+import ConfiguracoesPage from './pages/ConfiguracoesPage'
+import SuportePage from './pages/SuportePage'
+import SobrePage from './pages/SobrePage'
 import IAChatPage from './pages/IAChatPage'
 import EscalaCalendarioPage from './pages/EscalaCalendarioPage'
 import EscalaNovoPlantaoPage from './pages/EscalaNovoPlantaoPage'
@@ -229,6 +243,13 @@ export default function App() {
           <Route path="/login/email" element={<PageWrapper><EmailPage /></PageWrapper>} />
           <Route path="/login/senha" element={<PageWrapper><SenhaPage /></PageWrapper>} />
           <Route path="/login/recuperar" element={<PageWrapper><RecuperarPage /></PageWrapper>} />
+          <Route path="/login/recuperar-email" element={<PageWrapper><RecuperarInputPage /></PageWrapper>} />
+          <Route path="/login/nova-senha" element={<PageWrapper><NovaSenhaPage /></PageWrapper>} />
+          <Route path="/login/senha-alterada" element={<PageWrapper><SenhaAlteradaPage /></PageWrapper>} />
+          <Route path="/login/bloqueada" element={<PageWrapper><ContaBloqueadaPage /></PageWrapper>} />
+          <Route path="/registro" element={<PageWrapper><CriarContaPage /></PageWrapper>} />
+          <Route path="/registro/verificar" element={<PageWrapper><VerificarEmailPage /></PageWrapper>} />
+          <Route path="/registro/perfil" element={<PageWrapper><PerfilInicialPage /></PageWrapper>} />
           <Route path="/onboarding/1" element={<PageWrapper><Onboarding1Page /></PageWrapper>} />
           <Route path="/onboarding/2" element={<PageWrapper><Onboarding2Page /></PageWrapper>} />
           <Route path="/home" element={<PageWrapper><HomePage /></PageWrapper>} />
@@ -238,6 +259,13 @@ export default function App() {
           <Route path="/planos" element={<PageWrapper><PlanosPage /></PageWrapper>} />
           <Route path="/notificacoes" element={<PageWrapper><NotificacoesPage /></PageWrapper>} />
           <Route path="/menu" element={<PageWrapper><MenuPage /></PageWrapper>} />
+          <Route path="/novidades" element={<PageWrapper><NovidadesPage /></PageWrapper>} />
+          <Route path="/passometro" element={<PageWrapper><PassometroPage /></PageWrapper>} />
+          <Route path="/dividir-descanso" element={<PageWrapper><DividirDescansoPage /></PageWrapper>} />
+          <Route path="/anotacoes" element={<PageWrapper><MinhasAnotacoesPage /></PageWrapper>} />
+          <Route path="/configuracoes" element={<PageWrapper><ConfiguracoesPage /></PageWrapper>} />
+          <Route path="/suporte" element={<PageWrapper><SuportePage /></PageWrapper>} />
+          <Route path="/sobre" element={<PageWrapper><SobrePage /></PageWrapper>} />
           <Route path="/ia" element={<PageWrapper><IAChatPage /></PageWrapper>} />
           <Route path="/escala" element={<PageWrapper><EscalaCalendarioPage /></PageWrapper>} />
           <Route path="/escala/novo" element={<PageWrapper><EscalaNovoPlantaoPage /></PageWrapper>} />

@@ -17,6 +17,7 @@ import {
   ArrowsLeftRight,
 } from '@phosphor-icons/react'
 import HomeHeader from '../components/layout/HomeHeader'
+import { useLayout } from '../contexts/LayoutContext'
 import { searchDb } from '../data/homeData'
 
 function normalize(str: string) {
@@ -79,6 +80,8 @@ const allKnownTerms = Array.from(
 )
 
 export default function BuscaPage() {
+  const { layoutMode } = useLayout()
+  const isWeb = layoutMode === 'web'
   const [query, setQuery] = useState('')
   const debouncedQuery = useDebounce(query, 300)
   const resultsRef = useRef<HTMLDivElement>(null)
@@ -148,16 +151,31 @@ export default function BuscaPage() {
     <MobileFrame>
       <HomeHeader />
 
-      <div className="screen-content flex-1 overflow-y-auto p-5">
-        <div className="mb-6">
-          <SearchInput
-            value={query}
-            onChange={setQuery}
-            onClear={() => setQuery('')}
-            placeholder="Buscar calculadora, protocolo, escore..."
-            autoFocus
-          />
-        </div>
+      <div className={`screen-content flex-1 overflow-y-auto p-5 ${isWeb ? 'busca-web-content' : ''}`}>
+        {/* Search bar — only on mobile (web uses header search) */}
+        {!isWeb && (
+          <div className="mb-6">
+            <SearchInput
+              value={query}
+              onChange={setQuery}
+              onClear={() => setQuery('')}
+              placeholder="Buscar calculadora, protocolo, escore..."
+              autoFocus
+            />
+          </div>
+        )}
+        {/* Web: inline search at top with max-width */}
+        {isWeb && (
+          <div className="mb-6 busca-web-search">
+            <SearchInput
+              value={query}
+              onChange={setQuery}
+              onClear={() => setQuery('')}
+              placeholder="Buscar calculadora, protocolo, escore..."
+              autoFocus
+            />
+          </div>
+        )}
 
         {/* ESTADO INICIAL */}
         {!hasQuery && !isTyping && (
