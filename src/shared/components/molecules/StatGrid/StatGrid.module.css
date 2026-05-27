@@ -1,0 +1,44 @@
+/* StatGrid — grade compacta de tiles {label, value}, ancorada no GOLDEN consistente
+   (`.valor-card` + `.valor-card-label`), compartilhado por CAD/Sepse/PCR/AVC. NÃO segue
+   o SCA. Cor/spacing/radius só via token; layout (nº de colunas) por data-attr. */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--esp-3);
+}
+.grid[data-columns="1"] { grid-template-columns: 1fr; }
+.grid[data-columns="3"] { grid-template-columns: 1fr 1fr 1fr; }
+.grid[data-columns="4"] { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+/* tile = golden `.valor-card` (radius 12 · border 1px · fundo-cartao), em densidade
+   compacta de grade (padding esp-4 do `.exame-card`). */
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  padding: var(--esp-4);
+  border: 1px solid var(--ds-borda-padrao);
+  border-radius: var(--ds-r-md); /* 12px = golden --radius-card */
+  background: var(--ds-fundo-cartao);
+}
+
+/* label = golden `.valor-card-label` (11/600/0.22 uppercase terciário) */
+.label {
+  color: var(--ds-texto-terciario);
+  font-family: var(--fonte-base);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.22px;
+  text-transform: uppercase;
+}
+
+/* valor = golden `.exame-card-nome` (16/600/24 padrão) — valor de cartão padrão */
+.value {
+  color: var(--ds-texto-padrao);
+  font-family: var(--fonte-base);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}

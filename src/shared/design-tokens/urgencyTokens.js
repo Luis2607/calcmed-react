@@ -17,5 +17,6 @@ export const URGENCY_INVENTORY = [
   { comp: 'Timeline (linha do tempo)', kit: 'K7', code: 'organisms/Timeline', status: 'ok' },
   { comp: 'PatientDetail (blocos)', kit: 'K8', code: 'organisms/PatientDetail', status: 'ok' },
   { comp: 'StepHeader (cabeçalho de tela)', kit: 'F0.1a', code: 'molecules/StepHeader → compõe InfoButton', status: 'ok' },
-  { comp: 'OptionCard (escolha rica)', kit: 'F0.1b', code: 'molecules/OptionCard (unifica SCA SelectCard + seleções CAD; tones tokenizados)', status: 'ok' },
+  { comp: 'OptionCard (escolha rica)', kit: 'F0.1b', code: 'molecules/OptionCard (golden .exame-card + seleção .faixa-chip; tones tokenizados)', status: 'ok' },
+  { comp: 'StatGrid (resumo em tiles)', kit: 'F0.1c', code: 'molecules/StatGrid (golden .valor-card; data-columns 1-4)', status: 'ok' },
 ];

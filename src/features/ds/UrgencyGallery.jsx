@@ -10,6 +10,7 @@ import { Timeline } from '../../shared/components/organisms/Timeline/Timeline';
 import { PatientDetail } from '../../shared/components/organisms/PatientDetail/PatientDetail';
 import { StepHeader } from '../../shared/components/molecules/StepHeader/StepHeader';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
+import { StatGrid } from '../../shared/components/molecules/StatGrid/StatGrid';
 
 const STATUS_BADGE = { ok: 'OK', pendente: 'PENDENTE' };
 
@@ -208,7 +209,7 @@ export function UrgencyGallery() {
       </section>
 
       <section className={styles.section}>
-        <div className={styles.sectionHeader}><h2>F0.1b · OptionCard (escolha rica)</h2><p>Porta o SCA SelectCard com tones tokenizados. Selecao pela superficie (sem controle).</p></div>
+        <div className={styles.sectionHeader}><h2>F0.1b · OptionCard (escolha rica)</h2><p>Padrao golden .exame-card + selecao .faixa-chip (borda 2px no tone). Tones tokenizados.</p></div>
         <div className={styles.tableContainer} style={{ padding: 24, maxWidth: 430, display: 'flex', flexDirection: 'column', gap: 12 }}>
           <OptionCard
             title="PPCI"
@@ -244,6 +245,28 @@ export function UrgencyGallery() {
             description="Troponina seriada negativa e escore baixo."
           />
           <OptionCard title="Opcao desabilitada" description="Indisponivel neste cenario." disabled />
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}><h2>F0.1c · StatGrid (resumo em tiles)</h2><p>Padrao golden valor-card. Grade compacta label/valor; data-columns 1-4.</p></div>
+        <div className={styles.tableContainer} style={{ padding: 24, maxWidth: 430, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <StatGrid
+            items={[
+              { label: 'Duracao', value: '43 min' },
+              { label: 'Modo', value: 'Adulto' },
+              { label: 'Criterios', value: '3/3' },
+              { label: 'Desfecho', value: 'Alta segura' },
+            ]}
+          />
+          <StatGrid
+            columns={3}
+            items={[
+              { label: 'Idade', value: '32a' },
+              { label: 'Peso', value: '70 kg' },
+              { label: 'K+', value: '4.1' },
+            ]}
+          />
         </div>
       </section>
     </div>

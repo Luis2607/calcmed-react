@@ -3,11 +3,11 @@ import styles from './OptionCard.module.css';
 /**
  * Molecule: OptionCard — superfície de escolha rica (cenário/conduta).
  *
- * Porta o SCA `SelectCard` (title + meta + descrição/children, seleção pela própria
- * superfície: borda + fundo + inset, tone-aware) e as seleções do CAD. Distinto do
- * RadioGroup/CheckboxGroup variante card (controle + label simples) — aqui NÃO há
- * controle; a seleção é o próprio cartão. Tones com cor só via token (sem o hex
- * cravado que o flow usava).
+ * Ancorada no GOLDEN consistente (`.exame-card` + seleção `.faixa-chip.selecionado`),
+ * o padrão compartilhado por CAD/Sepse/PCR/AVC — NÃO no SCA (fluxo menos consistente).
+ * title + meta + descrição/children; seleção pela própria superfície (borda 2px na cor
+ * do tone, sem controle). Distinto do RadioGroup/CheckboxGroup variante card (controle +
+ * label simples). Tones só via token.
  *
  * Props:
  *   title       node (obrigatório) — rótulo principal
