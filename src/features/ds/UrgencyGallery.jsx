@@ -14,6 +14,7 @@ import { StatGrid } from '../../shared/components/molecules/StatGrid/StatGrid';
 import { RangeChip } from '../../shared/components/molecules/Chip/Chip';
 import { ActionTile } from '../../shared/components/molecules/ActionTile/ActionTile';
 import { ClinicalCard } from '../../shared/components/organisms/ClinicalCard/ClinicalCard';
+import { TimerCard } from '../../shared/components/organisms/TimerCard/TimerCard';
 
 const STATUS_BADGE = { ok: 'OK', pendente: 'PENDENTE' };
 
@@ -305,6 +306,17 @@ export function UrgencyGallery() {
           <ClinicalCard variant="plain" title="Potassio serico" subtitle="K abaixo de 3,5 bloqueia o inicio da insulina.">
             <StatGrid columns={3} items={[{ label: 'K+', value: '4,1' }, { label: 'Status', value: 'OK' }, { label: 'Fonte', value: 'Gaso' }]} />
           </ClinicalCard>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}><h2>F0.1g · TimerCard (5 estados PCR)</h2><p>Golden .pcr-card: idle / running / cycle-end / window-ok / window-overdue (pulso). data-state opcional; tone (SCA) inalterado.</p></div>
+        <div className={styles.tableContainer} style={{ padding: 24, maxWidth: 640, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <TimerCard state="idle" label="Compressoes" value="00:00" description="Toque para iniciar o ciclo." />
+          <TimerCard state="running" label="Compressoes" value="01:23" meta="Ciclo 1" description="Compressao em andamento." />
+          <TimerCard state="cycle-end" label="Checar ritmo" value="02:00" description="Marco de 2 min — checar ritmo." />
+          <TimerCard state="window-ok" label="Adrenalina" value="00:45" description="Janela aberta — aplicar agora." />
+          <TimerCard state="window-overdue" label="Adrenalina" value="05:30" description="Dose atrasada." />
         </div>
       </section>
     </div>

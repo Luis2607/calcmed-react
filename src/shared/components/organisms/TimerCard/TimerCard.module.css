@@ -67,3 +67,66 @@
 .card[data-tone='warning'] .value {
   color: var(--ds-retorno-atencao);
 }
+
+/* ============================================================
+   Estados do cronômetro PCR (golden `.pcr-card-*`). data-state é OPCIONAL:
+   sem ele, o data-tone acima (SCA) segue inalterado. Vêm depois p/ vencer
+   quando ambos presentes. Só cor/borda/fundo via token; value mantém o tamanho.
+   ============================================================ */
+
+/* idle — pré-iniciar (mudo) */
+.card[data-state='idle'] {
+  background: var(--ds-fundo-elevado);
+  border-color: var(--ds-borda-sutil);
+}
+.card[data-state='idle'] .label,
+.card[data-state='idle'] .value {
+  color: var(--ds-texto-terciario);
+}
+
+/* running — compressões ativas (primário, borda 2px) */
+.card[data-state='running'] {
+  border-color: var(--ds-interativo-primario);
+  border-width: 2px;
+}
+.card[data-state='running'] .label,
+.card[data-state='running'] .value {
+  color: var(--ds-interativo-primario);
+}
+
+/* cycle-end — marco 2:00, checar ritmo (crítico) */
+.card[data-state='cycle-end'] {
+  border-color: var(--ds-retorno-critico-borda);
+  background: var(--ds-retorno-critico-fundo);
+}
+.card[data-state='cycle-end'] .label,
+.card[data-state='cycle-end'] .value {
+  color: var(--ds-retorno-critico);
+}
+
+/* window-ok — janela de adrenalina aberta (sucesso) */
+.card[data-state='window-ok'] {
+  border-color: var(--ds-retorno-sucesso-borda);
+  background: var(--ds-retorno-sucesso-fundo);
+}
+.card[data-state='window-ok'] .label,
+.card[data-state='window-ok'] .value {
+  color: var(--ds-retorno-sucesso);
+}
+
+/* window-overdue — dose atrasada (crítico + pulso; pulso = diferencial vs cycle-end) */
+.card[data-state='window-overdue'] {
+  border-color: var(--ds-retorno-critico-borda);
+  background: var(--ds-retorno-critico-fundo);
+  animation: timer-overdue-pulse 1.2s ease-in-out infinite;
+}
+.card[data-state='window-overdue'] .label,
+.card[data-state='window-overdue'] .value {
+  color: var(--ds-retorno-critico);
+}
+
+/* pulso = golden pulse-overdue (anel critico translúcido), derivado do token via color-mix */
+@keyframes timer-overdue-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ds-retorno-critico) 0%, transparent); }
+  50% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--ds-retorno-critico) 18%, transparent); }
+}
