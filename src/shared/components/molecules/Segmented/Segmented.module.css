@@ -1,0 +1,39 @@
+.field { display: flex; flex-direction: column; gap: var(--esp-2); }
+
+.label {
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 500;
+  letter-spacing: 0.14px;
+  color: var(--ds-input-rotulo);
+}
+
+/* container: Figma 52h · r12 · fill #F1F5F9 · pad 4 */
+.container {
+  display: inline-flex;
+  background: var(--ds-fundo-elevado);
+  border-radius: var(--radius-input);
+  padding: var(--esp-1);
+  gap: 0;
+}
+
+.segment {
+  flex: 1;
+  border: none;
+  background: transparent;
+  border-radius: var(--ds-r-sm);
+  padding: var(--esp-2) var(--esp-4);
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 600;
+  color: var(--ds-texto-secundario);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.active {
+  background: var(--ds-fundo-cartao);
+  color: var(--ds-texto-padrao);
+  box-shadow: var(--sombra-cartao);
+}

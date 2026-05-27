@@ -1,0 +1,1 @@
+export { ScoreRangeTable } from './ScoreRangeTable';

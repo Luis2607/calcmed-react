@@ -1,0 +1,26 @@
+.dots {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: var(--ds-borda-padrao);
+  cursor: pointer;
+  padding: 0;
+  transition: width 0.2s, background-color 0.2s;
+}
+
+/* Ativo: Figma 20×8 alongado */
+.active {
+  width: 20px;
+  background: var(--ds-interativo-primario);
+}
+
+/* Variante p/ overlay sobre imagem (Figma usa branco) */
+.onMedia .dot { background: rgba(255, 255, 255, 0.5); }
+.onMedia .active { background: #ffffff; }

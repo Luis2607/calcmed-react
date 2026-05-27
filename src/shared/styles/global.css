@@ -1,0 +1,139 @@
+@import './tokens.css';
+@import './components.css';
+@import './transitions.css';
+@import './hub.css';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-family: var(--fonte-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  background: #d4d4d8;
+  color: var(--texto-padrao);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Wrapper page — frame de celular centralizado no desktop */
+.page-wrapper {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px;
+  min-height: 100vh;
+}
+
+@media (max-width: 750px) {
+  .page-wrapper {
+    padding: 0;
+    gap: 0;
+    align-items: stretch;
+  }
+}
+
+.viewport-container {
+  width: 390px;
+  height: 844px;
+  flex-shrink: 0;
+  background: var(--fundo-pagina);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  border-radius: var(--radius-viewport-top); /* 40px */
+  overflow: hidden;
+}
+
+@media (max-width: 430px) {
+  .viewport-container {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  body {
+    background: var(--fundo-pagina);
+  }
+}
+
+.scroll-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Utilities */
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.mono {
+  font-family: var(--fonte-mono);
+  font-feature-settings: 'tnum';
+}
+
+.text-medio {
+  color: var(--texto-secundario);
+}
+
+.text-fraco {
+  color: var(--texto-terciario);
+}
+
+.text-primario {
+  color: var(--interativo-primario);
+}
+
+.text-sucesso {
+  color: var(--retorno-sucesso);
+}
+
+.text-critico {
+  color: var(--retorno-critico);
+}
+
+.text-atencao {
+  color: var(--retorno-atencao);
+}
+
+/* a11y · WCAG 2.4.7 · focus-visible */
+button:focus-visible,
+a:focus-visible,
+[role="tab"]:focus-visible,
+[role="radio"]:focus-visible,
+[role="button"]:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--interativo-primario);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* a11y · Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

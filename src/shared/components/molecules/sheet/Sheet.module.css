@@ -1,0 +1,408 @@
+/* ============================================================
+   Sheet molecules — shared CSS
+   Reuso direto dos tokens DS (--ds-*, --esp-*, --radius-*)
+   Tons (neutral|info|success|warning|critical) controlados via [data-tone]
+   ============================================================ */
+
+/* SheetHeader */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  padding: var(--esp-5) var(--esp-5) var(--esp-3);
+  flex-shrink: 0;
+  background: var(--ds-fundo-cartao);
+  position: relative;
+}
+
+.headerHandle::after {
+  content: '';
+  position: absolute;
+  top: var(--esp-2);
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--sheet-handle-largura);
+  height: var(--sheet-handle-altura);
+  background: var(--ds-borda-padrao);
+  border-radius: var(--radius-pill);
+}
+
+.headerLead {
+  display: flex;
+  gap: var(--esp-3);
+  align-items: flex-start;
+  flex: 1;
+  min-width: 0;
+}
+
+.leadingIcon {
+  width: var(--sheet-leading-icon-tamanho);
+  height: var(--sheet-leading-icon-tamanho);
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--sheet-leading-icon-fonte);
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sheet-header-text-gap);
+  min-width: 0;
+}
+
+.title {
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-titulo-sheet);
+  font-weight: 700;
+  color: var(--ds-texto-padrao);
+  line-height: var(--fonte-linha-titulo-sheet);
+}
+
+.description {
+  font-size: var(--fonte-tamanho-auxiliar);
+  color: var(--ds-texto-terciario);
+  line-height: var(--fonte-linha-auxiliar-sheet);
+}
+
+.closeBtn {
+  background: var(--ds-fundo-elevado);
+  border: none;
+  width: var(--sheet-close-tamanho);
+  height: var(--sheet-close-tamanho);
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-texto-secundario);
+  cursor: pointer;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.closeBtn:hover { color: var(--ds-texto-padrao); background: var(--ds-borda-padrao); }
+
+/* Tone variants — afetam só leading icon */
+.header[data-tone='info'] .leadingIcon { background: var(--informativo-fundo); color: var(--informativo-primario); }
+.header[data-tone='success'] .leadingIcon { background: var(--ds-retorno-sucesso-fundo); color: var(--ds-retorno-sucesso); }
+.header[data-tone='warning'] .leadingIcon { background: var(--ds-retorno-atencao-fundo); color: var(--ds-retorno-atencao); }
+.header[data-tone='critical'] .leadingIcon { background: var(--ds-retorno-critico-fundo); color: var(--ds-retorno-critico); }
+.header[data-tone='neutral'] .leadingIcon { background: var(--ds-fundo-elevado); color: var(--ds-texto-secundario); }
+
+/* SheetBody */
+.body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 var(--esp-5) var(--esp-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+  -webkit-overflow-scrolling: touch;
+}
+
+.body::-webkit-scrollbar { width: var(--sheet-scrollbar-largura); }
+.body::-webkit-scrollbar-thumb { background: var(--ds-borda-padrao); border-radius: var(--sheet-scrollbar-radius); }
+
+/* SheetFooter */
+.footer {
+  flex-shrink: 0;
+  padding: var(--esp-3) var(--esp-5) var(--esp-5);
+  border-top: var(--sheet-border-width) solid var(--ds-borda-sutil);
+  background: var(--ds-fundo-cartao);
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+.footerActions {
+  display: flex;
+  gap: var(--esp-2);
+}
+
+.footerActions > * { flex: 1; }
+
+/* SheetSection — agrupa subblocos dentro do body */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+.sectionTitle {
+  font-size: var(--fonte-tamanho-rotulo);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ds-texto-secundario);
+}
+
+/* SheetAlert — alerta inline dentro do body */
+.alert {
+  border-radius: var(--radius-alert);
+  padding: var(--esp-3) var(--esp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  border: var(--sheet-border-width) solid transparent;
+}
+
+.alert[data-tone='info'] { background: var(--ds-alerta-info-fundo); border-color: var(--informativo-borda); color: var(--informativo-primario-forte); }
+.alert[data-tone='success'] { background: var(--ds-alerta-resultado-fundo); border-color: var(--ds-retorno-sucesso-borda); color: var(--ds-retorno-sucesso); }
+.alert[data-tone='warning'] { background: var(--ds-alerta-atencao-fundo); border-color: var(--ds-retorno-atencao-borda); color: var(--ds-retorno-atencao); }
+.alert[data-tone='critical'] { background: var(--ds-alerta-critico-fundo); border-color: var(--ds-alerta-critico-borda); color: var(--ds-retorno-critico); }
+
+.alertTitle { font-weight: 700; font-size: var(--fonte-tamanho-corpo); }
+.alertBody { font-size: var(--fonte-tamanho-corpo); line-height: 1.45; color: inherit; }
+
+/* SheetOption + SheetOptionList */
+.optionList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  padding: var(--esp-3) var(--esp-4);
+  border: var(--sheet-border-width-strong) solid var(--ds-borda-padrao);
+  background: var(--ds-fundo-cartao);
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo-forte);
+  font-weight: 500;
+  color: var(--ds-texto-padrao);
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.option:hover:not(:disabled) {
+  border-color: var(--ds-interativo-primario);
+  background: var(--interativo-primario-tint-04);
+}
+
+.option:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.optionSelected {
+  border-color: var(--ds-interativo-primario);
+  background: var(--interativo-primario-tint-06);
+  color: var(--ds-interativo-primario);
+  font-weight: 700;
+}
+
+.optionCheck {
+  width: var(--sheet-option-check-tamanho);
+  height: var(--sheet-option-check-tamanho);
+  flex-shrink: 0;
+  color: var(--ds-interativo-primario);
+}
+
+.optionDescription {
+  font-size: var(--fonte-tamanho-auxiliar);
+  font-weight: 500;
+  color: var(--ds-texto-secundario);
+  margin-top: var(--sheet-subtext-offset);
+}
+
+.optionMain {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── SheetTextarea (FormSheet / Anotação) ───────────────────── */
+.textareaField { display: flex; flex-direction: column; gap: var(--esp-2); }
+.textareaLabel {
+  font-size: var(--fonte-tamanho-rotulo);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ds-texto-secundario);
+}
+.textarea {
+  width: 100%;
+  min-height: var(--sheet-textarea-min-altura);
+  resize: vertical;
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo-forte);
+  line-height: 1.5;
+  color: var(--ds-input-texto);
+  background: var(--ds-input-fundo);
+  border: var(--sheet-border-width-strong) solid var(--ds-input-borda);
+  border-radius: var(--radius-input);
+  padding: var(--esp-3) var(--esp-4);
+}
+.textarea::placeholder { color: var(--ds-input-placeholder); }
+.textarea:focus { outline: none; border-color: var(--ds-input-borda-foco); }
+.charCount { align-self: flex-end; font-size: var(--fonte-tamanho-auxiliar); color: var(--ds-texto-terciario); }
+
+/* ── SheetMedia (imagem / ECG / diagrama) ───────────────────── */
+.media { display: flex; flex-direction: column; gap: var(--esp-2); }
+.mediaImg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-card);
+  background: var(--ds-fundo-elevado);
+}
+.mediaCaption { font-size: var(--fonte-tamanho-auxiliar); color: var(--ds-texto-secundario); line-height: 1.4; }
+
+/* ── SheetChecklistItem (ChecklistSheet) ────────────────────── */
+.checklistItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--esp-3);
+  padding: var(--esp-3) var(--esp-4);
+  border: var(--sheet-border-width-strong) solid var(--ds-borda-padrao);
+  border-radius: var(--radius-card);
+  background: var(--ds-fundo-cartao);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.checklistItem:hover:not(:disabled) { border-color: var(--ds-interativo-primario); }
+.checklistItemChecked { border-color: var(--ds-interativo-primario); background: var(--interativo-primario-tint-06); }
+.checklistItem:disabled { opacity: 0.5; cursor: not-allowed; }
+.checklistBox {
+  width: var(--sheet-checklist-box-tamanho);
+  height: var(--sheet-checklist-box-tamanho);
+  flex-shrink: 0;
+  margin-top: var(--sheet-checklist-box-offset);
+  border: var(--sheet-checkmark-border-width) solid var(--ds-borda-padrao);
+  border-radius: var(--ds-r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-texto-sobre-destaque);
+}
+.checklistItemChecked .checklistBox { background: var(--ds-interativo-primario); border-color: var(--ds-interativo-primario); }
+.checklistMain { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.checklistLabel { font-size: var(--fonte-tamanho-corpo-forte); font-weight: 500; color: var(--ds-texto-padrao); }
+.checklistDesc { font-size: var(--fonte-tamanho-auxiliar); color: var(--ds-texto-secundario); margin-top: var(--sheet-subtext-offset); }
+
+/* ── SheetCalculationBlock (ToolSheet) ──────────────────────── */
+.calcBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  padding: var(--esp-4);
+  background: var(--ds-fundo-elevado);
+  border-radius: var(--radius-card);
+}
+.calcLabel {
+  font-size: var(--fonte-tamanho-rotulo);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ds-texto-secundario);
+}
+.calcValueRow { display: flex; align-items: baseline; gap: var(--esp-2); }
+.calcValue {
+  font-family: var(--fonte-mono);
+  font-feature-settings: 'tnum';
+  font-size: var(--fonte-tamanho-numero);
+  font-weight: 700;
+  color: var(--ds-texto-padrao);
+}
+.calcUnit { font-size: var(--fonte-tamanho-corpo-forte); font-weight: 700; color: var(--ds-interativo-primario); }
+.calcHint { font-size: var(--fonte-tamanho-auxiliar); color: var(--ds-texto-secundario); line-height: 1.4; }
+
+/* ── SheetActionItem / list (ActionSheet · ex: Adicionar evento) ─ */
+.actionList { display: flex; flex-direction: column; gap: var(--esp-2); padding: 0; margin: 0; list-style: none; }
+.actionItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  padding: var(--esp-3) var(--esp-4);
+  border: var(--sheet-border-width) solid var(--ds-borda-padrao);
+  border-radius: var(--radius-card);
+  background: var(--ds-fundo-cartao);
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.actionItem:hover:not(:disabled) { border-color: var(--ds-interativo-primario); background: var(--interativo-primario-tint-04); }
+.actionItem:disabled { opacity: 0.5; cursor: not-allowed; }
+.actionMain { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.actionLabel { font-size: var(--fonte-tamanho-corpo-forte); font-weight: 600; color: var(--ds-texto-padrao); }
+.actionDesc { font-size: var(--fonte-tamanho-auxiliar); color: var(--ds-texto-secundario); margin-top: var(--sheet-subtext-offset); }
+.actionAdd {
+  width: var(--sheet-action-icon-tamanho);
+  height: var(--sheet-action-icon-tamanho);
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  background: var(--ds-interativo-primario);
+  color: var(--ds-texto-sobre-destaque);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.actionItemExtra { border-style: dashed; justify-content: center; gap: var(--esp-2); }
+.actionItemExtra .actionLabel { color: var(--ds-texto-secundario); font-weight: 500; }
+
+/* ── SheetDetailRow (DetailSheet · histórico) ───────────────── */
+.detailList { display: flex; flex-direction: column; }
+.detailRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--esp-4);
+  padding: var(--esp-2) 0;
+  border-bottom: var(--sheet-border-width) solid var(--ds-borda-sutil);
+}
+.detailRow:last-child { border-bottom: none; }
+.detailLabel { font-size: var(--fonte-tamanho-corpo); color: var(--ds-texto-secundario); flex-shrink: 0; }
+.detailValue { font-size: var(--fonte-tamanho-corpo-forte); font-weight: 600; color: var(--ds-texto-padrao); text-align: right; }
+
+/* ── SheetText / SheetList (texto composavel · estilos de texto do DS) ── */
+.text {
+  font-size: var(--fonte-tamanho-corpo);
+  line-height: var(--fonte-linha-corpo-sheet);
+  letter-spacing: var(--fonte-tracking-corpo-sheet);
+  color: var(--ds-texto-secundario);
+}
+.textAux {
+  font-size: var(--fonte-tamanho-auxiliar);
+  line-height: var(--fonte-linha-auxiliar-sheet);
+  letter-spacing: var(--fonte-tracking-auxiliar-sheet);
+  color: var(--ds-texto-terciario);
+}
+.text strong,
+.textAux strong { font-weight: 700; color: var(--ds-texto-padrao); }
+
+.bulletList { display: flex; flex-direction: column; gap: var(--esp-2); padding: 0; margin: 0; list-style: none; }
+.bulletItem {
+  display: flex;
+  gap: var(--esp-3);
+  font-size: var(--fonte-tamanho-corpo);
+  line-height: var(--fonte-linha-corpo-sheet);
+  color: var(--ds-texto-secundario);
+}
+.bulletItem::before {
+  content: '';
+  flex-shrink: 0;
+  width: var(--sheet-bullet-tamanho);
+  height: var(--sheet-bullet-tamanho);
+  border-radius: var(--radius-pill);
+  background: var(--ds-interativo-primario);
+  margin-top: var(--sheet-bullet-offset);
+}

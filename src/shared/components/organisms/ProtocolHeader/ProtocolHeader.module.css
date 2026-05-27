@@ -1,0 +1,213 @@
+.header {
+  background: var(--ds-fundo-superficie);
+  padding: var(--esp-4) var(--esp-5);
+  border-bottom: 1px solid var(--ds-borda-sutil);
+  flex-shrink: 0;
+}
+
+.stacked {
+  padding: var(--esp-5) var(--esp-6) var(--esp-5);
+}
+
+.compact {
+  padding-top: var(--esp-4);
+  padding-bottom: var(--esp-4);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-4);
+}
+
+.lead {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+}
+
+.back {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--ds-texto-secundario);
+  display: flex;
+  align-items: center;
+}
+
+.titleBox {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.titleLine {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-3);
+  min-width: 0;
+}
+
+.statusDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--ds-interativo-primario);
+  box-shadow: 0 0 0 4px var(--interativo-primario-tint-08);
+  flex: 0 0 auto;
+}
+
+.title {
+  font-size: var(--fonte-tamanho-titulo-sheet); /* 18 */
+  font-weight: 700;
+  line-height: 24px;
+  color: var(--ds-texto-padrao);
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.titleIcon {
+  display: inline-flex;
+  color: var(--ds-interativo-primario);
+  flex: 0 0 auto;
+}
+
+.titleIcon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.compactLabel {
+  color: var(--ds-texto-secundario);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.subtitleLine {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2);
+  margin-top: 2px;
+}
+
+.subtitle {
+  font-size: var(--fonte-tamanho-auxiliar); /* 12 · era 11 rótulo (caption legível) */
+  line-height: 16px;
+  color: var(--ds-texto-terciario);
+}
+
+.stacked .subtitleLine {
+  margin-top: var(--esp-5);
+}
+
+.stacked.withStatusDot .subtitleLine,
+.stacked.withStatusDot .timerBig {
+  margin-left: calc(10px + var(--esp-3));
+}
+
+.stacked .subtitle {
+  font-size: var(--fonte-tamanho-corpo);
+  line-height: 20px;
+  color: var(--ds-texto-secundario);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  flex-shrink: 0;
+}
+
+.stacked .right {
+  align-self: flex-end;
+  margin-bottom: var(--esp-2);
+}
+
+.compact .right {
+  align-self: center;
+  margin-bottom: 0;
+}
+
+.timerBig {
+  font: var(--ds-font-crono-card);
+  color: var(--ds-texto-padrao);
+  letter-spacing: 0;
+  margin-top: var(--esp-1);
+}
+
+.actionBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--ds-interativo-primario);
+  background: transparent;
+  color: var(--ds-interativo-primario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.actionBtn svg {
+  width: 22px;
+  height: 22px;
+}
+
+.actionBtn:hover { background: var(--interativo-primario-tint-04); }
+.actionBtnActive { background: var(--ds-interativo-primario); color: var(--ds-texto-sobre-destaque); }
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+}
+
+.timerLabel {
+  font-size: var(--fonte-tamanho-rotulo);
+  font-weight: 600;
+  color: var(--ds-texto-secundario);
+  text-transform: uppercase;
+}
+
+.timerValue {
+  font-size: var(--fonte-tamanho-input);
+  font-weight: 700;
+  color: var(--ds-texto-padrao);
+}
+
+/* Show Steps — embute ProtocolSteps colado às bordas do header (cancela o padding h/b),
+   com divisor superior. ProtocolSteps traz seu próprio padding + border inferior. */
+.steps {
+  margin: var(--esp-3) calc(-1 * var(--esp-5)) calc(-1 * var(--esp-4));
+  border-top: 1px solid var(--ds-borda-sutil);
+}
+
+/* Variante por doença — hook: data-domain disponível p/ acento futuro
+   (mapeamento doença→cor a definir; não inventado aqui). */
+.withDomain { position: relative; }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+  margin-top: var(--esp-3);
+}
+
+.chip {
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-secundario);
+  padding: var(--esp-1) var(--esp-2);
+  border-radius: var(--ds-r-xs);
+}
+
+.tone-primario { background: var(--ds-interativo-primario); color: var(--ds-texto-sobre-destaque); }
+.tone-pediatria { background: var(--ds-dominio-pediatria); color: var(--ds-texto-sobre-destaque); }
+.tone-critico { background: var(--ds-dominio-urgencias); color: var(--ds-texto-sobre-destaque); }

@@ -1,0 +1,223 @@
+.page {
+  padding: 2rem;
+  background-color: var(--fundo-padrao, #F8FAFC);
+  color: var(--texto-padrao, #0F172A);
+  min-height: 100vh;
+}
+
+.hero {
+  margin-bottom: 3rem;
+  background: var(--fundo-superficie, #FFFFFF);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--borda-padrao, #E2E8F0);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--ds-interativo-primario, #007993);
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.hero h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.02em;
+}
+
+.hero p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--texto-secundario, #475569);
+  max-width: 800px;
+  margin: 0 0 1.5rem 0;
+}
+
+.sourceMeta {
+  font-family: var(--fonte-mono, monospace);
+  font-size: 0.75rem;
+  color: var(--texto-terciario, #94A3B8);
+  display: block;
+  margin-bottom: 2rem;
+}
+
+.coverageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.coverageCard {
+  background: var(--fundo-elevado, #F1F5F9);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--borda-sutil, #F1F5F9);
+}
+
+.coverageTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--texto-secundario, #475569);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.coverageValueRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+}
+
+.coverageValueRow strong {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.percentage {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ds-interativo-primario, #007993);
+}
+
+.progressBarBg {
+  height: 8px;
+  background-color: var(--borda-padrao, #E2E8F0);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.progressBar {
+  height: 100%;
+  background-color: var(--ds-interativo-primario, #007993);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.coverageStats {
+  font-size: 0.75rem;
+  color: var(--texto-terciario, #94A3B8);
+  display: block;
+}
+
+.section {
+  margin-bottom: 3.5rem;
+}
+
+.sectionHeader {
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--ds-interativo-primario, #007993);
+  padding-left: 1rem;
+}
+
+.sectionHeader h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.sectionHeader p {
+  font-size: 0.875rem;
+  color: var(--texto-secundario, #475569);
+  margin: 0;
+}
+
+.tokenGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.25rem;
+}
+
+.iconCard {
+  background: var(--fundo-superficie, #FFFFFF);
+  border: 1px solid var(--borda-padrao, #E2E8F0);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+}
+
+.iconCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--ds-interativo-primario, #007993);
+  box-shadow: 0 6px 16px rgba(0, 121, 147, 0.08);
+}
+
+.visualArea {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.iconWrapper {
+  padding: 0.75rem;
+  border-radius: 8px;
+  background-color: var(--fundo-elevado, #F1F5F9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s;
+}
+
+.iconWrapper[data-mapped="true"] {
+  background-color: rgba(0, 121, 147, 0.06);
+}
+
+.metaArea {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.iconName {
+  font-size: 0.875rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.25rem;
+  word-break: break-all;
+}
+
+.figmaId {
+  font-family: var(--fonte-mono, monospace);
+  font-size: 0.65rem;
+  color: var(--texto-terciario, #94A3B8);
+  display: block;
+}
+
+.statusFooter {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.statusBadge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.statusBadge.ok {
+  background-color: var(--ds-sucesso-fundo, #ECFDF5);
+  color: var(--ds-sucesso, #047857);
+}
+
+.statusBadge.missing {
+  background-color: var(--ds-atencao-fundo, #FFFBEB);
+  color: var(--ds-atencao, #92400E);
+}

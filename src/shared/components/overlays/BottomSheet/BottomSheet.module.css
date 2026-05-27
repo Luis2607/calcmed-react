@@ -1,0 +1,53 @@
+/* ============================================================
+   Organism: BottomSheet
+   Header/Body/Footer pertencem as moleculas (Sheet.module.css).
+   O organismo controla: backdrop, sheet shell, motion, maxHeight.
+   ============================================================ */
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: transparent;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  pointer-events: none;
+  transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  border-bottom-left-radius: var(--radius-viewport-top);
+  border-bottom-right-radius: var(--radius-viewport-top);
+}
+
+.backdropOpen {
+  background-color: var(--ds-fundo-sobreposicao);
+  pointer-events: auto;
+}
+
+.sheet {
+  background-color: var(--ds-fundo-cartao);
+  border-top-left-radius: var(--radius-sheet-top);
+  border-top-right-radius: var(--radius-sheet-top);
+  box-shadow: var(--sombra-modal);
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+  outline: none;
+}
+
+.sheetOpen {
+  transform: translateY(0);
+}
+
+/* maxHeight variants */
+.sheetAuto { max-height: 85%; }
+.sheetTall { max-height: 92%; }
+.sheetFull { max-height: 100%; height: 100%; border-radius: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop, .sheet { transition: none; }
+}

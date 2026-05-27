@@ -1,0 +1,1 @@
+export { ScoreResult } from './ScoreResult';

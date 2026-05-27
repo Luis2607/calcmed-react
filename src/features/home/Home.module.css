@@ -1,0 +1,487 @@
+/* ============================================================
+   Home — Urgências
+   Réplica do frame Figma 3:11884 (CalcMed - Urgência e Emergência)
+   Tokens em tokens.css · valores design-specific marcados
+   ============================================================ */
+
+.home {
+  --rose: #fa7087;
+  --rose-tint: rgba(250, 112, 135, 0.12);
+  --hero-red: #e11d48;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: var(--ds-fundo-cartao);
+}
+
+/* ---------- HEADER ---------- */
+.header {
+  flex-shrink: 0;
+  background: var(--ds-fundo-cartao);
+  border-bottom: 1px solid var(--ds-borda-sutil);
+  padding-top: 36px;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  padding: var(--esp-3) var(--esp-6);
+}
+
+.avatar {
+  position: relative;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.avatarCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--interativo-primario);
+  color: var(--texto-sobre-destaque);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.avatarEdit {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--interativo-primario);
+  border: 2px solid var(--ds-fundo-cartao);
+  color: var(--texto-sobre-destaque);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.greeting {
+  flex: 1;
+  min-width: 0;
+}
+
+.greetingHi {
+  color: var(--ds-texto-secundario);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.greetingName {
+  color: var(--ds-texto-padrao);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.headerIcon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--ds-texto-padrao);
+  cursor: pointer;
+}
+
+/* ---------- SEGMENTED ---------- */
+.segmentedRow {
+  padding: var(--esp-2) var(--esp-6) var(--esp-3);
+}
+
+.segmented {
+  display: flex;
+  gap: 0;
+  padding: 4px;
+  border-radius: var(--radius-card);
+  background: var(--ds-fundo-elevado);
+}
+
+.segTab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  height: 36px;
+  border: 0;
+  border-radius: var(--ds-r-sm);
+  background: transparent;
+  color: var(--ds-texto-terciario);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.segTabActive {
+  background: var(--ds-fundo-cartao);
+  color: var(--ds-texto-padrao);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+/* ---------- CONTENT ---------- */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-6);
+  padding: var(--esp-6);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+}
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.groupTitle {
+  color: var(--ds-texto-padrao);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.groupLinkMuted {
+  color: var(--ds-texto-secundario);
+  font-size: 14px;
+}
+
+.groupLink {
+  border: 0;
+  background: transparent;
+  color: var(--ds-texto-link);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ---------- CHIPS (Central de Urgência) ---------- */
+.chips {
+  display: flex;
+  gap: var(--esp-2);
+}
+
+.chip {
+  flex: 1;
+  height: 36px;
+  padding: var(--esp-2) var(--esp-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--ds-borda-padrao);
+  background: var(--ds-fundo-cartao);
+  color: var(--ds-texto-padrao);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.chip:hover {
+  border-color: var(--interativo-primario);
+}
+
+.chipActive {
+  background: var(--interativo-primario);
+  border-color: var(--interativo-primario);
+  color: var(--texto-sobre-destaque);
+}
+
+.chipActive:hover {
+  background: var(--interativo-primario-hover);
+  border-color: var(--interativo-primario-hover);
+}
+
+/* ---------- HERO (Modo PCR) ---------- */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  padding: var(--esp-4);
+  border-radius: var(--radius-card);
+  border: 0;
+  background: var(--hero-red);
+  color: var(--texto-sobre-destaque);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(225, 29, 72, 0.28);
+}
+
+.heroTitle {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.heroDesc {
+  font-size: 14px;
+  line-height: 20px;
+  opacity: 0.92;
+}
+
+.heroAction {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  margin-top: var(--esp-1);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ---------- FEATURE CARDS ---------- */
+.cardsRow {
+  display: flex;
+  gap: var(--esp-3);
+}
+
+.featCard {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  padding: var(--esp-3) var(--esp-3) var(--esp-4);
+  border-radius: var(--ds-r-lg);
+  border: 1px solid var(--ds-borda-padrao);
+  background: var(--ds-fundo-cartao);
+  box-shadow: var(--sombra-cartao);
+  text-align: left;
+}
+
+.featTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  height: 24px;
+}
+
+.bookmarkSaved {
+  color: var(--interativo-primario);
+}
+
+.bookmarkMuted {
+  color: var(--ds-texto-terciario);
+}
+
+.tagAbbr {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--ds-r-sm);
+  background: var(--rose-tint);
+  color: var(--rose);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.featName {
+  color: var(--ds-texto-secundario);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.statusTag {
+  align-self: flex-start;
+  padding: 4px 8px;
+  border-radius: var(--ds-r-xs);
+  background: var(--ds-retorno-sucesso-fundo);
+  color: var(--ds-retorno-sucesso);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- ÚLTIMAS UTILIZADAS ---------- */
+.recentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionLabel {
+  color: var(--ds-texto-terciario);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.infoButton {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-padrao);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.recentList {
+  display: flex;
+  flex-direction: column;
+}
+
+.recentItem {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  padding: var(--esp-3) 0;
+  color: var(--ds-texto-padrao);
+}
+
+.recentItem + .recentItem {
+  border-top: 1px solid var(--ds-borda-sutil);
+}
+
+.recentIcon {
+  color: var(--ds-texto-padrao);
+  flex-shrink: 0;
+}
+
+.recentTitle {
+  flex: 1;
+  font-size: 14px;
+}
+
+.recentTime {
+  color: var(--ds-texto-secundario);
+  font-size: 14px;
+}
+
+/* ---------- CATEGORY CARDS ---------- */
+.categoryCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+  padding: var(--esp-4);
+  border-radius: var(--ds-r-lg);
+  border: 1px solid var(--ds-borda-padrao);
+  background: var(--ds-fundo-cartao);
+  box-shadow: var(--sombra-cartao);
+}
+
+.categoryHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+}
+
+.categoryIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.categoryName {
+  flex: 1;
+  color: var(--ds-texto-padrao);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.countBadge {
+  padding: 4px 8px;
+  border-radius: var(--radius-card);
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-secundario);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.categoryChevron {
+  color: var(--ds-texto-padrao);
+  flex-shrink: 0;
+}
+
+.categoryHeaderButton {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  width: 100%;
+  cursor: default;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.gridRow {
+  display: flex;
+  gap: var(--esp-3);
+}
+
+.gridSpacer {
+  flex: 1;
+}
+
+.verMaisButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  height: 44px;
+  border: 0;
+  border-radius: var(--radius-button);
+  background: transparent;
+  color: var(--ds-texto-link);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ---------- BOTTOM NAV ---------- */
+.tabBar {
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--esp-2) var(--esp-6);
+  background: var(--ds-fundo-cartao);
+  border-top: 1px solid var(--ds-borda-sutil);
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--ds-texto-terciario);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tabActive {
+  color: var(--interativo-primario);
+}

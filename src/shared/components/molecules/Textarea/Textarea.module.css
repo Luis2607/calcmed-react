@@ -1,0 +1,76 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.label {
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+  color: var(--ds-input-rotulo);
+}
+
+/* box: Figma 96h · r12 · 1px #E2E8F0 · pad 12/16 */
+.wrap {
+  background: var(--ds-input-fundo);
+  border: 1px solid var(--ds-input-borda);
+  border-radius: var(--radius-input);
+  padding: var(--esp-3) var(--esp-4);
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.wrap:focus-within {
+  border: 2px solid var(--ds-input-borda-foco);
+  padding: calc(var(--esp-3) - 1px) calc(var(--esp-4) - 1px);
+}
+
+.textarea {
+  width: 100%;
+  min-height: 72px;
+  resize: vertical;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-input);
+  line-height: 22px;
+  font-weight: 400;
+  color: var(--ds-input-texto);
+  display: block;
+}
+
+.textarea::placeholder { color: var(--ds-input-placeholder); }
+.textarea:focus,
+.textarea:focus-visible { outline: none; box-shadow: none; }
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--esp-3);
+}
+
+.helper {
+  font-size: var(--fonte-tamanho-auxiliar);
+  line-height: 16px;
+  letter-spacing: 0.24px;
+  color: var(--ds-texto-terciario);
+}
+
+.count {
+  margin-left: auto;
+  font-size: var(--fonte-tamanho-auxiliar);
+  color: var(--ds-texto-terciario);
+}
+
+.disabled { background: var(--ds-fundo-elevado); cursor: not-allowed; }
+.disabled .textarea { cursor: not-allowed; }
+
+.state-error { border-color: var(--ds-input-borda-erro); }
+.state-error.wrap:focus-within { border-color: var(--ds-input-borda-erro); }
+.state-sucesso { border-color: var(--ds-retorno-sucesso); }

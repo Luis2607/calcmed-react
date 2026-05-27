@@ -1,0 +1,1 @@
+export { ScoreCriterion } from './ScoreCriterion';

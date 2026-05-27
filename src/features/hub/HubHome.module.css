@@ -1,0 +1,237 @@
+.container {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.header {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--ds-borda-sutil);
+  background: var(--ds-fundo-superficie);
+  padding: var(--esp-6) var(--esp-5) var(--esp-4);
+}
+
+.headerRow,
+.modeRow,
+.card,
+.activeCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  color: var(--ds-texto-padrao);
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 28px;
+}
+
+.subtitle {
+  color: var(--ds-texto-terciario);
+  font-size: 12px;
+  line-height: 18px;
+  margin-top: 2px;
+}
+
+.online {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ds-retorno-sucesso);
+  font-size: 11px;
+  font-weight: 700;
+  gap: var(--esp-2);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.onlineDot {
+  background: var(--ds-retorno-sucesso);
+  border-radius: 999px;
+  height: 8px;
+  width: 8px;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--esp-6);
+  padding: var(--esp-6) var(--esp-5);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.activeCard {
+  border: 1.5px solid var(--ds-retorno-atencao-borda);
+  border-radius: var(--radius-card);
+  background: var(--ds-retorno-atencao-fundo);
+  box-shadow: 0 4px 14px rgba(146, 64, 14, 0.08);
+  cursor: pointer;
+  padding: var(--esp-4);
+  text-align: left;
+}
+
+.activeTitle {
+  color: var(--ds-retorno-atencao);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.activeMeta {
+  color: var(--ds-texto-secundario);
+  font-size: 12px;
+  line-height: 18px;
+  margin-top: var(--esp-1);
+}
+
+.modeRow {
+  border: 1.5px solid var(--ds-borda-sutil);
+  border-radius: var(--radius-card);
+  background: var(--ds-fundo-cartao);
+  box-shadow: var(--sombra-cartao);
+  padding: var(--esp-4);
+}
+
+.modeTitle {
+  color: var(--ds-texto-padrao);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.modeHelper {
+  color: var(--ds-texto-terciario);
+  font-size: 11px;
+  line-height: 16px;
+  margin-top: 2px;
+}
+
+.switch {
+  cursor: pointer;
+  display: inline-block;
+  height: 24px;
+  position: relative;
+  width: 48px;
+}
+
+.switchInput {
+  height: 0;
+  opacity: 0;
+  width: 0;
+}
+
+.switchTrack {
+  background: var(--ds-borda-padrao);
+  border-radius: 24px;
+  inset: 0;
+  position: absolute;
+  transition: background 0.2s;
+}
+
+.switchTrackOn {
+  background: var(--ds-dominio-pediatria);
+}
+
+.switchThumb {
+  background: #fff;
+  border-radius: 50%;
+  bottom: 3px;
+  height: 18px;
+  left: 3px;
+  position: absolute;
+  transition: transform 0.2s;
+  width: 18px;
+}
+
+.switchThumbOn {
+  transform: translateX(23px);
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.card {
+  border: 1px solid var(--ds-borda-padrao);
+  border-left-width: 4px;
+  border-radius: var(--radius-card);
+  background: var(--ds-fundo-cartao);
+  box-shadow: var(--sombra-cartao);
+  cursor: pointer;
+  gap: var(--esp-3);
+  padding: var(--esp-4);
+  text-align: left;
+}
+
+.cardTitle {
+  color: var(--ds-texto-padrao);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 20px;
+}
+
+.cardSubtitle {
+  color: var(--ds-texto-secundario);
+  font-size: 12px;
+  line-height: 18px;
+  margin-top: var(--esp-1);
+}
+
+.cardMeta {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: var(--esp-2);
+}
+
+.phase {
+  border-radius: 4px;
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-secundario);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 4px 6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.arrow {
+  color: var(--ds-texto-terciario);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.domainProtocolos {
+  border-left-color: var(--ds-dominio-protocolos);
+}
+
+.domainEscores {
+  border-left-color: var(--ds-dominio-escores);
+}
+
+.domainUrgencias {
+  border-color: var(--ds-retorno-critico-borda);
+  border-left-color: var(--ds-dominio-urgencias);
+  background: var(--ds-dominio-urgencias-fundo);
+}
+
+.domainNeurologia {
+  border-left-color: var(--interativo-primario);
+}
+
+.domainCardio {
+  border-left-color: var(--retorno-critico);
+}
+
+.historyWrap {
+  margin-top: var(--esp-3);
+}

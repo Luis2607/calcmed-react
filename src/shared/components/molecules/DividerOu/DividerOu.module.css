@@ -1,0 +1,20 @@
+/* DividerOu — Figma diluicao/divider-ou 331:1558. Linha + label central, gap 12. */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3); /* 12px */
+  width: 100%;
+}
+.line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--ds-borda-padrao);
+}
+.label {
+  font-family: var(--fonte-base);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--ds-texto-terciario);
+  white-space: nowrap;
+}

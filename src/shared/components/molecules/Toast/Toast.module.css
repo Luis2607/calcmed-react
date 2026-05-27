@@ -1,0 +1,74 @@
+/* Toast / Snackbar — Figma Alert Compact 131:4093.
+   card branco · borda 1px (cor por tipo) · r12 · pad 12/16 · gap 8 · sombra-toast.
+   Dark cascateia via .modo-escuro (--ds-fundo-cartao / textos). */
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2); /* 8px */
+  padding: var(--esp-3) var(--esp-4); /* 12 x 16 */
+  border-radius: var(--ds-r-md); /* 12px */
+  border: 1px solid transparent;
+  background-color: var(--ds-fundo-cartao);
+  box-shadow: var(--sombra-toast);
+  font-family: var(--fonte-base);
+  width: 100%;
+  max-width: 480px;
+  box-sizing: border-box;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.icon svg { width: 20px; height: 20px; }
+
+.message {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 500; /* Figma Message = Medium */
+  line-height: 20px;
+  color: var(--ds-texto-padrao);
+}
+
+/* Ação Desfazer (extensão de código) */
+.undo {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ds-interativo-primario);
+  padding: var(--esp-1) var(--esp-2);
+  border-radius: var(--ds-r-xs);
+}
+.undo:hover { background-color: var(--interativo-primario-tint-08); }
+
+/* Dismiss (Figma "Show dismiss") */
+.dismiss {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--ds-texto-secundario);
+}
+.dismiss svg { width: 18px; height: 18px; }
+
+/* Tipos — borda + ícone (Figma: Success=sucesso, Error=atencao/triângulo) */
+.success { border-color: var(--retorno-sucesso-borda); } /* #A7F3D0 */
+.success .icon { color: var(--retorno-sucesso); }        /* #047857 */
+
+.error { border-color: var(--retorno-critico-borda); }   /* #FECACA */
+.error .icon { color: var(--retorno-critico); }          /* #991B1B */

@@ -1,0 +1,103 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-weight: 600;
+  border-radius: var(--radius-button); /* dynamically maps to 12px or 24px in pediatric */
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.08s, opacity 0.15s;
+  border: 1px solid transparent;
+  user-select: none;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* VARIANTS */
+.variant-primary {
+  background-color: var(--ds-botao-primario-fundo);
+  color: var(--ds-botao-primario-texto);
+}
+
+.variant-primary:hover:not(:disabled) {
+  background-color: var(--ds-botao-primario-hover);
+}
+
+.variant-secondary {
+  background-color: var(--ds-botao-secundario-fundo);
+  border-color: var(--ds-botao-secundario-borda);
+  color: var(--ds-botao-secundario-texto);
+}
+
+.variant-secondary:hover:not(:disabled) {
+  background-color: var(--fundo-elevado);
+}
+
+.variant-danger {
+  background-color: var(--ds-botao-perigo-fundo);
+  color: var(--ds-botao-perigo-texto);
+}
+
+.variant-danger:hover:not(:disabled) {
+  background-color: #7f1d1d; /* darker crimson */
+}
+
+.variant-ghost {
+  background-color: transparent;
+  border-color: var(--ds-botao-ghost-borda);
+  color: var(--ds-botao-ghost-texto);
+}
+
+.variant-ghost:hover:not(:disabled) {
+  background-color: var(--interativo-primario-tint-06);
+}
+
+.variant-text-link {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--ds-botao-texto-link);
+  padding: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  border-radius: 0;
+  display: inline;
+}
+
+.variant-text-link:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+/* SIZES */
+.size-sm {
+  height: 32px;
+  padding: 0 var(--esp-3);
+  font-size: 12px;
+  line-height: 16px;
+  gap: var(--esp-2); /* 8px item spacing */
+}
+
+.size-md {
+  height: 44px;
+  padding: 0 var(--esp-6); /* 24px horizontal padding */
+  font-size: 14px;
+  line-height: 20px;
+  gap: var(--esp-3); /* 12px item spacing */
+}
+
+.size-lg {
+  height: 56px;
+  padding: 0 var(--esp-6); /* 24px horizontal padding */
+  font-size: 16px;
+  line-height: 24px;
+  gap: var(--esp-3); /* 12px item spacing */
+}
+

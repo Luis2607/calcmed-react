@@ -1,0 +1,240 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-8);
+  padding: var(--esp-5);
+  color: var(--ds-texto-padrao);
+}
+
+.hero,
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+}
+
+.hero {
+  padding-bottom: var(--esp-5);
+  border-bottom: 1px solid var(--ds-borda-sutil);
+}
+
+.hero h1,
+.sectionHeader h2 {
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.hero p,
+.sourceMeta,
+.sectionHeader p,
+.primitiveGroup p {
+  font-size: var(--fonte-tamanho-corpo);
+  line-height: var(--fonte-linha-corpo-sheet);
+  color: var(--ds-texto-secundario);
+}
+
+.sourceMeta {
+  color: var(--ds-texto-terciario);
+  font-family: var(--fonte-mono);
+  font-size: var(--fonte-tamanho-micro);
+}
+
+.eyebrow {
+  color: var(--ds-texto-terciario);
+  font-size: var(--fonte-tamanho-rotulo);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.coverageGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--esp-2);
+}
+
+.coverageCard {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--esp-3);
+  border: 1px solid var(--ds-borda-padrao);
+  border-radius: var(--radius-card);
+  background: var(--ds-fundo-cartao);
+}
+
+.coverageCard strong {
+  font-size: 22px;
+  line-height: 28px;
+  color: var(--ds-texto-padrao);
+}
+
+.coverageCard span {
+  color: var(--ds-texto-secundario);
+  font-size: var(--fonte-tamanho-auxiliar);
+  line-height: var(--fonte-linha-auxiliar-sheet);
+}
+
+.coverageTitle {
+  font-weight: 800;
+  color: var(--ds-texto-padrao) !important;
+}
+
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+.primitiveStack,
+.tokenGroups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-6);
+}
+
+.primitiveGroup,
+.tokenGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.primitiveGroup h3,
+.tokenGroup h3 {
+  font-size: var(--fonte-tamanho-corpo);
+  line-height: var(--fonte-linha-corpo-sheet);
+  font-weight: 800;
+}
+
+.primitiveGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--esp-2);
+}
+
+.primitiveSwatch {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.swatch {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: var(--radius-m);
+}
+
+.swatchName {
+  color: var(--ds-texto-padrao);
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 800;
+  line-height: 13px;
+  word-break: break-word;
+}
+
+.swatchValue,
+.modeSwatch code,
+.codeRow code {
+  color: var(--ds-texto-terciario);
+  font-family: var(--fonte-mono);
+  font-size: var(--fonte-tamanho-micro);
+  line-height: 13px;
+}
+
+.tokenGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-2);
+}
+
+.tokenCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+  padding: var(--esp-3);
+  border: 1px solid var(--ds-borda-padrao);
+  border-left-width: 4px;
+  border-radius: var(--radius-card);
+  background: var(--ds-fundo-cartao);
+}
+
+.tokenCard[data-status='ok'] {
+  border-left-color: var(--ds-retorno-sucesso);
+}
+
+.tokenCard[data-status='drift'] {
+  border-left-color: var(--ds-retorno-atencao);
+}
+
+.tokenCard[data-status='missing'] {
+  border-left-color: var(--ds-retorno-critico);
+}
+
+.tokenHeader,
+.codeRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--esp-2);
+}
+
+.tokenName {
+  color: var(--ds-texto-padrao);
+  font-size: var(--fonte-tamanho-auxiliar);
+  font-weight: 800;
+  line-height: var(--fonte-linha-auxiliar-sheet);
+  word-break: break-word;
+}
+
+.status {
+  flex-shrink: 0;
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-secundario);
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 800;
+  line-height: 14px;
+}
+
+.modeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--esp-2);
+}
+
+.modeSwatch {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.modeSwatch span {
+  color: var(--ds-texto-secundario);
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 800;
+  line-height: 13px;
+}
+
+.codeRow {
+  padding-top: var(--esp-2);
+  border-top: 1px solid var(--ds-borda-sutil);
+}
+
+.codeRow code {
+  min-width: 0;
+  word-break: break-word;
+}
+
+@media (min-width: 431px) {
+  .primitiveGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

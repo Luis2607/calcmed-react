@@ -1,0 +1,130 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2); /* 8px gap between label and input */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+  color: var(--ds-input-rotulo);
+}
+
+.tag {
+  display: inline-block;
+  padding: 2px var(--esp-2);
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-secundario);
+  border-radius: var(--ds-r-xs);
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.inputWrap {
+  display: flex;
+  align-items: center;
+  height: var(--input-altura);
+  padding: 0 var(--esp-4);
+  gap: var(--esp-3);
+  background: var(--ds-input-fundo);
+  border: 1px solid var(--ds-input-borda);
+  border-radius: var(--radius-input);
+  transition: border-color 0.15s, border-width 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+
+.inputWrap:focus-within {
+  border: 2px solid var(--ds-input-borda-foco);
+  padding: 0 calc(var(--esp-4) - 1px);
+}
+
+.input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: var(--fonte-tamanho-input);
+  line-height: 24px;
+  font-weight: 400;
+  font-family: var(--fonte-base);
+  color: var(--ds-input-texto);
+  outline: none;
+  width: 100%;
+  min-width: 0;
+}
+
+/* O wrapper (.inputWrap) é quem mostra o foco — o input interno nunca desenha borda/outline propria */
+.input:focus,
+.input:focus-visible { outline: none; box-shadow: none; }
+
+/* Sem setinhas de number (clínico digita o valor) */
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.input[type='number'] { -moz-appearance: textfield; appearance: textfield; }
+
+.input::placeholder {
+  color: var(--ds-input-placeholder);
+  font-weight: 400;
+}
+
+.unit {
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo);
+  line-height: 20px;
+  letter-spacing: 0.14px;
+  color: var(--ds-texto-terciario);
+  font-weight: 400;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  color: var(--ds-texto-terciario);
+  flex-shrink: 0;
+}
+
+.helper {
+  font-size: var(--fonte-tamanho-auxiliar);
+  line-height: 16px;
+  letter-spacing: 0.24px;
+  font-weight: 400;
+  color: var(--texto-terciario);
+}
+
+.disabled {
+  background: var(--ds-fundo-elevado);
+  cursor: not-allowed;
+}
+
+.disabled input {
+  cursor: not-allowed;
+}
+
+/* STATE STYLES */
+.state-filled {
+  border-color: var(--ds-borda-padrao);
+}
+
+.state-error {
+  border: 2px solid var(--ds-input-borda-erro);
+  padding: 0 calc(var(--esp-4) - 1px);
+}
+
+.state-sucesso {
+  border: 2px solid var(--ds-retorno-sucesso);
+  padding: 0 calc(var(--esp-4) - 1px);
+}

@@ -1,0 +1,22 @@
+/* InfoButton — "?" circular. Borda neutra → teal no hover. */
+.info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1px solid var(--ds-borda-padrao);
+  background: transparent;
+  color: var(--ds-texto-secundario);
+  font-family: var(--fonte-base);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s, color 0.15s;
+}
+.info:hover {
+  border-color: var(--ds-interativo-primario);
+  color: var(--ds-interativo-primario);
+}

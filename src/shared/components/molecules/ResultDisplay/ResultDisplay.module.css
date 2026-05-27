@@ -1,0 +1,91 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--esp-5) var(--esp-4); /* 20px vertical, 16px horizontal */
+  border-radius: var(--radius-card);
+  text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+  border: 1.5px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.label {
+  font-family: var(--fonte-base);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-secundario);
+  margin-bottom: var(--esp-2);
+}
+
+.valueRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--esp-1); /* 4px gap between number and unit */
+}
+
+.value {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: -0.02em;
+  font-feature-settings: 'tnum';
+}
+
+.unit {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--texto-secundario);
+}
+
+/* LEVELS */
+.level-success {
+  background-color: var(--ds-retorno-sucesso-fundo);
+  border-color: var(--ds-retorno-sucesso-borda);
+  color: var(--ds-retorno-sucesso);
+}
+
+.level-success .unit {
+  color: var(--retorno-sucesso-forte);
+}
+
+.level-warning {
+  background-color: var(--ds-retorno-atencao-fundo);
+  border-color: var(--ds-retorno-atencao-borda);
+  color: var(--ds-retorno-atencao);
+}
+
+.level-warning .unit {
+  color: var(--retorno-atencao);
+}
+
+.level-critical {
+  background-color: var(--ds-retorno-critico-fundo);
+  border-color: var(--ds-retorno-critico-borda);
+  color: var(--ds-retorno-critico);
+}
+
+.level-critical .unit {
+  color: var(--ds-retorno-critico);
+}
+
+/* DARK MODE */
+.dark.level-success {
+  background-color: rgba(4, 120, 87, 0.2);
+  border-color: rgba(4, 120, 87, 0.4);
+}
+.dark.level-warning {
+  background-color: rgba(146, 64, 14, 0.2);
+  border-color: rgba(146, 64, 14, 0.4);
+}
+.dark.level-critical {
+  background-color: rgba(153, 27, 27, 0.2);
+  border-color: rgba(153, 27, 27, 0.4);
+}

@@ -1,0 +1,65 @@
+/* Chip — Figma "Tags e Chips" 128:3792 / 128:3801.
+   Pill 36h · pad 8/16 · 14 Medium · borda 1px. Dark cascateia via .modo-escuro. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2); /* 8px */
+  min-height: 36px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  font-family: var(--fonte-base);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.label { display: inline-flex; }
+
+/* States (Figma Chip 128:3792) */
+.default  { border-color: var(--ds-borda-padrao); color: var(--ds-texto-padrao); }
+.active   { background-color: var(--ds-interativo-primario); color: var(--ds-texto-sobre-destaque); border-color: transparent; }
+.inactive { border-color: var(--ds-borda-padrao); color: var(--ds-texto-terciario); }
+
+/* Dismissible (Figma 128:3801) — pad direita menor p/ o X */
+.dismissible { padding-right: 8px; }
+.x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.x svg { width: 16px; height: 16px; }
+.x:hover { opacity: 1; }
+
+/* Tons de domínio p/ chip removível (Figma Chip Dismissible usa urgências) */
+.tone-urgencias    { background-color: var(--ds-tag-urgencias-fundo); color: var(--ds-tag-urgencias-texto); border-color: transparent; }
+.tone-diluicoes    { background-color: var(--ds-tag-diluicoes-fundo); color: var(--ds-tag-diluicoes-texto); border-color: transparent; }
+.tone-calculadoras { background-color: var(--ds-tag-calculadoras-fundo); color: var(--ds-tag-calculadoras-texto); border-color: transparent; }
+.tone-protocolos   { background-color: var(--ds-tag-protocolos-fundo); color: var(--ds-tag-protocolos-texto); border-color: transparent; }
+.tone-escores      { background-color: var(--ds-tag-escores-fundo); color: var(--ds-tag-escores-texto); border-color: transparent; }
+.tone-conversores  { background-color: var(--ds-tag-conversores-fundo); color: var(--ds-tag-conversores-texto); border-color: transparent; }
+
+/* UnitChip — Figma calc/concentration-chip 173:10855 (24h pill, chip/fundo, chip/texto=secundário) */
+.unitChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background-color: var(--ds-chip-fundo);
+  color: var(--ds-texto-secundario);
+  font-family: var(--fonte-base);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-sizing: border-box;
+}

@@ -1,0 +1,82 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-3); /* 12px gap between checkbox and text */
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--fonte-base);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ds-texto-padrao);
+  box-sizing: border-box;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.checkboxWrapper {
+  position: relative;
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.box {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--ds-r-xs); /* 4px · Figma checkbox 128:3664 */
+  border: 2px solid var(--ds-borda-padrao);
+  background-color: var(--ds-fundo-superficie);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s, transform 0.08s;
+  box-sizing: border-box;
+}
+
+/* Pediatric Mode - rounder checkboxes */
+:global(.modo-pediatrico) .box {
+  border-radius: 12px;
+}
+
+.container:hover:not(.disabled) .box {
+  border-color: var(--ds-interativo-primario);
+  background-color: var(--interativo-primario-tint-04);
+}
+
+.input:focus-visible + .box {
+  border-color: var(--ds-borda-foco);
+  box-shadow: 0 0 0 3px var(--interativo-primario-tint-08);
+}
+
+.checked {
+  background-color: var(--ds-interativo-primario);
+  border-color: var(--ds-interativo-primario);
+  color: var(--ds-texto-sobre-destaque);
+}
+
+.checkmark {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+/* Strikethrough on check (Figma boolean) — risca o label quando marcado */
+.struck {
+  text-decoration: line-through;
+  color: var(--ds-texto-terciario);
+}

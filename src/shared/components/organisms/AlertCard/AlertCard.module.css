@@ -1,0 +1,139 @@
+.card {
+  display: flex;
+  align-items: flex-start;
+  /* Figma 130:4043 · padding 16/16/16/20 (left=20) */
+  padding: var(--esp-4) var(--esp-4) var(--esp-4) var(--esp-5);
+  gap: var(--esp-3); /* 12px gap between icon and content */
+  border-radius: var(--radius-alert);
+  border: 2px solid transparent; /* Figma strokeWeight 2px */
+  box-sizing: border-box;
+  width: 100%;
+  font-family: var(--fonte-base);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px; /* aligns icon visual center with first text line */
+}
+
+.iconSvg {
+  width: 20px;
+  height: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1); /* 4px gap between title and body */
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  /* alerta-titulo: Inter Bold 14/20/0.14 */
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+}
+
+.body {
+  /* Figma alerta-corpo: Inter Regular 14/20 · texto/secundario (todos os levels) */
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--ds-texto-secundario);
+}
+
+/* Show Value (Figma) — Dose 32 Bold + Unit 20 Medium · cor herdada do level */
+.value { display: flex; align-items: baseline; gap: var(--esp-1); }
+.dose { font-size: 32px; font-weight: 700; line-height: 40px; letter-spacing: -0.02em; font-feature-settings: 'tnum'; }
+.unit { font-size: 20px; font-weight: 500; line-height: 28px; }
+
+/* LEVELS — Adulto alinhado ao Figma 130:4043:
+   fill = card branco · borda = cor forte do level · título escuro · corpo secundário.
+   Pediatria (fill tintado + título colorido) é tratado em .modo-pediatrico (MT-G).
+   Dark cascateia via .modo-escuro (tokens --ds-*). */
+.level-info {
+  background-color: var(--ds-fundo-cartao);
+  border-color: var(--ds-borda-padrao); /* Figma info border = #E2E8F0 neutro */
+  color: var(--ds-interativo-primario);
+}
+
+.level-info .title,
+.level-warning .title,
+.level-critical .title,
+.level-result .title,
+.level-footnote .title {
+  color: var(--ds-texto-padrao); /* Figma Adulto: título escuro #0F172A */
+}
+
+.level-info .body,
+.level-warning .body,
+.level-critical .body,
+.level-result .body {
+  color: var(--ds-texto-secundario);
+}
+
+.level-warning {
+  background-color: var(--ds-fundo-cartao);
+  border-color: var(--retorno-atencao); /* #92400E */
+  color: var(--retorno-atencao);
+}
+
+.level-critical {
+  background-color: var(--ds-fundo-cartao);
+  border-color: var(--retorno-critico); /* #991B1B */
+  color: var(--retorno-critico);
+}
+
+.level-result {
+  background-color: var(--ds-fundo-cartao);
+  border-color: var(--retorno-sucesso); /* #047857 */
+  color: var(--retorno-sucesso);
+}
+
+.level-footnote {
+  background-color: var(--ds-fundo-cartao); /* Figma footnote fill = fundo/cartao branco */
+  border-color: var(--ds-fundo-elevado);    /* Figma footnote border = #F1F5F9 */
+  color: var(--ds-texto-secundario);
+}
+
+.level-footnote .body {
+  color: var(--ds-texto-terciario); /* Figma footnote body 12 · texto/terciario */
+  font-size: 12px;
+}
+
+/* MODO PEDIATRIA (Figma Modo=Pediatria) — fill tintado + título colorido por level.
+   Radius 24 já cascateia via --radius-alert em .modo-pediatrico.
+   Pediatria+Dark (combo raro) usa o tint light; gap residual logado. */
+:global(.modo-pediatrico) .level-info {
+  background-color: var(--ds-fundo-elevado); /* #F1F5F9 */
+}
+:global(.modo-pediatrico) .level-info .title {
+  color: var(--ds-texto-secundario); /* Pediatria info titulo = secundário */
+}
+:global(.modo-pediatrico) .level-result {
+  background-color: var(--retorno-sucesso-fundo); /* #ECFDF5 */
+}
+:global(.modo-pediatrico) .level-result .title {
+  color: var(--retorno-sucesso);
+}
+:global(.modo-pediatrico) .level-critical {
+  background-color: var(--retorno-critico-fundo); /* #FEF2F2 */
+}
+:global(.modo-pediatrico) .level-critical .title {
+  color: var(--retorno-critico);
+}
+:global(.modo-pediatrico) .level-warning {
+  background-color: var(--retorno-atencao-fundo); /* #FFFBEB */
+}
+:global(.modo-pediatrico) .level-warning .title {
+  color: var(--retorno-atencao);
+}

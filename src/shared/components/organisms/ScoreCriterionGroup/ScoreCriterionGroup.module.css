@@ -1,0 +1,135 @@
+/* ScoreCriterionGroup — Figma calc/score-criterion-group 2227:59924.
+   Card r12 · borda cartao/borda (collapsed) → cartao/borda-selecionado teal (expanded).
+   Header pad 16 gap 8 · left-col gap 4 · right-col gap 8. Lista de opções radio. */
+.card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--ds-fundo-cartao);
+  border: 1px solid var(--ds-cartao-borda);
+  border-radius: var(--ds-r-md);
+  font-family: var(--fonte-base);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.expanded {
+  border-color: var(--ds-cartao-borda-selecionado); /* teal · Figma cartao/borda-selecionado */
+}
+
+/* header-row: HORIZONTAL pad 16 gap 8 align center */
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--esp-2); /* 8 */
+  width: 100%;
+  padding: var(--esp-4); /* 16 */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.leftCol {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1); /* 4 */
+}
+.titleRow {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--esp-2); /* 8 */
+}
+.systemName {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--ds-texto-padrao);
+}
+.parameter {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--ds-texto-secundario);
+}
+.criterionValue {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--ds-texto-secundario);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.criterionFilled { color: var(--ds-texto-padrao); }
+
+.rightCol {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--esp-2); /* 8 */
+  flex-shrink: 0;
+}
+
+/* pts-badge: r12 · pad 4/8 · fill dominio/escores-fundo · texto 11 SemiBold dominio/escores-texto.
+   Os tokens --ds-tag-escores-* espelham exatamente os valores Figma dominio/escores-*. */
+.ptsBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--esp-1) var(--esp-2); /* 4 / 8 */
+  border-radius: var(--ds-r-md);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  background: var(--ds-tag-escores-fundo);
+  color: var(--ds-tag-escores-texto);
+}
+.chevron {
+  color: var(--ds-texto-secundario);
+  flex-shrink: 0;
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background: var(--ds-borda-sutil);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* opt row: pad 12/16 · gap 12 · 48h. */
+.option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--esp-3); /* 12 */
+  padding: var(--esp-3) var(--esp-4); /* 12 / 16 */
+  cursor: pointer;
+  min-height: 48px;
+  box-sizing: border-box;
+}
+.optionSelected {
+  background: var(--ds-fundo-hover);
+}
+.optionLabel {
+  flex: 1;
+  min-width: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  color: var(--ds-texto-padrao);
+}
+.optionPts {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  color: var(--ds-texto-terciario);
+  flex-shrink: 0;
+}

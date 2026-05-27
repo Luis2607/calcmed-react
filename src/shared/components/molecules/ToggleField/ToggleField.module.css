@@ -1,0 +1,16 @@
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-4);
+  width: 100%;
+}
+
+.label {
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-input);
+  line-height: 22px;
+  color: var(--ds-texto-padrao);
+}
+
+.disabled .label { opacity: 0.5; }

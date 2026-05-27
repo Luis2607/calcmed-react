@@ -1,0 +1,28 @@
+.tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-1);
+  min-height: 44px;
+  padding: 0 var(--esp-3);
+  border: none;
+  background: transparent;
+  border-radius: var(--ds-r-sm);
+  color: var(--ds-texto-secundario);
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+/* Active: Figma fill #F8FAFC (= --ds-fundo-padrao) + texto teal */
+.active {
+  background: var(--ds-fundo-padrao);
+  color: var(--ds-interativo-primario);
+}
+
+.points {
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 700;
+}

@@ -1,0 +1,54 @@
+/* Tag / Badge — Figma page "Tags e Chips".
+   Status 128:3769 (r4, pad 4/8) · Domain 128:3744 (r4, pad 4/12) · Count 128:3779 (pill, pad 2/8).
+   Texto 11 Semi Bold. Dark cascateia via .modo-escuro. */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fonte-base);
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.status { border-radius: var(--ds-r-xs); padding: 4px 8px; }   /* r4 */
+.domain { border-radius: var(--ds-r-xs); padding: 4px 12px; }  /* r4 */
+.abbr   { border-radius: var(--ds-r-sm); padding: 4px 12px; font-size: 18px; } /* r8 · 18 Semi Bold */
+.count {
+  border-radius: 999px;
+  padding: 2px 8px;
+  background-color: var(--ds-fundo-elevado);
+  color: var(--ds-texto-padrao);
+}
+
+/* Status tones (Figma 128:3769) */
+.tone-premium,
+.tone-atualizado,
+.tone-recomendado { background-color: var(--ds-interativo-primario); color: var(--ds-texto-sobre-destaque); }
+.tone-novo        { background-color: var(--retorno-sucesso); color: var(--ds-texto-sobre-destaque); }
+.tone-teste,
+.tone-bonus       { background-color: var(--retorno-sucesso-fundo); color: var(--retorno-sucesso); }
+.tone-gratuito    { background-color: var(--ds-fundo-elevado); color: var(--ds-texto-secundario); }
+.tone-expira,
+.tone-atencao     { background-color: var(--retorno-atencao); color: var(--ds-texto-sobre-destaque); }
+.tone-melhoria    { background-color: var(--interativo-destaque); color: var(--ds-texto-sobre-destaque); }
+.tone-critico     { background-color: var(--ds-tag-critico-fundo); color: var(--ds-texto-sobre-destaque); }
+.tone-alerta      { background-color: var(--ds-tag-alerta-fundo); color: var(--ds-texto-sobre-destaque); }
+
+/* Domain tones (Figma 128:3744) — tint-bg + texto colorido */
+.tone-urgencias    { background-color: var(--ds-tag-urgencias-fundo); color: var(--ds-tag-urgencias-texto); }
+.tone-diluicoes    { background-color: var(--ds-tag-diluicoes-fundo); color: var(--ds-tag-diluicoes-texto); }
+.tone-calculadoras { background-color: var(--ds-tag-calculadoras-fundo); color: var(--ds-tag-calculadoras-texto); }
+.tone-protocolos   { background-color: var(--ds-tag-protocolos-fundo); color: var(--ds-tag-protocolos-texto); }
+.tone-escores      { background-color: var(--ds-tag-escores-fundo); color: var(--ds-tag-escores-texto); }
+.tone-conversores  { background-color: var(--ds-tag-conversores-fundo); color: var(--ds-tag-conversores-texto); }
+
+/* Tag Abbr tones (Figma 145:33146) — cor 12% + texto sólido. Override do domain (especificidade 2 classes) */
+.abbr.tone-urgencias    { background-color: var(--ds-tag-abbr-urgencias-fundo); color: var(--ds-tag-abbr-urgencias-texto); }
+.abbr.tone-diluicoes    { background-color: var(--ds-tag-abbr-diluicoes-fundo); color: var(--ds-tag-abbr-diluicoes-texto); }
+.abbr.tone-calculadoras { background-color: var(--ds-tag-abbr-calculadoras-fundo); color: var(--ds-tag-abbr-calculadoras-texto); }
+.abbr.tone-protocolos   { background-color: var(--ds-tag-abbr-protocolos-fundo); color: var(--ds-tag-abbr-protocolos-texto); }
+.abbr.tone-escores      { background-color: var(--ds-tag-abbr-escores-fundo); color: var(--ds-tag-abbr-escores-texto); }
+.abbr.tone-conversores  { background-color: var(--ds-tag-abbr-conversores-fundo); color: var(--ds-tag-abbr-conversores-texto); }

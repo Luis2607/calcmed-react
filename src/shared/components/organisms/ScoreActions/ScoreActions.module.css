@@ -1,0 +1,13 @@
+/* ScoreActions — Figma calc/score-actions 2235:94802.
+   Row horizontal de botões Secondary, gap 12. No Figma os 2 botões têm largura fixa
+   igual (165) — aqui flex:1 pra dividir o espaço igualmente e ser responsivo. */
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--esp-3); /* 12px */
+  width: 100%;
+}
+
+.action {
+  flex: 1;
+}

@@ -1,0 +1,25 @@
+/* ScoreResult — Figma calc/score-result 283:145619.
+   Card tintado por risco · r12 · pad 16/20 · gap 12. Valor 32 Bold + "pontos" 14 + risco 16. */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3); /* 12px */
+  width: 100%;
+  padding: var(--esp-4) var(--esp-5); /* 16 / 20 */
+  border-radius: var(--ds-r-md);
+  border: 1px solid transparent;
+  font-family: var(--fonte-base);
+  box-sizing: border-box;
+}
+.valueRow { display: flex; align-items: baseline; gap: var(--esp-1); }
+.value { font-size: 32px; font-weight: 700; line-height: 40px; letter-spacing: -0.02em; font-feature-settings: 'tnum'; }
+.pts { font-size: 14px; font-weight: 500; line-height: 20px; color: var(--ds-texto-secundario); }
+.risk { font-size: 16px; font-weight: 400; line-height: 22px; }
+
+/* Faixas (Figma) — fill tint + borda + value/risk na cor do retorno */
+.risk-baixo    { background-color: var(--ds-retorno-sucesso-fundo); border-color: var(--ds-retorno-sucesso-borda); }
+.risk-baixo .value, .risk-baixo .risk    { color: var(--ds-retorno-sucesso); }
+.risk-moderado { background-color: var(--ds-retorno-atencao-fundo); border-color: var(--ds-retorno-atencao-borda); }
+.risk-moderado .value, .risk-moderado .risk { color: var(--ds-retorno-atencao); }
+.risk-alto     { background-color: var(--ds-retorno-critico-fundo); border-color: var(--ds-retorno-critico-borda); }
+.risk-alto .value, .risk-alto .risk { color: var(--ds-retorno-critico); }

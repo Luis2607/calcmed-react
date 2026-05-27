@@ -1,0 +1,36 @@
+/* DoseDisplay — Figma calc/dose-display 173:10850.
+   Valor 32 Bold + unidade 20 Medium (ambos interativo/primario) + via 14 Regular terciario.
+   gap 8 (valor-row ↔ via). Sem card. Dark cascateia via .modo-escuro. */
+.dose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2); /* 8px */
+}
+.valueRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--esp-1); /* 4px */
+}
+.value {
+  font-family: var(--fonte-base);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: -0.02em;
+  color: var(--ds-interativo-primario);
+  font-feature-settings: 'tnum';
+}
+.unit {
+  font-family: var(--fonte-base);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--ds-interativo-primario);
+}
+.via {
+  font-family: var(--fonte-base);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--ds-texto-terciario);
+}

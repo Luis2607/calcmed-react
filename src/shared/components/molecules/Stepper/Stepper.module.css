@@ -1,0 +1,77 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  font-family: var(--fonte-base);
+  box-sizing: border-box;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ds-input-rotulo);
+}
+
+.controlsRow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-4); /* 16px gap */
+  background-color: var(--ds-input-fundo);
+  border: 1px solid var(--ds-input-borda);
+  border-radius: var(--radius-input);
+  padding: 6px 12px;
+  height: 48px;
+  align-self: flex-start;
+  box-sizing: border-box;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ds-interativo-primario);
+  background-color: var(--ds-fundo-superficie);
+  color: var(--ds-interativo-primario);
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.15s, transform 0.08s;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.button:hover:not(:disabled) {
+  background-color: var(--interativo-primario-tint-04);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.button:disabled {
+  border-color: var(--ds-borda-padrao);
+  color: var(--texto-terciario);
+  cursor: not-allowed;
+}
+
+.btnSymbol {
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ds-texto-padrao);
+  min-width: 32px;
+  text-align: center;
+  font-feature-settings: 'tnum';
+}

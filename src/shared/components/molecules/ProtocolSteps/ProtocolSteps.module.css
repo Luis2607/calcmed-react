@@ -1,0 +1,41 @@
+.wrap {
+  background: var(--ds-fundo-superficie);
+  padding: var(--esp-3) var(--esp-5) var(--esp-4);
+  border-bottom: 1px solid var(--ds-borda-sutil);
+  flex-shrink: 0;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+/* O passo (step/circle/label) agora é o átomo StepItem. */
+
+/* Linha conectora entre os passos (alinha ao centro do círculo 24 → top 11px) */
+.connector {
+  flex: 1;
+  height: 2px;
+  margin-top: 13px;
+  border-radius: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ds-borda-padrao) 0,
+    var(--ds-borda-padrao) var(--esp-2),
+    transparent var(--esp-2),
+    transparent var(--esp-3)
+  );
+  min-width: var(--esp-2);
+}
+.connectorCapsule { margin-top: 19px; }
+.connectorDot {
+  flex: 0 0 4px;
+  width: 4px;
+  min-width: 4px;
+  height: 4px;
+  margin-inline: var(--esp-2);
+  margin-top: 18px;
+  border-radius: var(--radius-pill);
+  background: var(--ds-borda-padrao);
+}
+.connector[data-done="true"] { background: var(--ds-retorno-sucesso); }

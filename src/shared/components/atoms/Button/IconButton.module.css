@@ -1,0 +1,158 @@
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  border-radius: 100px; /* Always pill/circular */
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.08s, opacity 0.15s;
+  border: 1px solid transparent;
+  user-select: none;
+  box-sizing: border-box;
+  background-color: transparent;
+}
+
+.iconButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.iconButton:disabled {
+  opacity: 0.38; /* Matches Figma opacity for disabled state */
+  cursor: not-allowed;
+}
+
+/* SIZES */
+.size-sm {
+  width: 36px;
+  height: 36px;
+}
+
+.size-md {
+  width: 48px;
+  height: 48px;
+}
+
+/* COLOR VARIANTS (LIGHT MODE DEFAULT) */
+
+/* Primary */
+.variant-primary {
+  background-color: var(--ds-interativo-primario);
+  color: var(--ds-texto-sobre-destaque);
+}
+.variant-primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+.variant-primary:active:not(:disabled) {
+  opacity: 0.8;
+}
+
+/* Secondary */
+.variant-secondary {
+  background-color: var(--ds-fundo-elevado); /* #F1F5F9 */
+  border-color: var(--ds-borda-padrao); /* #E2E8F0 */
+  color: var(--ds-texto-padrao); /* #0F172A */
+}
+.variant-secondary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+.variant-secondary:active:not(:disabled) {
+  opacity: 0.8;
+}
+
+/* Danger */
+.variant-danger {
+  background-color: var(--ds-interativo-perigo); /* #991B1B */
+  color: var(--ds-texto-sobre-destaque);
+}
+.variant-danger:hover:not(:disabled) {
+  opacity: 0.9;
+}
+.variant-danger:active:not(:disabled) {
+  opacity: 0.8;
+}
+
+/* Ghost */
+.variant-ghost {
+  background-color: transparent;
+  border: 1.5px solid var(--ds-interativo-primario); /* 1.5px border per Figma specs */
+  color: var(--ds-interativo-primario);
+}
+.variant-ghost:hover:not(:disabled) {
+  background-color: var(--interativo-primario-tint-04);
+  opacity: 0.9;
+}
+.variant-ghost:active:not(:disabled) {
+  opacity: 0.8;
+}
+
+/* Text */
+.variant-text {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--ds-interativo-primario);
+}
+.variant-text:hover:not(:disabled) {
+  background-color: var(--interativo-primario-tint-04);
+  opacity: 0.9;
+}
+.variant-text:active:not(:disabled) {
+  opacity: 0.8;
+}
+
+/* Discrete */
+.variant-discrete {
+  background-color: var(--ds-fundo-elevado); /* #F1F5F9 */
+  color: var(--ds-texto-terciario); /* #94A3B8 */
+}
+.variant-discrete:hover:not(:disabled) {
+  opacity: 0.9;
+}
+.variant-discrete:active:not(:disabled) {
+  opacity: 0.8;
+}
+
+
+/* DARK MODE OVERRIDES */
+
+/* Primary Dark */
+.darkMode.variant-primary {
+  background-color: #0096B7; /* Figma Dark mode Primary background */
+  color: #FFFFFF;
+}
+
+/* Secondary Dark */
+.darkMode.variant-secondary {
+  background-color: #223249; /* Figma Dark mode Secondary background */
+  border-color: #2A3F5F; /* Figma Dark mode Secondary border */
+  color: #F1F5F9;
+}
+
+/* Danger Dark */
+.darkMode.variant-danger {
+  background-color: #EF4444; /* Figma Dark mode Danger background */
+  color: #FFFFFF;
+}
+
+/* Ghost Dark */
+.darkMode.variant-ghost {
+  border-color: #0096B7;
+  color: #00B4D8;
+}
+.darkMode.variant-ghost:hover:not(:disabled) {
+  background-color: rgba(0, 180, 216, 0.08);
+}
+
+/* Text Dark */
+.darkMode.variant-text {
+  color: #00B4D8;
+}
+.darkMode.variant-text:hover:not(:disabled) {
+  background-color: rgba(0, 180, 216, 0.08);
+}
+
+/* Discrete Dark */
+.darkMode.variant-discrete {
+  background-color: #223249;
+  color: #64748B;
+}
