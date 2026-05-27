@@ -1,0 +1,54 @@
+/* ActionTile — golden PCR `.btn-acao-grande` (ícone-quadrado + label + status).
+   Cor/spacing/radius só via token; tipografia literal como nos irmãos do DS. */
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--esp-1);
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--esp-3) var(--esp-4);
+  background: var(--ds-fundo-cartao);
+  border: 1.5px solid var(--ds-borda-padrao);
+  border-radius: var(--ds-r-md); /* 12px = golden --radius-card */
+  font-family: var(--fonte-base);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.tile:hover:not(:disabled) {
+  border-color: var(--ds-interativo-primario);
+}
+
+.tile:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ícone em quadrado (golden `.btn-acao-grande-icon`: 32px, fundo elevado, cor primária) */
+.icon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background: var(--ds-fundo-elevado);
+  border-radius: var(--ds-r-sm); /* 8px */
+  color: var(--ds-interativo-primario);
+}
+
+/* label = golden `.btn-acao-grande-texto` (14/600) */
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--ds-texto-padrao);
+}
+
+/* status/valor = golden `.btn-acao-grande-sub` (12 secundário) */
+.value {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ds-texto-secundario);
+}

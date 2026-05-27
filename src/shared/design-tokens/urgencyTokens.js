@@ -11,7 +11,7 @@ export const URGENCY_INVENTORY = [
   { comp: 'ProtocolSteps (recomposto)', kit: 'K2', code: 'molecules/ProtocolSteps → compõe StepItem', status: 'ok' },
   { comp: 'ProtocolHeader + steps + domain', kit: 'K1', code: 'organisms/ProtocolHeader (props steps/currentStep/domain/statusDot/timerIcon)', status: 'ok' },
   { comp: 'TimerCard (Porta-ECG/compressões/adrenalina)', kit: 'K3', code: 'organisms/TimerCard (usado no SCA; PCR pendente)', status: 'parcial' },
-  { comp: 'ActionTile (ritmo/desfibrilar)', kit: 'K4', code: 'pendente', status: 'pendente' },
+  { comp: 'ActionTile (ritmo/desfibrilar)', kit: 'K4', code: 'molecules/ActionTile (golden PCR .btn-acao-grande; compõe Icon) · raio/coração pendentes no Icon', status: 'ok' },
   { comp: 'ActionFooter (sticky + hint)', kit: 'K5', code: 'organisms/ActionFooter', status: 'ok' },
   { comp: 'TabBar (navbar inferior)', kit: 'K6', code: 'molecules/TabBar (prop sticky)', status: 'ok' },
   { comp: 'Timeline (linha do tempo)', kit: 'K7', code: 'organisms/Timeline', status: 'ok' },

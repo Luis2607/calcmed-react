@@ -12,6 +12,7 @@ import { StepHeader } from '../../shared/components/molecules/StepHeader/StepHea
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { StatGrid } from '../../shared/components/molecules/StatGrid/StatGrid';
 import { RangeChip } from '../../shared/components/molecules/Chip/Chip';
+import { ActionTile } from '../../shared/components/molecules/ActionTile/ActionTile';
 
 const STATUS_BADGE = { ok: 'OK', pendente: 'PENDENTE' };
 
@@ -280,6 +281,16 @@ export function UrgencyGallery() {
             <RangeChip selected={kRange === 'normal'} onClick={() => setKRange('normal')}>3,5 a 5</RangeChip>
             <RangeChip selected={kRange === 'alto'} onClick={() => setKRange('alto')}>5 a 6,5</RangeChip>
             <RangeChip selected={kRange === 'muito-alto'} onClick={() => setKRange('muito-alto')}>{'> 6,5'}</RangeChip>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}><h2>F0.1e · ActionTile (acao rica)</h2><p>Golden PCR .btn-acao-grande: icone-quadrado + label + status. Estados default/disabled.</p></div>
+        <div className={styles.tableContainer} style={{ padding: 24, maxWidth: 430 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <ActionTile icon="batimento" label="Selecionar ritmo" value="Nao avaliado" onClick={() => {}} />
+            <ActionTile icon="onda-ecg" label="Checar ritmo" value="Marco 2:00" disabled />
           </div>
         </div>
       </section>
