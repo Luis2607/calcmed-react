@@ -1,0 +1,26 @@
+/* DetailRow — linha rótulo/valor de tela. Espelha o `.detailRow` do Sheet (canônico,
+   DetailSheet do histórico = port do golden), porém standalone (não importa estilos de
+   sheet). Cor/spacing só via token. */
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--esp-4);
+  padding: var(--esp-2) 0;
+  border-bottom: 1px solid var(--ds-borda-sutil);
+}
+.row:last-child { border-bottom: none; }
+
+.label {
+  font-size: var(--fonte-tamanho-corpo); /* 14 */
+  color: var(--ds-texto-secundario);
+  flex-shrink: 0;
+}
+
+.value {
+  font-size: var(--fonte-tamanho-corpo-forte); /* 14 */
+  font-weight: 600;
+  color: var(--ds-texto-padrao);
+  text-align: right;
+}

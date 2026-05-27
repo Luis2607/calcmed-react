@@ -21,4 +21,5 @@ export const URGENCY_INVENTORY = [
   { comp: 'StatGrid (resumo em tiles)', kit: 'F0.1c', code: 'molecules/StatGrid (golden .valor-card; data-columns 1-4)', status: 'ok' },
   { comp: 'RangeChip (seletor de faixa)', kit: 'F0.1d', code: 'molecules/Chip → RangeChip (golden .faixa-chip; substitui FieldTrigger; tone critical)', status: 'ok' },
   { comp: 'ClinicalCard variante plain', kit: 'F0.1f', code: 'organisms/ClinicalCard (variant=plain, golden .exame-card; aditivo, default inalterado)', status: 'ok' },
+  { comp: 'DetailRow (linha rótulo/valor)', kit: 'F0.2', code: 'molecules/DetailRow (espelha .detailRow do DetailSheet; standalone, não toca sheets)', status: 'ok' },
 ];

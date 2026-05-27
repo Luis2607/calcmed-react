@@ -15,6 +15,7 @@ import { RangeChip } from '../../shared/components/molecules/Chip/Chip';
 import { ActionTile } from '../../shared/components/molecules/ActionTile/ActionTile';
 import { ClinicalCard } from '../../shared/components/organisms/ClinicalCard/ClinicalCard';
 import { TimerCard } from '../../shared/components/organisms/TimerCard/TimerCard';
+import { DetailRow } from '../../shared/components/molecules/DetailRow/DetailRow';
 
 const STATUS_BADGE = { ok: 'OK', pendente: 'PENDENTE' };
 
@@ -317,6 +318,19 @@ export function UrgencyGallery() {
           <TimerCard state="cycle-end" label="Checar ritmo" value="02:00" description="Marco de 2 min — checar ritmo." />
           <TimerCard state="window-ok" label="Adrenalina" value="00:45" description="Janela aberta — aplicar agora." />
           <TimerCard state="window-overdue" label="Adrenalina" value="05:30" description="Dose atrasada." />
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}><h2>F0.2 · DetailRow (linha rotulo/valor)</h2><p>Mesmo padrao do DetailSheet (golden detalhe), p/ tela: log/resumo. Divisor entre linhas; ultima sem.</p></div>
+        <div className={styles.tableContainer} style={{ padding: 24, maxWidth: 430 }}>
+          <div>
+            <DetailRow label="Abertura" value="08:42" />
+            <DetailRow label="Soro inicial" value="SF 0,9% · 1000 mL" />
+            <DetailRow label="Insulina" value="7 U/h" />
+            <DetailRow label="Potassio" value="4,1 mEq/L" />
+            <DetailRow label="Duracao" value="43 min" />
+          </div>
         </div>
       </section>
     </div>
