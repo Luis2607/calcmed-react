@@ -1,0 +1,54 @@
+/* StepHeader — golden `.tela-cabecalho` (título + subtítulo).
+   Métricas tipográficas literais como nos componentes-irmãos do DS
+   (SectionLabel/ResultDisplay/AlertCard); cor e spacing só via tokens. */
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+/* golden `.tela-cabecalho-row` — título à esquerda, ação/info à direita */
+.row {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--esp-2);
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+/* golden `.tela-titulo` — titulo-pagina Inter Bold 24/32/-0.02em */
+.titulo {
+  margin: 0;
+  font-family: var(--fonte-base);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.02em;
+  color: var(--ds-texto-padrao);
+}
+
+/* golden `.tela-subtitulo` — corpo-secundário Inter Regular 14/20/0.14 */
+.subtitulo {
+  margin: var(--esp-2) 0 0;
+  font-family: var(--fonte-base);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.14px;
+  color: var(--ds-texto-secundario);
+}
+
+/* ação/info alinhada ao topo do título (golden `.info-btn` margin-top esp-1) */
+.aside {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  margin-top: var(--esp-1);
+}

@@ -8,6 +8,7 @@ import { ProtocolHeader } from '../../shared/components/organisms/ProtocolHeader
 import { ActionFooter } from '../../shared/components/organisms/ActionFooter/ActionFooter';
 import { Timeline } from '../../shared/components/organisms/Timeline/Timeline';
 import { PatientDetail } from '../../shared/components/organisms/PatientDetail/PatientDetail';
+import { StepHeader } from '../../shared/components/molecules/StepHeader/StepHeader';
 
 const STATUS_BADGE = { ok: 'OK', pendente: 'PENDENTE' };
 
@@ -182,6 +183,24 @@ export function UrgencyGallery() {
               { label: 'Peso', value: '70kg' },
             ]}
             sections={patientSections}
+          />
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}><h2>F0.1a · StepHeader (cabecalho de tela)</h2><p>Golden .tela-cabecalho: titulo + subtitulo + info/acao. Reusa InfoButton.</p></div>
+        <div className={styles.tableContainer} style={{ padding: 24, maxWidth: 430, display: 'flex', flexDirection: 'column', gap: 32 }}>
+          <StepHeader title="Triagem inicial" />
+          <StepHeader title="Estratificacao de risco" subtitle="Calcule HEART e confirme o ECG antes de conduzir." />
+          <StepHeader
+            title="Conduzir tratamento"
+            subtitle="Toque no ? para abrir a teoria do passo."
+            onInfo={() => {}}
+          />
+          <StepHeader
+            title="Reavaliar"
+            subtitle="Passo 5 de 5."
+            action={<span className={styles.statusBadge}>5/5</span>}
           />
         </div>
       </section>

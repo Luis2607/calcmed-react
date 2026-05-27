@@ -16,4 +16,5 @@ export const URGENCY_INVENTORY = [
   { comp: 'TabBar (navbar inferior)', kit: 'K6', code: 'molecules/TabBar (prop sticky)', status: 'ok' },
   { comp: 'Timeline (linha do tempo)', kit: 'K7', code: 'organisms/Timeline', status: 'ok' },
   { comp: 'PatientDetail (blocos)', kit: 'K8', code: 'organisms/PatientDetail', status: 'ok' },
+  { comp: 'StepHeader (cabeçalho de tela)', kit: 'F0.1a', code: 'molecules/StepHeader → compõe InfoButton', status: 'ok' },
 ];
