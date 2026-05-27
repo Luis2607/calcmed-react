@@ -11,6 +11,7 @@ import { PatientDetail } from '../../shared/components/organisms/PatientDetail/P
 import { StepHeader } from '../../shared/components/molecules/StepHeader/StepHeader';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { StatGrid } from '../../shared/components/molecules/StatGrid/StatGrid';
+import { RangeChip } from '../../shared/components/molecules/Chip/Chip';
 
 const STATUS_BADGE = { ok: 'OK', pendente: 'PENDENTE' };
 
@@ -67,6 +68,7 @@ export function UrgencyGallery() {
   const [step, setStep] = useState(2);
   const [tab, setTab] = useState('executar');
   const [strategy, setStrategy] = useState('ppci');
+  const [kRange, setKRange] = useState('normal');
 
   return (
     <div className={styles.page}>
@@ -267,6 +269,18 @@ export function UrgencyGallery() {
               { label: 'K+', value: '4.1' },
             ]}
           />
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}><h2>F0.1d · RangeChip (seletor de faixa)</h2><p>Familia Chip (golden .faixa-chip). Single-select; tone critical na faixa perigosa (K abaixo de 3,5).</p></div>
+        <div className={styles.tableContainer} style={{ padding: 24, maxWidth: 430 }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <RangeChip selected={kRange === 'baixo'} tone="critical" onClick={() => setKRange('baixo')}>{'< 3,5'}</RangeChip>
+            <RangeChip selected={kRange === 'normal'} onClick={() => setKRange('normal')}>3,5 a 5</RangeChip>
+            <RangeChip selected={kRange === 'alto'} onClick={() => setKRange('alto')}>5 a 6,5</RangeChip>
+            <RangeChip selected={kRange === 'muito-alto'} onClick={() => setKRange('muito-alto')}>{'> 6,5'}</RangeChip>
+          </div>
         </div>
       </section>
     </div>

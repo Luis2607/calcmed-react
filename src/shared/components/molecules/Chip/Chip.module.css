@@ -46,6 +46,51 @@
 .tone-escores      { background-color: var(--ds-tag-escores-fundo); color: var(--ds-tag-escores-texto); border-color: transparent; }
 .tone-conversores  { background-color: var(--ds-tag-conversores-fundo); color: var(--ds-tag-conversores-texto); border-color: transparent; }
 
+/* RangeChip — golden `.faixa-chip` (seletor de faixa, ex.: K). Altura-input, mono,
+   flex-fill; seleção por borda 2px no tone. Família Chip (como UnitChip). Cor/spacing
+   só via token; radius tracks --radius-input (adapta a dark/pediatria como os inputs). */
+.rangeChip {
+  flex: 1 1 0;
+  min-width: 0;
+  height: var(--input-altura); /* 48px */
+  padding: 0 var(--esp-2);
+  background: var(--ds-fundo-cartao);
+  border: 1px solid var(--ds-borda-padrao);
+  border-radius: var(--radius-input);
+  font-family: var(--fonte-mono);
+  font-feature-settings: 'tnum';
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--ds-texto-padrao);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.rangeChip:hover:not(:disabled) { border-color: var(--ds-texto-secundario); }
+.rangeChip:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* selecionado — borda 2px no tone (golden `.selecionado`), padding -1px p/ compensar */
+.rangeSelected {
+  border-width: 2px;
+  border-color: var(--ds-interativo-primario);
+  color: var(--ds-interativo-primario);
+  font-weight: 700;
+  padding: 0 calc(var(--esp-2) - 1px);
+}
+/* faixa perigosa (golden `.selecionado-critico`) */
+.rangeSelectedCritico {
+  border-color: var(--ds-retorno-critico);
+  background: var(--ds-retorno-critico-fundo);
+  color: var(--ds-retorno-critico);
+}
+
 /* UnitChip — Figma calc/concentration-chip 173:10855 (24h pill, chip/fundo, chip/texto=secundário) */
 .unitChip {
   display: inline-flex;

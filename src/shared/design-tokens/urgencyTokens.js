@@ -19,4 +19,5 @@ export const URGENCY_INVENTORY = [
   { comp: 'StepHeader (cabeçalho de tela)', kit: 'F0.1a', code: 'molecules/StepHeader → compõe InfoButton', status: 'ok' },
   { comp: 'OptionCard (escolha rica)', kit: 'F0.1b', code: 'molecules/OptionCard (golden .exame-card + seleção .faixa-chip; tones tokenizados)', status: 'ok' },
   { comp: 'StatGrid (resumo em tiles)', kit: 'F0.1c', code: 'molecules/StatGrid (golden .valor-card; data-columns 1-4)', status: 'ok' },
+  { comp: 'RangeChip (seletor de faixa)', kit: 'F0.1d', code: 'molecules/Chip → RangeChip (golden .faixa-chip; substitui FieldTrigger; tone critical)', status: 'ok' },
 ];

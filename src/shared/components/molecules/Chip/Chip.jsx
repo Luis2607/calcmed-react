@@ -46,3 +46,43 @@ export const Chip = ({ label, children, state = 'default', tone, onClick, onDism
 export const UnitChip = ({ children, label }) => (
   <span className={styles.unitChip}>{children ?? label}</span>
 );
+
+/**
+ * Molecule: RangeChip (família Chip) — porta o golden `.faixa-chip` (seletor de faixa,
+ * ex.: potássio "< 3,5" | "3,5 a 5" | "5 a 6,5"). Botão selecionável altura-input, fonte
+ * mono (números alinhados), seleção por borda 2px no tone. Single-select (o pai controla,
+ * como Radio). tone 'critical' p/ a faixa perigosa (golden `.selecionado-critico`).
+ * Vive na família Chip como o UnitChip — reuso da família, sem componente novo fora do DS.
+ *
+ * Props: label/children · selected · tone ('default'|'critical') · onClick · disabled
+ */
+export const RangeChip = ({
+  label,
+  children,
+  selected = false,
+  tone = 'default',
+  onClick,
+  disabled = false,
+  className = '',
+  ...props
+}) => {
+  const cls = [
+    styles.rangeChip,
+    selected ? styles.rangeSelected : '',
+    selected && tone === 'critical' ? styles.rangeSelectedCritico : '',
+    className,
+  ].filter(Boolean).join(' ');
+  return (
+    <button
+      type="button"
+      className={cls}
+      data-selected={selected ? 'true' : 'false'}
+      aria-pressed={selected}
+      disabled={disabled}
+      onClick={onClick}
+      {...props}
+    >
+      {children ?? label}
+    </button>
+  );
+};
