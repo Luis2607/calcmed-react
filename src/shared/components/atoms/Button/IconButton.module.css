@@ -117,42 +117,42 @@
 
 /* Primary Dark */
 .darkMode.variant-primary {
-  background-color: #0096B7; /* Figma Dark mode Primary background */
-  color: #FFFFFF;
+  background-color: var(--ds-iconbtn-dark-primario);
+  color: var(--ds-branco);
 }
 
 /* Secondary Dark */
 .darkMode.variant-secondary {
-  background-color: #223249; /* Figma Dark mode Secondary background */
-  border-color: #2A3F5F; /* Figma Dark mode Secondary border */
-  color: #F1F5F9;
+  background-color: var(--ds-iconbtn-dark-superficie);
+  border-color: var(--ds-iconbtn-dark-borda);
+  color: var(--ds-iconbtn-dark-texto-claro);
 }
 
 /* Danger Dark */
 .darkMode.variant-danger {
-  background-color: #EF4444; /* Figma Dark mode Danger background */
-  color: #FFFFFF;
+  background-color: var(--ds-iconbtn-dark-perigo);
+  color: var(--ds-branco);
 }
 
 /* Ghost Dark */
 .darkMode.variant-ghost {
-  border-color: #0096B7;
-  color: #00B4D8;
+  border-color: var(--ds-iconbtn-dark-primario);
+  color: var(--interativo-destaque);
 }
 .darkMode.variant-ghost:hover:not(:disabled) {
-  background-color: rgba(0, 180, 216, 0.08);
+  background-color: var(--ds-iconbtn-dark-destaque-tint);
 }
 
 /* Text Dark */
 .darkMode.variant-text {
-  color: #00B4D8;
+  color: var(--interativo-destaque);
 }
 .darkMode.variant-text:hover:not(:disabled) {
-  background-color: rgba(0, 180, 216, 0.08);
+  background-color: var(--ds-iconbtn-dark-destaque-tint);
 }
 
 /* Discrete Dark */
 .darkMode.variant-discrete {
-  background-color: #223249;
-  color: #64748B;
+  background-color: var(--ds-iconbtn-dark-superficie);
+  color: var(--ds-iconbtn-dark-texto-mute);
 }

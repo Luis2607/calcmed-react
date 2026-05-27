@@ -48,7 +48,7 @@
 }
 
 .variant-danger:hover:not(:disabled) {
-  background-color: #7f1d1d; /* darker crimson */
+  background-color: var(--ds-botao-perigo-fundo-hover); /* darker crimson */
 }
 
 .variant-ghost {

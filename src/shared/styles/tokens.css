@@ -242,6 +242,27 @@
   --ds-botao-ghost-borda: var(--interativo-primario);
   --ds-botao-ghost-texto: var(--interativo-primario);
   --ds-botao-texto-link: var(--texto-link);
+  --ds-botao-perigo-fundo-hover: #7F1D1D;        /* F0.0 · hover do Button danger (era hex cru) */
+
+  /* F0.0 · constantes semânticas (eram hex crus em componentes; mesmo valor, agora tokenizado) */
+  --ds-branco: #FFFFFF;                          /* branco puro: thumb do Toggle, dot on-media, texto sobre cor */
+  --ds-branco-50: rgba(255, 255, 255, 0.5);      /* branco 50% (dots inativos on-media) */
+  --ds-contador-fundo: #F43F5E;                  /* badge contador rose (ChecklistBlock) — Figma não tokenizou */
+  /* Paleta dark do IconButton (prop .darkMode · anti-pattern; tokenizado p/ zero hardcode. TODO: migrar p/ escopo .modo-escuro) */
+  --ds-iconbtn-dark-primario: #0096B7;
+  --ds-iconbtn-dark-superficie: #223249;
+  --ds-iconbtn-dark-borda: #2A3F5F;
+  --ds-iconbtn-dark-perigo: #EF4444;
+  --ds-iconbtn-dark-texto-claro: #F1F5F9;
+  --ds-iconbtn-dark-texto-mute: #64748B;
+  --ds-iconbtn-dark-destaque-tint: rgba(0, 180, 216, 0.08);
+  /* ResultDisplay dark tints (prop .dark · rgba dos retornos) */
+  --ds-resultado-sucesso-dark-fundo: rgba(4, 120, 87, 0.2);
+  --ds-resultado-sucesso-dark-borda: rgba(4, 120, 87, 0.4);
+  --ds-resultado-atencao-dark-fundo: rgba(146, 64, 14, 0.2);
+  --ds-resultado-atencao-dark-borda: rgba(146, 64, 14, 0.4);
+  --ds-resultado-critico-dark-fundo: rgba(153, 27, 27, 0.2);
+  --ds-resultado-critico-dark-borda: rgba(153, 27, 27, 0.4);
 
   --ds-input-fundo: var(--fundo-cartao);
   --ds-input-borda: var(--borda-padrao);

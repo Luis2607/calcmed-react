@@ -22,5 +22,5 @@
 }
 
 /* Variante p/ overlay sobre imagem (Figma usa branco) */
-.onMedia .dot { background: rgba(255, 255, 255, 0.5); }
-.onMedia .active { background: #ffffff; }
+.onMedia .dot { background: var(--ds-branco-50); }
+.onMedia .active { background: var(--ds-branco); }

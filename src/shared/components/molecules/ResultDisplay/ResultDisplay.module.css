@@ -78,14 +78,14 @@
 
 /* DARK MODE */
 .dark.level-success {
-  background-color: rgba(4, 120, 87, 0.2);
-  border-color: rgba(4, 120, 87, 0.4);
+  background-color: var(--ds-resultado-sucesso-dark-fundo);
+  border-color: var(--ds-resultado-sucesso-dark-borda);
 }
 .dark.level-warning {
-  background-color: rgba(146, 64, 14, 0.2);
-  border-color: rgba(146, 64, 14, 0.4);
+  background-color: var(--ds-resultado-atencao-dark-fundo);
+  border-color: var(--ds-resultado-atencao-dark-borda);
 }
 .dark.level-critical {
-  background-color: rgba(153, 27, 27, 0.2);
-  border-color: rgba(153, 27, 27, 0.4);
+  background-color: var(--ds-resultado-critico-dark-fundo);
+  border-color: var(--ds-resultado-critico-dark-borda);
 }
