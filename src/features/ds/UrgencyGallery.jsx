@@ -13,6 +13,7 @@ import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionC
 import { StatGrid } from '../../shared/components/molecules/StatGrid/StatGrid';
 import { RangeChip } from '../../shared/components/molecules/Chip/Chip';
 import { ActionTile } from '../../shared/components/molecules/ActionTile/ActionTile';
+import { ClinicalCard } from '../../shared/components/organisms/ClinicalCard/ClinicalCard';
 
 const STATUS_BADGE = { ok: 'OK', pendente: 'PENDENTE' };
 
@@ -292,6 +293,18 @@ export function UrgencyGallery() {
             <ActionTile icon="batimento" label="Selecionar ritmo" value="Nao avaliado" onClick={() => {}} />
             <ActionTile icon="onda-ecg" label="Checar ritmo" value="Marco 2:00" disabled />
           </div>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}><h2>F0.1f · ClinicalCard variante plain</h2><p>Card de secao neutro (golden .exame-card): gap 12, titulo 16/600, borda padrao. Aditivo: variant default inalterado.</p></div>
+        <div className={styles.tableContainer} style={{ padding: 24, maxWidth: 430, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <ClinicalCard variant="plain" title="Manejo inicial">
+            <span style={{ fontSize: 14, lineHeight: '20px', color: 'var(--ds-texto-secundario)' }}>Soro fisiologico 0,9% em acesso calibroso. Reavaliar volemia a cada hora.</span>
+          </ClinicalCard>
+          <ClinicalCard variant="plain" title="Potassio serico" subtitle="K abaixo de 3,5 bloqueia o inicio da insulina.">
+            <StatGrid columns={3} items={[{ label: 'K+', value: '4,1' }, { label: 'Status', value: 'OK' }, { label: 'Fonte', value: 'Gaso' }]} />
+          </ClinicalCard>
         </div>
       </section>
     </div>

@@ -9,13 +9,15 @@ import styles from './ClinicalCard.module.css';
  *
  * Props:
  *  - state: 'default' | 'ativo' (borda teal 2px) | 'inativo'
+ *  - variant: 'default' | 'plain' (card de seção neutro = golden `.exame-card`:
+ *    gap 12, título 16/600, borda padrão; cobre SectionCard/medCard/setupCard)
  *  - tags: [{ label, tone }] — header tags (Tag status)
- *  - title (18 Semi Bold), subtitle (14 secundario)
+ *  - title (18 Semi Bold; 16 no plain), subtitle (14 secundario)
  *  - children — conteúdo livre
  * Dark via .modo-escuro.
  */
-export const ClinicalCard = ({ state = 'default', tags = [], title, subtitle, children, className = '' }) => {
-  const cls = [styles.card, styles[`state-${state}`], className].filter(Boolean).join(' ');
+export const ClinicalCard = ({ state = 'default', variant = 'default', tags = [], title, subtitle, children, className = '' }) => {
+  const cls = [styles.card, styles[`state-${state}`], styles[`variant-${variant}`], className].filter(Boolean).join(' ');
   const hasHeader = (tags && tags.length > 0) || title || subtitle;
   return (
     <div className={cls}>
