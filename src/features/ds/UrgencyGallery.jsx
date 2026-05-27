@@ -9,6 +9,7 @@ import { ActionFooter } from '../../shared/components/organisms/ActionFooter/Act
 import { Timeline } from '../../shared/components/organisms/Timeline/Timeline';
 import { PatientDetail } from '../../shared/components/organisms/PatientDetail/PatientDetail';
 import { StepHeader } from '../../shared/components/molecules/StepHeader/StepHeader';
+import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 
 const STATUS_BADGE = { ok: 'OK', pendente: 'PENDENTE' };
 
@@ -64,6 +65,7 @@ const patientSections = [
 export function UrgencyGallery() {
   const [step, setStep] = useState(2);
   const [tab, setTab] = useState('executar');
+  const [strategy, setStrategy] = useState('ppci');
 
   return (
     <div className={styles.page}>
@@ -202,6 +204,46 @@ export function UrgencyGallery() {
             subtitle="Passo 5 de 5."
             action={<span className={styles.statusBadge}>5/5</span>}
           />
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}><h2>F0.1b · OptionCard (escolha rica)</h2><p>Porta o SCA SelectCard com tones tokenizados. Selecao pela superficie (sem controle).</p></div>
+        <div className={styles.tableContainer} style={{ padding: 24, maxWidth: 430, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <OptionCard
+            title="PPCI"
+            meta="Preferencial"
+            tone="info"
+            selected={strategy === 'ppci'}
+            onClick={() => setStrategy('ppci')}
+          >
+            Angioplastia primaria em ate 120 min do primeiro contato.
+          </OptionCard>
+          <OptionCard
+            title="Fibrinolise"
+            meta="Se atraso PCI"
+            tone="warning"
+            selected={strategy === 'fibrinolise'}
+            onClick={() => setStrategy('fibrinolise')}
+            description="Quando a PPCI nao for viavel na janela recomendada."
+          />
+          <OptionCard
+            title="STEMI classico"
+            meta="Supra persistente"
+            tone="critical"
+            selected={strategy === 'stemi'}
+            onClick={() => setStrategy('stemi')}
+            description="Ativa hemodinamica imediatamente."
+          />
+          <OptionCard
+            title="Alta segura"
+            meta="Rule-out"
+            tone="success"
+            selected={strategy === 'alta'}
+            onClick={() => setStrategy('alta')}
+            description="Troponina seriada negativa e escore baixo."
+          />
+          <OptionCard title="Opcao desabilitada" description="Indisponivel neste cenario." disabled />
         </div>
       </section>
     </div>

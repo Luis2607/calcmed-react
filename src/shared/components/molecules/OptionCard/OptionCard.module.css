@@ -1,0 +1,85 @@
+/* OptionCard — superfície de escolha rica. Porta o SCA `.selectCard` com os tones
+   TOKENIZADOS (o flow usava #dc2626/#e11d48/rgba(...) cravados). Cor/spacing/radius
+   só via token; tipografia literal como nos irmãos do DS. */
+
+.card {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 72px;
+  padding: var(--esp-4);
+  border: 1.5px solid var(--ds-borda-padrao);
+  border-radius: var(--ds-r-sm);
+  background: var(--ds-fundo-cartao);
+  color: var(--ds-texto-padrao);
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--fonte-base);
+  transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+
+.card:hover:not(:disabled) {
+  border-color: var(--ds-interativo-primario);
+  background: var(--ds-fundo-hover);
+}
+
+.card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* header — título à esquerda, meta à direita (golden/SCA .selectHeader) */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3);
+}
+
+.title {
+  font-size: var(--fonte-tamanho-corpo); /* 14 */
+  font-weight: 700;
+  line-height: 20px;
+  color: var(--ds-texto-padrao);
+}
+
+.meta {
+  flex-shrink: 0;
+  font-style: normal;
+  font-size: var(--fonte-tamanho-auxiliar); /* 12 */
+  font-weight: 700;
+  color: var(--ds-texto-terciario);
+}
+
+.body {
+  font-size: var(--fonte-tamanho-corpo); /* 14 */
+  line-height: 20px;
+  color: var(--ds-texto-secundario);
+}
+
+/* SELECIONADO — default & info → primário (teal). SCA não dava override ao info. */
+.card[data-selected="true"] {
+  border-color: var(--ds-interativo-primario);
+  background: var(--interativo-primario-tint-08);
+  box-shadow: inset 0 0 0 1px var(--ds-interativo-primario);
+}
+
+.card[data-tone="critical"][data-selected="true"] {
+  border-color: var(--ds-retorno-critico);
+  background: var(--ds-retorno-critico-fundo);
+  box-shadow: inset 0 0 0 1px var(--ds-retorno-critico);
+}
+
+.card[data-tone="warning"][data-selected="true"] {
+  border-color: var(--ds-retorno-atencao);
+  background: var(--ds-retorno-atencao-fundo);
+  box-shadow: inset 0 0 0 1px var(--ds-retorno-atencao);
+}
+
+.card[data-tone="success"][data-selected="true"] {
+  border-color: var(--ds-retorno-sucesso);
+  background: var(--ds-retorno-sucesso-fundo);
+  box-shadow: inset 0 0 0 1px var(--ds-retorno-sucesso);
+}
