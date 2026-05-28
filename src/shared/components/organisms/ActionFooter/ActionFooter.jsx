@@ -16,15 +16,17 @@ export function ActionFooter({
   actions = EMPTY_ACTIONS,
   sticky = false,
 }) {
+  // Quando vem do par secondary+primary (sem `actions` custom), marca o secondary
+  // como compact (content-width) — golden 1:1, evita quebra do primary em 2 linhas.
+  const isPairFromSecondaryPrimary = actions.length === 0 && Boolean(secondary) && Boolean(primary);
   const resolvedActions = actions.length > 0
     ? actions
     : [secondary, primary].filter(Boolean);
 
   return (
     <section className={[styles.footer, sticky ? styles.sticky : ''].filter(Boolean).join(' ')}>
-      {/* backLink (Luis 2026-05-28) — link textual discreto "← Voltar" à esquerda,
-          em linha própria acima do hint/actions. Padrão Opção C da pesquisa NN/g
-          (1 primary + link textual quando há evidência de necessidade). */}
+      {/* backLink (Luis 2026-05-28) — DEPRECATED no Sepse; mantido por compat com
+          outros consumers até trocarem pra prop `secondary` (link textual feio). */}
       {backLink && (
         <button type="button" className={styles.backLink} onClick={backLink.onClick}>
           ← {backLink.label || 'Voltar'}
@@ -39,22 +41,25 @@ export function ActionFooter({
       )}
 
       <div className={styles.actions}>
-        {resolvedActions.map((action) => (
-          <Button
-            key={action.label}
-            variant={action.variant || 'primary'}
-            size={action.size || 'md'}
-            disabled={action.disabled}
-            onClick={action.onClick}
-            showLeftIcon={Boolean(action.leftIcon)}
-            leftIcon={action.leftIcon}
-            showRightIcon={Boolean(action.rightIcon)}
-            rightIcon={action.rightIcon}
-            className={styles.button}
-          >
-            {action.label}
-          </Button>
-        ))}
+        {resolvedActions.map((action, idx) => {
+          const isSecondaryInPair = isPairFromSecondaryPrimary && idx === 0;
+          return (
+            <Button
+              key={action.label}
+              variant={action.variant || 'primary'}
+              size={action.size || 'md'}
+              disabled={action.disabled}
+              onClick={action.onClick}
+              showLeftIcon={Boolean(action.leftIcon)}
+              leftIcon={action.leftIcon}
+              showRightIcon={Boolean(action.rightIcon)}
+              rightIcon={action.rightIcon}
+              className={[styles.button, isSecondaryInPair ? styles.buttonCompact : ''].filter(Boolean).join(' ')}
+            >
+              {action.label}
+            </Button>
+          );
+        })}
       </div>
     </section>
   );

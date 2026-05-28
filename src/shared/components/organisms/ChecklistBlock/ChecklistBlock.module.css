@@ -37,15 +37,12 @@
 .items { display: flex; flex-direction: column; gap: var(--esp-3); }
 
 /* highlightPending: step visitado incompleto (Gustavo 2026-05-28).
-   Card ganha borda de atenção; itens unchecked recebem borda vermelha. */
-.cardWarning {
-  border-color: var(--ds-retorno-atencao);
-  background-color: var(--ds-retorno-atencao-fundo);
-}
-
+   Itens unchecked ganham borda crítica sutil — UM sinal claro, sem ruído visual.
+   Conselho (Luis 2026-05-28 PM): duplo-destaque (card + items) ficou agressivo;
+   ficamos só com o item-level (Gabriela: 1 sinal claro basta · Lia: menos é mais). */
 .pendingItem {
   padding: var(--esp-2) var(--esp-3);
   border-radius: var(--ds-r-md);
   border: 1px solid var(--ds-retorno-critico);
-  background-color: var(--ds-retorno-critico-fundo);
+  background-color: transparent;
 }

@@ -55,18 +55,25 @@
 }
 .backLink:hover { text-decoration: underline; }
 
+/* Flex pra permitir secondary content-width + primary expande (Luis 2026-05-28 PM:
+   secondary "Voltar" não devia comprimir o primary forçando 2 linhas no label).
+   Conselho Rafael: golden HTML faz exatamente isso — secondário compacto, primário
+   pega o resto da linha. */
 .actions {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  display: flex;
   gap: var(--esp-3);
 }
 
 .button {
-  width: 100%;
+  flex: 1; /* default: primary expande */
+  width: auto;
+  min-width: 0;
 }
 
-.actions:has(.button:only-child) {
-  grid-template-columns: 1fr;
+/* Secondary fica content-based quando coexiste com primary (1 das 4 footers T2..T5). */
+.buttonCompact {
+  flex: 0 0 auto;
+  min-width: 96px;
 }
 
 .modo-escuro .footer {

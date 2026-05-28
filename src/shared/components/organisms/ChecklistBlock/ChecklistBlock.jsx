@@ -18,7 +18,7 @@ import styles from './ChecklistBlock.module.css';
  *    Uso: step visitado mas incompleto (Gustavo 2026-05-28 · sepse warning stepper).
  */
 export const ChecklistBlock = ({ tagLabel, tagTone = 'critico', count, subtitle, onInfo, items = [], onToggle, highlightPending = false }) => (
-  <div className={[styles.card, highlightPending ? styles.cardWarning : ''].filter(Boolean).join(' ')}>
+  <div className={styles.card}>
     <div className={styles.header}>
       <div className={styles.headerTop}>
         {tagLabel && <Tag variant="status" tone={tagTone}>{tagLabel}</Tag>}
