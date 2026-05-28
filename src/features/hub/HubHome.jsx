@@ -1,5 +1,6 @@
 import { PROTOCOLS } from '../../data/protocols';
 import { SectionLabel } from '../../shared/components/atoms/SectionLabel';
+import { Toggle } from '../../shared/components/atoms/Toggle/Toggle';
 import { HistoryView } from '../../shared/components/organisms/HistoryView';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import styles from './HubHome.module.css';
@@ -78,17 +79,7 @@ export function HubHome({ onNavigate, isPediatric, setIsPediatric }) {
             <span className={styles.modeTitle}>Modo Pediatria</span>
             <div className={styles.modeHelper}>Ajusta automaticamente layouts e radius do DS</div>
           </div>
-          <label className={styles.switch}>
-            <input
-              type="checkbox"
-              checked={isPediatric}
-              onChange={(event) => setIsPediatric(event.target.checked)}
-              className={styles.switchInput}
-            />
-            <span className={`${styles.switchTrack} ${isPediatric ? styles.switchTrackOn : ''}`}>
-              <span className={`${styles.switchThumb} ${isPediatric ? styles.switchThumbOn : ''}`} />
-            </span>
-          </label>
+          <Toggle checked={isPediatric} onChange={setIsPediatric} />
         </section>
 
         <section className={styles.section}>
