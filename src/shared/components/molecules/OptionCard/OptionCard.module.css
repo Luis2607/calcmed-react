@@ -38,32 +38,25 @@
   gap: var(--esp-2);
 }
 
-/* título = golden `.exame-card-nome` (16/600/24) */
+/* título = Figma subtitulo (card title) 18/600/28 */
 .title {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 24px;
+  font: var(--ds-font-subtitulo); /* Figma subtitulo 18/600/28 (card title) */
   color: var(--ds-texto-padrao);
 }
 
-/* meta = golden `.exame-card-tag` (eyebrow 11/600/0.22 uppercase) */
+/* meta = Figma texto-badge (eyebrow 11/600/16/0.22 uppercase) */
 .meta {
   flex-shrink: 0;
-  font-style: normal;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 16px;
-  letter-spacing: 0.22px;
+  font: var(--ds-font-badge);
+  letter-spacing: var(--ds-tracking-badge); /* 0.22px */
   text-transform: uppercase;
   color: var(--ds-texto-terciario);
 }
 
-/* descrição = golden `.exame-card-subtitulo` (13/500/18/0.14) */
+/* descrição = Figma corpo-secundario (14/400/20/0.14) */
 .body {
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 18px;
-  letter-spacing: 0.14px;
+  font: var(--ds-font-corpo-2);
+  letter-spacing: var(--ds-tracking-corpo-2); /* 0.14px */
   color: var(--ds-texto-secundario);
 }
 

@@ -23,22 +23,16 @@
   background: var(--ds-fundo-cartao);
 }
 
-/* label = golden `.valor-card-label` (11/600/0.22 uppercase terciário) */
+/* label = Figma texto-badge (11/600/16/0.22 uppercase terciário) */
 .label {
   color: var(--ds-texto-terciario);
-  font-family: var(--fonte-base);
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 16px;
-  letter-spacing: 0.22px;
+  font: var(--ds-font-badge);
+  letter-spacing: var(--ds-tracking-badge); /* 0.22px */
   text-transform: uppercase;
 }
 
-/* valor = golden `.exame-card-nome` (16/600/24 padrão) — valor de cartão padrão */
+/* valor = Figma corpo (16/400/24) */
 .value {
   color: var(--ds-texto-padrao);
-  font-family: var(--fonte-base);
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 24px;
+  font: var(--ds-font-corpo);
 }

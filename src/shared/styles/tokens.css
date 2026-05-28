@@ -299,33 +299,43 @@
      TIPOGRAFIA DS-NAMED Â· Onda 6.5
      Espelham estilos de texto oficiais do Figma DS (zcLBv8e2kQsrsRko9FIrbZ)
      ============================================================ */
-  --ds-font-tit-pag: 700 24px/32px var(--fonte-base);
-  --ds-font-tit-secao: 700 20px/28px var(--fonte-base);
-  --ds-font-subtitulo: 600 18px/24px var(--fonte-base);
-  --ds-font-nome-droga: 600 18px/24px var(--fonte-base);
-  --ds-font-corpo: 400 16px/24px var(--fonte-base);
-  --ds-font-corpo-2: 400 14px/22px var(--fonte-base);
-  --ds-font-legenda: 400 12px/16px var(--fonte-base);
-  --ds-font-badge: 600 11px/14px var(--fonte-base);
-  --ds-font-rot-campo: 500 14px/20px var(--fonte-base);
-  --ds-font-valor-campo: 400 16px/24px var(--fonte-base);
-  --ds-font-valor-mono: 400 16px/24px var(--fonte-mono);
-  --ds-font-rot-nav: 500 12px/16px var(--fonte-base);
-  --ds-font-nav-label: 500 11px/14px var(--fonte-base);
-  --ds-font-botao-sm: 600 12px/16px var(--fonte-base);
-  --ds-font-botao-md: 600 14px/20px var(--fonte-base);
-  --ds-font-botao-lg: 600 16px/24px var(--fonte-base);
-  --ds-font-alerta-tit: 700 14px/20px var(--fonte-base);
-  --ds-font-alerta-corpo: 400 14px/20px var(--fonte-base);
-  --ds-font-dose-valor: 700 32px/40px var(--fonte-mono);
-  --ds-font-dose-unid: 500 20px/26px var(--fonte-mono);
-  --ds-font-valor-grande: 700 32px/40px var(--fonte-mono);
-  --ds-font-num-tab-md: 500 16px/24px var(--fonte-mono);
-  --ds-font-num-tab-sm: 500 13px/18px var(--fonte-mono);
-  --ds-font-crono-mestre: 700 56px/64px var(--fonte-mono);
-  --ds-font-crono-card: 700 32px/40px var(--fonte-mono);
-  --ds-font-crono-sec: 700 22px/28px var(--fonte-mono);
-  --ds-font-cta-emerg-xl: 600 18px/24px var(--fonte-base);
+  /* Valores conferidos 1:1 com os 29 text styles do Figma DS (2026-05-27).
+     Composite `font:` (weight size/lh family); letter-spacing pareado em --ds-tracking-*. */
+  --ds-font-tit-pag: 700 24px/32px var(--fonte-base);       /* titulo-pagina */
+  --ds-font-tit-secao: 700 20px/28px var(--fonte-base);     /* titulo-secao */
+  --ds-font-subtitulo: 600 18px/28px var(--fonte-base);     /* subtitulo (card title) · FIX lh 24→28 */
+  --ds-font-nome-droga: 600 18px/28px var(--fonte-base);    /* nome-droga · FIX lh 24→28 */
+  --ds-font-corpo: 400 16px/24px var(--fonte-base);         /* corpo */
+  --ds-font-corpo-2: 400 14px/20px var(--fonte-base);       /* corpo-secundario · FIX lh 22→20 */
+  --ds-font-legenda: 400 12px/16px var(--fonte-base);       /* legenda */
+  --ds-font-badge: 600 11px/16px var(--fonte-base);         /* texto-badge (UPPER via text-transform) · FIX lh 14→16 */
+  --ds-font-rot-campo: 500 14px/20px var(--fonte-base);     /* rotulo-campo */
+  --ds-font-valor-campo: 400 16px/24px var(--fonte-base);   /* valor-campo */
+  --ds-font-valor-mono: 400 16px/24px var(--fonte-mono);    /* valor-campo-mono */
+  --ds-font-rot-nav: 500 12px/14px var(--fonte-base);       /* rotulo-nav · FIX lh 16→14 */
+  --ds-font-nav-label: 500 11px/16px var(--fonte-base);     /* nav-label · FIX lh 14→16 */
+  --ds-font-botao-sm: 600 12px/16px var(--fonte-base);      /* botao-sm */
+  --ds-font-botao-md: 600 14px/20px var(--fonte-base);      /* botao-md */
+  --ds-font-botao-lg: 600 16px/24px var(--fonte-base);      /* botao-lg */
+  --ds-font-alerta-tit: 700 14px/24px var(--fonte-base);    /* alerta-titulo · FIX lh 20→24 */
+  --ds-font-alerta-corpo: 400 14px/20px var(--fonte-base);  /* alerta-corpo */
+  --ds-font-dose-valor: 700 32px/40px var(--fonte-mono);    /* dose-valor */
+  --ds-font-dose-unid: 500 20px/28px var(--fonte-mono);     /* dose-unidade · FIX lh 26→28 */
+  --ds-font-valor-grande: 700 32px/40px var(--fonte-mono);  /* valor-grande */
+  --ds-font-num-tab-md: 500 16px/24px var(--fonte-mono);    /* numero-tabular-md */
+  --ds-font-num-tab-sm: 500 12px/18px var(--fonte-mono);    /* numero-tabular-sm · FIX size 13→12 */
+  --ds-font-crono-mestre: 700 56px/64px var(--fonte-mono);  /* cronometro-mestre (lh AUTO≈64) */
+  --ds-font-crono-card: 700 32px/40px var(--fonte-mono);    /* cronometro-card · Figma lh=32; mantido 40 pois CONSUMIDO (TimerCard/ProtocolHeader) — migrar à parte */
+  --ds-font-crono-sec: 700 22px/22px var(--fonte-mono);     /* cronometro-secondary · FIX lh 28→22 */
+  --ds-font-cta-emerg-xl: 600 18px/24px var(--fonte-base);  /* cta-emergencia-xl */
+
+  /* Tracking (letter-spacing) dos estilos Figma — pareiam com os --ds-font-* acima */
+  --ds-tracking-tit-pag: -0.48px;     /* titulo-pagina */
+  --ds-tracking-tit-secao: -0.2px;    /* titulo-secao */
+  --ds-tracking-badge: 0.22px;        /* texto-badge */
+  --ds-tracking-corpo-2: 0.14px;      /* corpo-secundario / rotulo-campo / alerta-corpo */
+  --ds-tracking-legenda: 0.24px;      /* legenda / rotulo-nav */
+  --ds-tracking-cta: 0.4px;           /* cta-emergencia-xl */
 }
 
 /* Modo pediátrico — radius mais arredondado */

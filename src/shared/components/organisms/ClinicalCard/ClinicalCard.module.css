@@ -24,4 +24,4 @@
    borda padrão (não sutil). Aditivo: variant=default não recebe classe (zero mudança). */
 .variant-plain { gap: var(--esp-3); }
 .variant-plain.state-default { border-color: var(--ds-borda-padrao); }
-.variant-plain .title { font-size: 16px; }
+.variant-plain .title { font: var(--ds-font-subtitulo); color: var(--ds-texto-padrao); } /* Figma subtitulo 18/600/28 */

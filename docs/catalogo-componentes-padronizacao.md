@@ -4,6 +4,13 @@
 > (2) component properties, (3) consolidação à la Rafael (o que pode ser o mesmo componente).
 > Fonte: leitura direta dos `.module.css`/`.jsx` + golden. Honesto sobre o que NÃO está 100%.
 
+> **ATUALIZAÇÃO F0.4 (2026-05-27):** tipografia agora **100% token, fiel ao Figma** nos 8 componentes.
+> Li os **29 text styles** do DS (ponte conectada), corrigi os `--ds-font-*` drifted (subtitulo/corpo-2/
+> badge/etc.) e adicionei `--ds-tracking-*`. **Correções fiéis aplicadas:** card title 16→**18** (subtitulo),
+> descrição 13→**14** (corpo-secundario), StatGrid value 600→**400** (corpo). **Pendências (live-screen,
+> migração à parte):** `crono-card` lh (40 vs 32, consumido), TimerCard label (800 vs 600), ClinicalCard
+> *default* title lh (24 vs 28), DetailRow value (14/600 sem estilo Figma exato). §5 abaixo = RESOLVIDO.
+
 ---
 
 ## 1. AUDITORIA DE TOKENS (o que pediu: tipografia/spacing/round/cores)

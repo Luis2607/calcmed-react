@@ -38,17 +38,15 @@
   color: var(--ds-interativo-primario);
 }
 
-/* label = golden `.btn-acao-grande-texto` (14/600) */
+/* label = Figma botao-md (14/600/20) */
 .label {
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20px;
+  font: var(--ds-font-botao-md);
   color: var(--ds-texto-padrao);
 }
 
-/* status/valor = golden `.btn-acao-grande-sub` (12 secundário) */
+/* status/valor = Figma legenda (12/400/16/0.24) */
 .value {
-  font-size: 12px;
-  line-height: 16px;
+  font: var(--ds-font-legenda);
+  letter-spacing: var(--ds-tracking-legenda); /* 0.24px */
   color: var(--ds-texto-secundario);
 }
