@@ -406,3 +406,6 @@
   background: var(--ds-interativo-primario);
   margin-top: var(--sheet-bullet-offset);
 }
+
+/* Wrapper do conteúdo do item (Luis 2026-05-28) — mantém texto corrido em 1 bloco. */
+.bulletText { flex: 1; min-width: 0; }

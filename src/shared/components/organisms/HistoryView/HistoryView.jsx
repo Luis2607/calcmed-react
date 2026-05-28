@@ -31,18 +31,17 @@ export const HistoryView = ({
 
   return (
     <div className={styles.container} {...props}>
-      <div className={styles.headerRow}>
-        <span className={styles.sectionLabel}>Histórico de Casos</span>
-        {cases.length > 0 && onClear && (
-          <button 
-            type="button" 
-            className={styles.clearBtn} 
-            onClick={onClear}
-          >
+      {/* SectionLabel "HISTÓRICO DE CASOS" removido (Luis 2026-05-28) — redundante
+          com o StepHeader title="Histórico" acima. Botão Limpar Tudo só aparece
+          quando há casos, alinhado à direita pelo .headerRow. */}
+      {cases.length > 0 && onClear && (
+        <div className={styles.headerRow}>
+          <span aria-hidden="true" />
+          <button type="button" className={styles.clearBtn} onClick={onClear}>
             Limpar Tudo
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {cases.length === 0 ? (
         <div className={styles.emptyState}>
@@ -53,9 +52,8 @@ export const HistoryView = ({
             <line x1="16" y1="17" x2="8" y2="17" />
             <polyline points="10 9 9 9 8 9" />
           </svg>
-          <span className={styles.emptyTitle}>Nenhum Caso Registrado</span>
-          <span className={styles.emptySubtitle}>Os atendimentos concluídos serão exibidos aqui de forma segura e local.</span>
-          <span className={styles.disclaimer}>LGPD-compliant (somente iniciais do paciente)</span>
+          <span className={styles.emptyTitle}>Nenhum caso ainda</span>
+          <span className={styles.emptySubtitle}>Os atendimentos concluídos aparecem aqui.</span>
         </div>
       ) : (
         <div className={styles.list}>

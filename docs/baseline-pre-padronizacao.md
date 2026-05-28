@@ -39,12 +39,11 @@ Tool de screenshot **intermitente** nesta sessão (alguns `UnknownVizError`; ref
 
 > Observação: o tool de screenshot mostra a imagem em contexto, **não persiste arquivo** — então a comparação de regressão é visual/in-context (re-screenshot + olho), não diff de pixel salvo. O baseline persistente real = build + este doc + rotas.
 
-## 5. Plano de ROLLBACK (dado que o protótipo é untracked)
-Como o git NÃO cobre o protótipo, o rollback é por uma destas vias (escolher antes de F0.0):
-- **(Recomendado) Commitar o baseline agora** — `git add` do `calcmed-react/` + commit "baseline pré-padronização". Dá rollback real (revert por arquivo/commit) a cada passo seguinte. (Ação não-destrutiva; aguardando OK do Luis — não comito sem autorização.)
-- **OU backup manual por arquivo** — antes de cada edição (F0.0+), copiar o(s) arquivo(s) alvo p/ `.baseline-bak/` e restaurar de lá se preciso.
-- **OU** confiar no histórico do editor/undo (frágil — não recomendado p/ mudanças multi-arquivo).
-- Regra fixa: **nunca** `git reset --hard` / `git checkout .` no workspace (apaga wiki + não recupera protótipo).
+## 5. ROLLBACK — RESOLVIDO ✅ (baseline commitado)
+- **Commit de baseline: `a1d3464`** — `chore(prototipo): baseline snapshot pré-padronização (golden + calcmed-react)`. 239 arquivos (golden `calcmed/` validado com Gustavo + `calcmed-react/`), 0 node_modules/.env/dist. Escopo: só os 2 protótipos (wiki/docs NÃO entraram).
+- **Rollback agora é real:** a cada passo, `git diff a1d3464 -- <arquivo>` mostra o que mudou; `git checkout a1d3464 -- <arquivo>` restaura o "antes". Reverter um passo inteiro = `git revert` do commit do passo.
+- Protocolo de trabalho: **um commit por microtarefa** (F0.0, F0.1a, ...) → cada passo isolado e revertível.
+- Regra fixa: **nunca** `git reset --hard` / `git checkout .` amplo no workspace (apaga wiki não-relacionada). Rollback é sempre **por caminho** (`-- <path>`).
 
 ## 6. Próximo passo (BLOQUEADO até aprovação)
 F-1 concluída. **Tudo a partir daqui (F0.0 tokenizar hardcodes, componentes, StepHeader, templates, shell, ports) está BLOQUEADO até o Luis revisar este baseline e autorizar F0.0.**

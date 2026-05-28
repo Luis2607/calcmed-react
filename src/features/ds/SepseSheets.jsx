@@ -56,7 +56,7 @@ export function SepseSheets() {
         />
       </InfoSheet>
 
-      <InfoSheet open={openKey === 'metas'} onClose={close} title="Metas de ressuscitação" description="Após o bundle inicial" leadingIcon="i">
+      <InfoSheet open={openKey === 'metas'} onClose={close} title="Metas de ressuscitação" description="Após o bundle inicial">
         <SheetList
           items={[
             'PAM ≥ 65 mmHg',

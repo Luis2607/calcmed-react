@@ -696,7 +696,7 @@ export function SepseFlow({ onBack }) {
   const historicoView = (
     <HistoryScreen
       title="Histórico"
-      subtitle="Casos concluídos neste aparelho. Não substitui prontuário (LGPD)."
+      subtitle="Casos concluídos neste aparelho."
       cases={historico}
       onClear={() => { if (window.confirm('Limpar todo o histórico de sepse?')) setHistorico([]); }}
       onCaseClick={(c) => setCasoIdxAberto(historico.indexOf(c))}
@@ -807,7 +807,6 @@ export function SepseFlow({ onBack }) {
         open={!!modal}
         onClose={() => setModalId(null)}
         title={modal?.title}
-        leadingIcon="i"
       >
         {modal && <SepseModalBody blocks={modal.blocks} />}
       </InfoSheet>

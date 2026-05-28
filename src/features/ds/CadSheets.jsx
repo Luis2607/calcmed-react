@@ -56,7 +56,7 @@ export function CadSheets() {
         name="Faixa de K"
       />
 
-      <InfoSheet open={openKey === 'gate'} onClose={close} title="Por que o K bloqueia a insulina?" description="Gate de segurança CAD · prevenção de arritmia" tone="info" leadingIcon="i">
+      <InfoSheet open={openKey === 'gate'} onClose={close} title="Por que o K bloqueia a insulina?" description="Gate de segurança CAD · prevenção de arritmia" tone="info">
         <SheetText>
           A insulina <strong>desloca o potássio</strong> do extracelular para o intracelular. Com K &lt; 3,5 mEq/L, isso pode causar <strong>hipocalemia grave</strong> e arritmias fatais.
         </SheetText>
@@ -65,7 +65,7 @@ export function CadSheets() {
         </SheetAlert>
       </InfoSheet>
 
-      <InfoSheet open={openKey === 'reav'} onClose={close} title="Reavaliação horária" description="Controle do tratamento" leadingIcon="i">
+      <InfoSheet open={openKey === 'reav'} onClose={close} title="Reavaliação horária" description="Controle do tratamento">
         <SheetText>Ao zerar o cronômetro de reavaliação:</SheetText>
         <SheetList
           items={[
@@ -77,7 +77,7 @@ export function CadSheets() {
         />
       </InfoSheet>
 
-      <InfoSheet open={openKey === 'insulina'} onClose={close} title="Como ajustar a insulina" description="Alvo de queda da glicemia" leadingIcon="i">
+      <InfoSheet open={openKey === 'insulina'} onClose={close} title="Como ajustar a insulina" description="Alvo de queda da glicemia">
         <SheetList
           items={[
             'Meta: queda de 50–75 mg/dL por hora',

@@ -83,7 +83,7 @@ export function PcrSheets() {
         <InputField label="Dose · detalhe (opcional)" value={dose} onChange={setDose} placeholder="Ex.: 40 U IV · 100 J sincronizado" />
       </FormSheet>
 
-      <InfoSheet open={openKey === 'ritmos'} onClose={close} title="Ritmos de PCR" description="Chocável × não-chocável" leadingIcon="i">
+      <InfoSheet open={openKey === 'ritmos'} onClose={close} title="Ritmos de PCR" description="Chocável × não-chocável">
         <SheetText>
           Define a conduta imediata: <strong>chocável</strong> → desfibrilar; <strong>não-chocável</strong> → RCP + adrenalina.
         </SheetText>

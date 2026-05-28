@@ -694,7 +694,6 @@ export function SCAFlow({ onBack }) {
         title={INFO_SHEETS[infoSheetKey]?.title}
         description={INFO_SHEETS[infoSheetKey]?.description}
         tone={INFO_SHEETS[infoSheetKey]?.tone}
-        leadingIcon="i"
       >
         {INFO_SHEETS[infoSheetKey]?.paragraphs.map((paragraph) => (
           <SheetText key={paragraph}>{paragraph}</SheetText>

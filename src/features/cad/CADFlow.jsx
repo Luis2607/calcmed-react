@@ -627,7 +627,6 @@ export function CADFlow({ onBack }) {
         title="Por que o K bloqueia a insulina?"
         description="Gate de segurança CAD · prevenção de arritmia"
         tone="info"
-        leadingIcon="i"
       >
         <SheetText>
           A insulina <strong>desloca o potássio</strong> do extracelular para o intracelular. Em pacientes

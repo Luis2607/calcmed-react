@@ -213,7 +213,6 @@ export function ScaSheets() {
         title="Termo de consentimento · fibrinólise"
         description="Exigência INTS pra fibrinólise"
         acknowledgeLabel="Entendi"
-        leadingIcon="i"
       >
         <SheetText>
           Imprimir e colher as assinaturas físicas do paciente/responsável antes de administrar o fibrinolítico.
