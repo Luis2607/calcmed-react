@@ -17,7 +17,8 @@
 
 .head { display: flex; flex-direction: column; gap: var(--esp-2); }
 .tagRow { display: flex; align-items: center; gap: var(--esp-2); flex-wrap: wrap; }
-.title { font: var(--ds-font-subtitulo); color: var(--ds-texto-padrao); } /* Figma subtitulo 18/600/28 */
+.titleRow { display: flex; align-items: center; justify-content: space-between; gap: var(--esp-2); }
+.title { font: var(--ds-font-subtitulo); color: var(--ds-texto-padrao); flex: 1; min-width: 0; } /* Figma subtitulo 18/600/28 */
 .subtitle { font-size: 14px; font-weight: 400; line-height: 20px; color: var(--ds-texto-secundario); }
 
 /* variant plain — golden `.exame-card` (card de seção neutro): gap 12px, título 16/600,

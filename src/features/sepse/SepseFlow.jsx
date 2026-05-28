@@ -95,6 +95,42 @@ const SCORE_DESCRITOR_MODAL = {
   sofa: 'descritor-sofa',
 };
 
+// §11.T4 · DRUG_INFO — Luis 2026-05-28: tag de papel clínico + subtitle rica +
+// InfoButton opcional (só onde há modal específico). Tone de tag varia por escala
+// (golden tons calmos pra primário, mais frios pra resgate/refratário).
+const DRUG_INFO = {
+  ne: {
+    linha: '1ª linha',
+    tone: 'novo',
+    subtitle: 'Acesso venoso calibroso · CVC em até 6 h · titular até PAM alvo. Dose 0,05–3,3 mcg/kg/min.',
+    modal: 'o-que-e-ne',
+  },
+  vaso: {
+    linha: '2ª linha',
+    tone: 'premium',
+    subtitle: 'Após NE ≥ 0,25 mcg/kg/min. Dose fixa 0,03 U/min IV (não titular).',
+    modal: null,
+  },
+  epi: {
+    linha: '3ª linha',
+    tone: 'atencao',
+    subtitle: 'Choque refratário · considerar com NE ≥ 0,5 mcg/kg/min. Dose 0,01–0,5 mcg/kg/min.',
+    modal: null,
+  },
+  dob: {
+    linha: 'Disfunção cardíaca',
+    tone: 'novo',
+    subtitle: 'Hipoperfusão com PAM adequada. Dose 2–20 mcg/kg/min.',
+    modal: null,
+  },
+  hidro: {
+    linha: 'Refratário',
+    tone: 'critico',
+    subtitle: 'Choque refratário com NE ou Adre ≥ 0,25 mcg/kg/min por > 4 h. 200 mg/dia (50 mg 6/6h ou 8 mg/h infusão).',
+    modal: 'o-que-e-hidrocortisona',
+  },
+};
+
 /** Acordeão de um escore (SOFA/NEWS/MEWS) via ScoreCriterionGroup (DS). */
 function ScoreAccordion({ sistemas, stateObj, onSelect, namePrefix }) {
   const [expanded, setExpanded] = useState(null);
@@ -573,24 +609,33 @@ export function SepseFlow({ onBack }) {
     </AlertCard>
   );
 
-  const renderDrugCard = (tipo, nome, role, ativa, painel) => (
-    <ClinicalCard state={ativa ? 'ativo' : 'inativo'} title={nome} subtitle={role}>
-      {ativa ? (
-        <div className={styles.drugPainel}>{painel}</div>
-      ) : (
-        <div className={styles.drugInativaRow}>
-          <span className={styles.drugInativaTexto}>Inativa</span>
-          <Button variant="secondary" onClick={() => s.ativarDroga(tipo)}>+ Iniciar</Button>
-        </div>
-      )}
-    </ClinicalCard>
-  );
+  const renderDrugCard = (tipo, nome, ativa, painel) => {
+    const info = DRUG_INFO[tipo];
+    return (
+      <ClinicalCard
+        state={ativa ? 'ativo' : 'inativo'}
+        tags={[{ label: info.linha, tone: info.tone }]}
+        title={nome}
+        subtitle={info.subtitle}
+        onInfo={info.modal ? () => setModalId(info.modal) : undefined}
+      >
+        {ativa ? (
+          <div className={styles.drugPainel}>{painel}</div>
+        ) : (
+          <div className={styles.drugInativaRow}>
+            <span className={styles.drugInativaTexto}>Inativa</span>
+            <Button variant="secondary" onClick={() => s.ativarDroga(tipo)}>+ Iniciar</Button>
+          </div>
+        )}
+      </ClinicalCard>
+    );
+  };
 
   const t4 = (
     <div className={styles.tela}>
       <StepHeader title="Vasopressores" subtitle="Noradrenalina é 1ª linha. Titule pela PAM alvo." />
 
-      {renderDrugCard('ne', 'Noradrenalina', '1ª linha', s.neAtiva, (
+      {renderDrugCard('ne', 'Noradrenalina', s.neAtiva, (
         <>
           <InputField label="Dose desejada" type="text" mono inputMode="decimal" value={s.neDose} onChange={s.setNeDose} showUnit unit="mcg/kg/min" />
           {renderPrescricao(ne)}
@@ -598,27 +643,27 @@ export function SepseFlow({ onBack }) {
         </>
       ))}
 
-      {renderDrugCard('vaso', 'Vasopressina', '2ª linha · dose fixa', s.vasoAtiva, (
+      {renderDrugCard('vaso', 'Vasopressina', s.vasoAtiva, (
         <AlertCard level="result" title="Prescrição — Vasopressina">
           Vasopressina · <span className={styles.destaque}>0,03 U/min IV</span>, dose fixa (não titular).
         </AlertCard>
       ))}
 
-      {renderDrugCard('epi', 'Adrenalina', '3ª linha', s.epiAtiva, (
+      {renderDrugCard('epi', 'Adrenalina', s.epiAtiva, (
         <>
           <InputField label="Dose desejada" type="text" mono inputMode="decimal" value={s.epiDose} onChange={s.setEpiDose} showUnit unit="mcg/kg/min" />
           {renderPrescricao(epi)}
         </>
       ))}
 
-      {renderDrugCard('dob', 'Dobutamina', 'Disfunção cardíaca', s.dobAtiva, (
+      {renderDrugCard('dob', 'Dobutamina', s.dobAtiva, (
         <>
           <InputField label="Dose desejada" type="text" mono inputMode="decimal" value={s.dobDose} onChange={s.setDobDose} showUnit unit="mcg/kg/min" />
           {renderPrescricao(dob)}
         </>
       ))}
 
-      {renderDrugCard('hidro', 'Hidrocortisona', 'Choque refratário', s.hidroAtiva, (
+      {renderDrugCard('hidro', 'Hidrocortisona', s.hidroAtiva, (
         <AlertCard level="result" title="Prescrição — Hidrocortisona">
           <span className={styles.destaque}>50 mg IV 6/6h</span> (200 mg/dia) ou 8 mg/h em infusão contínua.
         </AlertCard>

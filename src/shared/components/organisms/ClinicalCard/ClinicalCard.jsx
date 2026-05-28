@@ -1,4 +1,5 @@
 import { Tag } from '../../molecules/Tag';
+import { InfoButton } from '../../atoms/InfoButton/InfoButton';
 import styles from './ClinicalCard.module.css';
 
 /**
@@ -13,10 +14,13 @@ import styles from './ClinicalCard.module.css';
  *    gap 12, título 16/600, borda padrão; cobre SectionCard/medCard/setupCard)
  *  - tags: [{ label, tone }] — header tags (Tag status)
  *  - title (18 Semi Bold; 16 no plain), subtitle (14 secundario)
+ *  - onInfo? — opcional (Luis 2026-05-28): renderiza InfoButton "?" no canto superior
+ *    direito do header, alinhado ao título (golden drug-card-vaso tem isso). Usado pelos
+ *    drug-cards do T4 Sepse pra abrir a teoria/explicação da droga.
  *  - children — conteúdo livre
  * Dark via .modo-escuro.
  */
-export const ClinicalCard = ({ state = 'default', variant = 'default', tags = [], title, subtitle, children, className = '' }) => {
+export const ClinicalCard = ({ state = 'default', variant = 'default', tags = [], title, subtitle, onInfo, children, className = '' }) => {
   const cls = [styles.card, styles[`state-${state}`], styles[`variant-${variant}`], className].filter(Boolean).join(' ');
   const hasHeader = (tags && tags.length > 0) || title || subtitle;
   return (
@@ -30,7 +34,12 @@ export const ClinicalCard = ({ state = 'default', variant = 'default', tags = []
               ))}
             </div>
           )}
-          {title && <span className={styles.title}>{title}</span>}
+          {(title || onInfo) && (
+            <div className={styles.titleRow}>
+              {title && <span className={styles.title}>{title}</span>}
+              {onInfo && <InfoButton onClick={onInfo} size={20} />}
+            </div>
+          )}
           {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
         </div>
       )}
