@@ -144,6 +144,12 @@ export function PCRFlow({ onBack }) {
   const adrenElapsedStr = formatDuracao(adrenElapsed);
   const adrenJanela = s.janelaAdren;
 
+  // §F12 · choques derivados da timeline (tag 'choque') — undo-consistente
+  // (registrarChoque.undo remove o último evento, então tudo acompanha o desfazer).
+  const choqueEventos = s.eventos.filter((ev) => ev.tag === 'choque');
+  const choqueCount = choqueEventos.length;
+  const terceiroChoqueEm = choqueCount >= 3 ? choqueEventos[2].hora : null;
+
   // Estados visuais ciclo (B4/B7 · SEM auto-reset · só conta se iniciado)
   const cycleEndReached = compressoesIniciadas && cicloElapsed >= CICLO_MS;
   const cycle30sWarning = compressoesIniciadas && cicloElapsed >= CICLO_MS - 30 * 1000 && !cycleEndReached;
@@ -183,6 +189,36 @@ export function PCRFlow({ onBack }) {
     setToast({ type, message, onUndo });
     setTimeout(() => setToast(null), onUndo ? 5000 : 3500);
   };
+
+  // §F12 Gustavo · NOTIFICAÇÃO ANTECIPADA da próxima medicação (casos ACLS óbvios) — DERIVADO.
+  // Sem setState/timer: a própria condição de tempo abre e fecha o banner (auto-some). Doses em
+  // fraseado adulto (consistente com os cards T2); precisão pediátrica vive na aba ACLS|AHA.
+  // ⚠️ Mapa completo adulto×pediatria (2ª dose amio 150 mg, lidocaína, demais drogas) → F03 Guilherme.
+  let medPrep = null;
+  if (isChocavel(s.ritmo) && terceiroChoqueEm != null && now - terceiroChoqueEm < 30000) {
+    // (a) Amiodarona 300 mg após o 3º choque · FV/TV refratária (ACLS) — visível por 30s.
+    medPrep = { title: 'Prepare Amiodarona 300 mg', description: 'FV/TV refratária · indicada após o 3º choque (ACLS).' };
+  } else if (temAdrenalina && adrenState === 'window-pre' && adrenElapsed >= adrenJanela.inicioMs - 30000) {
+    // (b) Adrenalina chegando na janela · 30s antes de abrir (só após a 1ª dose — F07).
+    medPrep = { title: 'Prepare adrenalina 1 mg', description: `Janela abre em instantes · 1 mg IV/IO a cada ${s.intervaloAdrenalinaMin} min.` };
+  }
+
+  // §F12 · VOZ (TTS) das notificações antecipadas — dispara 1× por marco (flags anti-spam via
+  // hook setters). Banner é derivado acima; aqui só o áudio (gated por audioOn). Mesmo padrão do
+  // effect de alarmes (30s/janela/atrasada) logo acima.
+  useEffect(() => {
+    if (!s.iniciadoEm || s.rce || !s.audioOn) return;
+    if (isChocavel(s.ritmo) && choqueCount >= 3 && !s.avisouAmiodarona) {
+      falar('Prepare amiodarona, trezentos miligramas.');
+      s.setAvisouAmiodarona(true);
+    }
+    if (temAdrenalina && adrenState === 'window-pre' && adrenElapsed >= adrenJanela.inicioMs - 30000 && !s.avisouAdrenPreparar) {
+      falar('Prepare adrenalina, um miligrama.');
+      s.setAvisouAdrenPreparar(true);
+    }
+    // TODO F03 Guilherme · notificações completas adulto×pediatria (mapa de medicação por ritmo/tempo).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [choqueCount, adrenState, adrenElapsed, temAdrenalina, s.ritmo, s.iniciadoEm, s.rce, s.audioOn]);
 
   // ============================================================
   // SAIR (header)
@@ -353,6 +389,16 @@ export function PCRFlow({ onBack }) {
 
   const t2 = (
     <div className={styles.tela}>
+      {/* §F12 · notificação antecipada da próxima medicação (acima do banner de ciclo · auto-some
+          pela janela de tempo · role=alert pra leitor de tela anunciar) */}
+      {medPrep && (
+        <BannerContextual
+          tone="warning"
+          title={medPrep.title}
+          description={medPrep.description}
+          role="alert"
+        />
+      )}
       {renderBanner()}
 
       {/* Card Compressões · F04: aguardando até "Iniciar compressões"; depois running/cycle-end. */}

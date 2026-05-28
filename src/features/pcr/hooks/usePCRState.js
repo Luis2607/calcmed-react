@@ -89,6 +89,13 @@ export function usePCRState() {
   const [avisou30s, setAvisou30s] = useState(false);
   const [avisouAdrenJanela, setAvisouAdrenJanela] = useState(false);
   const [avisouAdrenAtrasada, setAvisouAdrenAtrasada] = useState(false);
+  // §F12 Gustavo · notificação ANTECIPADA da próxima medicação (casos ACLS óbvios).
+  //  - avisouAmiodarona: dispara 1× ao atingir 3º choque (FV/TV refratária). Não reseta por
+  //    ciclo (marco do caso); reseta só em iniciarPCR/resetarEstado.
+  //  - avisouAdrenPreparar: dispara 30s antes da janela de adrenalina abrir. Reseta junto com
+  //    os outros flags de adrenalina (nova janela a cada dose/ciclo).
+  const [avisouAmiodarona, setAvisouAmiodarona] = useState(false);
+  const [avisouAdrenPreparar, setAvisouAdrenPreparar] = useState(false);
 
   // ============================================================
   // DERIVADOS
@@ -113,6 +120,8 @@ export function usePCRState() {
     setAvisou30s(false);
     setAvisouAdrenJanela(false);
     setAvisouAdrenAtrasada(false);
+    setAvisouAmiodarona(false);
+    setAvisouAdrenPreparar(false);
     registrarEvento('PCR iniciada', '');
   };
 
@@ -138,6 +147,7 @@ export function usePCRState() {
     setAvisou30s(false);
     setAvisouAdrenJanela(false);
     setAvisouAdrenAtrasada(false);
+    setAvisouAdrenPreparar(false);
     registrarEvento(`Ciclo ${cicloAtual + 1} iniciado · pulso/ritmo checados`, '');
   };
 
@@ -154,6 +164,7 @@ export function usePCRState() {
     setAdrenalinaCount((c) => c + 1);
     setAvisouAdrenJanela(false);
     setAvisouAdrenAtrasada(false);
+    setAvisouAdrenPreparar(false);
     registrarEvento(`Adrenalina ×${prevCount + 1} · 1 mg IV/IO`, 'droga');
     // Retorna undo: reverte timestamp + count + remove o último evento.
     return () => {
@@ -211,6 +222,9 @@ export function usePCRState() {
     setAvisou30s(false);
     setAvisouAdrenJanela(false);
     setAvisouAdrenAtrasada(false);
+    setAvisouAdrenPreparar(false);
+    // §F12 · avisouAmiodarona NÃO reseta na recidiva: a timeline (eventos) não é limpa, então
+    // choqueCount derivado segue ≥3 e re-disparar seria espúrio. Reseta só em iniciarPCR/reset.
     setTelaAtual(2);
     registrarEvento('RECIDIVA · nova parada', 'marco');
   };
@@ -252,6 +266,8 @@ export function usePCRState() {
     setAvisou30s(false);
     setAvisouAdrenJanela(false);
     setAvisouAdrenAtrasada(false);
+    setAvisouAmiodarona(false);
+    setAvisouAdrenPreparar(false);
   };
 
   const toggleAudio = () => setAudioOn((on) => !on);
@@ -283,6 +299,9 @@ export function usePCRState() {
     // tts flags
     avisou30s, avisouAdrenJanela, avisouAdrenAtrasada,
     setAvisou30s, setAvisouAdrenJanela, setAvisouAdrenAtrasada,
+    // §F12 · flags notificação antecipada
+    avisouAmiodarona, avisouAdrenPreparar,
+    setAvisouAmiodarona, setAvisouAdrenPreparar,
     // fluxo
     iniciarPCR, resetarEstado,
     // constantes derivadas
