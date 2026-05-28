@@ -137,11 +137,19 @@ export function usePCRState() {
 
   const aplicarAdrenalina = () => {
     const now = Date.now();
+    const prevUltima = ultimaAdrenalinaEm;
+    const prevCount = adrenalinaCount;
     setUltimaAdrenalinaEm(now);
     setAdrenalinaCount((c) => c + 1);
     setAvisouAdrenJanela(false);
     setAvisouAdrenAtrasada(false);
-    registrarEvento(`Adrenalina ×${adrenalinaCount + 1} · 1 mg IV/IO`, 'droga');
+    registrarEvento(`Adrenalina ×${prevCount + 1} · 1 mg IV/IO`, 'droga');
+    // Retorna undo: reverte timestamp + count + remove o último evento.
+    return () => {
+      setUltimaAdrenalinaEm(prevUltima);
+      setAdrenalinaCount(prevCount);
+      setEventos((evs) => evs.slice(0, -1));
+    };
   };
 
   /** Anti-double-tap: retorna true se última dose < 30s atrás (modal confirm). */
@@ -151,8 +159,28 @@ export function usePCRState() {
   };
 
   const registrarChoque = (cargaLabel = '200 J') => {
+    const prevDesfibrilado = desfibrilado;
     setDesfibrilado(true);
     registrarEvento(`Choque ${cargaLabel} · ${ritmo.toUpperCase()}`, 'choque');
+    return () => {
+      setDesfibrilado(prevDesfibrilado);
+      setEventos((evs) => evs.slice(0, -1));
+    };
+  };
+
+  const setRitmoComUndo = (novoRitmo) => {
+    const prev = ritmo;
+    setRitmoRaw(novoRitmo);
+    registrarEvento(`Ritmo: ${novoRitmo.toUpperCase()}`, '');
+    return () => {
+      setRitmoRaw(prev);
+      setEventos((evs) => evs.slice(0, -1));
+    };
+  };
+
+  /** Desfaz último evento custom (drogas, procedimento, ritmos atípicos). */
+  const desfazerUltimoEvento = () => {
+    setEventos((evs) => evs.slice(0, -1));
   };
 
   const confirmarRCE = (criterios = []) => {
@@ -225,7 +253,8 @@ export function usePCRState() {
     cicloAtual, cicloIniciadoEm, bpm, audioOn,
     setBpm, toggleAudio, checarPulsoRitmoConfirmado,
     // ritmo
-    ritmo, desfibrilado, setRitmo, registrarChoque,
+    ritmo, desfibrilado, setRitmo, setRitmoComUndo, registrarChoque,
+    desfazerUltimoEvento,
     // adrenalina
     intervaloAdrenalinaMin, ultimaAdrenalinaEm, adrenalinaCount,
     setIntervaloAdrenalinaMin, aplicarAdrenalina, adrenalinaDoubleTap, janelaAdren,

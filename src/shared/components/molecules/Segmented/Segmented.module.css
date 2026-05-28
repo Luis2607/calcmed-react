@@ -17,6 +17,12 @@
   gap: 0;
 }
 
+/* §block · container estica full-width (PCR TimerCard, Sepse sub-tabs) */
+.block {
+  display: flex;
+  width: 100%;
+}
+
 .segment {
   flex: 1;
   border: none;

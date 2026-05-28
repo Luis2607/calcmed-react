@@ -8,9 +8,46 @@
   gap: var(--esp-3);
   padding: var(--esp-3) var(--esp-4);
   border-radius: var(--ds-r-md);
+  border: 1px solid transparent;
   border-left-width: 3px;
   border-left-style: solid;
   box-sizing: border-box;
+}
+
+/* Close button alinhado ao tone do banner (sem fundo branco IconButton ghost) */
+.close {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--ds-r-pill);
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-top: -2px;
+  margin-right: -4px;
+  opacity: 0.7;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.close:hover {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.close:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+.close svg {
+  width: 16px;
+  height: 16px;
 }
 
 .content {

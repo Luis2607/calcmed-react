@@ -1,3 +1,4 @@
+import { InfoButton } from '../../atoms/InfoButton';
 import styles from './TimerCard.module.css';
 
 /**
@@ -9,6 +10,8 @@ import styles from './TimerCard.module.css';
  *   'window-ok' | 'window-overdue'. Sem state, segue o tone (zero mudanca p/ SCA).
  *   idle=mudo · running=primario 2px · cycle-end=critico · window-ok=sucesso ·
  *   window-overdue=critico + pulso (unico diferencial visual vs cycle-end).
+ * - onInfo (opcional · golden PCR `.pcr-info-btn`): botao "?" no header top-right
+ *   ao lado do meta. Abre modal de teoria/explicacao do card (qualidade RCP, adrenalina, etc).
  * Code-first: registrar/sincronizar no Figma quando a familia PCR for portada.
  */
 export function TimerCard({
@@ -18,13 +21,17 @@ export function TimerCard({
   tone = 'primary',
   state,
   meta,
+  onInfo,
   children,
 }) {
   return (
     <section className={styles.card} data-tone={tone} data-state={state}>
       <div className={styles.header}>
         <span className={styles.label}>{label}</span>
-        {meta && <span className={styles.meta}>{meta}</span>}
+        <div className={styles.headerRight}>
+          {meta && <span className={styles.meta}>{meta}</span>}
+          {onInfo && <InfoButton onClick={onInfo} size={20} />}
+        </div>
       </div>
 
       <strong className={`${styles.value} mono`}>{value}</strong>

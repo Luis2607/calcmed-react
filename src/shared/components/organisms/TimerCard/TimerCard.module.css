@@ -19,6 +19,13 @@
   gap: var(--esp-3);
 }
 
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  flex-shrink: 0;
+}
+
 .label,
 .meta {
   font: var(--ds-font-badge); /* Figma texto-badge 11/600/16 (era 11/800) */

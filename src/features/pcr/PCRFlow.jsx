@@ -17,7 +17,7 @@ import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionC
 import { Button } from '../../shared/components/atoms/Button';
 import { FAB } from '../../shared/components/atoms/FAB';
 import { Toast } from '../../shared/components/molecules/Toast';
-import { ConfirmSheet, InfoSheet } from '../../shared/components/overlays/patterns';
+import { ConfirmSheet, InfoSheet, AnnotationSheet } from '../../shared/components/overlays/patterns';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import { usePCRState } from './hooks/usePCRState';
 import {
@@ -77,6 +77,9 @@ export function PCRFlow({ onBack }) {
   // F-PCR-3.6 Adicionar evento
   const [eventoOpen, setEventoOpen] = useState(false);
   const [contadoresEvento, setContadoresEvento] = useState({});
+
+  // §header anotação (FB-05 cross-protocolo)
+  const [anotacaoOpen, setAnotacaoOpen] = useState(false);
   const [toast, setToast] = useState(null);
 
   // Master timer — lazy init evita impure call (React 19)
@@ -109,10 +112,10 @@ export function PCRFlow({ onBack }) {
   if (adrenElapsed >= adrenJanela.fimMs) adrenState = 'window-overdue';
   else if (adrenElapsed >= adrenJanela.inicioMs) adrenState = 'window-ok';
 
-  // Toast helper
-  const showToast = (message, type = 'info') => {
-    setToast({ type, message });
-    setTimeout(() => setToast(null), 3500);
+  // Toast helper — aceita onUndo opcional (NN/g heurística erro reversível).
+  const showToast = (message, type = 'info', onUndo = null) => {
+    setToast({ type, message, onUndo });
+    setTimeout(() => setToast(null), onUndo ? 5000 : 3500);
   };
 
   // ============================================================
@@ -130,13 +133,13 @@ export function PCRFlow({ onBack }) {
   // AÇÕES CLÍNICAS
   // ============================================================
   const onSelecionarRitmo = (ritmo) => {
-    s.setRitmo(ritmo);
+    const undo = s.setRitmoComUndo(ritmo);
     setRitmoOpen(false);
     // §auto-trigger 5H/5T após AESP/Assist (250ms · golden onda 2.2 D36)
     if (isNaoChocavel(ritmo)) {
       setTimeout(() => setHhttOpen(true), 250);
     }
-    showToast(`Ritmo: ${getRitmoLabel(ritmo)}`, isChocavel(ritmo) ? 'warning' : 'info');
+    showToast(`Ritmo: ${getRitmoLabel(ritmo)}`, 'success', undo);
   };
 
   const onAplicarAdrenalina = () => {
@@ -145,22 +148,22 @@ export function PCRFlow({ onBack }) {
       setAdrenDoubleTapOpen(true);
       return;
     }
-    s.aplicarAdrenalina();
-    showToast(`Adrenalina ×${s.adrenalinaCount + 1} aplicada`, 'success');
+    const undo = s.aplicarAdrenalina();
+    showToast(`Adrenalina ×${s.adrenalinaCount + 1} aplicada`, 'success', undo);
   };
 
   const onConfirmAdrenDoubleTap = () => {
     setAdrenDoubleTapOpen(false);
-    s.aplicarAdrenalina();
-    showToast(`Adrenalina ×${s.adrenalinaCount + 1} aplicada`, 'success');
+    const undo = s.aplicarAdrenalina();
+    showToast(`Adrenalina ×${s.adrenalinaCount + 1} aplicada`, 'success', undo);
   };
 
   const onAplicarChoque = (foiAplicado) => {
     setChoqueOpen(false);
     if (foiAplicado) {
       const carga = getCargaInicial(s.idade, s.peso);
-      s.registrarChoque(carga);
-      showToast(`Choque registrado · ${carga}`, 'warning');
+      const undo = s.registrarChoque(carga);
+      showToast(`Choque registrado · ${carga}`, 'success', undo);
     }
   };
 
@@ -281,11 +284,13 @@ export function PCRFlow({ onBack }) {
           ? 'Aja: Checar pulso/ritmo para iniciar próximo ciclo.'
           : `Cadência ${s.bpm}/min · alvo 100-120/min`}
         state={cycleEndReached ? 'cycle-end' : 'running'}
+        onInfo={() => setAclsModalId('qualidade-rcp')}
       >
         <Segmented
           options={SEG_BPM}
           value={s.bpm}
           onChange={s.setBpm}
+          block
         />
       </TimerCard>
 
@@ -302,11 +307,13 @@ export function PCRFlow({ onBack }) {
           ? `Desde a última dose · alvo a cada ${s.intervaloAdrenalinaMin} min`
           : `Janela aberta em ${s.intervaloAdrenalinaMin} min (após início)`}
         state={adrenState}
+        onInfo={() => showToast('Adrenalina · 1 mg IV/IO 3-5 min · diluir 1:10 em SF', 'success')}
       >
         <Segmented
           options={SEG_INTERVALO}
           value={s.intervaloAdrenalinaMin}
           onChange={s.setIntervaloAdrenalinaMin}
+          block
         />
         <Button
           variant={adrenState === 'window-overdue' ? 'danger' : 'primary'}
@@ -828,7 +835,24 @@ export function PCRFlow({ onBack }) {
         title="Modo PCR"
         subtitle={s.iniciadoEm ? `Aberto há ${masterStr}` : 'Aguardando início'}
         onBack={handleSair}
-        actions={[]}
+        actions={[
+          // §header golden: Audio toggle + Anotação (badge se preenchida) · Sair via onBack.
+          {
+            icon: s.audioOn ? 'audio' : 'audio-mute',
+            label: s.audioOn ? 'Áudio ligado' : 'Áudio desligado',
+            onClick: () => {
+              s.toggleAudio();
+              showToast(s.audioOn ? 'Áudio desligado' : 'Áudio ligado', 'info');
+            },
+            active: s.audioOn,
+          },
+          {
+            icon: 'edit',
+            label: 'Anotar',
+            onClick: () => setAnotacaoOpen(true),
+            active: !!s.anotacao?.trim(),
+          },
+        ]}
         chips={chips}
         steps={undefined}
         activeTab={s.abaAtual}
@@ -871,17 +895,40 @@ export function PCRFlow({ onBack }) {
       />
       <HHTTSheet open={hhttOpen} onClose={() => setHhttOpen(false)} />
 
+      {/* Anotação · FB-05 cross-protocolo */}
+      <AnnotationSheet
+        open={anotacaoOpen}
+        onClose={() => setAnotacaoOpen(false)}
+        value={s.anotacao}
+        onChange={s.setAnotacao}
+        onSave={() => {
+          s.setAnotacaoEditadaEm(new Date().toISOString());
+          setAnotacaoOpen(false);
+          showToast('Anotação salva', 'success');
+        }}
+        onClear={() => {
+          s.setAnotacao('');
+          s.setAnotacaoEditadaEm(null);
+        }}
+      />
+
       {/* Adicionar evento · F-PCR-3.6 */}
       <AdicionarEventoSheet
         open={eventoOpen}
         onClose={() => setEventoOpen(false)}
         contadores={contadoresEvento}
         onApply={(evento, tag) => {
-          const nextCount = (contadoresEvento[evento.key] || 0) + 1;
+          const prevCount = contadoresEvento[evento.key] || 0;
+          const nextCount = prevCount + 1;
           setContadoresEvento({ ...contadoresEvento, [evento.key]: nextCount });
           const sufixo = nextCount > 1 ? ` · ${nextCount}ª aplicação` : '';
           s.registrarEvento(`${evento.nome} aplicado${sufixo}`, tag);
-          showToast(`${evento.nome} registrada`, 'success');
+          // Undo: reverte contador + pop último evento.
+          const undo = () => {
+            setContadoresEvento({ ...contadoresEvento, [evento.key]: prevCount });
+            s.desfazerUltimoEvento();
+          };
+          showToast(`${evento.nome} registrada`, 'success', undo);
         }}
       />
 
@@ -959,7 +1006,12 @@ export function PCRFlow({ onBack }) {
       {/* Toast sticky */}
       {toast && (
         <div className={styles.toastWrap}>
-          <Toast type={toast.type} message={toast.message} onDismiss={() => setToast(null)} />
+          <Toast
+            type={toast.type === 'success' ? 'success' : 'error'}
+            message={toast.message}
+            onUndo={toast.onUndo ? () => { toast.onUndo(); setToast(null); } : undefined}
+            onDismiss={() => setToast(null)}
+          />
         </div>
       )}
     </>
