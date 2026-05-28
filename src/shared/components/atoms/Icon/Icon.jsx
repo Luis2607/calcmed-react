@@ -9,6 +9,7 @@ const ALIAS_MAP = {
   'chevronDown': 'dropdown',
   'bookmark': 'favoritar',
   'pencil': 'editar',
+  'edit': 'editar',
   'calculator': 'calculadoras',
   'flow': 'protocolos',
   'barChart': 'escores',
@@ -24,6 +25,17 @@ const ALIAS_MAP = {
   'heartPulse': 'batimento',
   'baby': 'bebe',
   'syringe': 'seringa',
+  // PCR-specific aliases (Luis 2026-05-28 PM5)
+  'plus': 'adicionar',
+  'add': 'adicionar',
+  'zap': 'eletrico',
+  'bolt': 'eletrico',
+  'lightning': 'eletrico',
+  'close': 'fechar',
+  'x': 'fechar',
+  'heart': 'coracao',
+  'volume': 'audio',
+  'volumeOff': 'audio-mute',
 };
 
 export const Icon = ({ name, size = 24, className = '', color = 'currentColor', ...props }) => {
@@ -278,6 +290,32 @@ export const Icon = ({ name, size = 24, className = '', color = 'currentColor', 
           </>
         );
 
+      // 5b. Ações comuns PCR (Luis 2026-05-28 PM5)
+      case 'eletrico':
+        // Raio (lightning bolt) — Desfibrilar
+        return <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />;
+      case 'coracao':
+        // Heart simples (Selecionar ritmo placeholder até §B1 ícones por ritmo)
+        return <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />;
+      case 'audio':
+        // Volume on (3 ondas)
+        return (
+          <>
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+          </>
+        );
+      case 'audio-mute':
+        // Volume off (alto-falante + X)
+        return (
+          <>
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+            <line x1="23" y1="9" x2="17" y2="15" />
+            <line x1="17" y1="9" x2="23" y2="15" />
+          </>
+        );
+
       // 6. Clínicos
       case 'tempo':
         return (
@@ -363,7 +401,7 @@ export const Icon = ({ name, size = 24, className = '', color = 'currentColor', 
     'raio', 'relogio-rapido', 'medidor', 'estetoscopio', 'busca-vazia', 'favoritos-vazio',
     'sem-conexao', 'conteudo-premium', 'plantao-vazio', 'erro-rede', 'erro-timeout',
     'erro-conteudo', 'erro-calculo', 'carregando', 'email', 'whatsapp', 'usuario',
-    'usuarios', 'envelope', 'audio', 'audio-mute', 'coracao-cheio', 'coracao', 'procedimento'
+    'usuarios', 'envelope', 'coracao-cheio', 'procedimento'
   ].includes(resolvedName);
 
   return (

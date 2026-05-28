@@ -162,7 +162,18 @@
 }
 
 .actionBtn:hover { background: var(--ds-borda-padrao); color: var(--ds-texto-padrao); }
-.actionBtnActive { background: var(--ds-interativo-primario); color: var(--ds-texto-sobre-destaque); }
+
+/* Active discreto · Luis 2026-05-28 PM6: NÃO fica teal sólido (era distrativo).
+   Fundo permanece cinza · ícone vira teal · pequena borda accent. */
+.actionBtnActive {
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-interativo-primario);
+  box-shadow: inset 0 0 0 1.5px var(--ds-interativo-primario);
+}
+.actionBtnActive:hover {
+  background: var(--ds-borda-padrao);
+  color: var(--ds-interativo-primario);
+}
 
 .timer {
   display: flex;
