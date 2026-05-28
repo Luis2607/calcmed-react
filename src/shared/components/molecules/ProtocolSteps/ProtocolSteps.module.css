@@ -13,11 +13,13 @@
 }
 /* O passo (step/circle/label) agora é o átomo StepItem. */
 
-/* Linha conectora entre os passos (alinha ao centro do círculo 24 → top 11px) */
+/* Linha conectora entre os passos · centro vertical do círculo (Luis 2026-05-28).
+   .step tem padding-top var(--esp-1)=4 + circle 26px → centro em 17px do topo do row.
+   Connector 2px de altura → margin-top 16px coloca o centro EXATAMENTE no centro do círculo. */
 .connector {
   flex: 1;
   height: 2px;
-  margin-top: 13px;
+  margin-top: var(--esp-4); /* 16px = 4(padding step) + 13(raio) − 1(metade do height) */
   border-radius: 1px;
   background: repeating-linear-gradient(
     90deg,
@@ -28,7 +30,8 @@
   );
   min-width: var(--esp-2);
 }
-.connectorCapsule { margin-top: 19px; }
+/* Capsule active tem altura maior (circle 28px com padding 5) → centro mais embaixo */
+.connectorCapsule { margin-top: calc(var(--esp-5) + 2px); }
 .connectorDot {
   flex: 0 0 4px;
   width: 4px;

@@ -15,6 +15,8 @@ export function ProtocolSteps({ steps = [], current = 1, onStepClick, activePres
           const num = i + 1;
           const completed = num < current;
           const active = num === current;
+          // Conector entre StepItems · "done" = passo anterior completo (Luis 2026-05-28)
+          const showConnector = i < steps.length - 1;
           return (
             <Fragment key={label}>
               <StepItem
@@ -25,6 +27,13 @@ export function ProtocolSteps({ steps = [], current = 1, onStepClick, activePres
                 onClick={() => completed && onStepClick?.(num)}
                 activePresentation={activePresentation}
               />
+              {showConnector && (
+                <span
+                  className={[styles.connector, activePresentation === 'capsule' ? styles.connectorCapsule : ''].filter(Boolean).join(' ')}
+                  data-done={completed ? 'true' : 'false'}
+                  aria-hidden="true"
+                />
+              )}
             </Fragment>
           );
         })}

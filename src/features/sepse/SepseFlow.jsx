@@ -42,12 +42,11 @@ const SCORE_TABS = [
   { value: 'mews', label: 'MEWS' },
   { value: 'sofa', label: 'SOFA' },
 ];
-const SCORE_TITULO = {
-  sirs: 'SIRS · Resposta Inflamatória Sistêmica',
-  news: 'NEWS · Early Warning Score',
-  mews: 'MEWS · Modified Early Warning',
-  sofa: 'SOFA · Sepsis-3',
-};
+// Título FIXO do container (Luis 2026-05-28): o nome do escore ativo já aparece
+// nas ToggleTabs abaixo — duplicar no título do card é redundante. "Escores" deixa
+// claro o intent da seção. O InfoButton ao lado continua dinâmico (abre o modal
+// descritor do escore atualmente selecionado).
+const SCORE_CARD_TITULO = 'Escores';
 // Interpretação por faixa de pontos (golden statusScoreAtivo → ScoreRangeTable)
 const SCORE_FAIXAS = {
   sirs: [
@@ -294,7 +293,11 @@ export function SepseFlow({ onBack }) {
         onInfo={() => setModalId('o-que-e-sepse')}
       />
 
-      <ClinicalCard variant="plain" title={SCORE_TITULO[s.scoreAtivo]}>
+      <ClinicalCard
+        variant="plain"
+        title={SCORE_CARD_TITULO}
+        onInfo={() => setModalId(SCORE_DESCRITOR_MODAL[s.scoreAtivo])}
+      >
         <div className={styles.group}>
           {/* Sub-tabs SIRS/NEWS/MEWS/SOFA · ToggleTab × 4 (§2.4 · Material 3: tabs comutam vista) */}
           <div className={styles.scoreTabs} role="tablist">
@@ -307,10 +310,7 @@ export function SepseFlow({ onBack }) {
               />
             ))}
           </div>
-          <div className={styles.descritorRow}>
-            <AlertCard level="info" showIcon>{SCORE_DESCRITORES[s.scoreAtivo]}</AlertCard>
-            <InfoButton onClick={() => setModalId(SCORE_DESCRITOR_MODAL[s.scoreAtivo])} size={20} />
-          </div>
+          <AlertCard level="info" showIcon>{SCORE_DESCRITORES[s.scoreAtivo]}</AlertCard>
         </div>
 
         {s.scoreAtivo === 'sirs' && (
