@@ -31,6 +31,7 @@ export const RadioGroup = ({
             key={opt.value}
             name={name}
             label={opt.label}
+            description={opt.description}
             checked={selected}
             onChange={() => onChange && onChange(opt.value)}
             disabled={opt.disabled}

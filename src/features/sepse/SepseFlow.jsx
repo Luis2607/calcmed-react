@@ -19,6 +19,7 @@ import { ToggleField } from '../../shared/components/molecules/ToggleField';
 import { InputField } from '../../shared/components/molecules/InputField';
 import { Segmented } from '../../shared/components/molecules/Segmented';
 import { ToggleTab } from '../../shared/components/molecules/ToggleTab';
+import { RadioGroup } from '../../shared/components/molecules/RadioGroup';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { DetailRow } from '../../shared/components/molecules/DetailRow/DetailRow';
 import { ScoreResult } from '../../shared/components/molecules/ScoreResult/ScoreResult';
@@ -70,19 +71,20 @@ const SCORE_FAIXAS = {
     { points: '≥6', label: 'Disfunção grave · Bundle + choque' },
   ],
 };
-// Versão NEWS — OptionCard 2-col (§2.6: 2 opções com descrição clínica importante).
-// A recomendação SSC 2026 fica visível na description sem quebrar o label.
-const NEWS_VERSAO_CARDS = [
-  { value: 'news2', title: 'NEWS2', description: 'Recomendado SSC 2026 · escala 2 SpO₂' },
-  { value: 'news', title: 'NEWS', description: 'Versão original 2012' },
+// Versão NEWS — RadioGroup card + description (Luis 2026-05-28: extensão do DS):
+// affordance de radio + descrição da recomendação SSC 2026 visível inline.
+const NEWS_VERSAO_OPCOES = [
+  { value: 'news2', label: 'NEWS2', description: 'Recomendado SSC 2026 · escala 2 SpO₂' },
+  { value: 'news', label: 'NEWS', description: 'Versão original 2012' },
 ];
 
-// Veredito clínico — OptionCard 1-col com descrição do ramo (§2.6 + conselho unânime).
-const VEREDITO_CARDS = [
-  { value: 'definida', title: 'Sepse definida', description: 'ATB em até 1 hora · diagnóstico alternativo muito improvável.', tone: 'critical' },
-  { value: 'provavel', title: 'Sepse provável', description: 'ATB em até 1 hora · diagnóstico alternativo menos provável.', tone: 'critical' },
-  { value: 'possivel', title: 'Sepse possível', description: 'ATB ≤ 1 h se choque; até 3 h se suspeita persistir.', tone: 'warning' },
-  { value: 'improvavel', title: 'Sepse improvável', description: 'Manter investigação · diagnóstico alternativo mais provável.', tone: 'default' },
+// Veredito clínico — RadioGroup card + description (Luis 2026-05-28: extensão do DS):
+// affordance de radio circle + ramo clínico explícito embaixo.
+const VEREDITO_OPCOES = [
+  { value: 'definida', label: 'Sepse definida', description: 'ATB em até 1 hora · diagnóstico alternativo muito improvável.' },
+  { value: 'provavel', label: 'Sepse provável', description: 'ATB em até 1 hora · diagnóstico alternativo menos provável.' },
+  { value: 'possivel', label: 'Sepse possível', description: 'ATB ≤ 1 h se choque; até 3 h se suspeita persistir.' },
+  { value: 'improvavel', label: 'Sepse improvável', description: 'Manter investigação · diagnóstico alternativo mais provável.' },
 ];
 
 // MODAL ID por descritor de cada escore (para info-button do header do bloco)
@@ -230,7 +232,7 @@ export function SepseFlow({ onBack }) {
     const m = Math.floor((dur % 3600000) / 60000);
     const durationStr = h > 0 ? `${h}h ${m}min` : `${m} min`;
     const meta = s.classificacao
-      ? VEREDITO_CARDS.find((v) => v.value === s.classificacao)?.title
+      ? VEREDITO_OPCOES.find((v) => v.value === s.classificacao)?.label
       : 'Sepse';
     // §11.H · caso salvo com dados ricos pro detalhe (PatientDetail + Timeline)
     const bundleFeitosKeys = Object.keys(s.bundle || {}).filter((k) => s.bundle[k]);
@@ -278,7 +280,7 @@ export function SepseFlow({ onBack }) {
     const linhas = [
       'CalcMed · Sepse encerrada',
       `Paciente: ${caso.initials}`,
-      caso.classificacao ? `Classificação: ${VEREDITO_CARDS.find((v) => v.value === caso.classificacao)?.title}` : null,
+      caso.classificacao ? `Classificação: ${VEREDITO_OPCOES.find((v) => v.value === caso.classificacao)?.label}` : null,
       caso.sofa != null ? `SOFA: ${caso.sofa} pts` : null,
       caso.foco ? `Foco: ${caso.foco}` : null,
       `Duração: ${caso.duration}`,
@@ -348,19 +350,15 @@ export function SepseFlow({ onBack }) {
 
         {s.scoreAtivo === 'news' && (
           <div className={styles.group}>
-            {/* Versão NEWS · OptionCard 2-col (§2.6: 2 opções com descrição clínica importante) */}
-            <SectionLabel>Versão</SectionLabel>
-            <div className={styles.versaoGrid}>
-              {NEWS_VERSAO_CARDS.map((opt) => (
-                <OptionCard
-                  key={opt.value}
-                  title={opt.title}
-                  description={opt.description}
-                  selected={(s.news.versao || 'news2') === opt.value}
-                  onClick={() => s.setNews({ ...s.news, versao: opt.value })}
-                />
-              ))}
-            </div>
+            {/* Versão NEWS · RadioGroup card 2-col + description (extensão DS — Luis 2026-05-28) */}
+            <RadioGroup
+              label="Versão"
+              name="news-versao"
+              options={NEWS_VERSAO_OPCOES}
+              value={s.news.versao || 'news2'}
+              onChange={(v) => s.setNews({ ...s.news, versao: v })}
+              columns={2}
+            />
             {/* O₂ suplementar · ScoreCriterionGroup binary (mesma anatomia do SIRS) */}
             <ScoreCriterionGroup
               systemName={newsO2supl.nome}
@@ -403,19 +401,15 @@ export function SepseFlow({ onBack }) {
           <SectionLabel>Veredito clínico</SectionLabel>
           <InfoButton onClick={() => setModalId('o-que-e-classificacao')} size={20} />
         </div>
-        {/* Veredito · OptionCard 1 col com descrição do ramo clínico (§2.6 · conselho unânime) */}
-        <div className={styles.vereditoStack}>
-          {VEREDITO_CARDS.map((v) => (
-            <OptionCard
-              key={v.value}
-              title={v.title}
-              description={v.description}
-              tone={v.tone}
-              selected={s.classificacao === v.value}
-              onClick={() => s.definirVeredito(v.value)}
-            />
-          ))}
-        </div>
+        {/* Veredito · RadioGroup card 1 col + description (extensão DS — Luis 2026-05-28).
+            Affordance forte de radio circle + ramo clínico explícito embaixo. */}
+        <RadioGroup
+          name="veredito"
+          options={VEREDITO_OPCOES}
+          value={s.classificacao}
+          onChange={s.definirVeredito}
+          columns={1}
+        />
       </div>
     </div>
   );
@@ -783,7 +777,7 @@ export function SepseFlow({ onBack }) {
     if (!casoAberto) return null;
     const c = casoAberto;
     const protocolLabel = c.classificacao
-      ? `Sepse · ${VEREDITO_CARDS.find((v) => v.value === c.classificacao)?.title?.toLowerCase() || ''}`
+      ? `Sepse · ${(VEREDITO_OPCOES.find((v) => v.value === c.classificacao)?.label || '').toLowerCase()}`
       : 'Sepse';
     const summary = [
       { label: 'Encerrado em', value: c.date },

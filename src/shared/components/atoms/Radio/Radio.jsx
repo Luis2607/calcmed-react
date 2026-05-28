@@ -5,6 +5,7 @@ export const Radio = ({
   onChange,
   disabled = false,
   label,
+  description,
   name,
   value,
   className = '',
@@ -12,6 +13,7 @@ export const Radio = ({
 }) => {
   const containerClass = [
     styles.container,
+    description ? styles.containerWithDescription : '',
     disabled ? styles.disabled : '',
     className
   ].filter(Boolean).join(' ');
@@ -33,7 +35,12 @@ export const Radio = ({
           {checked && <span className={styles.dot} />}
         </span>
       </span>
-      {label && <span className={styles.label}>{label}</span>}
+      {(label || description) && (
+        <span className={styles.text}>
+          {label && <span className={styles.label}>{label}</span>}
+          {description && <span className={styles.description}>{description}</span>}
+        </span>
+      )}
     </label>
   );
 };

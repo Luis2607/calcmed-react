@@ -11,6 +11,15 @@
   box-sizing: border-box;
 }
 
+/* Quando há description, alinhar ao topo (radio + texto em coluna) — Luis 2026-05-28 */
+.containerWithDescription { align-items: flex-start; }
+.containerWithDescription .radioWrapper { margin-top: 2px; }
+
+/* Texto · label + description em coluna (modo descrito) */
+.text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.label { font-size: 14px; font-weight: 600; color: var(--ds-texto-padrao); }
+.description { font-size: 12px; line-height: 16px; color: var(--ds-texto-secundario); }
+
 .disabled {
   opacity: 0.5;
   cursor: not-allowed;
