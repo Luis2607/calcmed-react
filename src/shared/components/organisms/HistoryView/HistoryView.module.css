@@ -60,6 +60,20 @@
   box-shadow: var(--sombra-cartao);
 }
 
+/* Quando `onCaseClick` ativa o card vira <button> — reset visual + cursor. */
+.cardButton {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.cardButton:focus-visible {
+  outline: 2px solid var(--ds-interativo-primario);
+  outline-offset: 2px;
+}
+
 /* PATIENT INFO ROW */
 .cardHeader {
   display: flex;

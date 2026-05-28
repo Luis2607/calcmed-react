@@ -100,3 +100,15 @@
   color: var(--ds-texto-secundario);
   font: var(--ds-font-corpo-2);
 }
+
+/* descritor do escore + InfoButton alinhados (T1) */
+.descritorRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--esp-2);
+}
+
+.descritorRow > :first-child {
+  flex: 1;
+  min-width: 0;
+}

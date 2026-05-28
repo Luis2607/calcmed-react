@@ -18,16 +18,19 @@ import { Button } from '../../shared/components/atoms/Button';
 import { Toggle } from '../../shared/components/atoms/Toggle/Toggle';
 import { InputField } from '../../shared/components/molecules/InputField';
 import { Segmented } from '../../shared/components/molecules/Segmented';
+import { Select } from '../../shared/components/molecules/Select';
 import { RadioGroup } from '../../shared/components/molecules/RadioGroup';
 import { CheckboxGroup } from '../../shared/components/molecules/CheckboxGroup';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { DetailRow } from '../../shared/components/molecules/DetailRow/DetailRow';
 import { ScoreResult } from '../../shared/components/molecules/ScoreResult/ScoreResult';
+import { ScoreRangeTable } from '../../shared/components/molecules/ScoreRangeTable';
 import { ScoreCriterionGroup } from '../../shared/components/organisms/ScoreCriterionGroup/ScoreCriterionGroup';
+import { ScoreCriterion } from '../../shared/components/organisms/ScoreCriterion/ScoreCriterion';
 import { AlertCard } from '../../shared/components/organisms/AlertCard';
 import { ChecklistBlock } from '../../shared/components/organisms/ChecklistBlock';
 import { ClinicalCard } from '../../shared/components/organisms/ClinicalCard';
-import { InfoSheet, ConfirmSheet, FormSheet, AnnotationSheet } from '../../shared/components/overlays/patterns';
+import { InfoSheet, ConfirmSheet, FormSheet, AnnotationSheet, SelectSheet } from '../../shared/components/overlays/patterns';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import styles from './SepseFlow.module.css';
 
@@ -38,12 +41,54 @@ const SCORE_TABS = [
   { value: 'mews', label: 'MEWS' },
   { value: 'sofa', label: 'SOFA' },
 ];
+const SCORE_TITULO = {
+  sirs: 'SIRS · Resposta Inflamatória Sistêmica',
+  news: 'NEWS · Early Warning Score',
+  mews: 'MEWS · Modified Early Warning',
+  sofa: 'SOFA · Sepsis-3',
+};
+// Interpretação por faixa de pontos (golden statusScoreAtivo → ScoreRangeTable)
+const SCORE_FAIXAS = {
+  sirs: [
+    { points: '0-1', label: 'SIRS improvável' },
+    { points: '2', label: 'SIRS presente' },
+    { points: '3', label: 'Resposta inflamatória importante' },
+    { points: '4', label: 'Resposta inflamatória intensa' },
+  ],
+  news: [
+    { points: '0-4', label: 'Baixo risco de deterioração' },
+    { points: '5-6', label: 'Risco moderado · avaliar SOFA' },
+    { points: '≥7', label: 'Risco alto · avaliar sepse' },
+  ],
+  mews: [
+    { points: '0-4', label: 'Baixo risco' },
+    { points: '≥5', label: 'Risco alto · avaliar SOFA' },
+  ],
+  sofa: [
+    { points: '0', label: 'Aguardando preenchimento' },
+    { points: '<2', label: 'Sem disfunção · vigilância' },
+    { points: '2-5', label: 'Disfunção · iniciar Bundle 1h' },
+    { points: '≥6', label: 'Disfunção grave · Bundle + choque' },
+  ],
+};
+const NEWS_VERSAO_OPCOES = [
+  { value: 'news2', label: 'NEWS2', description: '2017 — recomendado (escala 2 SpO₂ para hipoxemia crônica)' },
+  { value: 'news', label: 'NEWS', description: 'Versão original (2012)' },
+];
 const VEREDITO_OPCOES = [
   { value: 'definida', label: 'Sepse definida' },
   { value: 'provavel', label: 'Sepse provável' },
   { value: 'possivel', label: 'Sepse possível' },
   { value: 'improvavel', label: 'Sepse improvável' },
 ];
+
+// MODAL ID por descritor de cada escore (para info-button do header do bloco)
+const SCORE_DESCRITOR_MODAL = {
+  sirs: 'descritor-sirs',
+  news: 'descritor-news',
+  mews: 'descritor-mews',
+  sofa: 'descritor-sofa',
+};
 
 /** Acordeão de um escore (SOFA/NEWS/MEWS) via ScoreCriterionGroup (DS). */
 function ScoreAccordion({ sistemas, stateObj, onSelect, namePrefix }) {
@@ -73,6 +118,7 @@ export function SepseFlow({ onBack }) {
 
   const [modalId, setModalId] = useState(null);
   const [anotarOpen, setAnotarOpen] = useState(false);
+  const [newsVersaoOpen, setNewsVersaoOpen] = useState(false);
   const [sairOpen, setSairOpen] = useState(false);
   const [encerrarOpen, setEncerrarOpen] = useState(false);
   const [iniciais, setIniciais] = useState('');
@@ -142,37 +188,68 @@ export function SepseFlow({ onBack }) {
   const modal = modalId ? SEPSE_MODAIS[modalId] : null;
 
   // ====================== T1 · TRIAGEM ======================
+  // NEWS sem o2supl (vira ScoreCriterion checkbox embaixo) — separa pro accordion
+  const newsAccordionSistemas = NEWS_SISTEMAS.filter((sis) => sis.key !== 'o2supl');
+  const newsO2supl = NEWS_SISTEMAS.find((sis) => sis.key === 'o2supl');
+  const o2suplChecked = s.news.o2supl === 1;
+
   const t1 = (
     <div className={styles.tela}>
       <StepHeader
         title="Triagem e classificação"
         subtitle="Escore de screening + veredito clínico. Sepse é diagnóstico clínico."
+        onInfo={() => setModalId('o-que-e-sepse')}
       />
 
-      <div className={styles.stack}>
-        <Segmented options={SCORE_TABS} value={s.scoreAtivo} onChange={s.setScoreAtivo} />
-        <AlertCard level="info" showIcon>{SCORE_DESCRITORES[s.scoreAtivo]}</AlertCard>
+      <ClinicalCard variant="plain" title={SCORE_TITULO[s.scoreAtivo]}>
+        <div className={styles.group}>
+          <RadioGroup
+            name="score-tab"
+            options={SCORE_TABS}
+            value={s.scoreAtivo}
+            onChange={s.setScoreAtivo}
+            columns={2}
+          />
+          <div className={styles.descritorRow}>
+            <AlertCard level="info" showIcon>{SCORE_DESCRITORES[s.scoreAtivo]}</AlertCard>
+            <InfoButton onClick={() => setModalId(SCORE_DESCRITOR_MODAL[s.scoreAtivo])} size={20} />
+          </div>
+        </div>
 
         {s.scoreAtivo === 'sirs' && (
-          <CheckboxGroup
-            options={SIRS_ITENS.map((it) => ({ value: it.key, label: it.label }))}
-            value={SIRS_ITENS.filter((it) => s.sirs[it.key]).map((it) => it.key)}
-            onChange={(arr) => SIRS_ITENS.forEach((it) => {
-              if (!!s.sirs[it.key] !== arr.includes(it.key)) s.toggleSirs(it.key);
-            })}
-          />
+          <div className={styles.group}>
+            {SIRS_ITENS.map((it) => (
+              <ScoreCriterion
+                key={it.key}
+                type="checkbox"
+                label={it.label}
+                points="+1"
+                checked={!!s.sirs[it.key]}
+                onChange={() => s.toggleSirs(it.key)}
+              />
+            ))}
+          </div>
         )}
 
         {s.scoreAtivo === 'news' && (
-          <>
-            <Segmented
+          <div className={styles.group}>
+            <Select
               label="Versão"
-              options={[{ value: 'news2', label: 'NEWS2' }, { value: 'news', label: 'NEWS' }]}
-              value={s.news.versao || 'news2'}
-              onChange={(v) => s.setNews({ ...s.news, versao: v })}
+              value={s.news.versao === 'news' ? 'NEWS (original 2012)' : 'NEWS2 (2017 — recomendado)'}
+              onClick={() => setNewsVersaoOpen(true)}
             />
-            <ScoreAccordion sistemas={NEWS_SISTEMAS} stateObj={s.news} onSelect={s.setNewsNivel} namePrefix="news" />
-          </>
+            <ScoreCriterion
+              type="checkbox"
+              label={newsO2supl.nome}
+              points={`+${newsO2supl.niveis[1].pts}`}
+              checked={o2suplChecked}
+              onChange={(next) => {
+                s.marcarInicio();
+                s.setNews({ ...s.news, o2supl: next ? 1 : null });
+              }}
+            />
+            <ScoreAccordion sistemas={newsAccordionSistemas} stateObj={s.news} onSelect={s.setNewsNivel} namePrefix="news" />
+          </div>
         )}
 
         {s.scoreAtivo === 'mews' && (
@@ -189,7 +266,9 @@ export function SepseFlow({ onBack }) {
           riskLabel={s.status.texto}
           pointsLabel={s.total === 1 ? 'ponto' : 'pontos'}
         />
-      </div>
+
+        <ScoreRangeTable title="Interpretação" rows={SCORE_FAIXAS[s.scoreAtivo]} />
+      </ClinicalCard>
 
       <AlertCard level="critical" title="Sepse é diagnóstico clínico">
         Nenhum escore isolado decide. Combine o escore com a avaliação clínica e o seu julgamento à beira-leito.
@@ -205,6 +284,7 @@ export function SepseFlow({ onBack }) {
           options={VEREDITO_OPCOES}
           value={s.classificacao}
           onChange={s.definirVeredito}
+          columns={2}
         />
       </div>
     </div>
@@ -551,7 +631,7 @@ export function SepseFlow({ onBack }) {
         title="Modo Sepse"
         subtitle={elapsedStr ? `Aberto há ${elapsedStr}` : 'Protocolo de sepse'}
         onBack={handleSair}
-        actions={[{ icon: 'edit', label: 'Anotar', onClick: () => setAnotarOpen(true) }]}
+        actions={[{ icon: 'edit', label: 'Anotar', onClick: () => setAnotarOpen(true), active: !!s.anotacao?.trim() }]}
         chips={chips}
         steps={STEPS}
         currentStep={s.telaAtual}
@@ -579,6 +659,18 @@ export function SepseFlow({ onBack }) {
         value={s.anotacao}
         onChange={s.setAnotacao}
         onSave={() => { s.setAnotacaoEditadaEm(new Date().toISOString()); setAnotarOpen(false); }}
+        onClear={() => { s.setAnotacao(''); s.setAnotacaoEditadaEm(null); }}
+      />
+
+      <SelectSheet
+        open={newsVersaoOpen}
+        onClose={() => setNewsVersaoOpen(false)}
+        title="Versão NEWS"
+        description="O NEWS2 é recomendado pela SSC 2026 — adiciona escala 2 SpO₂ para hipoxemia crônica."
+        value={s.news.versao || 'news2'}
+        onChange={(v) => s.setNews({ ...s.news, versao: v })}
+        name="Versão"
+        options={NEWS_VERSAO_OPCOES}
       />
 
       <ConfirmSheet

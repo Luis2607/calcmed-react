@@ -1,8 +1,15 @@
 import styles from './HistoryView.module.css';
 
+/**
+ * Organism: HistoryView.
+ * Lista de casos com cabecalho + Limpar Tudo + empty-state. Aprovado DS.2 (Luis):
+ * quando `onCaseClick` for passada, cada card vira <button> clivavel; sem ela,
+ * preserva o comportamento atual (div estatico).
+ */
 export const HistoryView = ({
   cases = [],
   onClear,
+  onCaseClick,
   ...props
 }) => {
   // Map status values to Tag Status classes
@@ -52,25 +59,44 @@ export const HistoryView = ({
         </div>
       ) : (
         <div className={styles.list}>
-          {cases.map((c) => (
-            <div key={c.id} className={styles.card}>
-              <div className={styles.cardHeader}>
-                <div className={styles.patientInfo}>
-                  <span className={styles.initials}>{c.initials}</span>
-                  <span className={styles.date}>{c.date}</span>
+          {cases.map((c) => {
+            const inner = (
+              <>
+                <div className={styles.cardHeader}>
+                  <div className={styles.patientInfo}>
+                    <span className={styles.initials}>{c.initials}</span>
+                    <span className={styles.date}>{c.date}</span>
+                  </div>
+                  <span className={`${styles.statusTag} ${getStatusClass(c.status)}`}>
+                    {c.status}
+                  </span>
                 </div>
-                <span className={`${styles.statusTag} ${getStatusClass(c.status)}`}>
-                  {c.status}
-                </span>
-              </div>
-              <div className={styles.cardBody}>
-                <div className={styles.metaItem}>
-                  <span className={styles.metaLabel}>Duração:</span>
-                  <span className={styles.metaValue}>{c.duration}</span>
+                <div className={styles.cardBody}>
+                  <div className={styles.metaItem}>
+                    <span className={styles.metaLabel}>Duração:</span>
+                    <span className={styles.metaValue}>{c.duration}</span>
+                  </div>
                 </div>
+              </>
+            );
+            if (onCaseClick) {
+              return (
+                <button
+                  key={c.id}
+                  type="button"
+                  className={`${styles.card} ${styles.cardButton}`}
+                  onClick={() => onCaseClick(c)}
+                >
+                  {inner}
+                </button>
+              );
+            }
+            return (
+              <div key={c.id} className={styles.card}>
+                {inner}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
