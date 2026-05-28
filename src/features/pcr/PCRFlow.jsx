@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ProtocolShell } from '../../shared/components/templates/ProtocolShell/ProtocolShell';
 import { HistoryScreen } from '../../shared/components/templates/HistoryScreen/HistoryScreen';
 import { StepHeader } from '../../shared/components/molecules/StepHeader/StepHeader';
@@ -31,8 +31,9 @@ import {
 import {
   SelecionarRitmoSheet, AplicarChoqueSheet, ConfirmarRCESheet,
   EncerrarSemRCESheet, PausarSheet, CheckarPulsoRitmoSheet,
-  AdrenDoubleTapSheet, HHTTSheet, AdicionarEventoSheet,
+  AdrenDoubleTapSheet, HHTTSheet, AdicionarEventoSheet, OutroEventoSheet,
 } from './pcrModais';
+import { iniciarMetronomo, pararMetronomo, falar, pararFala } from './pcrAudio';
 import styles from './PCRFlow.module.css';
 
 const PCR_TABS = [
@@ -76,10 +77,47 @@ export function PCRFlow({ onBack }) {
   const [aclsModalId, setAclsModalId] = useState(null);
   // F-PCR-3.6 Adicionar evento
   const [eventoOpen, setEventoOpen] = useState(false);
+  const [outroOpen, setOutroOpen] = useState(false);
   const [contadoresEvento, setContadoresEvento] = useState({});
+  const [eventosCustom, setEventosCustom] = useState([]);
 
   // §header anotação (FB-05 cross-protocolo)
   const [anotacaoOpen, setAnotacaoOpen] = useState(false);
+
+  // §D27 golden · ao iniciar PCR, auto-abre Selecionar Ritmo em 350ms + TTS
+  // (cronômetro já está rodando em background)
+  useEffect(() => {
+    if (s.iniciadoEm && s.telaAtual === 2 && s.ritmo === 'na' && !ritmoOpen) {
+      if (s.audioOn) {
+        falar('PCR iniciada. Inicie compressões.');
+      }
+      const id = setTimeout(() => setRitmoOpen(true), 350);
+      return () => clearTimeout(id);
+    }
+    return undefined;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [s.iniciadoEm, s.telaAtual, s.ritmo]);
+
+  // §golden TTS alarmes (anti-spam via flags do state) — 30s · janela aberta · atrasada
+  useEffect(() => {
+    if (!s.iniciadoEm || s.rce || !s.audioOn) return;
+    // 30s antes do marco 2:00
+    if (cicloElapsed >= CICLO_MS - 30000 && cicloElapsed < CICLO_MS && !s.avisou30s) {
+      falar('Trinta segundos. Prepare o desfibrilador.');
+      s.setAvisou30s(true);
+    }
+    // Janela adrenalina aberta
+    if (adrenState === 'window-ok' && !s.avisouAdrenJanela) {
+      falar('Janela de adrenalina aberta.');
+      s.setAvisouAdrenJanela(true);
+    }
+    // Adrenalina atrasada
+    if (adrenState === 'window-overdue' && !s.avisouAdrenAtrasada) {
+      falar('Atenção. Adrenalina atrasada.');
+      s.setAvisouAdrenAtrasada(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cicloElapsed, adrenState, s.audioOn, s.iniciadoEm, s.rce]);
   const [toast, setToast] = useState(null);
 
   // Master timer — lazy init evita impure call (React 19)
@@ -90,16 +128,34 @@ export function PCRFlow({ onBack }) {
     return () => clearInterval(id);
   }, [s.iniciadoEm]);
 
+  // §Áudio runtime · metrônomo segue bpm + audioOn (cleanup ao desligar).
+  useEffect(() => {
+    if (s.audioOn && s.iniciadoEm && !s.rce) {
+      iniciarMetronomo(s.bpm);
+    } else {
+      pararMetronomo();
+    }
+    return () => pararMetronomo();
+  }, [s.audioOn, s.iniciadoEm, s.bpm, s.rce]);
+
+  // §RCE detectado → para metrônomo + TTS
+  useEffect(() => {
+    if (s.rce && s.audioOn) {
+      pararMetronomo();
+      falar('Retorno da circulação espontânea confirmado. Inicie os cuidados pós-parada.');
+    }
+  }, [s.rce, s.audioOn]);
+
   // Calculados (ciclo + adrenalina)
-  const masterElapsed = useMemo(() => (s.iniciadoEm ? now - s.iniciadoEm : 0), [s.iniciadoEm, now]);
+  const masterElapsed = s.iniciadoEm ? now - s.iniciadoEm : 0;
   const masterStr = formatDuracao(masterElapsed);
 
-  const cicloElapsed = useMemo(() => (s.cicloIniciadoEm ? now - s.cicloIniciadoEm : 0), [s.cicloIniciadoEm, now]);
+  const cicloElapsed = s.cicloIniciadoEm ? now - s.cicloIniciadoEm : 0;
   const cicloElapsedStr = formatDuracao(cicloElapsed);
 
   // Adrenalina · referência = última dose ou início do caso
   const adrenRef = s.ultimaAdrenalinaEm || s.iniciadoEm;
-  const adrenElapsed = useMemo(() => (adrenRef ? now - adrenRef : 0), [adrenRef, now]);
+  const adrenElapsed = adrenRef ? now - adrenRef : 0;
   const adrenElapsedStr = formatDuracao(adrenElapsed);
   const adrenJanela = s.janelaAdren;
 
@@ -285,6 +341,7 @@ export function PCRFlow({ onBack }) {
           : `Cadência ${s.bpm}/min · alvo 100-120/min`}
         state={cycleEndReached ? 'cycle-end' : 'running'}
         onInfo={() => setAclsModalId('qualidade-rcp')}
+        size="lg"
       >
         <Segmented
           options={SEG_BPM}
@@ -308,6 +365,7 @@ export function PCRFlow({ onBack }) {
           : `Janela aberta em ${s.intervaloAdrenalinaMin} min (após início)`}
         state={adrenState}
         onInfo={() => showToast('Adrenalina · 1 mg IV/IO 3-5 min · diluir 1:10 em SF', 'success')}
+        size="lg"
       >
         <Segmented
           options={SEG_INTERVALO}
@@ -841,8 +899,14 @@ export function PCRFlow({ onBack }) {
             icon: s.audioOn ? 'audio' : 'audio-mute',
             label: s.audioOn ? 'Áudio ligado' : 'Áudio desligado',
             onClick: () => {
+              const proximo = !s.audioOn;
               s.toggleAudio();
-              showToast(s.audioOn ? 'Áudio desligado' : 'Áudio ligado', 'info');
+              if (proximo) {
+                falar('Áudio ligado');
+              } else {
+                pararFala();
+                pararMetronomo();
+              }
             },
             active: s.audioOn,
           },
@@ -912,11 +976,12 @@ export function PCRFlow({ onBack }) {
         }}
       />
 
-      {/* Adicionar evento · F-PCR-3.6 */}
+      {/* Adicionar evento · F-PCR-3.6 · após aplicar, fecha sheet + toast com Undo */}
       <AdicionarEventoSheet
         open={eventoOpen}
         onClose={() => setEventoOpen(false)}
         contadores={contadoresEvento}
+        eventosCustom={eventosCustom}
         onApply={(evento, tag) => {
           const prevCount = contadoresEvento[evento.key] || 0;
           const nextCount = prevCount + 1;
@@ -928,7 +993,36 @@ export function PCRFlow({ onBack }) {
             setContadoresEvento({ ...contadoresEvento, [evento.key]: prevCount });
             s.desfazerUltimoEvento();
           };
+          // §Luis PM4 · auto-fecha + volta pra T2 + toast undo (NN/g visibility)
+          setEventoOpen(false);
           showToast(`${evento.nome} registrada`, 'success', undo);
+        }}
+        onOutro={() => {
+          setEventoOpen(false);
+          setOutroOpen(true);
+        }}
+      />
+
+      {/* Outro evento custom · golden abrirEventoCustomizado */}
+      <OutroEventoSheet
+        open={outroOpen}
+        onClose={() => setOutroOpen(false)}
+        onAdd={({ nome, dose }) => {
+          const novoKey = `custom-${Date.now()}`;
+          const novoCard = { key: novoKey, nome, dose };
+          setEventosCustom([...eventosCustom, novoCard]);
+          // aplica imediato
+          const prevCount = 0;
+          setContadoresEvento({ ...contadoresEvento, [novoKey]: 1 });
+          const labelTexto = dose ? `${nome} · ${dose}` : nome;
+          s.registrarEvento(labelTexto, 'droga');
+          const undo = () => {
+            setEventosCustom(eventosCustom);
+            setContadoresEvento({ ...contadoresEvento, [novoKey]: prevCount });
+            s.desfazerUltimoEvento();
+          };
+          setOutroOpen(false);
+          showToast(`${nome} registrado`, 'success', undo);
         }}
       />
 

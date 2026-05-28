@@ -42,6 +42,13 @@
   letter-spacing: 0;
 }
 
+/* §size=lg · PCR foco (Compressões/Adrenalina cronômetro é o highlight da tela).
+   Reusa token --ds-font-crono-mestre (56px) — mesma escala do header timer. */
+.card[data-size='lg'] .value {
+  font: var(--ds-font-crono-mestre);
+  letter-spacing: 0;
+}
+
 .description {
   color: var(--ds-texto-secundario);
   font-size: var(--fonte-tamanho-corpo);

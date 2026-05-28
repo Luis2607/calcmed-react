@@ -1,39 +1,23 @@
-/* EventoCardNovo — molecule code-first (F-PCR-2.10 · DS). Tokens-only. */
+/* EventoCardNovo — molecule code-first (F-PCR-2.10 · DS · refatorado PM4).
+   Card info-only + botão "+" teal à direita (único tap target). Tokens-only. */
 
 .card {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--esp-3);
   width: 100%;
-  padding: var(--esp-3) var(--esp-4);
+  padding: var(--esp-3) var(--esp-3) var(--esp-3) var(--esp-4);
   border: 1px solid var(--ds-cartao-borda);
   border-radius: var(--ds-r-md);
   background: var(--ds-fundo-cartao);
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s, transform 0.08s;
   font-family: var(--fonte-base);
-  text-align: left;
   box-sizing: border-box;
+  transition: border-color 0.15s, background 0.15s;
 }
 
-.card:hover:not(:disabled) {
+/* Accent border quando já aplicou pelo menos 1× (golden) */
+.card[data-applied="true"] {
   border-color: var(--ds-interativo-primario);
-  background: var(--interativo-primario-tint-04, var(--ds-fundo-cartao));
-}
-
-.card:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
-.card:focus-visible {
-  outline: 2px solid var(--ds-interativo-primario);
-  outline-offset: 2px;
-}
-
-.card:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
 }
 
 .body {
@@ -56,4 +40,46 @@
   font-size: var(--fonte-tamanho-auxiliar);
   font-weight: 500;
   line-height: 18px;
+}
+
+/* Botão "+" teal circular · 40x40 touch target (PCR override ≥48dp aceito 40 aqui pq embed em modal) */
+.applyBtn {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--ds-r-pill);
+  border: none;
+  background: var(--ds-interativo-primario);
+  color: var(--ds-texto-sobre-destaque);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.08s, background 0.15s;
+}
+
+.applyBtn:hover:not(:disabled) {
+  background: var(--interativo-primario-hover, var(--ds-interativo-primario));
+  transform: scale(1.05);
+}
+
+.applyBtn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.applyBtn:focus-visible {
+  outline: 2px solid var(--ds-interativo-primario);
+  outline-offset: 2px;
+}
+
+.applyBtn:disabled {
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-terciario);
+  cursor: not-allowed;
+}
+
+.applyBtn svg {
+  width: 20px;
+  height: 20px;
 }

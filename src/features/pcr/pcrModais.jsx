@@ -3,6 +3,7 @@
  * Cada modal é função componente que recebe (state, callbacks).
  * Padrão: BottomSheet via patterns (Confirm/Info/Decision).
  */
+import { useState } from 'react';
 import { ConfirmSheet, InfoSheet } from '../../shared/components/overlays/patterns';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { SheetSection, SheetText, SheetList } from '../../shared/components/molecules/sheet';
@@ -10,6 +11,7 @@ import { HHTTPills } from '../../shared/components/molecules/HHTTPills';
 import { HHTT_ITEMS } from '../../shared/components/molecules/HHTTPills/hhttData';
 import { BottomSheet } from '../../shared/components/overlays/BottomSheet';
 import { EventoCardNovo } from '../../shared/components/molecules/EventoCardNovo';
+import { InputField } from '../../shared/components/molecules/InputField';
 import { SectionLabel } from '../../shared/components/atoms/SectionLabel';
 import styles from './pcrModais.module.css';
 
@@ -231,13 +233,14 @@ const EVENTOS_RITMOS_ATIPICOS = [
   { key: 'torsades', nome: 'Torsades de Pointes', dose: 'Tratar com Magnésio' },
 ];
 
-export function AdicionarEventoSheet({ open, onClose, contadores = {}, onApply }) {
+export function AdicionarEventoSheet({ open, onClose, contadores = {}, eventosCustom = [], onApply, onOutro }) {
   return (
     <BottomSheet
       open={open}
       onClose={onClose}
       title="Adicionar evento"
       description="Registre droga, procedimento ou ritmo atípico observado."
+      footer={{ primary: { label: 'Fechar', onClick: onClose } }}
     >
       <SheetSection>
         <SectionLabel>Drogas</SectionLabel>
@@ -253,6 +256,23 @@ export function AdicionarEventoSheet({ open, onClose, contadores = {}, onApply }
           ))}
         </div>
       </SheetSection>
+
+      {eventosCustom.length > 0 && (
+        <SheetSection>
+          <SectionLabel>Personalizados</SectionLabel>
+          <div className={styles.stack}>
+            {eventosCustom.map((ev) => (
+              <EventoCardNovo
+                key={ev.key}
+                name={ev.nome}
+                dose={ev.dose}
+                count={contadores[ev.key] || 0}
+                onApply={() => onApply(ev, 'droga')}
+              />
+            ))}
+          </div>
+        </SheetSection>
+      )}
 
       <SheetSection>
         <SectionLabel>Procedimento</SectionLabel>
@@ -282,6 +302,74 @@ export function AdicionarEventoSheet({ open, onClose, contadores = {}, onApply }
             />
           ))}
         </div>
+      </SheetSection>
+
+      <SheetSection>
+        <SectionLabel>Outro</SectionLabel>
+        <div className={styles.stack}>
+          <EventoCardNovo
+            name="Outro evento"
+            dose="Vasopressina · Cardioversão · Marca-passo · etc."
+            onApply={onOutro}
+          />
+        </div>
+      </SheetSection>
+    </BottomSheet>
+  );
+}
+
+/**
+ * Modal: OUTRO EVENTO (golden `abrirEventoCustomizado`).
+ * Form Nome (obrigatório) + Dose (opcional). Persiste no eventosCustomizados[] do estado.
+ */
+export function OutroEventoSheet({ open, onClose, onAdd }) {
+  const [nome, setNome] = useState('');
+  const [dose, setDose] = useState('');
+
+  // Reset form quando abre (chamado durante render é OK pq derivado de prop · React 19)
+  const [wasOpen, setWasOpen] = useState(open);
+  if (wasOpen !== open) {
+    setWasOpen(open);
+    if (open) {
+      setNome('');
+      setDose('');
+    }
+  }
+
+  const handleAdd = () => {
+    const trimmed = nome.trim();
+    if (!trimmed) return;
+    onAdd({ nome: trimmed, dose: dose.trim() });
+    setNome('');
+    setDose('');
+  };
+
+  return (
+    <BottomSheet
+      open={open}
+      onClose={onClose}
+      title="Outro evento"
+      description="Vai virar um card no Adicionar evento até o fim do caso · pode aplicar de novo sem digitar."
+      footer={{
+        secondary: { label: 'Cancelar', variant: 'secondary', onClick: onClose },
+        primary: { label: 'Adicionar e aplicar', onClick: handleAdd, disabled: !nome.trim() },
+      }}
+    >
+      <SheetSection>
+        <InputField
+          label="Nome"
+          value={nome}
+          onChange={setNome}
+          placeholder="Ex.: Vasopressina · Cardioversão · Marca-passo"
+          maxLength={50}
+        />
+        <InputField
+          label="Dose · detalhe (opcional)"
+          value={dose}
+          onChange={setDose}
+          placeholder="Ex.: 40 U IV · 100 J sincronizado"
+          maxLength={60}
+        />
       </SheetSection>
     </BottomSheet>
   );

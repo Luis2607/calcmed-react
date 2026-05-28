@@ -22,10 +22,11 @@ export function TimerCard({
   state,
   meta,
   onInfo,
+  size = 'md', // 'md' (default 32px · SCA) | 'lg' (56px · PCR foco)
   children,
 }) {
   return (
-    <section className={styles.card} data-tone={tone} data-state={state}>
+    <section className={styles.card} data-tone={tone} data-state={state} data-size={size}>
       <div className={styles.header}>
         <span className={styles.label}>{label}</span>
         <div className={styles.headerRight}>
