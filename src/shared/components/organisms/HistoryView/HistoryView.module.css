@@ -74,6 +74,23 @@
   outline-offset: 2px;
 }
 
+/* Busca · aparece automaticamente quando há ≥3 casos (Luis 2026-05-28 · auditoria #14) */
+.search {
+  width: 100%;
+  padding: var(--esp-3) var(--esp-4);
+  border: 1.5px solid var(--ds-borda-padrao);
+  border-radius: var(--ds-r-md);
+  background: var(--ds-fundo-cartao);
+  font-family: var(--fonte-base);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ds-texto-padrao);
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+.search::placeholder { color: var(--ds-texto-terciario); }
+.search:focus { outline: none; border-color: var(--ds-interativo-primario); }
+
 /* PATIENT INFO ROW */
 .cardHeader {
   display: flex;

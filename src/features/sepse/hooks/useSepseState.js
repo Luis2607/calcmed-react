@@ -7,6 +7,7 @@ import {
   calcularVolume,
   BUNDLE_PRIMEIRA_HORA,
   BUNDLE_ACOMPANHAMENTO,
+  BUNDLE_TIMELINE_LABEL,
 } from '../sepseData';
 
 /**
@@ -139,9 +140,18 @@ export function useSepseState() {
   };
 
   // Bundle / riscos / metas / icu toggles
+  // §11.H + auditoria 2026-05-28: itens-chave (hemocultura/lactato/cristaloide)
+  // registram evento na timeline quando marcados (paridade golden).
   const toggleBundle = (key) => {
     marcarInicio();
-    setBundle((prev) => ({ ...prev, [key]: !prev[key] }));
+    setBundle((prev) => {
+      const next = { ...prev, [key]: !prev[key] };
+      // Registra evento só ao MARCAR (transição false→true) e só pros itens-chave.
+      if (!prev[key] && BUNDLE_TIMELINE_LABEL[key]) {
+        registrarEvento(BUNDLE_TIMELINE_LABEL[key], 'bundle');
+      }
+      return next;
+    });
   };
   const toggleRiscoMrsa = (key) => setRiscoMrsa((prev) => ({ ...prev, [key]: !prev[key] }));
   const toggleRiscoMdr = (key) => setRiscoMdr((prev) => ({ ...prev, [key]: !prev[key] }));

@@ -249,12 +249,16 @@ export const RISCO_MRSA = [
   { key: 'mrsa-dispositivo', label: 'Dispositivo intravascular' },
 ];
 
+// RISCO_MDR restaurado conforme golden (Luis 2026-05-28 · auditoria): fatores
+// CLÍNICOS do paciente que indicam cobertura empírica anti-MDR (NÃO tipos de germe).
+// Golden Gustavo-aprovado. Modal `o-que-e-mdr` continua explicando OS GERMES (ESBL/KPC/VRE/Pseudomonas)
+// — distinção semântica: modal = "o que é"; checkboxes = "fatores de risco do paciente".
 export const RISCO_MDR = [
-  { key: 'mdr-esbl', label: 'ESBL · beta-lactamase de espectro estendido' },
-  { key: 'mdr-kpc', label: 'KPC / CRE · resistência a carbapenêmicos' },
-  { key: 'mdr-vre', label: 'VRE · Enterococcus resistente à vancomicina' },
-  { key: 'mdr-pseudomonas', label: 'Pseudomonas MDR' },
-  { key: 'mdr-internacao', label: 'UTI prolongada / ATB amplo recente' },
+  { key: 'mdr-atb', label: 'Antibiótico amplo recente (< 90 dias)' },
+  { key: 'mdr-internacao', label: 'Internação prolongada (≥ 5 dias)' },
+  { key: 'mdr-imunossupressao', label: 'Imunossupressão' },
+  { key: 'mdr-cultura', label: 'Cultura prévia por MDR' },
+  { key: 'mdr-infeccao', label: 'Infecção prévia por MDR' },
 ];
 
 // ── Bundle (grupos + labels timeline) ─────────────────────────

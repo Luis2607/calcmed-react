@@ -86,6 +86,14 @@ const VEREDITO_OPCOES = [
   { value: 'improvavel', label: 'Sepse improvável', description: 'Manter investigação · diagnóstico alternativo mais provável.' },
 ];
 
+// Ramo clínico pós-veredito → footer hint T1 (golden `proximo-hint-t1` · auditoria 2026-05-28).
+const VEREDITO_RAMOS = {
+  definida: 'ATB em até 1 hora',
+  provavel: 'ATB em até 1 hora',
+  possivel: 'ATB ≤ 1 h se choque · até 3 h se persistir',
+  improvavel: 'Manter investigação · vigilância clínica',
+};
+
 // MODAL ID por descritor de cada escore (para info-button do header do bloco)
 const SCORE_DESCRITOR_MODAL = {
   sirs: 'descritor-sirs',
@@ -182,6 +190,7 @@ export function SepseFlow({ onBack }) {
   const [casoIdxAberto, setCasoIdxAberto] = useState(null);
   const [excluirIdx, setExcluirIdx] = useState(null);
   const [toast, setToast] = useState(null); // { type, message }
+  const [atbReregisterOpen, setAtbReregisterOpen] = useState(false); // Confirm re-registro ATB
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
@@ -437,7 +446,8 @@ export function SepseFlow({ onBack }) {
     { key: 'reavaliacao', label: 'Reavaliar lactato em 2-4h' },
     { key: 'procal', label: 'Procalcitonina (opcional)' },
     { key: 'foco', label: 'Identificar foco infeccioso' },
-    { key: 'hidrocort', label: 'Considerar hidrocortisona' },
+    // Hidrocortisona com gate clínico inline (auditoria 2026-05-28 · golden tinha o gate aqui).
+    { key: 'hidrocort', label: 'Hidrocortisona 200 mg/dia se NE ≥ 0,25 mcg/kg/min > 4 h refratária' },
   ];
 
   const t2 = (
@@ -470,8 +480,13 @@ export function SepseFlow({ onBack }) {
               onChange={s.setSexo}
             />
             <InputField label="Altura" type="text" mono inputMode="numeric" value={s.altura} onChange={s.setAltura} placeholder="170" showUnit unit="cm" />
-            {s.pesoAjustado != null && (
+            {s.pesoAjustado != null ? (
               <DetailRow label="Peso ajustado" value={`${s.pesoAjustado} kg`} />
+            ) : (
+              // §F12 auditoria: quando falta sexo/altura, sinaliza ao médico (golden `imc-formula-hint`).
+              <AlertCard level="info">
+                Informe sexo e altura para usar peso ajustado no cálculo de volume.
+              </AlertCard>
             )}
           </div>
         )}
@@ -486,22 +501,32 @@ export function SepseFlow({ onBack }) {
         items={bundlePHItems.map((it) => ({ label: it.label, checked: !!s.bundle[it.key] }))}
         onToggle={(i) => {
           const key = bundlePHItems[i].key;
-          // §11.T2.6 · ATB clicado registra hora (e desmarca limpa) — bom senso golden
-          if (key === 'atb') s.toggleAtbWithTime();
-          else s.toggleBundle(key);
+          // §11.T2.6 + §9 auditoria · ATB: 1º clique marca + registra hora;
+          // re-clique em ATB JÁ marcado abre ConfirmSheet "atualizar hora?" (paridade golden).
+          if (key === 'atb') {
+            if (s.bundle.atb) setAtbReregisterOpen(true);
+            else s.toggleAtbWithTime();
+          } else {
+            s.toggleBundle(key);
+          }
         }}
       />
 
       {s.volume ? (
         <AlertCard level="result" title="Cristaloide 30 mL/kg" showValue value={s.volume.volumeMl.toLocaleString('pt-BR')} unit="mL">
           Ringer Lactato · 30 mL/kg em 1-3 h · peso {s.volume.pesoUsado} kg
-          {s.pesoAjustado != null && s.numPeso ? ` (ajustado de ${s.numPeso} kg reais)` : ''}. Individualize conforme resposta.
+          {s.pesoAjustado != null && s.numPeso ? ` (ajustado de ${s.numPeso} kg reais)` : ''}.
         </AlertCard>
       ) : (
         <AlertCard level="info" title="Volume aguardando peso">
           Preencha o peso do paciente para calcular o volume de cristaloide (30 mL/kg).
         </AlertCard>
       )}
+      {/* §3 auditoria · alerta de individualização e escolha do cristaloide (golden 1:1) */}
+      <AlertCard level="warning" title="Individualize">
+        Em cardiopatas, DRC, cirróticos e outras comorbidades limitantes — evitar sobrecarga volêmica.
+        Ringer Lactato/PlasmaLyte preferidos sobre SF 0,9% (exceto TCE).
+      </AlertCard>
 
       <ChecklistBlock
         tagLabel="Acompanhamento"
@@ -550,6 +575,13 @@ export function SepseFlow({ onBack }) {
           columns={2}
         />
       </div>
+
+      {!s.foco && (
+        // §13 auditoria · placeholder didático quando ainda sem foco (golden `atb-empty`)
+        <AlertCard level="info">
+          Selecione o foco infeccioso acima para ver o esquema empírico recomendado.
+        </AlertCard>
+      )}
 
       {s.foco && (
         <>
@@ -654,9 +686,14 @@ export function SepseFlow({ onBack }) {
       ))}
 
       {renderDrugCard('vaso', 'Vasopressina', s.vasoAtiva, (
-        <AlertCard level="result" title="Prescrição — Vasopressina">
-          Vasopressina · <span className={styles.destaque}>0,03 U/min IV</span>, dose fixa (não titular).
-        </AlertCard>
+        <>
+          <AlertCard level="result" title="Prescrição — Vasopressina">
+            Vasopressina · <span className={styles.destaque}>0,03 U/min IV</span>, dose fixa (não titular).
+          </AlertCard>
+          <AlertCard level="info" title="Próximo passo">
+            Manter dose fixa · reavaliar lactato e enchimento capilar em 2 h.
+          </AlertCard>
+        </>
       ))}
 
       {renderDrugCard('epi', 'Adrenalina', s.epiAtiva, (
@@ -674,9 +711,14 @@ export function SepseFlow({ onBack }) {
       ))}
 
       {renderDrugCard('hidro', 'Hidrocortisona', s.hidroAtiva, (
-        <AlertCard level="result" title="Prescrição — Hidrocortisona">
-          <span className={styles.destaque}>50 mg IV 6/6h</span> (200 mg/dia) ou 8 mg/h em infusão contínua.
-        </AlertCard>
+        <>
+          <AlertCard level="result" title="Prescrição — Hidrocortisona">
+            <span className={styles.destaque}>50 mg IV 6/6h</span> (200 mg/dia) ou 8 mg/h em infusão contínua.
+          </AlertCard>
+          <AlertCard level="info" title="Próximo passo">
+            Manter por 5-7 dias · suspender com desmame de noradrenalina.
+          </AlertCard>
+        </>
       ))}
     </div>
   );
@@ -726,22 +768,42 @@ export function SepseFlow({ onBack }) {
   // Quando não há info clínica nova, hint=null (footer mostra só o button).
   // Button size='lg'. A partir de T2, backLink "← Voltar" pra tela anterior (Luis 2026-05-28).
   const voltarLink = (toTela) => ({ label: 'Voltar', onClick: () => s.irParaTela(toTela) });
+  // §2 auditoria · hint T1 pós-veredito com 4 ramos clínicos (golden `proximo-hint-t1`)
+  const hintT1 = s.tela1Liberada
+    ? (s.classificacao ? VEREDITO_RAMOS[s.classificacao] : null)
+    : (s.total === 0 ? 'Preencher um escore' : 'Dar veredito clínico abaixo');
+
+  // §7 auditoria · skip T3 quando ATB já registrado em T2 (golden `btn-bundle-prox`)
+  const atbJaRegistrado = !!s.bundle.atb || !!s.horaAtb;
+  const t2Primary = atbJaRegistrado
+    ? { label: 'Vasopressores', size: 'lg', onClick: () => s.irParaTela(4) }
+    : { label: 'Antibioticoterapia', size: 'lg', onClick: () => s.irParaTela(3) };
+
+  // §11 auditoria · hint T3 com adições MRSA/MDR ativos (golden `atualizarProximoHintT3`)
+  const t3HintAtivos = (() => {
+    if (!s.foco) return 'Selecionar foco infeccioso';
+    const adds = [];
+    if (s.mrsaAtivo) adds.push('Vancomicina');
+    if (s.mdrAtivo) adds.push('Pip-tazo');
+    return adds.length
+      ? `Esquema + ${adds.join(' + ')} · prescrever ATB IV`
+      : 'Esquema definido · prescrever ATB IV';
+  })();
+
   const footers = {
     1: {
-      // Liberado: botão já diz "Iniciar Bundle 1ª hora" — sem hint. Não-liberado: indica POR QUE.
-      hint: s.tela1Liberada ? null : (s.total === 0 ? 'Preencher um escore' : 'Dar veredito clínico abaixo'),
+      hint: hintT1,
       primary: { label: 'Iniciar Bundle 1ª hora', size: 'lg', onClick: () => s.irParaTela(2), disabled: !s.tela1Liberada },
     },
     2: {
       backLink: voltarLink(1),
-      // <4 itens: indica falta concreta. Completos: botão já diz "Antibioticoterapia" — sem hint.
+      // <4 itens: indica falta concreta. Completos: botão já diz "Antibioticoterapia" / "Vasopressores" — sem hint.
       hint: s.bundlePH < 4 ? `Marcar ${4 - s.bundlePH} ${4 - s.bundlePH === 1 ? 'ação' : 'ações'} da 1ª hora` : null,
-      primary: { label: 'Antibioticoterapia', size: 'lg', onClick: () => s.irParaTela(3) },
+      primary: t2Primary,
     },
     3: {
       backLink: voltarLink(2),
-      // Sem foco: indica falta. Com foco: hint clínica complementar (prescrever ATB IV é AÇÃO atual; botão é PRÓXIMA tela "Vasopressores").
-      hint: !s.foco ? 'Selecionar foco infeccioso' : 'Esquema definido · prescrever ATB IV',
+      hint: t3HintAtivos,
       primary: { label: 'Vasopressores', size: 'lg', onClick: () => s.irParaTela(4), disabled: !s.foco },
     },
     4: {
@@ -936,6 +998,17 @@ export function SepseFlow({ onBack }) {
         cancelLabel="Manter"
         perigo
         onConfirm={handleExcluirConfirm}
+      />
+
+      {/* §9 auditoria · re-registro ATB (golden `confirmarAcao` em `registrarHoraAtb`) */}
+      <ConfirmSheet
+        open={atbReregisterOpen}
+        onClose={() => setAtbReregisterOpen(false)}
+        title="ATB já registrado"
+        description={s.horaAtb ? `Registro atual: ${new Date(s.horaAtb).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}. Quer atualizar a hora pra agora?` : 'Atualizar hora pra agora?'}
+        confirmLabel="Atualizar hora"
+        cancelLabel="Manter atual"
+        onConfirm={() => { s.registrarHoraAtb(); }}
       />
 
       {/* §11.H.6 · Toast feedback efêmero (auto-dismiss 3.5s) */}

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styles from './HistoryView.module.css';
 
 /**
@@ -5,6 +6,8 @@ import styles from './HistoryView.module.css';
  * Lista de casos com cabecalho + Limpar Tudo + empty-state. Aprovado DS.2 (Luis):
  * quando `onCaseClick` for passada, cada card vira <button> clivavel; sem ela,
  * preserva o comportamento atual (div estatico).
+ * Busca: input aparece automaticamente quando cases.length >= 3 (golden 1:1).
+ * Filtra por iniciais (case-insensitive) ou pela data exibida.
  */
 export const HistoryView = ({
   cases = [],
@@ -12,6 +15,17 @@ export const HistoryView = ({
   onCaseClick,
   ...props
 }) => {
+  const [query, setQuery] = useState('');
+  const showSearch = cases.length >= 3;
+  const filteredCases = query.trim()
+    ? cases.filter((c) => {
+        const q = query.trim().toLowerCase();
+        return (
+          (c.initials || '').toLowerCase().includes(q) ||
+          (c.date || '').toLowerCase().includes(q)
+        );
+      })
+    : cases;
   // Map status values to Tag Status classes
   const getStatusClass = (status) => {
     switch (status) {
@@ -43,6 +57,18 @@ export const HistoryView = ({
         </div>
       )}
 
+      {/* Busca · aparece automaticamente quando há ≥3 casos (golden 1:1 + auditoria #14) */}
+      {showSearch && (
+        <input
+          type="search"
+          className={styles.search}
+          placeholder="Buscar por iniciais ou data…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          aria-label="Buscar no histórico"
+        />
+      )}
+
       {cases.length === 0 ? (
         <div className={styles.emptyState}>
           <svg className={styles.emptyIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -55,9 +81,14 @@ export const HistoryView = ({
           <span className={styles.emptyTitle}>Nenhum caso ainda</span>
           <span className={styles.emptySubtitle}>Os atendimentos concluídos aparecem aqui.</span>
         </div>
+      ) : filteredCases.length === 0 ? (
+        <div className={styles.emptyState}>
+          <span className={styles.emptyTitle}>Nenhum caso encontrado</span>
+          <span className={styles.emptySubtitle}>Tente outras iniciais ou data.</span>
+        </div>
       ) : (
         <div className={styles.list}>
-          {cases.map((c) => {
+          {filteredCases.map((c) => {
             const inner = (
               <>
                 <div className={styles.cardHeader}>
