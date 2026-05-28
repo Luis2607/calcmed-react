@@ -24,7 +24,6 @@ import { DetailRow } from '../../shared/components/molecules/DetailRow/DetailRow
 import { ScoreResult } from '../../shared/components/molecules/ScoreResult/ScoreResult';
 import { ScoreRangeTable } from '../../shared/components/molecules/ScoreRangeTable';
 import { ScoreCriterionGroup } from '../../shared/components/organisms/ScoreCriterionGroup/ScoreCriterionGroup';
-import { ScoreCriterion } from '../../shared/components/organisms/ScoreCriterion/ScoreCriterion';
 import { AlertCard } from '../../shared/components/organisms/AlertCard';
 import { ChecklistBlock } from '../../shared/components/organisms/ChecklistBlock';
 import { ClinicalCard } from '../../shared/components/organisms/ClinicalCard';
@@ -130,24 +129,40 @@ const DRUG_INFO = {
   },
 };
 
+/** Detecção golden 1:1 — critério com ≤3 opções curtas vira alwaysOpen + horizontal. */
+function autoBehavior(niveis = []) {
+  const totalChars = niveis.reduce((acc, n) => acc + (n.desc?.length || 0), 0);
+  const anyTooLong = niveis.some((n) => (n.desc?.length || 0) > 10);
+  const alwaysOpen = niveis.length === 2 || niveis.length === 3;
+  const optionsLayout =
+    alwaysOpen && totalChars <= 24 && !anyTooLong ? 'horizontal' : 'vertical';
+  return { alwaysOpen, optionsLayout };
+}
+
 /** Acordeão de um escore (SOFA/NEWS/MEWS) via ScoreCriterionGroup (DS). */
 function ScoreAccordion({ sistemas, stateObj, onSelect, namePrefix }) {
   const [expanded, setExpanded] = useState(null);
   return (
     <div className={styles.group}>
-      {sistemas.map((sis) => (
-        <ScoreCriterionGroup
-          key={sis.key}
-          systemName={sis.nome}
-          parameter={sis.parametro}
-          options={sis.niveis.map((n) => ({ label: n.desc, points: n.pts }))}
-          value={typeof stateObj[sis.key] === 'number' ? stateObj[sis.key] : null}
-          onChange={(idx) => onSelect(sis.key, idx)}
-          expanded={expanded === sis.key}
-          onToggle={() => setExpanded(expanded === sis.key ? null : sis.key)}
-          name={`${namePrefix}-${sis.key}`}
-        />
-      ))}
+      {sistemas.map((sis) => {
+        const niveis = sis.niveis || [];
+        const { alwaysOpen, optionsLayout } = autoBehavior(niveis);
+        return (
+          <ScoreCriterionGroup
+            key={sis.key}
+            systemName={sis.nome}
+            parameter={sis.parametro}
+            options={niveis.map((n) => ({ label: n.desc, points: n.pts }))}
+            value={typeof stateObj[sis.key] === 'number' ? stateObj[sis.key] : null}
+            onChange={(idx) => onSelect(sis.key, idx)}
+            expanded={expanded === sis.key}
+            onToggle={() => setExpanded(expanded === sis.key ? null : sis.key)}
+            name={`${namePrefix}-${sis.key}`}
+            alwaysOpen={alwaysOpen}
+            optionsLayout={optionsLayout}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -280,7 +295,7 @@ export function SepseFlow({ onBack }) {
   const modal = modalId ? SEPSE_MODAIS[modalId] : null;
 
   // ====================== T1 · TRIAGEM ======================
-  // NEWS sem o2supl (vira ScoreCriterion checkbox embaixo) — separa pro accordion
+  // NEWS sem o2supl (vira ScoreCriterionGroup binary embaixo) — separa pro accordion
   const newsAccordionSistemas = NEWS_SISTEMAS.filter((sis) => sis.key !== 'o2supl');
   const newsO2supl = NEWS_SISTEMAS.find((sis) => sis.key === 'o2supl');
   const o2suplChecked = s.news.o2supl === 1;
@@ -315,14 +330,17 @@ export function SepseFlow({ onBack }) {
 
         {s.scoreAtivo === 'sirs' && (
           <div className={styles.group}>
+            {/* SIRS · cada critério em ScoreCriterionGroup binary (Luis 2026-05-28):
+                container consistente com os outros escores, checkbox interno,
+                sem chevron, sem body — apenas linha com nome + Checkbox + badge "+1". */}
             {SIRS_ITENS.map((it) => (
-              <ScoreCriterion
+              <ScoreCriterionGroup
                 key={it.key}
-                type="checkbox"
-                label={it.label}
+                systemName={it.label}
+                binary
+                binaryChecked={!!s.sirs[it.key]}
+                onBinaryChange={() => s.toggleSirs(it.key)}
                 points="+1"
-                checked={!!s.sirs[it.key]}
-                onChange={() => s.toggleSirs(it.key)}
               />
             ))}
           </div>
@@ -343,15 +361,16 @@ export function SepseFlow({ onBack }) {
                 />
               ))}
             </div>
-            <ScoreCriterion
-              type="checkbox"
-              label={newsO2supl.nome}
-              points={`+${newsO2supl.niveis[1].pts}`}
-              checked={o2suplChecked}
-              onChange={(next) => {
+            {/* O₂ suplementar · ScoreCriterionGroup binary (mesma anatomia do SIRS) */}
+            <ScoreCriterionGroup
+              systemName={newsO2supl.nome}
+              binary
+              binaryChecked={o2suplChecked}
+              onBinaryChange={(next) => {
                 s.marcarInicio();
                 s.setNews({ ...s.news, o2supl: next ? 1 : null });
               }}
+              points={`+${newsO2supl.niveis[1].pts}`}
             />
             <ScoreAccordion sistemas={newsAccordionSistemas} stateObj={s.news} onSelect={s.setNewsNivel} namePrefix="news" />
           </div>

@@ -104,6 +104,38 @@
   flex-direction: column;
 }
 
+/* Layout horizontal · 2-3 opções curtas lado a lado (Luis 2026-05-28).
+   Ex.: NEWS Consciência (Alerta/Alterado), MEWS Temperatura (35-38,4 / <35 ou ≥38,5). */
+.listHorizontal {
+  flex-direction: row;
+  gap: var(--esp-2);
+  padding: var(--esp-3) var(--esp-4);
+}
+.listHorizontal .option {
+  flex: 1;
+  padding: var(--esp-3);
+  border: 1px solid var(--ds-cartao-borda);
+  border-radius: var(--ds-r-sm);
+  background: var(--ds-fundo-cartao);
+  justify-content: center;
+}
+.listHorizontal .optionSelected {
+  border-color: var(--ds-interativo-primario);
+  background: var(--ds-fundo-hover);
+}
+.listHorizontal .optionLabel { flex: 0 1 auto; font-size: 14px; text-align: center; }
+
+/* Modo BINARY · header com Checkbox (sem body) — Luis 2026-05-28 */
+.headerBinary {
+  cursor: pointer;
+}
+.headerBinary .ptsBadge { font-size: 11px; }
+
+/* Modo alwaysOpen · header não-clickable (sem chevron, conteúdo já visível) */
+.headerStatic {
+  cursor: default;
+}
+
 /* opt row: pad 12/16 · gap 12 · 48h. */
 .option {
   display: flex;
