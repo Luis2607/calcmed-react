@@ -22,4 +22,7 @@ export const URGENCY_INVENTORY = [
   { comp: 'RangeChip (seletor de faixa)', kit: 'F0.1d', code: 'molecules/Chip → RangeChip (golden .faixa-chip; substitui FieldTrigger; tone critical)', status: 'ok' },
   { comp: 'ClinicalCard variante plain', kit: 'F0.1f', code: 'organisms/ClinicalCard (variant=plain, golden .exame-card; aditivo, default inalterado)', status: 'ok' },
   { comp: 'DetailRow (linha rótulo/valor)', kit: 'F0.2', code: 'molecules/DetailRow (espelha .detailRow do DetailSheet; standalone, não toca sheets)', status: 'ok' },
+  { comp: 'ProtocolShell (casca)', kit: 'F1.0', code: 'templates/ProtocolShell (header + 3 abas + tabbar; stepper opcional; compõe K1/K2/K5/K6)', status: 'ok' },
+  { comp: 'HistoryScreen (aba histórico)', kit: 'F1.0', code: 'templates/HistoryScreen (StepHeader + HistoryView + detail)', status: 'ok' },
+  { comp: 'TheoryScreen (aba teoria)', kit: 'F1.0', code: 'templates/TheoryScreen (StepHeader + ClinicalCard plain grade + subTabs PCR)', status: 'ok' },
 ];

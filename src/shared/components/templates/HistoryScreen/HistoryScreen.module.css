@@ -1,0 +1,6 @@
+/* HistoryScreen — aba Histórico. Cor/spacing só via token. */
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+}

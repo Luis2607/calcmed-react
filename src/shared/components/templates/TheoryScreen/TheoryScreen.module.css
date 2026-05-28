@@ -1,0 +1,23 @@
+/* TheoryScreen — aba Teoria/Consulta/ACLS. Cor/spacing só via token. */
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+/* botão-wrapper p/ tornar o card de consulta clicável (golden teoria-card abre modal) */
+.cardBtn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}

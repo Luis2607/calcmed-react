@@ -16,6 +16,9 @@ import { ActionTile } from '../../shared/components/molecules/ActionTile/ActionT
 import { ClinicalCard } from '../../shared/components/organisms/ClinicalCard/ClinicalCard';
 import { TimerCard } from '../../shared/components/organisms/TimerCard/TimerCard';
 import { DetailRow } from '../../shared/components/molecules/DetailRow/DetailRow';
+import { ProtocolShell } from '../../shared/components/templates/ProtocolShell/ProtocolShell';
+import { HistoryScreen } from '../../shared/components/templates/HistoryScreen/HistoryScreen';
+import { TheoryScreen } from '../../shared/components/templates/TheoryScreen/TheoryScreen';
 
 const STATUS_BADGE = { ok: 'OK', pendente: 'PENDENTE' };
 
@@ -48,6 +51,17 @@ const timelineEvents = [
   },
 ];
 
+const historyCases = [
+  { id: 'c1', initials: 'T.A.M.', date: '27/05 14:32', status: 'Alta', disease: 'CAD', duration: '43 min' },
+  { id: 'c2', initials: 'R.S.', date: '26/05 09:10', status: 'UTI', disease: 'CAD', duration: '1h 12min' },
+];
+
+const theoryItems = [
+  { title: 'Criterios diagnosticos', sub: 'HGT, pH, cetonemia/cetonuria.' },
+  { title: 'Doses e fluidos', sub: 'Insulina, KCl, soro, bicarbonato.' },
+  { title: 'Resolucao e transicao', sub: 'Criterios pra encerrar e iniciar SC.' },
+];
+
 const patientSections = [
   {
     title: 'Resumo clinico',
@@ -73,6 +87,7 @@ export function UrgencyGallery() {
   const [tab, setTab] = useState('executar');
   const [strategy, setStrategy] = useState('ppci');
   const [kRange, setKRange] = useState('normal');
+  const [protoTab, setProtoTab] = useState('executar');
 
   return (
     <div className={styles.page}>
@@ -330,6 +345,43 @@ export function UrgencyGallery() {
             <DetailRow label="Insulina" value="7 U/h" />
             <DetailRow label="Potassio" value="4,1 mEq/L" />
             <DetailRow label="Duracao" value="43 min" />
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}><h2>F1.0 · Templates L2 (ProtocolShell + History + Theory)</h2><p>Casca canonica dos 5 (header + 3 abas + tabbar). Troque as abas: historico = HistoryScreen, teoria = TheoryScreen. Tudo composto do kit.</p></div>
+        <div className={styles.tableContainer} style={{ padding: 24, display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: 390, height: 720, border: '1px solid var(--ds-borda-padrao)', borderRadius: 24, overflow: 'hidden' }}>
+            <ProtocolShell
+              domain="cad"
+              title="Modo CAD"
+              subtitle="Aberto ha 12 min"
+              timer="00:12"
+              timerLabel="Caso"
+              actions={[{ icon: 'edit', label: 'Anotar' }, { icon: 'exit', label: 'Sair' }]}
+              steps={['Diagnostico', 'Pos-diag', 'Insulina', 'Reaval.', 'Resolucao']}
+              currentStep={2}
+              onStepClick={() => {}}
+              activeTab={protoTab}
+              onTabChange={setProtoTab}
+              footer={{ hint: 'Confirme o K antes da insulina', primary: { label: 'Confirmar', rightIcon: 'seta-direita' }, secondary: { label: 'Sair', variant: 'secondary' } }}
+              executar={(
+                <>
+                  <StepHeader title="Manejo inicial" subtitle="Soro e potassio antes da insulina." onInfo={() => {}} />
+                  <ClinicalCard variant="plain" title="Potassio serico" subtitle="K abaixo de 3,5 bloqueia insulina.">
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                      <RangeChip selected tone="critical">{'< 3,5'}</RangeChip>
+                      <RangeChip>3,5 a 5</RangeChip>
+                      <RangeChip>5 a 6,5</RangeChip>
+                    </div>
+                  </ClinicalCard>
+                  <StatGrid columns={2} items={[{ label: 'Soro', value: 'SF 0,9%' }, { label: 'Insulina', value: '7 U/h' }]} />
+                </>
+              )}
+              historico={<HistoryScreen subtitle="Casos encerrados neste aparelho. Nao substitui prontuario." cases={historyCases} />}
+              teoria={<TheoryScreen title="Consulta rapida" items={theoryItems} />}
+            />
           </div>
         </div>
       </section>
