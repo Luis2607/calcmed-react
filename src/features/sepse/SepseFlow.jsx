@@ -23,7 +23,6 @@ import { CheckboxGroup } from '../../shared/components/molecules/CheckboxGroup';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { DetailRow } from '../../shared/components/molecules/DetailRow/DetailRow';
 import { ScoreResult } from '../../shared/components/molecules/ScoreResult/ScoreResult';
-import { DoseDisplay } from '../../shared/components/molecules/DoseDisplay';
 import { ScoreRangeTable } from '../../shared/components/molecules/ScoreRangeTable';
 import { ScoreCriterionGroup } from '../../shared/components/organisms/ScoreCriterionGroup/ScoreCriterionGroup';
 import { ScoreCriterion } from '../../shared/components/organisms/ScoreCriterion/ScoreCriterion';
@@ -565,22 +564,17 @@ export function SepseFlow({ onBack }) {
   const epi = prescricaoAdrenalina(epiNum, s.numPeso);
   const dob = prescricaoDobutamina(dobNum, s.numPeso);
 
-  // §11.T4.4 · Prescrição com peso visual máximo via DoseDisplay (§5.2 da matriz).
-  // Layout: DoseDisplay (vazão mono teal 32) + AlertCard footnote (preparo + ampolas).
+  // §11.T4.4 · Prescrição em AlertCard (decisão Luis 2026-05-28: doses ficam em AlertCard).
   // funções de render (NÃO componentes inline — evitam remount/perda de foco no input).
   const renderPrescricao = (p) => (
-    <>
-      <DoseDisplay
-        value={p.vazao || '—'}
-        unit="mL/h"
-        via={p.vazao
-          ? `${p.doseFmt} mcg/kg/min · peso ${s.peso} kg`
-          : `Informe o peso (T2) · ${p.doseFmt} mcg/kg/min`}
-      />
-      <AlertCard level="footnote">
-        {p.droga} ({p.amp}) · {p.preparo} EV em BIC
-      </AlertCard>
-    </>
+    <AlertCard level="result" title={`Prescrição — ${p.droga}`}>
+      {p.droga} ({p.amp}) · <span className={styles.destaque}>{p.preparo}</span> EV em BIC
+      {p.vazao
+        ? <> a <span className={styles.destaque}>{p.vazao} mL/h</span></>
+        : <> · informe o peso (T2) para a vazão</>}
+      {' · '}<span className={styles.destaque}>{p.doseFmt} mcg/kg/min</span>
+      {s.numPeso ? ` · peso ${s.peso} kg` : ''}
+    </AlertCard>
   );
 
   const renderDrugCard = (tipo, nome, role, ativa, painel) => (
@@ -609,7 +603,9 @@ export function SepseFlow({ onBack }) {
       ))}
 
       {renderDrugCard('vaso', 'Vasopressina', '2ª linha · dose fixa', s.vasoAtiva, (
-        <DoseDisplay value="0,03" unit="U/min IV" via="Dose fixa · não titular" />
+        <AlertCard level="result" title="Prescrição — Vasopressina">
+          Vasopressina · <span className={styles.destaque}>0,03 U/min IV</span>, dose fixa (não titular).
+        </AlertCard>
       ))}
 
       {renderDrugCard('epi', 'Adrenalina', '3ª linha', s.epiAtiva, (
@@ -627,7 +623,9 @@ export function SepseFlow({ onBack }) {
       ))}
 
       {renderDrugCard('hidro', 'Hidrocortisona', 'Choque refratário', s.hidroAtiva, (
-        <DoseDisplay value="50" unit="mg IV 6/6h" via="200 mg/dia · ou 8 mg/h infusão contínua" />
+        <AlertCard level="result" title="Prescrição — Hidrocortisona">
+          <span className={styles.destaque}>50 mg IV 6/6h</span> (200 mg/dia) ou 8 mg/h em infusão contínua.
+        </AlertCard>
       ))}
     </div>
   );
