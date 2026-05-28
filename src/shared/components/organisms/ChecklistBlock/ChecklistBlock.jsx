@@ -14,9 +14,11 @@ import styles from './ChecklistBlock.module.css';
  *  - count (ex.: "0/4"), subtitle
  *  - onInfo (botão "?" — recorrente; abre teoria/explicação)
  *  - items: [{ label, checked }], onToggle(index)
+ *  - highlightPending (boolean): destaca items unchecked com borda vermelha + label vermelho.
+ *    Uso: step visitado mas incompleto (Gustavo 2026-05-28 · sepse warning stepper).
  */
-export const ChecklistBlock = ({ tagLabel, tagTone = 'critico', count, subtitle, onInfo, items = [], onToggle }) => (
-  <div className={styles.card}>
+export const ChecklistBlock = ({ tagLabel, tagTone = 'critico', count, subtitle, onInfo, items = [], onToggle, highlightPending = false }) => (
+  <div className={[styles.card, highlightPending ? styles.cardWarning : ''].filter(Boolean).join(' ')}>
     <div className={styles.header}>
       <div className={styles.headerTop}>
         {tagLabel && <Tag variant="status" tone={tagTone}>{tagLabel}</Tag>}
@@ -28,14 +30,22 @@ export const ChecklistBlock = ({ tagLabel, tagTone = 'critico', count, subtitle,
       {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
     </div>
     <div className={styles.items}>
-      {items.map((it, i) => (
-        <Checkbox
-          key={i}
-          label={it.label}
-          checked={!!it.checked}
-          onChange={() => onToggle && onToggle(i)}
-        />
-      ))}
+      {items.map((it, i) => {
+        const pendente = highlightPending && !it.checked;
+        return (
+          <div
+            key={i}
+            className={pendente ? styles.pendingItem : undefined}
+            data-pending={pendente ? 'true' : undefined}
+          >
+            <Checkbox
+              label={it.label}
+              checked={!!it.checked}
+              onChange={() => onToggle && onToggle(i)}
+            />
+          </div>
+        );
+      })}
     </div>
   </div>
 );

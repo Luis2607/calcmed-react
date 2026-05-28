@@ -354,9 +354,25 @@ Atualização 2026-05-27: SCA usa `activePresentation="capsule"` no `ProtocolSte
 - **Motivo:** auditoria #14 — golden `historico-busca` aparecia automaticamente ≥3 casos. Reduz fricção pra encontrar caso histórico específico.
 - **Status:** aberto
 
+### S14 · StepItem — state `warning` + ProtocolSteps `stepStates` (ESTENDIDO)
+- **Componente:** `atoms/StepItem` + `molecules/ProtocolSteps` ↔ Figma `Step Item` (TBD).
+- **O que no código:** novo state `'warning'` no StepItem (círculo laranja `--ds-retorno-atencao` + glyph `!` + label tonalizado). ProtocolSteps aceita `stepStates` (array por índice) que sobrescreve a lógica default; states `completed` E `warning` são navegáveis. Conector também ganha `data-done="true"` quando state é warning (para acender a linha mesmo com pendência).
+- **O que no Figma:** StepItem hoje só tem `pending`/`active`/`completed` — não há variante warning. ProtocolSteps lê estado pela posição relativa ao current.
+- **Ação no Figma:** adicionar variant `State=Warning` ao StepItem com circle = `retorno/atencao` + glyph "!" + label color = `retorno/atencao`. Documentar no ProtocolSteps que o consumer pode forçar states arbitrários.
+- **Motivo:** UX request Gustavo 2026-05-28 (sepse screenshot 2). Sinaliza visualmente que o usuário pulou passos sem completar — sem usar Toast/AlertCard intrusivo.
+- **Status:** aberto
+
+### S15 · ChecklistBlock — prop `highlightPending` (ESTENDIDO)
+- **Componente:** `organisms/ChecklistBlock` ↔ Figma `calc/checklist-block` (1895:67043).
+- **O que no código:** prop bool `highlightPending`. Quando true, o card recebe borda + tint `retorno/atencao` (variant warning) e os itens **unchecked** ganham wrapper `pendingItem` (border + bg `retorno/critico`). Dispara junto com S14 (step em estado warning).
+- **O que no Figma:** ChecklistBlock só tem property `State=Urgente/Padrao/Preenchida`. Não há diferenciação de itens individuais como "pendente vermelho".
+- **Ação no Figma:** adicionar property `Highlight Pending` (BOOLEAN). Quando true: card vira tint atenção; sub-instance do Checkbox ganha auxiliar wrapper "pending" com border/bg critico (ou property no próprio Checkbox).
+- **Motivo:** UX request Gustavo 2026-05-28 — mostrar exatamente quais itens faltam quando o user volta ao step incompleto. Reduz "qual era a pendência?" → 0 (Nielsen: Visibility of System Status).
+- **Status:** aberto
+
 ---
 
-## Resumo executivo das 11 mudanças (próxima sync Figma)
+## Resumo executivo das 13 mudanças (próxima sync Figma)
 
 | # | Componente | Tipo | Status |
 |---|---|---|---|
@@ -373,9 +389,11 @@ Atualização 2026-05-27: SCA usa `activePresentation="capsule"` no `ProtocolSte
 | S11 | SheetList | FIX (código→Figma) | 🟢 sincronizado |
 | S12 | ActionFooter | ESTENDIDO (backLink) | 🟠 aberto |
 | S13 | HistoryView | ESTENDIDO (search ≥3 casos) | 🟠 aberto |
+| S14 | StepItem + ProtocolSteps | ESTENDIDO (state warning + stepStates override) | 🟠 aberto |
+| S15 | ChecklistBlock | ESTENDIDO (highlightPending) | 🟠 aberto |
 
-**Total a aplicar no Figma:** 11 itens abertos (2 já sincronizados ↔ código alinhou ao Figma).
+**Total a aplicar no Figma:** 13 itens abertos (2 já sincronizados ↔ código alinhou ao Figma).
 
 **Próximos passos sugeridos** quando o time pegar sync:
-1. **Prioritários** (afetam consumidores existentes em produção): S4 (ClinicalCard.onInfo), S5 (ScoreCriterionGroup 3 modos), S6+S7 (Radio/RadioGroup description), S8 (actionBtn cinza), S9 (Stepper conector).
+1. **Prioritários** (afetam consumidores existentes em produção): S4 (ClinicalCard.onInfo), S5 (ScoreCriterionGroup 3 modos), S6+S7 (Radio/RadioGroup description), S8 (actionBtn cinza), S9 (Stepper conector), S14 (StepItem warning), S15 (ChecklistBlock highlightPending).
 2. **Patterns** (criar variants nos sheet templates): S2 (AnnotationSheet com Limpar), S3 (HistoryView interactive), S10 (InfoSheet sem leadingIcon default).

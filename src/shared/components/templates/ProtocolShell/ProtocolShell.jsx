@@ -36,6 +36,7 @@ export const ProtocolShell = ({
   steps,
   currentStep,
   onStepClick,
+  stepStates,
   activeTab = 'executar',
   onTabChange,
   tabs = DEFAULT_TABS,
@@ -62,6 +63,7 @@ export const ProtocolShell = ({
         steps={activeTab === 'executar' ? steps : undefined}
         currentStep={currentStep}
         onStepClick={onStepClick}
+        stepStates={activeTab === 'executar' ? stepStates : undefined}
       />
 
       <main className={styles.body}>{content}</main>

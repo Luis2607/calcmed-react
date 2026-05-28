@@ -54,6 +54,9 @@
 
 .completed { background: var(--ds-retorno-sucesso); border-color: var(--ds-retorno-sucesso); color: var(--ds-texto-sobre-destaque); }
 .active { background: var(--ds-interativo-primario); border-color: var(--ds-interativo-primario); color: var(--ds-texto-sobre-destaque); }
+/* Warning: step visitado mas com itens pendentes (Gustavo 2026-05-28). Laranja "atenção" + "!". */
+.warning { background: var(--ds-retorno-atencao); border-color: var(--ds-retorno-atencao); color: var(--ds-texto-sobre-destaque); }
+.capsuleWarning { background: var(--ds-retorno-atencao-fundo); border-color: var(--ds-retorno-atencao); }
 
 .label {
   font-size: var(--fonte-tamanho-micro);
@@ -63,3 +66,4 @@
   white-space: nowrap;
 }
 .labelActive { font-weight: 700; color: var(--ds-texto-padrao); }
+.labelWarning { color: var(--ds-retorno-atencao); font-weight: 700; }

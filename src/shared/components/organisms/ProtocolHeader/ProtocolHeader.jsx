@@ -65,6 +65,7 @@ export function ProtocolHeader({
   steps,
   currentStep = 1,
   onStepClick,
+  stepStates,
   domain,
   showStatusDot = false,
   showTimerIcon = false,
@@ -141,7 +142,7 @@ export function ProtocolHeader({
 
       {steps && steps.length > 0 && (
         <div className={styles.steps}>
-          <ProtocolSteps steps={steps} current={currentStep} onStepClick={onStepClick} />
+          <ProtocolSteps steps={steps} current={currentStep} onStepClick={onStepClick} stepStates={stepStates} />
         </div>
       )}
     </header>

@@ -441,10 +441,10 @@ export function prescricaoDobutamina(mcgKg, peso) {
   return { ...base, vazao };
 }
 
-// Próximo passo da NE conforme dose (atualizarDoseNE)
+// Próximo passo da Nora conforme dose (atualizarDoseNE)
 export function proximoPassoNE(mcgKg) {
   const dose = typeof mcgKg === 'number' ? mcgKg : 0;
-  if (dose < 0.25) return 'Escalonar NE até 0,25 mcg/kg/min antes de associar Vasopressina.';
-  if (dose < 0.5) return 'NE ≥ 0,25 · associe Vasopressina (0,03 U/min IV, dose fixa).';
+  if (dose < 0.25) return 'Escalonar Nora até 0,25 mcg/kg/min antes de associar Vasopressina.';
+  if (dose < 0.5) return 'Nora ≥ 0,25 · associe Vasopressina (0,03 U/min IV, dose fixa).';
   return 'Dose alta · associe Adrenalina e inicie Hidrocortisona 200 mg/dia IV.';
 }

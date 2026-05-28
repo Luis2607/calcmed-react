@@ -62,7 +62,7 @@ export function useSepseState() {
   const [dobAtiva, setDobAtiva] = usePersistedState('sepse_dob_ativa', false);
   const [hidroAtiva, setHidroAtiva] = usePersistedState('sepse_hidro_ativa', false);
 
-  // T5 · metas + ICU
+  // T5 · metas + UTI
   const [metas, setMetas] = usePersistedState('sepse_metas', {}); // {key: bool}
   const [icu, setIcu] = usePersistedState('sepse_icu', {});
 
@@ -100,7 +100,7 @@ export function useSepseState() {
   const mrsaAtivo = mrsaN >= 2;
   const mdrAtivo = mdrN >= 2;
 
-  // Metas / ICU contadores
+  // Metas / UTI contadores
   const metasN = Object.values(metas).filter(Boolean).length;
   const icuN = Object.values(icu).filter(Boolean).length;
 

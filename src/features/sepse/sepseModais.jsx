@@ -181,10 +181,10 @@ export const SEPSE_MODAIS = {
     ],
   },
   'o-que-e-ne': {
-    title: 'Noradrenalina (NE)',
+    title: 'Noradrenalina (Nora)',
     blocks: [
       { p: <>A <strong>Noradrenalina</strong> é o vasopressor de primeira linha em sepse (SSC 2026).</> },
-      { list: ['Inicie em veia periférica calibrosa', 'CVC em até 6 horas', 'Titule a dose até a PAM atingir o alvo', 'Ao atingir 0,25 mcg/kg/min, considere associar Vasopressina (não escalonar NE indefinidamente)'] },
+      { list: ['Inicie em veia periférica calibrosa', 'CVC em até 6 horas', 'Titule a dose até a PAM atingir o alvo', 'Ao atingir 0,25 mcg/kg/min, considere associar Vasopressina (não escalonar Nora indefinidamente)'] },
       { helper: 'Dose usual: 0,05-3,3 mcg/kg/min. Ajuste a cada 5 a 15 minutos conforme a PAM.' },
     ],
   },
@@ -204,7 +204,7 @@ export const SEPSE_MODAIS = {
     ],
   },
   'o-que-e-checklist-icu': {
-    title: 'Checklist ICU · cuidados intensivos',
+    title: 'Checklist UTI · cuidados intensivos',
     blocks: [
       { p: 'Bundle de cuidados de UTI para reduzir complicações secundárias:' },
       { list: [
@@ -252,7 +252,7 @@ export const SEPSE_MODAIS = {
     blocks: [
       { p: 'Noradrenalina é o vasopressor de primeira linha (SSC 2026).' },
       { list: ['Inicie em veia periférica calibrosa; CVC em até 6 horas', 'Titule até 0,25 mcg/kg/min antes de associar segundo agente', 'Vasopressina (0,03 U/min, dose fixa) é o segundo agente', 'Adrenalina entra como terceiro agente', 'Dobutamina se hipoperfusão persistir com PAM adequada'] },
-      { p: 'Hidrocortisona 200 mg/dia IV se NE ou Adrenalina ≥ 0,25 mcg/kg/min por mais de 4 horas.' },
+      { p: 'Hidrocortisona 200 mg/dia IV se Nora ou Adrenalina ≥ 0,25 mcg/kg/min por mais de 4 horas.' },
     ],
   },
   'teoria-metas': {

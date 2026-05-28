@@ -115,13 +115,13 @@ const DRUG_INFO = {
   vaso: {
     linha: '2ª linha',
     tone: 'premium',
-    subtitle: 'Após NE ≥ 0,25 mcg/kg/min. Dose fixa 0,03 U/min IV (não titular).',
+    subtitle: 'Após Nora ≥ 0,25 mcg/kg/min. Dose fixa 0,03 U/min IV (não titular).',
     modal: null,
   },
   epi: {
     linha: '3ª linha',
     tone: 'atencao',
-    subtitle: 'Choque refratário · considerar com NE ≥ 0,5 mcg/kg/min. Dose 0,01–0,5 mcg/kg/min.',
+    subtitle: 'Choque refratário · considerar com Nora ≥ 0,5 mcg/kg/min. Dose 0,01–0,5 mcg/kg/min.',
     modal: null,
   },
   dob: {
@@ -133,7 +133,7 @@ const DRUG_INFO = {
   hidro: {
     linha: 'Refratário',
     tone: 'critico',
-    subtitle: 'Choque refratário com NE ou Adre ≥ 0,25 mcg/kg/min por > 4 h. 200 mg/dia (50 mg 6/6h ou 8 mg/h infusão).',
+    subtitle: 'Choque refratário com Nora ou Adre ≥ 0,25 mcg/kg/min por > 4 h. 200 mg/dia (50 mg 6/6h ou 8 mg/h infusão).',
     modal: 'o-que-e-hidrocortisona',
   },
 };
@@ -215,6 +215,29 @@ export function SepseFlow({ onBack }) {
 
   const sofaTotal = somaSofa(s.sofa);
   const bundlePct = Math.round((s.bundleFeitos / s.bundleTotal) * 100);
+
+  // ====================== Step gates (Gustavo 2026-05-28) ======================
+  // Warning stepper: step visitado mas com itens pendentes vira 'warning' (laranja "!").
+  // Itens pendentes do step ganham highlight vermelho (ChecklistBlock.highlightPending).
+  // §Gustavo · screenshot 2: feedback visual quando user pula sem completar.
+  const stepCompleto = {
+    1: s.tela1Liberada,           // score preenchido + veredito
+    2: s.bundlePH >= 4,            // 4 ações da 1ª hora
+    3: !!s.foco,                   // foco infeccioso selecionado
+    4: true,                       // sem gate forte (vasopressores opcionais por clínica)
+    5: s.metasN >= 5 && s.icuN >= 6, // metas + checklist UTI
+  };
+  // Estado por step. 'warning' = num < telaAtual OU num <= telaMaxVisitada, e !completo.
+  const stepStates = [1, 2, 3, 4, 5].map((num) => {
+    if (num === s.telaAtual) return 'active';
+    const visitado = num < s.telaAtual || num <= (s.telaMaxVisitada || 1);
+    if (visitado) return stepCompleto[num] ? 'completed' : 'warning';
+    return 'pending';
+  });
+  // §11.S6.warn · highlight de itens pendentes persiste enquanto o user já passou pelo step
+  // (mesmo que esteja de volta nele — feedback continua até completar).
+  const pendenciaT2 = (s.telaMaxVisitada || 1) > 2 && !stepCompleto[2];
+  const pendenciaT5 = (s.telaMaxVisitada || 1) >= 5 && !stepCompleto[5] && s.telaAtual !== 5;
 
   // chips do header (idade/peso + Sepse + bundle%)
   const chips = [];
@@ -447,7 +470,7 @@ export function SepseFlow({ onBack }) {
     { key: 'procal', label: 'Procalcitonina (opcional)' },
     { key: 'foco', label: 'Identificar foco infeccioso' },
     // Hidrocortisona com gate clínico inline (auditoria 2026-05-28 · golden tinha o gate aqui).
-    { key: 'hidrocort', label: 'Hidrocortisona 200 mg/dia se NE ≥ 0,25 mcg/kg/min > 4 h refratária' },
+    { key: 'hidrocort', label: 'Hidrocortisona 200 mg/dia se Nora ≥ 0,25 mcg/kg/min > 4 h refratária' },
   ];
 
   const t2 = (
@@ -498,6 +521,7 @@ export function SepseFlow({ onBack }) {
         count={`${s.bundlePH}/4`}
         subtitle="Em até 1 hora"
         onInfo={() => setModalId('o-que-e-primeira-hora')}
+        highlightPending={pendenciaT2}
         items={bundlePHItems.map((it) => ({ label: it.label, checked: !!s.bundle[it.key] }))}
         onToggle={(i) => {
           const key = bundlePHItems[i].key;
@@ -744,15 +768,17 @@ export function SepseFlow({ onBack }) {
         tagTone="novo"
         count={`${s.metasN}/5`}
         onInfo={() => setModalId('o-que-e-metas')}
+        highlightPending={pendenciaT5}
         items={metasItensView.map((it) => ({ label: it.label, checked: !!s.metas[it.key] }))}
         onToggle={(i) => s.toggleMeta(METAS_ITENS[i].key)}
       />
 
       <ChecklistBlock
-        tagLabel="Checklist ICU"
+        tagLabel="Checklist UTI"
         tagTone="novo"
         count={`${s.icuN}/6`}
         onInfo={() => setModalId('o-que-e-checklist-icu')}
+        highlightPending={pendenciaT5}
         items={ICU_ITENS.map((it) => ({ label: it.label, checked: !!s.icu[it.key] }))}
         onToggle={(i) => s.toggleIcu(ICU_ITENS[i].key)}
       />
@@ -808,8 +834,8 @@ export function SepseFlow({ onBack }) {
     },
     4: {
       backLink: voltarLink(3),
-      // Hints clínicos baseados em dose (próximo passo NE) — NÃO é o que o button diz ("Metas de ressuscitação").
-      hint: neNum < 0.25 ? 'Titular NE até PAM ≥ 65 mmHg' : neNum < 0.5 ? 'NE alta · associar Vasopressina' : 'Choque refratário · Adrenalina + Hidrocortisona',
+      // Hints clínicos baseados em dose (próximo passo Nora) — NÃO é o que o button diz ("Metas de ressuscitação").
+      hint: neNum < 0.25 ? 'Titular Nora até PAM ≥ 65 mmHg' : neNum < 0.5 ? 'Nora alta · associar Vasopressina' : 'Choque refratário · Adrenalina + Hidrocortisona',
       primary: { label: 'Metas de ressuscitação', size: 'lg', onClick: () => s.irParaTela(5) },
     },
     5: {
@@ -817,7 +843,7 @@ export function SepseFlow({ onBack }) {
       // Metas incompletas: indica falta. Tudo completo: botão já diz "Encerrar caso" — sem hint.
       hint: s.metasN < 5
         ? `Atingir ${5 - s.metasN} ${5 - s.metasN === 1 ? 'meta' : 'metas'}`
-        : s.icuN < 6 ? 'Completar checklist ICU' : null,
+        : s.icuN < 6 ? 'Completar checklist UTI' : null,
       primary: { label: 'Encerrar caso', size: 'lg', onClick: () => setEncerrarOpen(true), variant: 'primary' },
     },
   };
@@ -855,7 +881,7 @@ export function SepseFlow({ onBack }) {
     if (c.horaAtb) desfechoRows.push({ label: 'ATB', value: new Date(c.horaAtb).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) });
     const bundleRows = [];
     if (typeof c.metasN === 'number') bundleRows.push({ label: 'Metas atingidas', value: `${c.metasN}/5` });
-    if (typeof c.icuN === 'number') bundleRows.push({ label: 'Checklist ICU', value: `${c.icuN}/6` });
+    if (typeof c.icuN === 'number') bundleRows.push({ label: 'Checklist UTI', value: `${c.icuN}/6` });
     if (Array.isArray(c.bundleFeitosKeys)) bundleRows.push({ label: 'Bundle 1h+acomp', value: `${c.bundleFeitosKeys.length}/9` });
     const sections = [
       ...(desfechoRows.length ? [{ title: 'Desfecho clínico', rows: desfechoRows }] : []),
@@ -909,7 +935,7 @@ export function SepseFlow({ onBack }) {
         { title: 'Score SOFA e Sepsis-3', sub: 'Disfunção orgânica em 6 sistemas', onClick: () => setModalId('teoria-sofa') },
         { title: 'Bundle de 1 hora', sub: 'As ações que salvam vidas', onClick: () => setModalId('teoria-bundle') },
         { title: 'Antibioticoterapia empírica', sub: 'Foco + MRSA + MDR', onClick: () => setModalId('teoria-atb') },
-        { title: 'Escalonamento de vasopressores', sub: 'NE → Vaso → Adre → Dobuta', onClick: () => setModalId('teoria-vaso') },
+        { title: 'Escalonamento de vasopressores', sub: 'Nora → Vaso → Adre → Dobuta', onClick: () => setModalId('teoria-vaso') },
         { title: 'Metas de ressuscitação', sub: 'Avaliação dinâmica', onClick: () => setModalId('teoria-metas') },
       ]}
     />
@@ -927,6 +953,7 @@ export function SepseFlow({ onBack }) {
         steps={STEPS}
         currentStep={s.telaAtual}
         onStepClick={(n) => s.irParaTela(n)}
+        stepStates={stepStates}
         activeTab={s.abaAtual}
         onTabChange={s.setAbaAtual}
         executar={telas[s.telaAtual] || t1}
