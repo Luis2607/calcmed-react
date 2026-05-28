@@ -58,6 +58,15 @@ export function getDesfechoLabel(value) {
   return DESFECHOS.find((d) => d.value === value)?.label || value;
 }
 
+/** Filtros de histórico por desfecho (golden historico-filtros). */
+export const HISTORICO_FILTROS = [
+  { value: 'todas', label: 'Todas' },
+  { value: 'revertida', label: 'Revertida' },
+  { value: 'nao-revertida', label: 'Não revertida' },
+  { value: 'obito', label: 'Óbito' },
+  { value: 'suspensa', label: 'Suspensa' },
+];
+
 // ============================================================
 // BPM (cadência compressões)
 // ============================================================

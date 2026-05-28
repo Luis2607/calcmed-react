@@ -187,6 +187,40 @@
   gap: var(--esp-3);
 }
 
+/* Histórico · wrap + filtros chip */
+.historicoWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+}
+
+.histFiltros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+}
+
+.histChip {
+  padding: var(--esp-2) var(--esp-3);
+  border: 1px solid var(--ds-borda-padrao);
+  border-radius: var(--ds-r-pill);
+  background: var(--ds-fundo-cartao);
+  color: var(--ds-texto-secundario);
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo-2);
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.histChip:hover { border-color: var(--ds-interativo-primario); }
+
+.histChip[data-selected="true"] {
+  background: var(--ds-interativo-primario);
+  border-color: var(--ds-interativo-primario);
+  color: var(--ds-texto-sobre-destaque);
+}
+
 /* Toast feedback efêmero · sticky no fundo do viewport */
 .toastWrap {
   position: fixed;

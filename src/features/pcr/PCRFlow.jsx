@@ -5,6 +5,7 @@ import { StepHeader } from '../../shared/components/molecules/StepHeader/StepHea
 import { TimerCard } from '../../shared/components/organisms/TimerCard/TimerCard';
 import { BannerContextual } from '../../shared/components/organisms/BannerContextual';
 import { EventList } from '../../shared/components/organisms/EventList';
+import { Timeline } from '../../shared/components/organisms/Timeline';
 import { AlertCard } from '../../shared/components/organisms/AlertCard';
 import { PanfletoPlaceholder } from '../../shared/components/organisms/PanfletoPlaceholder';
 import { TETTabela } from '../../shared/components/organisms/TETTabela';
@@ -15,14 +16,15 @@ import { Segmented } from '../../shared/components/molecules/Segmented';
 import { ToggleTab } from '../../shared/components/molecules/ToggleTab';
 import { InputField } from '../../shared/components/molecules/InputField';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
+import { SheetSection, SheetDetailRow, SheetText } from '../../shared/components/molecules/sheet';
 import { Button } from '../../shared/components/atoms/Button';
 import { FAB } from '../../shared/components/atoms/FAB';
 import { Toast } from '../../shared/components/molecules/Toast';
-import { ConfirmSheet, InfoSheet, AnnotationSheet } from '../../shared/components/overlays/patterns';
+import { ConfirmSheet, InfoSheet, AnnotationSheet, DetailSheet } from '../../shared/components/overlays/patterns';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import { usePCRState } from './hooks/usePCRState';
 import {
-  CICLO_MS, BPM_OPCOES, INTERVALO_ADREN_OPCOES,
+  CICLO_MS, BPM_OPCOES, INTERVALO_ADREN_OPCOES, HISTORICO_FILTROS,
   formatDuracao, formatHora, formatOffset,
   isChocavel, isNaoChocavel, getRitmoLabel,
   getCargaInicial,
@@ -84,6 +86,11 @@ export function PCRFlow({ onBack }) {
 
   // §header anotação (FB-05 cross-protocolo)
   const [anotacaoOpen, setAnotacaoOpen] = useState(false);
+
+  // §Histórico · detalhe + filtros + excluir
+  const [casoIdxAberto, setCasoIdxAberto] = useState(null);
+  const [excluirIdx, setExcluirIdx] = useState(null);
+  const [histFiltro, setHistFiltro] = useState('todas');
 
   // §D27 golden · ao iniciar PCR, auto-abre Selecionar Ritmo em 350ms + TTS
   // (cronômetro já está rodando em background)
@@ -653,11 +660,19 @@ export function PCRFlow({ onBack }) {
   // HISTÓRICO / TEORIA
   // ============================================================
   // §A6 Luis · cada caso ganha campo `subtitle` com Início HH:MM:SS pra HistoryView mostrar.
-  // §HistoryView aceita cases [{ initials, status, statusTone, date, duration }] — vou adaptar.
-  const historicoFormatado = historico.map((c) => ({
+  const statusDoDesfecho = (d) =>
+    d === 'revertida' ? 'Revertida' : d === 'obito' ? 'Óbito' : d === 'suspensa' ? 'Suspensa' : 'Não revertida';
+
+  // §filtro por desfecho (golden historico-filtros)
+  const historicoFiltrado = histFiltro === 'todas'
+    ? historico
+    : historico.filter((c) => c.desfecho === histFiltro);
+
+  // §HistoryView aceita cases [{ initials, status, statusTone, date, duration }]
+  const historicoFormatado = historicoFiltrado.map((c) => ({
     id: c.id,
     initials: c.iniciais || c.initials,
-    status: c.desfecho === 'revertida' ? 'Revertida' : c.desfecho === 'obito' ? 'Óbito' : c.desfecho === 'suspensa' ? 'Suspensa' : 'Não revertida',
+    status: statusDoDesfecho(c.desfecho),
     // §A6 · "Início" no campo date secundário (DD/MM HH:MM:SS)
     date: c.iniciadoEm
       ? `Início ${new Date(c.iniciadoEm).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`
@@ -665,12 +680,114 @@ export function PCRFlow({ onBack }) {
     duration: c.duration || formatDuracao(c.duracaoMs),
   }));
 
+  // §11.H.2 · detalhe do caso (golden abrirCasoDetalhePCR) — só peças DS de sheet.
+  const casoAberto = casoIdxAberto != null ? historico[casoIdxAberto] : null;
+  const renderCasoDetalhePCR = () => {
+    if (!casoAberto) return null;
+    const c = casoAberto;
+    const dur = c.duration || formatDuracao(c.duracaoMs);
+    const ritmoFinalLabel = c.ritmoFinal && c.ritmoFinal !== 'na' ? getRitmoLabel(c.ritmoFinal) : '—';
+
+    // Timeline · eventos do caso
+    const tStart = c.iniciadoEm || null;
+    const events = (c.eventos || []).map((ev, i) => ({
+      id: `${ev.hora}-${i}`,
+      time: formatHora(ev.hora),
+      offset: formatOffset(ev.hora, tStart),
+      title: ev.acao,
+      status: ev.tag === 'choque' ? 'warning' : ev.tag === 'marco' ? 'critical' : ev.tag === 'rce' ? 'success' : 'info',
+    }));
+
+    return (
+      <>
+        <SheetSection title="Caso">
+          <SheetDetailRow label="Início" value={c.iniciadoEm ? new Date(c.iniciadoEm).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—'} />
+          <SheetDetailRow label="Duração total" value={dur} />
+          {c.idade && <SheetDetailRow label="Idade" value={`${c.idade} anos${c.idadeMeses ? ` ${c.idadeMeses}m` : ''}`} />}
+          {c.peso && <SheetDetailRow label="Peso" value={`${c.peso} kg`} />}
+        </SheetSection>
+
+        <SheetSection title="Desfecho clínico">
+          <SheetDetailRow label="Desfecho" value={statusDoDesfecho(c.desfecho)} />
+          <SheetDetailRow label="Ritmo final" value={ritmoFinalLabel} />
+        </SheetSection>
+
+        <SheetSection title="Operação">
+          <SheetDetailRow label="Adrenalinas" value={`×${c.adrenalinaCount || 0}`} />
+          <SheetDetailRow label="Ciclos" value={`${c.ciclos || 0}`} />
+        </SheetSection>
+
+        {events.length > 0 && <Timeline title="Linha do tempo" events={events} />}
+
+        {c.obs && (
+          <SheetSection title="Observações">
+            <SheetText>{c.obs}</SheetText>
+          </SheetSection>
+        )}
+
+        <SheetText variant="auxiliary">
+          Histórico salvo apenas neste aparelho. Não substitui prontuário oficial.
+        </SheetText>
+      </>
+    );
+  };
+
+  const handleExcluirCaso = () => {
+    if (excluirIdx == null) return;
+    setHistorico(historico.filter((_, i) => i !== excluirIdx));
+    setExcluirIdx(null);
+    setCasoIdxAberto(null);
+    showToast('Caso removido do histórico', 'success');
+  };
+
+  const handleCompartilharCaso = (c) => {
+    const linhas = [
+      'CalcMed · PCR encerrada',
+      `Paciente: ${c.iniciais || '-'}`,
+      `Desfecho: ${statusDoDesfecho(c.desfecho)}`,
+      `Duração: ${c.duration || formatDuracao(c.duracaoMs)}`,
+      c.ritmoFinal && c.ritmoFinal !== 'na' ? `Ritmo final: ${getRitmoLabel(c.ritmoFinal)}` : null,
+      `Adrenalinas: ×${c.adrenalinaCount || 0}`,
+      `Ciclos: ${c.ciclos || 0}`,
+    ].filter(Boolean).join('\n');
+    if (navigator.share) {
+      navigator.share({ title: 'Caso PCR', text: linhas }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(linhas);
+      showToast('Resumo copiado', 'success');
+    } else {
+      showToast('Compartilhar não disponível neste aparelho', 'error');
+    }
+  };
+
   const historicoView = (
-    <HistoryScreen
-      title="Histórico"
-      subtitle="Casos PCR encerrados neste aparelho."
-      cases={historicoFormatado}
-    />
+    <div className={styles.historicoWrap}>
+      {/* §filtros chip por desfecho (golden) — só aparecem com casos */}
+      {historico.length > 0 && (
+        <div className={styles.histFiltros}>
+          {HISTORICO_FILTROS.map((f) => (
+            <button
+              key={f.value}
+              type="button"
+              className={styles.histChip}
+              data-selected={histFiltro === f.value ? 'true' : 'false'}
+              onClick={() => setHistFiltro(f.value)}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+      )}
+      <HistoryScreen
+        title="Histórico"
+        subtitle="Casos PCR encerrados neste aparelho."
+        cases={historicoFormatado}
+        onCaseClick={(c) => {
+          const realIdx = historico.findIndex((h) => h.id === c.id);
+          setCasoIdxAberto(realIdx);
+        }}
+      />
+    </div>
   );
 
   // ============================================================
@@ -1004,6 +1121,31 @@ export function PCRFlow({ onBack }) {
           setEventoOpen(false);
           setOutroOpen(true);
         }}
+      />
+
+      {/* Detalhe do caso histórico (golden abrirCasoDetalhePCR) */}
+      <DetailSheet
+        open={casoAberto != null}
+        onClose={() => setCasoIdxAberto(null)}
+        title={casoAberto?.iniciais || casoAberto?.initials || '—'}
+        footer={casoAberto ? {
+          secondary: { label: 'Excluir', variant: 'danger', onClick: () => setExcluirIdx(casoIdxAberto) },
+          primary: { label: 'Compartilhar', onClick: () => handleCompartilharCaso(casoAberto) },
+        } : undefined}
+      >
+        {renderCasoDetalhePCR()}
+      </DetailSheet>
+
+      {/* Excluir caso (confirm perigo) */}
+      <ConfirmSheet
+        open={excluirIdx != null}
+        onClose={() => setExcluirIdx(null)}
+        title="Excluir do histórico?"
+        description="Esta ação não pode ser desfeita."
+        confirmLabel="Excluir"
+        cancelLabel="Manter"
+        perigo
+        onConfirm={handleExcluirCaso}
       />
 
       {/* Outro evento custom · golden abrirEventoCustomizado */}
