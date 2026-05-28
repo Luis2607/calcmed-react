@@ -170,6 +170,23 @@
   color: var(--ds-texto-sobre-destaque);
 }
 
+/* ACLS|AHA sub-tabs + stack */
+.aclsSubTabs {
+  display: flex;
+  gap: var(--esp-2);
+  width: 100%;
+}
+
+.aclsSubTabs > * {
+  flex: 1;
+}
+
+.aclsStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
 /* Toast feedback efêmero · sticky no fundo do viewport */
 .toastWrap {
   position: fixed;

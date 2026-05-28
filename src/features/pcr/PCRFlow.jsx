@@ -1,16 +1,23 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ProtocolShell } from '../../shared/components/templates/ProtocolShell/ProtocolShell';
 import { HistoryScreen } from '../../shared/components/templates/HistoryScreen/HistoryScreen';
-import { TheoryScreen } from '../../shared/components/templates/TheoryScreen/TheoryScreen';
+import { StepHeader } from '../../shared/components/molecules/StepHeader/StepHeader';
 import { TimerCard } from '../../shared/components/organisms/TimerCard/TimerCard';
 import { BannerContextual } from '../../shared/components/organisms/BannerContextual';
 import { EventList } from '../../shared/components/organisms/EventList';
+import { AlertCard } from '../../shared/components/organisms/AlertCard';
+import { PanfletoPlaceholder } from '../../shared/components/organisms/PanfletoPlaceholder';
+import { TETTabela } from '../../shared/components/organisms/TETTabela';
+import { TET_TAMANHO_ROWS } from '../../shared/components/organisms/TETTabela/tetData';
 import { ActionTile } from '../../shared/components/molecules/ActionTile/ActionTile';
 import { Segmented } from '../../shared/components/molecules/Segmented';
+import { ToggleTab } from '../../shared/components/molecules/ToggleTab';
+import { InputField } from '../../shared/components/molecules/InputField';
+import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { Button } from '../../shared/components/atoms/Button';
 import { FAB } from '../../shared/components/atoms/FAB';
 import { Toast } from '../../shared/components/molecules/Toast';
-import { ConfirmSheet } from '../../shared/components/overlays/patterns';
+import { ConfirmSheet, InfoSheet } from '../../shared/components/overlays/patterns';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import { usePCRState } from './hooks/usePCRState';
 import {
@@ -18,6 +25,8 @@ import {
   formatDuracao, formatHora, formatOffset,
   isChocavel, isNaoChocavel, getRitmoLabel,
   getCargaInicial,
+  calcDosesPediatricas, calcCargasPediatricas, calcLidocainaAdulto,
+  parseNumber,
 } from './pcrData';
 import {
   SelecionarRitmoSheet, AplicarChoqueSheet, ConfirmarRCESheet,
@@ -63,6 +72,8 @@ export function PCRFlow({ onBack }) {
   const [adrenDoubleTapOpen, setAdrenDoubleTapOpen] = useState(false);
   const [hhttOpen, setHhttOpen] = useState(false);
   const [bannerVisible, setBannerVisible] = useState(true);
+  // ACLS|AHA modais ID-based (algoritmo · cuidados-pos · qualidade-rcp · tet-tam · tet-prof · vcv · pcv · null)
+  const [aclsModalId, setAclsModalId] = useState(null);
   const [toast, setToast] = useState(null);
 
   // Master timer — lazy init evita impure call (React 19)
@@ -591,16 +602,208 @@ export function PCRFlow({ onBack }) {
     />
   );
 
+  // ============================================================
+  // ACLS | AHA (F-PCR-3.11 · Luis A7 "Fluxogramas")
+  // ============================================================
+  const isPediatrico = s.teoriaAP === 'pediatrico';
+  const pesoNum = parseNumber(s.peso);
+
+  const cargasPed = pesoNum && !isNaN(pesoNum) ? calcCargasPediatricas(pesoNum) : null;
+  const dosesPed = pesoNum && !isNaN(pesoNum) ? calcDosesPediatricas(pesoNum) : null;
+  const lidoAdulto = pesoNum && !isNaN(pesoNum) ? calcLidocainaAdulto(pesoNum) : null;
+
+  const renderFluxogramas = () => (
+    <div className={styles.aclsStack}>
+      <OptionCard
+        title="Algoritmo PCR"
+        description={isPediatrico
+          ? 'Passo a passo · reconhecer, RCP 30:2 (15:2 com 2 socorristas), ritmo, IV/IO.'
+          : 'Passo a passo · reconhecer, RCP, choque, adrenalina, reavaliar.'}
+        onClick={() => setAclsModalId('algoritmo')}
+      />
+      <OptionCard
+        title="Causas reversíveis"
+        description="5H + 5T · ritmo não-chocável."
+        onClick={() => setHhttOpen(true)}
+      />
+      <OptionCard
+        title="Cuidados pós-PCR"
+        description={isPediatrico
+          ? 'Estabilização após RCE · via aérea, hemodinâmica, normotermia, neuroproteção.'
+          : 'Estabilização após RCE · via aérea, hemodinâmica, neuroproteção.'}
+        onClick={() => setAclsModalId('cuidados-pos')}
+      />
+      <OptionCard
+        title="Qualidade RCP"
+        description={isPediatrico
+          ? 'Frequência, profundidade 1/3 do tórax, retorno completo, interrupções.'
+          : 'Frequência, profundidade ≥ 5 cm, retorno completo, interrupções.'}
+        onClick={() => setAclsModalId('qualidade-rcp')}
+      />
+    </div>
+  );
+
+  const renderCargasDoses = () => (
+    <div className={styles.aclsStack}>
+      {/* Input peso · só pediátrico precisa explicitamente (cálculos dinâmicos) */}
+      {isPediatrico && (
+        <InputField
+          label="Peso do paciente"
+          type="text"
+          mono
+          inputMode="decimal"
+          value={s.peso || ''}
+          onChange={s.setPeso}
+          placeholder=""
+          showUnit
+          unit="kg"
+        />
+      )}
+
+      {/* Desfibrilação */}
+      <AlertCard
+        level="info"
+        title="Desfibrilação"
+        showValue
+        value={isPediatrico && cargasPed ? `${cargasPed.primeiro}` : '200'}
+        unit={isPediatrico && cargasPed ? 'J · 2 J/kg' : 'J · bifásico'}
+      >
+        {isPediatrico && cargasPed
+          ? `Pediátrico (${pesoNum} kg) · 1º choque ${cargasPed.primeiro} J · 2º ${cargasPed.segundo} J · subsequentes até ${cargasPed.maximo} J (10 J/kg, máx dose adulto).`
+          : isPediatrico
+            ? 'Pediátrico: 2-4 J/kg · informe o peso pra cálculo.'
+            : 'Adulto · 200 J bifásico · escalonar até 360 J. Repetir após cada ciclo 2 min.'}
+      </AlertCard>
+
+      {/* Adrenalina */}
+      <AlertCard
+        level="info"
+        title="Adrenalina"
+        showValue
+        value={isPediatrico && dosesPed ? `${dosesPed.adrenaMg}` : '1'}
+        unit="mg IV/IO"
+      >
+        {isPediatrico && dosesPed
+          ? `Pediátrico (${pesoNum} kg) · 0,01 mg/kg = ${dosesPed.adrenaMg} mg IV/IO a cada 3-5 min · diluir 1 mg em 10 mL SF (1:10).`
+          : isPediatrico
+            ? 'Pediátrico: 0,01 mg/kg IV/IO · informe peso pra cálculo.'
+            : 'Bolus 1 mg IV/IO a cada 3-5 min · ampola 1 mg/mL sem diluir. FV/TV após 2º choque · AESP/Assistolia imediato.'}
+      </AlertCard>
+
+      {/* Amiodarona */}
+      <AlertCard
+        level="info"
+        title="Amiodarona"
+        showValue
+        value={isPediatrico && dosesPed ? `${dosesPed.amioMg}` : '300 + 150'}
+        unit={isPediatrico ? 'mg IV/IO (5 mg/kg)' : 'mg IV/IO'}
+      >
+        {isPediatrico && dosesPed
+          ? `Pediátrico (${pesoNum} kg) · 5 mg/kg = ${dosesPed.amioMg} mg em bolus · pode repetir até 15 mg/kg total.`
+          : isPediatrico
+            ? 'Pediátrico: 5 mg/kg · informe peso.'
+            : 'FV/TV refratária · 1ª dose 300 mg bolus · 2ª dose 150 mg após próximo choque. Diluir em SG 5% 20 mL.'}
+      </AlertCard>
+
+      {/* Lidocaína */}
+      <AlertCard
+        level="info"
+        title="Lidocaína"
+        showValue
+        value={isPediatrico && dosesPed ? `${dosesPed.lidoMg}` : lidoAdulto ? `${lidoAdulto.d1}-${lidoAdulto.d2}` : '1-1,5 mg/kg'}
+        unit={isPediatrico ? 'mg IV/IO (1 mg/kg)' : lidoAdulto ? `mg · máx ${lidoAdulto.dmax}` : ''}
+      >
+        {isPediatrico && dosesPed
+          ? `Pediátrico (${pesoNum} kg) · 1 mg/kg = ${dosesPed.lidoMg} mg em bolus.`
+          : lidoAdulto
+            ? `Adulto (${pesoNum} kg) · 1ª dose 1-1,5 mg/kg (${lidoAdulto.d1}-${lidoAdulto.d2} mg) · doses seguintes 0,5-0,75 mg/kg até ${lidoAdulto.dmax} mg total. Alternativa Amio em FV/TV refratária.`
+            : 'Alternativa Amio em FV/TV refratária. 1ª dose 1-1,5 mg/kg · doses seguintes 0,5-0,75 mg/kg até 3 mg/kg total. Informe peso pra calcular.'}
+      </AlertCard>
+
+      {/* Magnésio */}
+      <AlertCard
+        level="info"
+        title="Magnésio"
+        showValue
+        value="1-2"
+        unit="g IV/IO"
+      >
+        Indicação específica · Torsades de Pointes. Sulfato de Magnésio 1-2 g diluído em 10 mL SG 5% em bolus.
+      </AlertCard>
+    </div>
+  );
+
+  const renderViaAerea = () => (
+    <div className={styles.aclsStack}>
+      {isPediatrico && (
+        <OptionCard
+          title="Tamanho do Tubo (TET)"
+          description="Diâmetro interno por idade · sem ou com cuff."
+          onClick={() => setAclsModalId('tet-tam')}
+        />
+      )}
+      {isPediatrico && (
+        <OptionCard
+          title="Profundidade do TET"
+          description="Calcula pelo tubo, altura ou peso."
+          onClick={() => setAclsModalId('tet-prof')}
+        />
+      )}
+      <OptionCard
+        title="VCV · Ventilação Controlada Volume"
+        description={isPediatrico
+          ? 'Volume alvo · varia por faixa etária.'
+          : 'Volume alvo · 6-8 mL/kg peso predito.'}
+        onClick={() => setAclsModalId('vcv')}
+      />
+      <OptionCard
+        title="PCV · Ventilação Controlada Pressão"
+        description={isPediatrico
+          ? 'Pressão alvo · varia por faixa etária.'
+          : 'Pressão alvo · 12-20 cmH₂O inicial.'}
+        onClick={() => setAclsModalId('pcv')}
+      />
+    </div>
+  );
+
   const teoriaView = (
-    <TheoryScreen
-      title="ACLS | AHA"
-      subtitle="Referência rápida ACLS / AHA 2025."
-      items={[
-        { title: 'Fluxogramas', sub: 'Algoritmo PCR · Causas reversíveis · Cuidados pós-PCR · Qualidade RCP', onClick: () => showToast('Fluxogramas · F-PCR-3.11', 'info') },
-        { title: 'Cargas e Doses', sub: 'Desfib · Adrena · Amio · Lido · Mg', onClick: () => showToast('Cargas e Doses · F-PCR-3.11', 'info') },
-        { title: 'Via Aérea', sub: 'TET · VCV · PCV', onClick: () => showToast('Via Aérea · F-PCR-3.11', 'info') },
-      ]}
-    />
+    <div className={styles.tela}>
+      <StepHeader
+        title="ACLS | AHA"
+        subtitle="Referência rápida ACLS / AHA 2025."
+      />
+
+      <Segmented
+        options={[
+          { value: 'adulto', label: 'Adulto' },
+          { value: 'pediatrico', label: 'Pediátrico' },
+        ]}
+        value={s.teoriaAP}
+        onChange={s.setTeoriaAP}
+      />
+
+      <div className={styles.aclsSubTabs} role="tablist">
+        <ToggleTab
+          label="Fluxogramas"
+          active={s.teoriaSubAtiva === 'fluxogramas'}
+          onClick={() => s.setTeoriaSubAtiva('fluxogramas')}
+        />
+        <ToggleTab
+          label="Cargas e Doses"
+          active={s.teoriaSubAtiva === 'cargas-doses'}
+          onClick={() => s.setTeoriaSubAtiva('cargas-doses')}
+        />
+        <ToggleTab
+          label="Via Aérea"
+          active={s.teoriaSubAtiva === 'via-aerea'}
+          onClick={() => s.setTeoriaSubAtiva('via-aerea')}
+        />
+      </div>
+
+      {s.teoriaSubAtiva === 'fluxogramas' && renderFluxogramas()}
+      {s.teoriaSubAtiva === 'cargas-doses' && renderCargasDoses()}
+      {s.teoriaSubAtiva === 'via-aerea' && renderViaAerea()}
+    </div>
   );
 
   // ============================================================
@@ -664,6 +867,77 @@ export function PCRFlow({ onBack }) {
         onConfirm={onConfirmAdrenDoubleTap}
       />
       <HHTTSheet open={hhttOpen} onClose={() => setHhttOpen(false)} />
+
+      {/* ACLS|AHA modais (Fluxogramas + Via Aérea) */}
+      <InfoSheet
+        open={aclsModalId === 'algoritmo'}
+        onClose={() => setAclsModalId(null)}
+        title={isPediatrico ? 'Algoritmo PCR Pediátrico' : 'Algoritmo PCR'}
+      >
+        <PanfletoPlaceholder
+          title={isPediatrico ? 'Algoritmo PCR Pediátrico' : 'Algoritmo PCR'}
+        />
+      </InfoSheet>
+
+      <InfoSheet
+        open={aclsModalId === 'cuidados-pos'}
+        onClose={() => setAclsModalId(null)}
+        title={isPediatrico ? 'Cuidados pós-PCR Pediátrico' : 'Cuidados pós-PCR'}
+      >
+        <PanfletoPlaceholder
+          title={isPediatrico ? 'Cuidados pós-PCR Pediátrico' : 'Cuidados pós-PCR'}
+        />
+      </InfoSheet>
+
+      <InfoSheet
+        open={aclsModalId === 'qualidade-rcp'}
+        onClose={() => setAclsModalId(null)}
+        title={isPediatrico ? 'Qualidade RCP Pediátrico' : 'Qualidade RCP'}
+      >
+        <PanfletoPlaceholder
+          title={isPediatrico ? 'Qualidade RCP Pediátrico' : 'Qualidade RCP'}
+        />
+      </InfoSheet>
+
+      <InfoSheet
+        open={aclsModalId === 'tet-tam'}
+        onClose={() => setAclsModalId(null)}
+        title="Tamanho do Tubo (TET)"
+      >
+        <TETTabela rows={TET_TAMANHO_ROWS} />
+      </InfoSheet>
+
+      <InfoSheet
+        open={aclsModalId === 'tet-prof'}
+        onClose={() => setAclsModalId(null)}
+        title="Profundidade do TET"
+      >
+        <PanfletoPlaceholder title="TET Profundidade · 3 fórmulas (tubo × 3 · altura/10+5 · 6+peso)" />
+      </InfoSheet>
+
+      <InfoSheet
+        open={aclsModalId === 'vcv'}
+        onClose={() => setAclsModalId(null)}
+        title={isPediatrico ? 'VCV Pediátrico' : 'VCV · Ventilação Controlada Volume'}
+      >
+        {isPediatrico ? (
+          <PanfletoPlaceholder title="VCV Pediátrico · faixa etária + VENT_PEDIATRIA" />
+        ) : (
+          <PanfletoPlaceholder title="VCV Adulto · altura+sexo → peso predito ARDSnet → VC 6-8 × pp" />
+        )}
+      </InfoSheet>
+
+      <InfoSheet
+        open={aclsModalId === 'pcv'}
+        onClose={() => setAclsModalId(null)}
+        title={isPediatrico ? 'PCV Pediátrico' : 'PCV · Ventilação Controlada Pressão'}
+      >
+        {isPediatrico ? (
+          <PanfletoPlaceholder title="PCV Pediátrico · faixa etária + VENT_PEDIATRIA" />
+        ) : (
+          <PanfletoPlaceholder title="PCV Adulto · pressão pico 12-20 cmH₂O · FR 10-12 · PEEP 5 · FiO₂ 100% · I:E 1:2" />
+        )}
+      </InfoSheet>
 
       {/* Toast sticky */}
       {toast && (
