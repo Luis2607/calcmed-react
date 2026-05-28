@@ -1,0 +1,74 @@
+/* EventList — organism code-first (F-PCR-2.2 · DS).
+   Details collapsible + summary + lista reverse. Tokens-only. */
+
+.wrap {
+  width: 100%;
+  background: var(--ds-fundo-cartao);
+  border: 1px solid var(--ds-cartao-borda);
+  border-radius: var(--radius-card);
+  padding: var(--esp-4);
+  box-sizing: border-box;
+}
+
+.summary {
+  cursor: pointer;
+  list-style: none;
+  outline: none;
+}
+
+.summary::-webkit-details-marker { display: none; }
+.summary:focus-visible {
+  outline: 2px solid var(--ds-interativo-primario);
+  outline-offset: 2px;
+  border-radius: var(--ds-r-sm);
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3);
+}
+
+.summaryTitle {
+  color: var(--ds-texto-terciario);
+  font-size: var(--fonte-tamanho-rotulo);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+
+.summaryRight {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+}
+
+.chevron {
+  color: var(--ds-texto-terciario);
+  font-size: var(--fonte-tamanho-corpo);
+  transition: transform 0.15s ease;
+}
+
+.wrap[open] .chevron {
+  transform: rotate(180deg);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  margin: var(--esp-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.empty {
+  margin-top: var(--esp-3);
+  padding: var(--esp-4);
+  border: 1px dashed var(--ds-borda-padrao);
+  border-radius: var(--ds-r-md);
+  color: var(--ds-texto-terciario);
+  font-size: var(--fonte-tamanho-auxiliar);
+  text-align: center;
+}

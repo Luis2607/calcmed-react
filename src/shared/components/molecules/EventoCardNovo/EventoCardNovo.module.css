@@ -1,0 +1,59 @@
+/* EventoCardNovo — molecule code-first (F-PCR-2.10 · DS). Tokens-only. */
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  width: 100%;
+  padding: var(--esp-3) var(--esp-4);
+  border: 1px solid var(--ds-cartao-borda);
+  border-radius: var(--ds-r-md);
+  background: var(--ds-fundo-cartao);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.08s;
+  font-family: var(--fonte-base);
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.card:hover:not(:disabled) {
+  border-color: var(--ds-interativo-primario);
+  background: var(--interativo-primario-tint-04, var(--ds-fundo-cartao));
+}
+
+.card:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--ds-interativo-primario);
+  outline-offset: 2px;
+}
+
+.card:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  color: var(--ds-texto-padrao);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.dose {
+  color: var(--ds-texto-secundario);
+  font-size: var(--fonte-tamanho-auxiliar);
+  font-weight: 500;
+  line-height: 18px;
+}

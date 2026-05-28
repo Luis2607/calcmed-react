@@ -1,0 +1,44 @@
+/* FAB — atom code-first (F-PCR-2.5 · DS).
+   Floating Action Button 56×56 teal · ancorado top do ActionFooter (T2 PCR golden).
+   Tokens-only. */
+
+.fab {
+  position: absolute;
+  bottom: 100%;
+  right: var(--esp-4);
+  margin-bottom: var(--esp-4);
+  width: 56px;
+  height: 56px;
+  border-radius: var(--ds-r-pill);
+  border: none;
+  background: var(--ds-interativo-primario);
+  color: var(--ds-texto-sobre-destaque);
+  /* Reusa --sombra-toast (token DS de elementos elevados) — evita hardcode rgba. */
+  box-shadow: var(--sombra-toast);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+  z-index: 5;
+}
+
+.fab:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.fab:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.fab:focus-visible {
+  outline: 3px solid var(--interativo-primario-tint-08, var(--ds-interativo-primario));
+  outline-offset: 2px;
+}
+
+.fab:disabled {
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-terciario);
+  cursor: not-allowed;
+  box-shadow: none;
+}

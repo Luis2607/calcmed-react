@@ -1,0 +1,92 @@
+/* BannerContextual — organism code-first (F-PCR-2.3 · DS).
+   Banner T2 PCR · border-left grosso · 4 tones · pulse opcional respeita a11y. */
+
+.banner {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--esp-3);
+  padding: var(--esp-3) var(--esp-4);
+  border-radius: var(--ds-r-md);
+  border-left-width: 3px;
+  border-left-style: solid;
+  box-sizing: border-box;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.description {
+  font-size: var(--fonte-tamanho-auxiliar);
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--ds-texto-secundario);
+}
+
+/* Tones */
+.tone-warning {
+  background: var(--ds-retorno-atencao-fundo);
+  border-left-color: var(--ds-retorno-atencao);
+}
+.tone-warning .title {
+  color: var(--ds-retorno-atencao);
+}
+
+.tone-critical {
+  background: var(--ds-retorno-critico-fundo);
+  border-left-color: var(--ds-retorno-critico);
+  border-left-width: 6px;
+}
+.tone-critical .title {
+  color: var(--ds-retorno-critico);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tone-pos-choque {
+  background: var(--ds-retorno-atencao-fundo);
+  border-left-color: var(--ds-retorno-atencao);
+}
+.tone-pos-choque .title {
+  color: var(--ds-texto-padrao);
+}
+
+.tone-success {
+  background: var(--ds-retorno-sucesso-fundo);
+  border-left-color: var(--ds-retorno-sucesso);
+}
+.tone-success .title {
+  color: var(--ds-retorno-sucesso);
+}
+
+/* Pulse animation — usado em critical pra reforço visual.
+   Respeita prefers-reduced-motion (WCAG · a11y padrão). */
+.pulse {
+  animation: bannerPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes bannerPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--ds-retorno-critico-fundo);
+  }
+  50% {
+    box-shadow: 0 0 0 6px var(--ds-retorno-critico-fundo);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse {
+    animation: none;
+  }
+}

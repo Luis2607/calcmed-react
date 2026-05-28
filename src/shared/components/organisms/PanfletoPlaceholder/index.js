@@ -1,0 +1,1 @@
+export { PanfletoPlaceholder } from './PanfletoPlaceholder';

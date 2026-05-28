@@ -1,0 +1,52 @@
+/* EventItem — molecule code-first (F-PCR-2.1 · DS).
+   Linha de evento PCR Timeline. Sem rail · lado-a-lado compacto.
+   Tokens-only (zero hardcode). */
+
+.item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--esp-3);
+  padding: var(--esp-3) 0;
+  border-bottom: 1px solid var(--ds-borda-sutil);
+  box-sizing: border-box;
+  width: 100%;
+  list-style: none;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+/* Bloco hora + offset em 2 linhas (mono para alinhamento tabular) */
+.timeBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: var(--fonte-mono);
+  font-feature-settings: 'tnum';
+}
+
+.time {
+  color: var(--ds-texto-padrao);
+  font-size: var(--fonte-tamanho-corpo-2);
+  font-weight: 700;
+  line-height: 16px;
+}
+
+.offset {
+  color: var(--ds-texto-terciario);
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 600;
+  line-height: 12px;
+}
+
+.title {
+  color: var(--ds-texto-padrao);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 500;
+  line-height: 20px;
+  min-width: 0;
+  /* Quebra em palavras longas, mantém comportamento natural de wrap */
+  overflow-wrap: anywhere;
+}

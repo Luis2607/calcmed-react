@@ -1,0 +1,42 @@
+/* PanfletoPlaceholder — organism code-first (F-PCR-2.9 · DS). Tokens-only. */
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-3);
+  padding: var(--esp-8) var(--esp-4);
+  border: 2px dashed var(--ds-borda-padrao);
+  border-radius: var(--ds-r-md);
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-terciario);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.icon {
+  width: 48px;
+  height: 48px;
+  color: var(--ds-texto-terciario);
+}
+
+.title {
+  color: var(--ds-texto-padrao);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.helper {
+  font-size: var(--fonte-tamanho-auxiliar);
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.ref {
+  font-family: var(--fonte-mono);
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 500;
+  color: var(--ds-texto-terciario);
+  margin-top: var(--esp-2);
+}

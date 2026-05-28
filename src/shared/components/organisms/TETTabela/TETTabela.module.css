@@ -1,0 +1,64 @@
+/* TETTabela — organism code-first (F-PCR-2.8 · DS).
+   Tabela 3-col pediatria · mono nas medidas. Tokens-only. */
+
+.wrap {
+  width: 100%;
+  background: var(--ds-fundo-cartao);
+  border: 1px solid var(--ds-cartao-borda);
+  border-radius: var(--radius-card);
+  padding: var(--esp-3);
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--fonte-base);
+}
+
+.caption {
+  text-align: left;
+  padding-bottom: var(--esp-2);
+  color: var(--ds-texto-terciario);
+  font-size: var(--fonte-tamanho-rotulo);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.th {
+  text-align: left;
+  padding: var(--esp-2) var(--esp-3);
+  color: var(--ds-texto-terciario);
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 14px;
+  border-bottom: 1px solid var(--ds-borda-padrao);
+}
+
+.row {
+  border-bottom: 1px solid var(--ds-borda-sutil);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.td {
+  padding: var(--esp-2) var(--esp-3);
+  font-size: var(--fonte-tamanho-corpo-2);
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--ds-texto-padrao);
+  vertical-align: middle;
+}
+
+.tdValue {
+  font-family: var(--fonte-mono);
+  font-feature-settings: 'tnum';
+  font-weight: 600;
+  white-space: nowrap;
+}
