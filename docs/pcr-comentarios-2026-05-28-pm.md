@@ -195,3 +195,36 @@ Confirmação do B4: todo timer/ciclo só zera/incrementa por **ação manual ex
 ## D · Itens não-aplicados imediatamente (fora escopo)
 
 - B5 (Linha do tempo Home) → pós-PCR · sub-tarefa Home.
+
+---
+
+## E · F01–F14 (vídeo Gustavo 2026-05-27) — aplicação no React
+
+> Lote SEGUINTE de feedback (vídeo de revisão do protótipo `?route=pcr-react`). Fonte canônica: `wiki/decisoes/2026-05-27-pcr-feedback-gustavo-video-prototipo.md`. Aplicado em 6 microsteps (lint + build verdes cada · token-only · ajuste em nível de componente DS).
+
+| # | Item | Estado | Commit |
+|---|---|---|---|
+| F01 | Botão Iniciar pulsante (urgência visual) | ✅ Feito (MS-4) | de348f4 |
+| F02 | Ícone após iniciar | ✅ OK (não-bloqueador) | — |
+| F03 | Notif adulto×pediatria | 🔒 Bloqueado (Guilherme) | — |
+| F04 | Timer ciclo só após ação explícita | ✅ Feito (MS-2) | fa48887 |
+| F05 | Label "Checar Ritmo/Pulso" | ✅ Feito | — |
+| F06 | Adrenalina padrão 3 min / mín 3 | ✅ Feito (prévio · B6) | — |
+| F07 | 1ª adrenalina zerada | ✅ Feito (MS-1) | fa48887 |
+| F08 | Linha do tempo · horário dispositivo | ✅ Feito (EventList) | — |
+| F09 | Alerta 30s antes do ciclo | ✅ Feito (sugestão >30s não aplicada) | — |
+| F10 | Timer ciclo não para na checagem | ✅ Feito (B4/B7) | — |
+| F11 | Fluxo ramificação ritmo (seleção direta) | ✅ Feito (MS-3) | bd3d611 |
+| F12 | Notif antecipada próx. medicação | ✅ Feito parcial (casos ACLS · MS-5) | 19c8dd2 |
+| F13 | Adrenalina atrasada · timer cresce | ✅ Feito (window-overdue) | — |
+| F14 | RCE gatilho ritmo organizado + pulso | ✅ Feito (MS-3) | bd3d611 |
+
+**MS-5 / F12 — escopo aplicado (casos ACLS óbvios):**
+- Amiodarona 300 mg após o 3º choque (FV/TV refratária) — banner `warning` derivado, visível 30s + TTS.
+- "Prepare adrenalina 1 mg" 30s antes da janela de adrenalina abrir — banner derivado + TTS.
+- Banner DERIVADO (sem setState/timer; auto-some pela janela de tempo). `choqueCount` derivado da timeline (tag `choque`, undo-consistente). Voz 1×/marco via flags anti-spam (`avisouAmiodarona`/`avisouAdrenPreparar`), gated por `audioOn`.
+- Demais notificações (2ª dose amiodarona 150 mg, lidocaína, mapa por ritmo/tempo adulto×pediatria) marcadas `// TODO F03 Guilherme` em `PCRFlow.jsx`.
+
+**Verificação live (`?route=pcr-react`):** banner amiodarona pós-3º-choque (screenshot + DOM) · banner adrenalina pré-janela (DOM) · F13 "ATRASADA" com timer crescente · F06 segmented 3/4/5 min · F09 banner crítico-marco. Lint + build verdes por microstep.
+
+**Pendente (desbloqueia F03 + completa F12):** mapa de notificações do Guilherme (adulto + pediatria, momentos de disparo).
