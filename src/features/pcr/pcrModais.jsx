@@ -9,6 +9,8 @@ import { SheetSection, SheetText, SheetList } from '../../shared/components/mole
 import { HHTTPills } from '../../shared/components/molecules/HHTTPills';
 import { HHTT_ITEMS } from '../../shared/components/molecules/HHTTPills/hhttData';
 import { BottomSheet } from '../../shared/components/overlays/BottomSheet';
+import { EventoCardNovo } from '../../shared/components/molecules/EventoCardNovo';
+import { SectionLabel } from '../../shared/components/atoms/SectionLabel';
 import styles from './pcrModais.module.css';
 
 /**
@@ -207,6 +209,81 @@ export function AdrenDoubleTapSheet({ open, onClose, segundosDesde, onConfirm })
       perigo
       onConfirm={onConfirm}
     />
+  );
+}
+
+/**
+ * Modal: ADICIONAR EVENTO (golden `adicionar-evento` · golden pcr.js abrirModalAdicionarEvento).
+ * 4 grupos: Drogas · Procedimento · Ritmos atípicos · Outro (custom · placeholder).
+ */
+const EVENTOS_DROGAS = [
+  { key: 'amio', nome: 'Amiodarona', dose: '300 mg IV/IO bolus · 2ª dose 150 mg' },
+  { key: 'lido', nome: 'Lidocaína', dose: '1-1,5 mg/kg IV/IO · max 3 mg/kg' },
+  { key: 'bic', nome: 'Bicarbonato', dose: '1 mEq/kg IV (hipercalemia · acidose)' },
+];
+
+const EVENTOS_PROCEDIMENTO = [
+  { key: 'iot', nome: 'IOT', dose: 'Intubação orotraqueal' },
+];
+
+const EVENTOS_RITMOS_ATIPICOS = [
+  { key: 'idio', nome: 'Idioventricular', dose: 'Ritmo de escape' },
+  { key: 'torsades', nome: 'Torsades de Pointes', dose: 'Tratar com Magnésio' },
+];
+
+export function AdicionarEventoSheet({ open, onClose, contadores = {}, onApply }) {
+  return (
+    <BottomSheet
+      open={open}
+      onClose={onClose}
+      title="Adicionar evento"
+      description="Registre droga, procedimento ou ritmo atípico observado."
+    >
+      <SheetSection>
+        <SectionLabel>Drogas</SectionLabel>
+        <div className={styles.stack}>
+          {EVENTOS_DROGAS.map((ev) => (
+            <EventoCardNovo
+              key={ev.key}
+              name={ev.nome}
+              dose={ev.dose}
+              count={contadores[ev.key] || 0}
+              onApply={() => onApply(ev, 'droga')}
+            />
+          ))}
+        </div>
+      </SheetSection>
+
+      <SheetSection>
+        <SectionLabel>Procedimento</SectionLabel>
+        <div className={styles.stack}>
+          {EVENTOS_PROCEDIMENTO.map((ev) => (
+            <EventoCardNovo
+              key={ev.key}
+              name={ev.nome}
+              dose={ev.dose}
+              count={contadores[ev.key] || 0}
+              onApply={() => onApply(ev, '')}
+            />
+          ))}
+        </div>
+      </SheetSection>
+
+      <SheetSection>
+        <SectionLabel>Ritmos atípicos</SectionLabel>
+        <div className={styles.stack}>
+          {EVENTOS_RITMOS_ATIPICOS.map((ev) => (
+            <EventoCardNovo
+              key={ev.key}
+              name={ev.nome}
+              dose={ev.dose}
+              count={contadores[ev.key] || 0}
+              onApply={() => onApply(ev, '')}
+            />
+          ))}
+        </div>
+      </SheetSection>
+    </BottomSheet>
   );
 }
 

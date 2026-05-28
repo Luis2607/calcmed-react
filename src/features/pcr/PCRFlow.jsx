@@ -31,7 +31,7 @@ import {
 import {
   SelecionarRitmoSheet, AplicarChoqueSheet, ConfirmarRCESheet,
   EncerrarSemRCESheet, PausarSheet, CheckarPulsoRitmoSheet,
-  AdrenDoubleTapSheet, HHTTSheet,
+  AdrenDoubleTapSheet, HHTTSheet, AdicionarEventoSheet,
 } from './pcrModais';
 import styles from './PCRFlow.module.css';
 
@@ -74,6 +74,9 @@ export function PCRFlow({ onBack }) {
   const [bannerVisible, setBannerVisible] = useState(true);
   // ACLS|AHA modais ID-based (algoritmo · cuidados-pos · qualidade-rcp · tet-tam · tet-prof · vcv · pcv · null)
   const [aclsModalId, setAclsModalId] = useState(null);
+  // F-PCR-3.6 Adicionar evento
+  const [eventoOpen, setEventoOpen] = useState(false);
+  const [contadoresEvento, setContadoresEvento] = useState({});
   const [toast, setToast] = useState(null);
 
   // Master timer — lazy init evita impure call (React 19)
@@ -334,12 +337,12 @@ export function PCRFlow({ onBack }) {
       {/* Linha do tempo · EventList collapsible */}
       <EventList events={eventosFormatados} defaultOpen={s.eventos.length > 0 && s.eventos.length <= 3} />
 
-      {/* FAB Adicionar evento (placeholder · F-PCR-3.6 modal completo) */}
+      {/* FAB Adicionar evento (F-PCR-3.6) */}
       <div className={styles.fabAnchor}>
         <FAB
           icon="plus"
           ariaLabel="Adicionar evento"
-          onClick={() => showToast('Adicionar evento · modal F-PCR-3.6', 'info')}
+          onClick={() => setEventoOpen(true)}
         />
       </div>
     </div>
@@ -867,6 +870,20 @@ export function PCRFlow({ onBack }) {
         onConfirm={onConfirmAdrenDoubleTap}
       />
       <HHTTSheet open={hhttOpen} onClose={() => setHhttOpen(false)} />
+
+      {/* Adicionar evento · F-PCR-3.6 */}
+      <AdicionarEventoSheet
+        open={eventoOpen}
+        onClose={() => setEventoOpen(false)}
+        contadores={contadoresEvento}
+        onApply={(evento, tag) => {
+          const nextCount = (contadoresEvento[evento.key] || 0) + 1;
+          setContadoresEvento({ ...contadoresEvento, [evento.key]: nextCount });
+          const sufixo = nextCount > 1 ? ` · ${nextCount}ª aplicação` : '';
+          s.registrarEvento(`${evento.nome} aplicado${sufixo}`, tag);
+          showToast(`${evento.nome} registrada`, 'success');
+        }}
+      />
 
       {/* ACLS|AHA modais (Fluxogramas + Via Aérea) */}
       <InfoSheet
