@@ -27,8 +27,8 @@ import { ScoreCriterionGroup } from '../../shared/components/organisms/ScoreCrit
 import { AlertCard } from '../../shared/components/organisms/AlertCard';
 import { ChecklistBlock } from '../../shared/components/organisms/ChecklistBlock';
 import { ClinicalCard } from '../../shared/components/organisms/ClinicalCard';
-import { PatientDetail } from '../../shared/components/organisms/PatientDetail';
 import { Timeline } from '../../shared/components/organisms/Timeline';
+import { SheetSection, SheetDetailRow, SheetText } from '../../shared/components/molecules/sheet';
 import { Toast } from '../../shared/components/molecules/Toast';
 import { InfoSheet, ConfirmSheet, FormSheet, AnnotationSheet, DetailSheet } from '../../shared/components/overlays/patterns';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
@@ -860,34 +860,25 @@ export function SepseFlow({ onBack }) {
   // a caso via botão Excluir dentro do detalhe.
   const casoAberto = casoIdxAberto != null ? historico[casoIdxAberto] : null;
 
-  // §11.H.2 · detalhe completo: header back + PatientDetail + Timeline + Anotação + ações (golden 1:1)
+  // §11.H.2 · Detalhe do caso = body do DetailSheet, montado SÓ com peças DS de sheet
+  // (Luis 2026-05-28 PM: PatientDetail dentro do sheet duplicava o header das iniciais —
+  // anti-pattern "componente dentro de componente"; Rafael: sheet-pieces são pra body de
+  // sheet, PatientDetail é pra tela. Não misturar). Estrutura espelha golden 1:1:
+  //   SheetSection "Caso" / "Desfecho clínico" / "Bundle" + Timeline "Linha do tempo"
+  //   + Anotação opcional + helper LGPD.
   const renderCasoDetalhe = () => {
     if (!casoAberto) return null;
     const c = casoAberto;
-    const protocolLabel = c.classificacao
-      ? `Sepse · ${(VEREDITO_OPCOES.find((v) => v.value === c.classificacao)?.label || '').toLowerCase()}`
-      : 'Sepse';
-    const summary = [
-      { label: 'Encerrado em', value: c.date },
-      { label: 'Duração', value: c.duration },
-      ...(c.idade ? [{ label: 'Idade', value: `${c.idade} anos` }] : []),
-      ...(c.peso ? [{ label: 'Peso', value: `${c.peso} kg` }] : []),
-    ];
-    const desfechoRows = [];
-    if (c.sofa != null) desfechoRows.push({ label: 'SOFA', value: `${c.sofa} pts` });
-    if (c.foco) desfechoRows.push({ label: 'Foco', value: c.foco });
-    if (c.horaAtb) desfechoRows.push({ label: 'ATB', value: new Date(c.horaAtb).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) });
-    const bundleRows = [];
-    if (typeof c.metasN === 'number') bundleRows.push({ label: 'Metas atingidas', value: `${c.metasN}/5` });
-    if (typeof c.icuN === 'number') bundleRows.push({ label: 'Checklist UTI', value: `${c.icuN}/6` });
-    if (Array.isArray(c.bundleFeitosKeys)) bundleRows.push({ label: 'Bundle 1h+acomp', value: `${c.bundleFeitosKeys.length}/9` });
-    const sections = [
-      ...(desfechoRows.length ? [{ title: 'Desfecho clínico', rows: desfechoRows }] : []),
-      ...(bundleRows.length ? [{ title: 'Bundle', rows: bundleRows }] : []),
-    ];
+    const veredito = c.classificacao
+      ? VEREDITO_OPCOES.find((v) => v.value === c.classificacao)?.label
+      : null;
+    const focoLabel = c.foco ? (FOCOS.find((f) => f.value === c.foco)?.label || c.foco) : null;
+    const horaAtbStr = c.horaAtb
+      ? new Date(c.horaAtb).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+      : null;
 
     // Timeline · eventos do caso (tag → status)
-    const tStart = c.iniciadoEm || (c.date ? null : null);
+    const tStart = c.iniciadoEm || null;
     const offsetHora = (ts) => {
       if (!tStart || !ts) return new Date(ts).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       const diffMin = Math.floor((ts - tStart) / 60000);
@@ -902,25 +893,49 @@ export function SepseFlow({ onBack }) {
       status: tagToStatus[ev.tag] || 'info',
     }));
     if (c.horaAtb) {
-      events.push({ id: `atb-${c.horaAtb}`, time: offsetHora(c.horaAtb), title: `ATB administrado às ${new Date(c.horaAtb).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`, status: 'success' });
+      events.push({ id: `atb-${c.horaAtb}`, time: offsetHora(c.horaAtb), title: `ATB administrado às ${horaAtbStr}`, status: 'success' });
     }
+
+    const temDesfecho = c.sofa != null || veredito || focoLabel || horaAtbStr;
+    const temBundle = typeof c.metasN === 'number' || typeof c.icuN === 'number' || Array.isArray(c.bundleFeitosKeys);
 
     return (
       <>
-        <PatientDetail
-          initials={c.initials}
-          protocol={protocolLabel}
-          status={c.status}
-          statusTone="novo"
-          summary={summary}
-          sections={sections}
-        />
-        {events.length > 0 && <Timeline title="Linha do tempo" events={events} />}
-        {c.anotacao && (
-          <AlertCard level="footnote" title="Anotação">
-            {c.anotacao}
-          </AlertCard>
+        <SheetSection title="Caso">
+          <SheetDetailRow label="Encerrado em" value={c.date} />
+          <SheetDetailRow label="Duração" value={c.duration} />
+          {c.idade && <SheetDetailRow label="Idade" value={`${c.idade} anos`} />}
+          {c.peso && <SheetDetailRow label="Peso" value={`${c.peso} kg`} />}
+        </SheetSection>
+
+        {temDesfecho && (
+          <SheetSection title="Desfecho clínico">
+            {c.sofa != null && <SheetDetailRow label="SOFA" value={`${c.sofa} pts`} />}
+            {veredito && <SheetDetailRow label="Veredito" value={veredito} />}
+            {focoLabel && <SheetDetailRow label="Foco" value={focoLabel} />}
+            {horaAtbStr && <SheetDetailRow label="ATB administrado" value={horaAtbStr} />}
+          </SheetSection>
         )}
+
+        {temBundle && (
+          <SheetSection title="Bundle">
+            {typeof c.metasN === 'number' && <SheetDetailRow label="Metas atingidas" value={`${c.metasN}/5`} />}
+            {typeof c.icuN === 'number' && <SheetDetailRow label="Checklist UTI" value={`${c.icuN}/6`} />}
+            {Array.isArray(c.bundleFeitosKeys) && <SheetDetailRow label="Bundle 1h+acomp" value={`${c.bundleFeitosKeys.length}/9`} />}
+          </SheetSection>
+        )}
+
+        {events.length > 0 && <Timeline title="Linha do tempo" events={events} />}
+
+        {c.anotacao && (
+          <SheetSection title="Anotação">
+            <SheetText>{c.anotacao}</SheetText>
+          </SheetSection>
+        )}
+
+        <SheetText variant="auxiliary">
+          Histórico salvo apenas neste aparelho. Não substitui prontuário oficial.
+        </SheetText>
       </>
     );
   };
@@ -1010,11 +1025,12 @@ export function SepseFlow({ onBack }) {
       </FormSheet>
 
       {/* §11.H.2 · Detalhe do caso (PatientDetail + Timeline) */}
+      {/* DetailSheet só com iniciais no header (golden 1:1: "GUSTAVO" sem subtítulo;
+          helper LGPD viaja no fim do body como SheetText auxiliary). */}
       <DetailSheet
         open={casoAberto != null}
         onClose={() => setCasoIdxAberto(null)}
         title={casoAberto?.initials || ''}
-        description="Caso arquivado · histórico LGPD-compliant deste aparelho"
         footer={casoAberto ? {
           secondary: { label: 'Excluir', variant: 'danger', onClick: () => setExcluirIdx(casoIdxAberto) },
           primary: { label: 'Compartilhar', onClick: () => handleCompartilhar(casoAberto) },
