@@ -221,10 +221,11 @@
   color: var(--ds-texto-sobre-destaque);
 }
 
-/* Toast feedback efêmero · topo do viewport (Luis 2026-05-28: notificação no topo).
-   Abaixo do header sticky · z-index alto · não bloqueia toques no conteúdo. */
+/* Toast feedback efêmero · DENTRO da tela do app (Luis 2026-05-28).
+   position absolute ancora no .viewport-container (relative + overflow hidden) → fica
+   nos 390px do app, não na janela do browser. top abaixo do header · não rola. */
 .toastWrap {
-  position: fixed;
+  position: absolute;
   left: var(--esp-4);
   right: var(--esp-4);
   top: var(--esp-4);
@@ -237,5 +238,4 @@
 .toastWrap > * {
   pointer-events: auto;
   width: 100%;
-  max-width: 360px;
 }
