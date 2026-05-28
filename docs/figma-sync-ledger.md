@@ -338,6 +338,22 @@ Atualização 2026-05-27: SCA usa `activePresentation="capsule"` no `ProtocolSte
 - **Ação no Figma:** ✅ **nenhuma** (Figma estava certo; código se alinhou).
 - **Status:** sincronizado
 
+### S12 · ActionFooter — prop `backLink` (ESTENDIDO)
+- **Componente:** `organisms/ActionFooter`.
+- **O que no código:** prop opcional `backLink: {label, onClick}` renderiza link textual "← Voltar" discreto (sem botão cheio), em linha própria acima do hint, cor `--ds-interativo-primario`, font 14/600.
+- **O que no Figma:** ActionFooter atual só tem `Primary` + opcional `Secondary` (ambos botões).
+- **Ação no Figma:** adicionar property "Show back link" (boolean) + slot text-link à esquerda do hint row (não substitui Primary/Secondary).
+- **Motivo:** Luis 2026-05-28 — wizard de 5 telas em mobile com stepper clicável: link textual cobre voltar sem competir com primary. Padrão Opção C da pesquisa NN/g/PatternFly.
+- **Status:** aberto
+
+### S13 · HistoryView — search input automático (≥3 casos) (ESTENDIDO)
+- **Componente:** `organisms/HistoryView`.
+- **O que no código:** quando `cases.length >= 3`, renderiza `<input type="search">` nativo com placeholder "Buscar por iniciais ou data…". Filtro case-insensitive em `initials || date`. Empty state customizado quando filtro não casa ("Nenhum caso encontrado").
+- **O que no Figma:** HistoryView não tem search modelado.
+- **Ação no Figma:** criar variant "Com busca" + slot Input + filtro empty-state. Threshold visual: aparecer quando 3+ casos.
+- **Motivo:** auditoria #14 — golden `historico-busca` aparecia automaticamente ≥3 casos. Reduz fricção pra encontrar caso histórico específico.
+- **Status:** aberto
+
 ---
 
 ## Resumo executivo das 11 mudanças (próxima sync Figma)
@@ -355,8 +371,10 @@ Atualização 2026-05-27: SCA usa `activePresentation="capsule"` no `ProtocolSte
 | S9 | ProtocolSteps | ESTENDIDO (conector) | 🟠 aberto |
 | S10 | InfoSheet leadingIcon | DEPRECATED na aplicação | 🟠 aberto |
 | S11 | SheetList | FIX (código→Figma) | 🟢 sincronizado |
+| S12 | ActionFooter | ESTENDIDO (backLink) | 🟠 aberto |
+| S13 | HistoryView | ESTENDIDO (search ≥3 casos) | 🟠 aberto |
 
-**Total a aplicar no Figma:** 9 itens abertos (2 já sincronizados ↔ código alinhou ao Figma).
+**Total a aplicar no Figma:** 11 itens abertos (2 já sincronizados ↔ código alinhou ao Figma).
 
 **Próximos passos sugeridos** quando o time pegar sync:
 1. **Prioritários** (afetam consumidores existentes em produção): S4 (ClinicalCard.onInfo), S5 (ScoreCriterionGroup 3 modos), S6+S7 (Radio/RadioGroup description), S8 (actionBtn cinza), S9 (Stepper conector).
