@@ -1,6 +1,7 @@
 import { getProtocolById } from './data/protocols';
 import { CADFlow } from './features/cad/CADFlow';
 import { SCAFlow } from './features/sca/SCAFlow';
+import { SepseFlow } from './features/sepse/SepseFlow';
 import { Home } from './features/home/Home';
 import { HubHome } from './features/hub/HubHome';
 import { ColorGallery } from './features/ds/ColorGallery';
@@ -40,8 +41,9 @@ export default function App() {
   const isInputGallery = visibleRoute === 'ds-inputs' || qaRoute === 'inputs';
   const isControlsGallery = visibleRoute === 'ds-controles' || qaRoute === 'controles';
   const isGallery = isSheetGallery || isColorGallery || isTypographyGallery || isSpacingGallery || isInputGallery || isControlsGallery;
+  const isSepseReact = visibleRoute === 'sepse-react';
   const isKnownRoute =
-    visibleRoute === 'home' || visibleRoute === 'hub' || isGallery || Boolean(activeProtocol);
+    visibleRoute === 'home' || visibleRoute === 'hub' || isGallery || isSepseReact || Boolean(activeProtocol);
   const showHome = !isGallery && (visibleRoute === 'home' || !isKnownRoute);
 
   if (qaRoute) {
@@ -78,6 +80,10 @@ export default function App() {
 
           {visibleRoute === 'sca' && (
             <SCAFlow onBack={goHome} />
+          )}
+
+          {isSepseReact && (
+            <SepseFlow onBack={goHome} />
           )}
 
           {activeProtocol && activeProtocol.id !== 'cad' && activeProtocol.id !== 'sca' && (

@@ -1,0 +1,102 @@
+/* Sepse · layout de produto (token-only · zero hardcode).
+   Só o que NENHUM componente do DS cobre: spacing das telas, barra de
+   progresso, grade de foco e painel das drogas. Escala: seções 24 / dentro 16 / grupos 12-8. */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-6);
+}
+
+/* agrupamento (dentro de uma seção) */
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+}
+
+/* paciente-grid: idade + peso lado a lado */
+.row2 {
+  display: flex;
+  gap: var(--esp-3);
+}
+
+.row2 > * {
+  flex: 1;
+}
+
+/* destaque de valores em prescrição/dose (golden .valor-destaque) */
+.destaque {
+  color: var(--ds-interativo-primario);
+  font-weight: 700;
+}
+
+/* barra de progresso do bundle (golden .progress) */
+.progressHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.progressLabel {
+  color: var(--ds-texto-secundario);
+  font: var(--ds-font-corpo-2);
+}
+
+.progressMeta {
+  color: var(--ds-texto-padrao);
+  font: var(--ds-font-corpo-2);
+  font-weight: 700;
+}
+
+.progressTrack {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--ds-fundo-elevado);
+  overflow: hidden;
+  margin-top: var(--esp-2);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--ds-interativo-primario);
+  transition: width 0.3s ease;
+}
+
+.progressFill[data-completo='true'] {
+  background: var(--ds-retorno-sucesso);
+}
+
+/* grade de foco infeccioso (golden .foco-grid, 2 col) */
+.focoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--esp-3);
+}
+
+/* painel revelado da droga ativa */
+.drugPainel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+  margin-top: var(--esp-3);
+}
+
+.drugInativaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3);
+}
+
+.drugInativaTexto {
+  color: var(--ds-texto-secundario);
+  font: var(--ds-font-corpo-2);
+}
