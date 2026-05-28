@@ -18,8 +18,7 @@ import { Button } from '../../shared/components/atoms/Button';
 import { Toggle } from '../../shared/components/atoms/Toggle/Toggle';
 import { InputField } from '../../shared/components/molecules/InputField';
 import { Segmented } from '../../shared/components/molecules/Segmented';
-import { Select } from '../../shared/components/molecules/Select';
-import { RadioGroup } from '../../shared/components/molecules/RadioGroup';
+import { ToggleTab } from '../../shared/components/molecules/ToggleTab';
 import { CheckboxGroup } from '../../shared/components/molecules/CheckboxGroup';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { DetailRow } from '../../shared/components/molecules/DetailRow/DetailRow';
@@ -30,7 +29,7 @@ import { ScoreCriterion } from '../../shared/components/organisms/ScoreCriterion
 import { AlertCard } from '../../shared/components/organisms/AlertCard';
 import { ChecklistBlock } from '../../shared/components/organisms/ChecklistBlock';
 import { ClinicalCard } from '../../shared/components/organisms/ClinicalCard';
-import { InfoSheet, ConfirmSheet, FormSheet, AnnotationSheet, SelectSheet } from '../../shared/components/overlays/patterns';
+import { InfoSheet, ConfirmSheet, FormSheet, AnnotationSheet } from '../../shared/components/overlays/patterns';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import styles from './SepseFlow.module.css';
 
@@ -71,15 +70,19 @@ const SCORE_FAIXAS = {
     { points: '≥6', label: 'Disfunção grave · Bundle + choque' },
   ],
 };
-const NEWS_VERSAO_OPCOES = [
-  { value: 'news2', label: 'NEWS2', description: '2017 — recomendado (escala 2 SpO₂ para hipoxemia crônica)' },
-  { value: 'news', label: 'NEWS', description: 'Versão original (2012)' },
+// Versão NEWS — OptionCard 2-col (§2.6: 2 opções com descrição clínica importante).
+// A recomendação SSC 2026 fica visível na description sem quebrar o label.
+const NEWS_VERSAO_CARDS = [
+  { value: 'news2', title: 'NEWS2', description: 'Recomendado SSC 2026 · escala 2 SpO₂' },
+  { value: 'news', title: 'NEWS', description: 'Versão original 2012' },
 ];
-const VEREDITO_OPCOES = [
-  { value: 'definida', label: 'Sepse definida' },
-  { value: 'provavel', label: 'Sepse provável' },
-  { value: 'possivel', label: 'Sepse possível' },
-  { value: 'improvavel', label: 'Sepse improvável' },
+
+// Veredito clínico — OptionCard 1-col com descrição do ramo (§2.6 + conselho unânime).
+const VEREDITO_CARDS = [
+  { value: 'definida', title: 'Sepse definida', description: 'ATB em até 1 hora · diagnóstico alternativo muito improvável.', tone: 'critical' },
+  { value: 'provavel', title: 'Sepse provável', description: 'ATB em até 1 hora · diagnóstico alternativo menos provável.', tone: 'critical' },
+  { value: 'possivel', title: 'Sepse possível', description: 'ATB ≤ 1 h se choque; até 3 h se suspeita persistir.', tone: 'warning' },
+  { value: 'improvavel', title: 'Sepse improvável', description: 'Manter investigação · diagnóstico alternativo mais provável.', tone: 'default' },
 ];
 
 // MODAL ID por descritor de cada escore (para info-button do header do bloco)
@@ -118,7 +121,6 @@ export function SepseFlow({ onBack }) {
 
   const [modalId, setModalId] = useState(null);
   const [anotarOpen, setAnotarOpen] = useState(false);
-  const [newsVersaoOpen, setNewsVersaoOpen] = useState(false);
   const [sairOpen, setSairOpen] = useState(false);
   const [encerrarOpen, setEncerrarOpen] = useState(false);
   const [iniciais, setIniciais] = useState('');
@@ -167,7 +169,7 @@ export function SepseFlow({ onBack }) {
     const m = Math.floor((dur % 3600000) / 60000);
     const durationStr = h > 0 ? `${h}h ${m}min` : `${m} min`;
     const meta = s.classificacao
-      ? VEREDITO_OPCOES.find((v) => v.value === s.classificacao)?.label
+      ? VEREDITO_CARDS.find((v) => v.value === s.classificacao)?.title
       : 'Sepse';
     const novoCaso = {
       id: Date.now().toString(),
@@ -203,13 +205,17 @@ export function SepseFlow({ onBack }) {
 
       <ClinicalCard variant="plain" title={SCORE_TITULO[s.scoreAtivo]}>
         <div className={styles.group}>
-          <RadioGroup
-            name="score-tab"
-            options={SCORE_TABS}
-            value={s.scoreAtivo}
-            onChange={s.setScoreAtivo}
-            columns={2}
-          />
+          {/* Sub-tabs SIRS/NEWS/MEWS/SOFA · ToggleTab × 4 (§2.4 · Material 3: tabs comutam vista) */}
+          <div className={styles.scoreTabs} role="tablist">
+            {SCORE_TABS.map((tab) => (
+              <ToggleTab
+                key={tab.value}
+                label={tab.label}
+                active={s.scoreAtivo === tab.value}
+                onClick={() => s.setScoreAtivo(tab.value)}
+              />
+            ))}
+          </div>
           <div className={styles.descritorRow}>
             <AlertCard level="info" showIcon>{SCORE_DESCRITORES[s.scoreAtivo]}</AlertCard>
             <InfoButton onClick={() => setModalId(SCORE_DESCRITOR_MODAL[s.scoreAtivo])} size={20} />
@@ -233,11 +239,19 @@ export function SepseFlow({ onBack }) {
 
         {s.scoreAtivo === 'news' && (
           <div className={styles.group}>
-            <Select
-              label="Versão"
-              value={s.news.versao === 'news' ? 'NEWS (original 2012)' : 'NEWS2 (2017 — recomendado)'}
-              onClick={() => setNewsVersaoOpen(true)}
-            />
+            {/* Versão NEWS · OptionCard 2-col (§2.6: 2 opções com descrição clínica importante) */}
+            <SectionLabel>Versão</SectionLabel>
+            <div className={styles.versaoGrid}>
+              {NEWS_VERSAO_CARDS.map((opt) => (
+                <OptionCard
+                  key={opt.value}
+                  title={opt.title}
+                  description={opt.description}
+                  selected={(s.news.versao || 'news2') === opt.value}
+                  onClick={() => s.setNews({ ...s.news, versao: opt.value })}
+                />
+              ))}
+            </div>
             <ScoreCriterion
               type="checkbox"
               label={newsO2supl.nome}
@@ -279,13 +293,19 @@ export function SepseFlow({ onBack }) {
           <SectionLabel>Veredito clínico</SectionLabel>
           <InfoButton onClick={() => setModalId('o-que-e-classificacao')} size={20} />
         </div>
-        <RadioGroup
-          name="veredito"
-          options={VEREDITO_OPCOES}
-          value={s.classificacao}
-          onChange={s.definirVeredito}
-          columns={2}
-        />
+        {/* Veredito · OptionCard 1 col com descrição do ramo clínico (§2.6 · conselho unânime) */}
+        <div className={styles.vereditoStack}>
+          {VEREDITO_CARDS.map((v) => (
+            <OptionCard
+              key={v.value}
+              title={v.title}
+              description={v.description}
+              tone={v.tone}
+              selected={s.classificacao === v.value}
+              onClick={() => s.definirVeredito(v.value)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -660,17 +680,6 @@ export function SepseFlow({ onBack }) {
         onChange={s.setAnotacao}
         onSave={() => { s.setAnotacaoEditadaEm(new Date().toISOString()); setAnotarOpen(false); }}
         onClear={() => { s.setAnotacao(''); s.setAnotacaoEditadaEm(null); }}
-      />
-
-      <SelectSheet
-        open={newsVersaoOpen}
-        onClose={() => setNewsVersaoOpen(false)}
-        title="Versão NEWS"
-        description="O NEWS2 é recomendado pela SSC 2026 — adiciona escala 2 SpO₂ para hipoxemia crônica."
-        value={s.news.versao || 'news2'}
-        onChange={(v) => s.setNews({ ...s.news, versao: v })}
-        name="Versão"
-        options={NEWS_VERSAO_OPCOES}
       />
 
       <ConfirmSheet
