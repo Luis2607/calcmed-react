@@ -1,0 +1,7 @@
+/* pcrModais — utilities tokens-only. */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}

@@ -1,4 +1,4 @@
-import { IconButton } from '../../atoms/IconButton';
+import { IconButton } from '../../atoms/Button';
 import styles from './BannerContextual.module.css';
 
 /**

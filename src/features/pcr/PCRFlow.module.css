@@ -17,6 +17,20 @@
   line-height: 22px;
 }
 
+/* Linha de ActionTiles grandes (Selecionar ritmo + Desfibrilar) · 2-col */
+.actionsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--esp-3);
+}
+
+/* Ancora do FAB pra T2 — wrap relative pra position absolute do FAB funcionar */
+.fabAnchor {
+  position: relative;
+  height: 0;
+  margin-top: var(--esp-2);
+}
+
 /* Toast feedback efêmero · sticky no fundo do viewport */
 .toastWrap {
   position: fixed;
