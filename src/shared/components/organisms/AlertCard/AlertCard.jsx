@@ -74,17 +74,17 @@ export const AlertCard = ({
 
   return (
     <div className={containerClass} {...props}>
-      {showIcon && <div className={styles.iconWrapper}>{getIcon()}</div>}
-      <div className={styles.content}>
+      <div className={styles.topRow}>
+        {showIcon && <div className={styles.iconWrapper}>{getIcon()}</div>}
         {title && <span className={styles.title}>{title}</span>}
-        {showValue && value != null && (
-          <div className={styles.value}>
-            <span className={`${styles.dose} mono`}>{value}</span>
-            {unit && <span className={styles.unit}>{unit}</span>}
-          </div>
-        )}
-        {children && <div className={styles.body}>{children}</div>}
       </div>
+      {showValue && value != null && (
+        <div className={styles.value}>
+          <span className={`${styles.dose} mono`}>{value}</span>
+          {unit && <span className={styles.unit}>{unit}</span>}
+        </div>
+      )}
+      {children && <div className={styles.body}>{children}</div>}
     </div>
   );
 };

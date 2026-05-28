@@ -1,15 +1,24 @@
 .card {
+  /* MT-E (Figma 130:4043) — layout VERTICAL: topRow [Icon + Title] + body fora de indent.
+     Resolve a task #16 (deferida) reportada pelo Luis 2026-05-28: o body herdava o indent
+     do row e perdia largura útil em mobile 390px. */
   display: flex;
-  align-items: flex-start;
-  /* Figma 130:4043 · padding 16/16/16/20 (left=20) */
-  padding: var(--esp-4) var(--esp-4) var(--esp-4) var(--esp-5);
-  gap: var(--esp-3); /* 12px gap between icon and content */
+  flex-direction: column;
+  gap: var(--esp-2); /* 8px entre topRow e body/value */
+  padding: var(--esp-4); /* 16px uniforme (Figma vertical = simétrico) */
   border-radius: var(--radius-alert);
   border: 2px solid transparent; /* Figma strokeWeight 2px */
   box-sizing: border-box;
   width: 100%;
   font-family: var(--fonte-base);
   transition: background 0.15s, border-color 0.15s;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2); /* 8px entre ícone e título */
+  min-width: 0;
 }
 
 .iconWrapper {
@@ -19,20 +28,11 @@
   flex-shrink: 0;
   width: 20px;
   height: 20px;
-  margin-top: 2px; /* aligns icon visual center with first text line */
 }
 
 .iconSvg {
   width: 20px;
   height: 20px;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-1); /* 4px gap between title and body */
-  flex: 1;
-  min-width: 0;
 }
 
 .title {
