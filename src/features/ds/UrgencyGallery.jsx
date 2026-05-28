@@ -148,9 +148,7 @@ export function UrgencyGallery() {
           <ProtocolHeader
             domain="sca"
             title="Modo SCA"
-            subtitle="Aberto ha 4 min"
-            timer="04:00"
-            timerVariant="stacked"
+            subtitle="Aberto ha 04:00"
             actions={[{ icon: 'edit', label: 'Anotar' }, { icon: 'exit', label: 'Sair' }]}
             steps={['Triagem', 'ECG', 'Estratif.', 'Conduzir', 'Reavaliar']}
             currentStep={step}
@@ -356,9 +354,7 @@ export function UrgencyGallery() {
             <ProtocolShell
               domain="cad"
               title="Modo CAD"
-              subtitle="Aberto ha 12 min"
-              timer="00:12"
-              timerLabel="Caso"
+              subtitle="Aberto ha 12:30"
               actions={[{ icon: 'edit', label: 'Anotar' }, { icon: 'exit', label: 'Sair' }]}
               steps={['Diagnostico', 'Pos-diag', 'Insulina', 'Reaval.', 'Resolucao']}
               currentStep={2}
