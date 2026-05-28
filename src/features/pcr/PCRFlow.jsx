@@ -98,26 +98,6 @@ export function PCRFlow({ onBack }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [s.iniciadoEm, s.telaAtual, s.ritmo]);
 
-  // §golden TTS alarmes (anti-spam via flags do state) — 30s · janela aberta · atrasada
-  useEffect(() => {
-    if (!s.iniciadoEm || s.rce || !s.audioOn) return;
-    // 30s antes do marco 2:00
-    if (cicloElapsed >= CICLO_MS - 30000 && cicloElapsed < CICLO_MS && !s.avisou30s) {
-      falar('Trinta segundos. Prepare o desfibrilador.');
-      s.setAvisou30s(true);
-    }
-    // Janela adrenalina aberta
-    if (adrenState === 'window-ok' && !s.avisouAdrenJanela) {
-      falar('Janela de adrenalina aberta.');
-      s.setAvisouAdrenJanela(true);
-    }
-    // Adrenalina atrasada
-    if (adrenState === 'window-overdue' && !s.avisouAdrenAtrasada) {
-      falar('Atenção. Adrenalina atrasada.');
-      s.setAvisouAdrenAtrasada(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cicloElapsed, adrenState, s.audioOn, s.iniciadoEm, s.rce]);
   const [toast, setToast] = useState(null);
 
   // Master timer — lazy init evita impure call (React 19)
@@ -167,6 +147,28 @@ export function PCRFlow({ onBack }) {
   let adrenState = 'window-pre';
   if (adrenElapsed >= adrenJanela.fimMs) adrenState = 'window-overdue';
   else if (adrenElapsed >= adrenJanela.inicioMs) adrenState = 'window-ok';
+
+  // §golden TTS alarmes (anti-spam via flags do state) — 30s · janela aberta · atrasada.
+  // Declarado APÓS cicloElapsed/adrenState (depende deles).
+  useEffect(() => {
+    if (!s.iniciadoEm || s.rce || !s.audioOn) return;
+    // 30s antes do marco 2:00
+    if (cicloElapsed >= CICLO_MS - 30000 && cicloElapsed < CICLO_MS && !s.avisou30s) {
+      falar('Trinta segundos. Prepare o desfibrilador.');
+      s.setAvisou30s(true);
+    }
+    // Janela adrenalina aberta
+    if (adrenState === 'window-ok' && !s.avisouAdrenJanela) {
+      falar('Janela de adrenalina aberta.');
+      s.setAvisouAdrenJanela(true);
+    }
+    // Adrenalina atrasada
+    if (adrenState === 'window-overdue' && !s.avisouAdrenAtrasada) {
+      falar('Atenção. Adrenalina atrasada.');
+      s.setAvisouAdrenAtrasada(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cicloElapsed, adrenState, s.audioOn, s.iniciadoEm, s.rce]);
 
   // Toast helper — aceita onUndo opcional (NN/g heurística erro reversível).
   const showToast = (message, type = 'info', onUndo = null) => {
