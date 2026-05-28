@@ -33,7 +33,7 @@ import {
 } from './pcrData';
 import {
   SelecionarRitmoSheet, AplicarChoqueSheet, ConfirmarRCESheet,
-  EncerrarSemRCESheet, PausarSheet, CheckarPulsoRitmoSheet,
+  EncerrarSemRCESheet, PausarSheet,
   AdrenDoubleTapSheet, HHTTSheet, AdicionarEventoSheet, OutroEventoSheet,
   VCVSheet, PCVSheet, TETProfundidadeSheet,
 } from './pcrModais';
@@ -73,7 +73,6 @@ export function PCRFlow({ onBack }) {
   const [rceOpen, setRceOpen] = useState(false);
   const [encerrarOpen, setEncerrarOpen] = useState(false);
   const [pausarOpen, setPausarOpen] = useState(false);
-  const [checkPulsoOpen, setCheckPulsoOpen] = useState(false);
   const [adrenDoubleTapOpen, setAdrenDoubleTapOpen] = useState(false);
   const [hhttOpen, setHhttOpen] = useState(false);
   const [bannerVisible, setBannerVisible] = useState(true);
@@ -199,12 +198,37 @@ export function PCRFlow({ onBack }) {
   // ============================================================
   // AÇÕES CLÍNICAS
   // ============================================================
+  // §F11+F14 · seleção direta de ritmo ramifica (decisão Luis 2026-05-28):
+  //   FV/TV → perguntar se chocou · AESP/Assist → retoma compressões + 5H/5T
+  //   organizado c/ pulso → RCE · NA → só registra.
   const onSelecionarRitmo = (ritmo) => {
-    const undo = s.setRitmoComUndo(ritmo);
     setRitmoOpen(false);
-    // §auto-trigger 5H/5T após AESP/Assist (250ms · golden onda 2.2 D36)
-    if (isNaoChocavel(ritmo)) {
-      setTimeout(() => setHhttOpen(true), 250);
+
+    // Ritmo organizado + pulso → RCE (F14). Em T1 (sem PCR), não é parada.
+    if (ritmo === 'organizado') {
+      if (!s.iniciadoEm) {
+        showToast('Ritmo organizado com pulso · sem indicação de PCR', 'success');
+        return;
+      }
+      setRceOpen(true);
+      return;
+    }
+
+    // T1 · botão "Checar ritmo/pulso" antes de iniciar → inicia PCR + registra ritmo.
+    if (!s.iniciadoEm) {
+      s.iniciarPCR();
+      s.setRitmo(ritmo);
+      showToast(`PCR iniciada · Ritmo: ${getRitmoLabel(ritmo)}`, 'success');
+      return;
+    }
+
+    // T2 · ramificação clínica completa
+    const undo = s.setRitmoComUndo(ritmo);
+    if (isChocavel(ritmo)) {
+      setChoqueOpen(true); // FV/TV → perguntar se chocou
+    } else if (isNaoChocavel(ritmo)) {
+      s.checarPulsoRitmoConfirmado(); // AESP/Assist → retoma compressões (novo ciclo)
+      setTimeout(() => setHhttOpen(true), 250); // 5H/5T (golden D36)
     }
     showToast(`Ritmo: ${getRitmoLabel(ritmo)}`, 'success', undo);
   };
@@ -230,7 +254,9 @@ export function PCRFlow({ onBack }) {
     if (foiAplicado) {
       const carga = getCargaInicial(s.idade, s.peso);
       const undo = s.registrarChoque(carga);
-      showToast(`Choque registrado · ${carga}`, 'success', undo);
+      // §ACLS · após o choque, retoma RCP imediatamente (novo ciclo de 2 min).
+      s.checarPulsoRitmoConfirmado();
+      showToast(`Choque ${carga} · retome compressões`, 'success', undo);
     }
   };
 
@@ -250,19 +276,6 @@ export function PCRFlow({ onBack }) {
     setPausarOpen(false);
     s.registrarEvento('PCR pausada', '');
     showToast('PCR pausada', 'info');
-  };
-
-  // §B2 Gustavo · Checar pulso/ritmo desde T1
-  const onCheckarPulsoComPulso = () => {
-    setCheckPulsoOpen(false);
-    setRceOpen(true);
-  };
-
-  const onCheckarPulsoSemPulso = () => {
-    setCheckPulsoOpen(false);
-    s.checarPulsoRitmoConfirmado();
-    showToast(`Ciclo ${s.cicloAtual + 1} iniciado · checar ritmo`, 'info');
-    setRitmoOpen(true);
   };
 
   // ============================================================
@@ -614,7 +627,7 @@ export function PCRFlow({ onBack }) {
       label: 'Checar ritmo/pulso',
       variant: 'secondary',
       size: 'lg',
-      onClick: () => setCheckPulsoOpen(true),
+      onClick: () => setRitmoOpen(true),
     },
     primary: {
       label: 'Iniciar PCR',
@@ -1100,12 +1113,6 @@ export function PCRFlow({ onBack }) {
       <ConfirmarRCESheet open={rceOpen} onClose={() => setRceOpen(false)} onConfirm={onConfirmarRCE} />
       <EncerrarSemRCESheet open={encerrarOpen} onClose={() => setEncerrarOpen(false)} onConfirm={onEncerrarSemRCE} />
       <PausarSheet open={pausarOpen} onClose={() => setPausarOpen(false)} onConfirm={onPausar} />
-      <CheckarPulsoRitmoSheet
-        open={checkPulsoOpen}
-        onClose={() => setCheckPulsoOpen(false)}
-        onComPulso={onCheckarPulsoComPulso}
-        onSemPulso={onCheckarPulsoSemPulso}
-      />
       <AdrenDoubleTapSheet
         open={adrenDoubleTapOpen}
         onClose={() => setAdrenDoubleTapOpen(false)}

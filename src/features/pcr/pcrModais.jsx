@@ -67,6 +67,14 @@ export function SelecionarRitmoSheet({ open, onClose, onSelect }) {
             onClick={() => onSelect('assistolia')}
           />
           <OptionCard
+            title="Ritmo organizado c/ pulso"
+            meta="RCE"
+            tone="success"
+            media={<RitmoIcon ritmo="aesp" size={48} />}
+            description="QRS organizado + pulso central palpável → Retorno da Circulação Espontânea."
+            onClick={() => onSelect('organizado')}
+          />
+          <OptionCard
             title="Não Avaliado"
             media={<RitmoIcon ritmo="na" size={48} />}
             description="Voltar ao monitor pra avaliar."
