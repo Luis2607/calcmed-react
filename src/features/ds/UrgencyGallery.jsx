@@ -150,6 +150,7 @@ export function UrgencyGallery() {
             title="Modo SCA"
             subtitle="Aberto ha 04:00"
             actions={[{ icon: 'edit', label: 'Anotar' }, { icon: 'exit', label: 'Sair' }]}
+            chips={[{ label: 'Adulto' }, { label: '68 kg' }]}
             steps={['Triagem', 'ECG', 'Estratif.', 'Conduzir', 'Reavaliar']}
             currentStep={step}
             onStepClick={setStep}
@@ -356,6 +357,7 @@ export function UrgencyGallery() {
               title="Modo CAD"
               subtitle="Aberto ha 12:30"
               actions={[{ icon: 'edit', label: 'Anotar' }, { icon: 'exit', label: 'Sair' }]}
+              chips={[{ label: 'Adulto' }, { label: '70 kg' }, { label: '32a' }]}
               steps={['Diagnostico', 'Pos-diag', 'Insulina', 'Reaval.', 'Resolucao']}
               currentStep={2}
               onStepClick={() => {}}

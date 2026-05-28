@@ -33,7 +33,7 @@ export function ActionFooter({
           <Button
             key={action.label}
             variant={action.variant || 'primary'}
-            size={action.size || 'lg'}
+            size={action.size || 'md'}
             disabled={action.disabled}
             onClick={action.onClick}
             showLeftIcon={Boolean(action.leftIcon)}

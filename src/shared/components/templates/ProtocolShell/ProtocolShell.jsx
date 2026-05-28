@@ -9,8 +9,8 @@ import styles from './ProtocolShell.module.css';
  * (K5, só na executar) → TabBar (K6, 3 abas fixas). NÃO reinventa nada.
  *
  * Props:
- *   domain · title · subtitle · timer? · timerVariant? · timerLabel? · onBack? · actions?
- *     → repassados ao ProtocolHeader
+ *   domain · title · subtitle · timer? · timerVariant? · timerLabel? · onBack? · actions? · chips?
+ *     → repassados ao ProtocolHeader (chips = tags por doença/contexto: modo/peso/idade)
  *   steps? · currentStep? · onStepClick? → stepper OPCIONAL (PCR = dashboard, sem)
  *   activeTab ('executar'|'historico'|'teoria') · onTabChange
  *   tabs? → override dos 3 itens da TabBar (label/icon/badge); default Executar/Histórico/Teoria
@@ -32,6 +32,7 @@ export const ProtocolShell = ({
   timerLabel,
   onBack,
   actions,
+  chips,
   steps,
   currentStep,
   onStepClick,
@@ -57,6 +58,7 @@ export const ProtocolShell = ({
         timerLabel={timerLabel}
         onBack={onBack}
         actions={actions}
+        chips={chips}
         steps={activeTab === 'executar' ? steps : undefined}
         currentStep={currentStep}
         onStepClick={onStepClick}

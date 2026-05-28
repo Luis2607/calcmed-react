@@ -15,7 +15,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--esp-4);
-  padding: var(--esp-4);
+  gap: var(--esp-6); /* 24px entre seções (golden .tela-corpo) */
+  padding: var(--esp-6) var(--esp-4); /* 24 vertical / 16 horizontal */
   overflow-y: auto;
 }
