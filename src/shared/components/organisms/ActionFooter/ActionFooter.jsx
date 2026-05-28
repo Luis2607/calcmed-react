@@ -54,7 +54,7 @@ export function ActionFooter({
               leftIcon={action.leftIcon}
               showRightIcon={Boolean(action.rightIcon)}
               rightIcon={action.rightIcon}
-              className={[styles.button, isSecondaryInPair ? styles.buttonCompact : ''].filter(Boolean).join(' ')}
+              className={[styles.button, isSecondaryInPair ? styles.buttonCompact : '', action.className || ''].filter(Boolean).join(' ')}
             >
               {action.label}
             </Button>

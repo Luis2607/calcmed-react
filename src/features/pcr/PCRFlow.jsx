@@ -633,6 +633,8 @@ export function PCRFlow({ onBack }) {
       label: 'Iniciar PCR',
       size: 'lg',
       onClick: s.iniciarPCR,
+      // §F01 Gustavo · urgência visual (pulse) — botão "escondidinho" precisa chamar atenção.
+      className: styles.iniciarPulse,
     },
   };
 

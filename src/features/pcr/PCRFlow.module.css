@@ -187,6 +187,31 @@
   gap: var(--esp-3);
 }
 
+/* §F01 Gustavo · botão Iniciar PCR pulsante (urgência visual).
+   Pulse de sombra + leve escala. Respeita prefers-reduced-motion (a11y). */
+.iniciarPulse {
+  animation: iniciarPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes iniciarPulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--ds-interativo-primario) 45%, transparent);
+    transform: scale(1);
+  }
+  70% {
+    box-shadow: 0 0 0 14px color-mix(in srgb, var(--ds-interativo-primario) 0%, transparent);
+    transform: scale(1.03);
+  }
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--ds-interativo-primario) 0%, transparent);
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iniciarPulse { animation: none; }
+}
+
 /* Histórico · wrap + filtros chip */
 .historicoWrap {
   display: flex;
