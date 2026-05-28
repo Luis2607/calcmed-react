@@ -331,6 +331,19 @@ export const Icon = ({ name, size = 24, className = '', color = 'currentColor', 
           </>
         );
 
+      // Navbar do protocolo (golden ico-executar/teoria)
+      case 'play':
+      case 'executar':
+        return <polygon points="6 4 20 12 6 20 6 4" />;
+      case 'livro':
+      case 'teoria':
+        return (
+          <>
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+          </>
+        );
+
       // Fallback para ícones do figma pendentes de mapeamento SVG exato no código
       default:
         return (

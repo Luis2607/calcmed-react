@@ -18,9 +18,9 @@ import styles from './ProtocolShell.module.css';
  *   footer? → props do ActionFooter (renderizado só na aba executar)
  */
 const DEFAULT_TABS = [
-  { id: 'executar', label: 'Executar', icon: 'onda-ecg' },
+  { id: 'executar', label: 'Executar', icon: 'play' },
   { id: 'historico', label: 'Histórico', icon: 'tempo' },
-  { id: 'teoria', label: 'Teoria', icon: 'informacao' },
+  { id: 'teoria', label: 'Teoria', icon: 'livro' },
 ];
 
 export const ProtocolShell = ({

@@ -47,7 +47,6 @@
 .card {
   background-color: var(--ds-cartao-fundo);
   border: 1px solid var(--ds-cartao-borda);
-  border-left-width: 4px; /* thick left colored border representing disease domain */
   border-radius: var(--radius-card); /* 12px */
   padding: var(--esp-4); /* 16px internal padding */
   display: flex;
@@ -59,27 +58,6 @@
 
 .card:hover {
   box-shadow: var(--sombra-cartao);
-}
-
-/* DOMAIN COLORED ACCENTS */
-.domainCAD {
-  border-left-color: var(--ds-dominio-protocolos); /* CAD - Roxo/Teal */
-}
-
-.domainSepse {
-  border-left-color: var(--ds-dominio-escores); /* Sepse - Azul/Amber */
-}
-
-.domainPCR {
-  border-left-color: var(--ds-dominio-urgencias); /* PCR - Vermelho */
-}
-
-.domainAVC {
-  border-left-color: var(--interativo-primario);
-}
-
-.domainSCA {
-  border-left-color: var(--retorno-critico);
 }
 
 /* PATIENT INFO ROW */

@@ -176,9 +176,9 @@ export function UrgencyGallery() {
             activeId={tab}
             onChange={setTab}
             items={[
-              { id: 'executar', label: 'Executar', icon: 'onda-ecg' },
+              { id: 'executar', label: 'Executar', icon: 'play' },
               { id: 'historico', label: 'Historico', icon: 'tempo', badge: '3' },
-              { id: 'teoria', label: 'Teoria', icon: 'informacao' },
+              { id: 'teoria', label: 'Teoria', icon: 'livro' },
             ]}
           />
         </div>

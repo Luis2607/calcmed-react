@@ -5,24 +5,6 @@ export const HistoryView = ({
   onClear,
   ...props
 }) => {
-  // Map disease values to domain colors
-  const getDiseaseDomainClass = (disease) => {
-    switch (disease) {
-      case 'CAD':
-        return styles.domainCAD;
-      case 'Sepse':
-        return styles.domainSepse;
-      case 'PCR':
-        return styles.domainPCR;
-      case 'AVC':
-        return styles.domainAVC;
-      case 'SCA':
-        return styles.domainSCA;
-      default:
-        return '';
-    }
-  };
-
   // Map status values to Tag Status classes
   const getStatusClass = (status) => {
     switch (status) {
@@ -71,7 +53,7 @@ export const HistoryView = ({
       ) : (
         <div className={styles.list}>
           {cases.map((c) => (
-            <div key={c.id} className={`${styles.card} ${getDiseaseDomainClass(c.disease)}`}>
+            <div key={c.id} className={styles.card}>
               <div className={styles.cardHeader}>
                 <div className={styles.patientInfo}>
                   <span className={styles.initials}>{c.initials}</span>
@@ -82,10 +64,6 @@ export const HistoryView = ({
                 </span>
               </div>
               <div className={styles.cardBody}>
-                <div className={styles.metaItem}>
-                  <span className={styles.metaLabel}>Protocolo:</span>
-                  <span className={styles.metaValue}>{c.disease}</span>
-                </div>
                 <div className={styles.metaItem}>
                   <span className={styles.metaLabel}>Duração:</span>
                   <span className={styles.metaValue}>{c.duration}</span>
