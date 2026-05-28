@@ -8,6 +8,7 @@
 .row {
   display: flex;
   align-items: flex-start;
+  gap: var(--esp-1);
   width: 100%;
 }
 /* O passo (step/circle/label) agora é o átomo StepItem. */

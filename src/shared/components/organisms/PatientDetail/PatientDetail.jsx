@@ -15,7 +15,6 @@ export function PatientDetail({
   return (
     <article className={styles.detail}>
       <header className={styles.header}>
-        <div className={styles.avatar}>{initials}</div>
         <div className={styles.identity}>
           <span className={styles.initials}>{initials}</span>
           <span className={styles.protocol}>{protocol}</span>

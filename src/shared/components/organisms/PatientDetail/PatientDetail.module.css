@@ -16,18 +16,6 @@
   gap: var(--esp-3);
 }
 
-.avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--ds-r-pill);
-  display: grid;
-  place-items: center;
-  background: var(--interativo-primario-tint-08);
-  color: var(--ds-interativo-primario);
-  font-size: var(--fonte-tamanho-corpo);
-  font-weight: 800;
-}
-
 .identity {
   display: flex;
   flex-direction: column;

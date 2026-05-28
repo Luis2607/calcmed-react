@@ -4,13 +4,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: var(--esp-1);
   background: transparent;
-  border: none;
-  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-m);
+  padding: var(--esp-1) var(--esp-2); /* separa labels adjacentes (golden .step 4/6) */
   cursor: default;
+  transition: background 0.15s, border-color 0.15s, transform 0.08s;
 }
 .step:not(:disabled) { cursor: pointer; }
+.step:not(:disabled):active { transform: scale(0.97); }
+.step[aria-current="step"] { background: var(--interativo-primario-tint-06); }
 
 .capsule {
   min-width: 58px;

@@ -148,10 +148,10 @@ export function UrgencyGallery() {
           <ProtocolHeader
             domain="sca"
             title="Modo SCA"
-            subtitle="Aberto ha"
-            timer="00:00"
+            subtitle="Aberto ha 4 min"
+            timer="04:00"
             timerVariant="stacked"
-            actions={[{ icon: 'edit', label: 'Editar' }, { icon: 'exit', label: 'Sair' }]}
+            actions={[{ icon: 'edit', label: 'Anotar' }, { icon: 'exit', label: 'Sair' }]}
             steps={['Triagem', 'ECG', 'Estratif.', 'Conduzir', 'Reavaliar']}
             currentStep={step}
             onStepClick={setStep}
