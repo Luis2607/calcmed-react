@@ -50,7 +50,6 @@ const SEG_INTERVALO = INTERVALO_ADREN_OPCOES.map((v) => ({ value: v, label: `${v
  */
 export function PCRFlow({ onBack }) {
   const s = usePCRState();
-  // eslint-disable-next-line no-unused-vars
   const [historico, setHistorico] = usePersistedState('pcr_historico', []);
 
   // UI state
@@ -336,17 +335,158 @@ export function PCRFlow({ onBack }) {
   );
 
   // ============================================================
-  // T3 · PÓS-RCE (placeholder · F-PCR-3.8)
+  // T3 · PÓS-RCE (F-PCR-3.8 · Luis A1-A4 aplicados: STEMI→SCA, sem ETCO2,
+  // Nora não NE, CDT 32-37,5 não TTM 32-36)
   // ============================================================
+  const cuidadosT3 = [
+    { tone: 'critical', title: 'ECG 12 derivações', desc: 'Identificar SCA. Cateterismo urgente se infarto.' },
+    { tone: 'warning', title: 'Estabilizar via aérea', desc: 'Confirmar IOT com capnografia.' },
+    { tone: 'warning', title: 'SpO₂ 90-98%', desc: 'Evite hiperóxia. Decúbito lateral se sem IOT.' },
+    { tone: 'info', title: 'Volume e vasopressor', desc: 'PAM ≥ 65. Cristaloide se hipovolemia. Nora 0,01-1 mcg/kg/min.' },
+    { tone: 'info', title: 'CDT 32-37,5 °C por 24h', desc: 'Controle térmico se paciente inconsciente.' },
+  ];
+
   const t3 = (
     <div className={styles.tela}>
-      <div className={styles.placeholder}>T3 · Pós-RCE — implementação F-PCR-3.8.</div>
+      <BannerContextual
+        tone="success"
+        title="Decúbito lateral · SpO₂ 90-98%"
+        description="ECG urgente · estabilizar via aérea · controle térmico."
+      />
+      <div className={styles.cuidadosList}>
+        {cuidadosT3.map((c, i) => (
+          <div key={i} className={styles.cuidadoItem} data-tone={c.tone}>
+            <span className={styles.cuidadoBullet} aria-hidden="true" />
+            <div className={styles.cuidadoContent}>
+              <span className={styles.cuidadoTitle}>{c.title}</span>
+              <span className={styles.cuidadoDesc}>{c.desc}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <BannerContextual
+        tone="warning"
+        title="Atento à recidiva"
+        description="Se a parada voltar, toque 'Registrar nova parada'. O cronômetro do caso continua o mesmo."
+      />
     </div>
   );
 
+  // ============================================================
+  // T4 · SALVAR PACIENTE (F-PCR-3.9 · Luis A5: SEM campo altura)
+  // ============================================================
   const t4 = (
     <div className={styles.tela}>
-      <div className={styles.placeholder}>T4 · Salvar Paciente — implementação F-PCR-3.9.</div>
+      <div className={styles.formStack}>
+        <div className={styles.formField}>
+          <label className={styles.formLabel} htmlFor="t4-iniciais">Iniciais</label>
+          <input
+            id="t4-iniciais"
+            type="text"
+            maxLength={6}
+            className={styles.formInput}
+            value={s.paciente.iniciais || ''}
+            onChange={(e) => s.setPaciente({ ...s.paciente, iniciais: e.target.value.toUpperCase() })}
+            placeholder="ex.: J.S.M."
+          />
+          <span className={styles.formHelper}>Apoio à memória. LGPD: nunca substitui prontuário.</span>
+        </div>
+
+        <div className={styles.formRow2}>
+          <div className={styles.formField}>
+            <label className={styles.formLabel} htmlFor="t4-idade-anos">Idade (anos)</label>
+            <input
+              id="t4-idade-anos"
+              type="text"
+              inputMode="numeric"
+              maxLength={3}
+              className={styles.formInput}
+              value={s.paciente.idadeAnos || ''}
+              onChange={(e) => s.setPaciente({ ...s.paciente, idadeAnos: e.target.value })}
+            />
+          </div>
+          <div className={styles.formField}>
+            <label className={styles.formLabel} htmlFor="t4-idade-meses">Meses</label>
+            <input
+              id="t4-idade-meses"
+              type="text"
+              inputMode="numeric"
+              maxLength={2}
+              className={styles.formInput}
+              value={s.paciente.idadeMeses || ''}
+              onChange={(e) => s.setPaciente({ ...s.paciente, idadeMeses: e.target.value })}
+            />
+          </div>
+        </div>
+
+        <div className={styles.formField}>
+          <label className={styles.formLabel} htmlFor="t4-peso">Peso (kg)</label>
+          <input
+            id="t4-peso"
+            type="text"
+            inputMode="decimal"
+            maxLength={5}
+            className={styles.formInput}
+            value={s.peso || ''}
+            onChange={(e) => s.setPeso(e.target.value)}
+          />
+        </div>
+
+        <div className={styles.formField}>
+          <label className={styles.formLabel}>Sexo</label>
+          <div className={styles.chipsRow}>
+            {[
+              { value: 'ni', label: 'Não informado' },
+              { value: 'm', label: 'Masculino' },
+              { value: 'f', label: 'Feminino' },
+            ].map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                className={styles.chip}
+                data-selected={s.paciente.sexo === opt.value ? 'true' : 'false'}
+                onClick={() => s.setPaciente({ ...s.paciente, sexo: opt.value })}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.formField}>
+          <label className={styles.formLabel}>Desfecho</label>
+          <div className={styles.chipsRow}>
+            {[
+              { value: 'revertida', label: 'Revertida' },
+              { value: 'nao-revertida', label: 'Não revertida' },
+              { value: 'obito', label: 'Óbito' },
+              { value: 'suspensa', label: 'Suspensa' },
+            ].map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                className={styles.chip}
+                data-selected={s.paciente.desfecho === opt.value ? 'true' : 'false'}
+                onClick={() => s.setPaciente({ ...s.paciente, desfecho: opt.value })}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.formField}>
+          <label className={styles.formLabel} htmlFor="t4-obs">Observações</label>
+          <textarea
+            id="t4-obs"
+            rows={4}
+            className={styles.formTextarea}
+            value={s.paciente.obs || ''}
+            onChange={(e) => s.setPaciente({ ...s.paciente, obs: e.target.value })}
+            placeholder="Ritmo predominante, drogas usadas, intercorrências, etc."
+          />
+        </div>
+      </div>
     </div>
   );
 
@@ -379,16 +519,75 @@ export function PCRFlow({ onBack }) {
     ],
   };
 
-  const footers = { 1: footerT1, 2: footerT2 };
+  // T3 footer · 3 ações (Finalizar/Nova PCR/Salvar paciente)
+  const footerT3 = {
+    actions: [
+      { label: 'Finalizar', variant: 'ghost', size: 'md', onClick: () => setEncerrarOpen(true) },
+      { label: 'Nova PCR', variant: 'secondary', size: 'md', onClick: () => s.registrarRecidiva() },
+      { label: 'Salvar paciente', variant: 'primary', size: 'md', onClick: () => s.irParaTela(4) },
+    ],
+  };
+
+  // T4 footer · secondary + primary (gate iniciais ≥1)
+  const iniciaisOk = (s.paciente.iniciais || '').trim().length > 0;
+  const salvarPacienteT4 = () => {
+    if (!iniciaisOk) return;
+    const novoCaso = {
+      id: Date.now(),
+      iniciais: s.paciente.iniciais,
+      data: new Date().toISOString(),
+      // §A6 Luis · campo Início (timestamp iniciadoEm)
+      iniciadoEm: s.iniciadoEm,
+      duracaoMs: s.iniciadoEm ? Date.now() - s.iniciadoEm : 0,
+      duration: formatDuracao(s.iniciadoEm ? Date.now() - s.iniciadoEm : 0),
+      date: new Date().toLocaleString('pt-BR'),
+      desfecho: s.paciente.desfecho,
+      sexo: s.paciente.sexo,
+      idade: s.paciente.idadeAnos,
+      idadeMeses: s.paciente.idadeMeses,
+      peso: s.peso,
+      ritmoFinal: s.ritmo,
+      adrenalinaCount: s.adrenalinaCount,
+      ciclos: s.cicloAtual,
+      obs: s.paciente.obs,
+      eventos: [...s.eventos],
+      anonimo: false,
+    };
+    setHistorico([novoCaso, ...historico]);
+    showToast('Paciente salvo · Caso arquivado no histórico.', 'success');
+    setTimeout(() => {
+      s.resetarEstado();
+      onBack();
+    }, 1500);
+  };
+  const footerT4 = {
+    secondary: { label: 'Sair sem salvar', variant: 'ghost', size: 'lg', onClick: () => setSairOpen(true) },
+    primary: { label: 'Salvar paciente', variant: 'primary', size: 'lg', onClick: salvarPacienteT4, disabled: !iniciaisOk },
+  };
+
+  const footers = { 1: footerT1, 2: footerT2, 3: footerT3, 4: footerT4 };
 
   // ============================================================
   // HISTÓRICO / TEORIA
   // ============================================================
+  // §A6 Luis · cada caso ganha campo `subtitle` com Início HH:MM:SS pra HistoryView mostrar.
+  // §HistoryView aceita cases [{ initials, status, statusTone, date, duration }] — vou adaptar.
+  const historicoFormatado = historico.map((c) => ({
+    id: c.id,
+    initials: c.iniciais || c.initials,
+    status: c.desfecho === 'revertida' ? 'Revertida' : c.desfecho === 'obito' ? 'Óbito' : c.desfecho === 'suspensa' ? 'Suspensa' : 'Não revertida',
+    // §A6 · "Início" no campo date secundário (DD/MM HH:MM:SS)
+    date: c.iniciadoEm
+      ? `Início ${new Date(c.iniciadoEm).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}`
+      : c.date,
+    duration: c.duration || formatDuracao(c.duracaoMs),
+  }));
+
   const historicoView = (
     <HistoryScreen
       title="Histórico"
       subtitle="Casos PCR encerrados neste aparelho."
-      cases={historico}
+      cases={historicoFormatado}
     />
   );
 

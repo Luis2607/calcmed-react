@@ -31,6 +31,145 @@
   margin-top: var(--esp-2);
 }
 
+/* T3 · Lista de cuidados pós-RCE */
+.cuidadosList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.cuidadoItem {
+  display: flex;
+  gap: var(--esp-3);
+  padding: var(--esp-3) var(--esp-4);
+  background: var(--ds-fundo-cartao);
+  border: 1px solid var(--ds-cartao-borda);
+  border-radius: var(--ds-r-md);
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+.cuidadoBullet {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--ds-r-pill);
+  margin-top: 6px;
+  background: var(--ds-texto-terciario);
+}
+
+.cuidadoItem[data-tone="critical"] .cuidadoBullet { background: var(--ds-retorno-critico); }
+.cuidadoItem[data-tone="warning"] .cuidadoBullet { background: var(--ds-retorno-atencao); }
+.cuidadoItem[data-tone="info"] .cuidadoBullet { background: var(--ds-interativo-primario); }
+
+.cuidadoContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  flex: 1;
+  min-width: 0;
+}
+
+.cuidadoTitle {
+  color: var(--ds-texto-padrao);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.cuidadoDesc {
+  color: var(--ds-texto-secundario);
+  font-size: var(--fonte-tamanho-auxiliar);
+  font-weight: 500;
+  line-height: 18px;
+}
+
+/* T4 · Form salvar paciente */
+.formStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+}
+
+.formRow2 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--esp-3);
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+.formLabel {
+  color: var(--ds-input-rotulo);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 500;
+}
+
+.formInput,
+.formTextarea {
+  width: 100%;
+  padding: var(--esp-3) var(--esp-4);
+  border: 1.5px solid var(--ds-borda-padrao);
+  border-radius: var(--ds-r-md);
+  background: var(--ds-fundo-cartao);
+  color: var(--ds-texto-padrao);
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo);
+  line-height: 22px;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.formInput:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: var(--ds-interativo-primario);
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.formHelper {
+  color: var(--ds-texto-terciario);
+  font-size: var(--fonte-tamanho-auxiliar);
+  font-weight: 500;
+}
+
+.chipsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+}
+
+.chip {
+  padding: var(--esp-2) var(--esp-3);
+  border: 1px solid var(--ds-borda-padrao);
+  border-radius: var(--ds-r-pill);
+  background: var(--ds-fundo-cartao);
+  color: var(--ds-texto-secundario);
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo-2);
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.chip:hover {
+  border-color: var(--ds-interativo-primario);
+}
+
+.chip[data-selected="true"] {
+  background: var(--ds-interativo-primario);
+  border-color: var(--ds-interativo-primario);
+  color: var(--ds-texto-sobre-destaque);
+}
+
 /* Toast feedback efêmero · sticky no fundo do viewport */
 .toastWrap {
   position: fixed;
