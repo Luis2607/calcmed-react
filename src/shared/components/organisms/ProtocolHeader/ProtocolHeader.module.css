@@ -138,13 +138,16 @@
   margin-top: var(--esp-1);
 }
 
+/* actionBtn — variante "fundo cinza" (Luis 2026-05-28: visual discreto, não distrai
+   da informação clínica). Borda teal antiga substituída por fundo elevado neutro,
+   igual ao closeBtn dos sheets. Estado active = fundo teal sólido (badge visual). */
 .actionBtn {
   width: 48px;
   height: 48px;
   border-radius: var(--radius-pill);
-  border: 1.5px solid var(--ds-interativo-primario);
-  background: transparent;
-  color: var(--ds-interativo-primario);
+  border: none;
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-secundario);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,7 +161,7 @@
   height: 22px;
 }
 
-.actionBtn:hover { background: var(--interativo-primario-tint-04); }
+.actionBtn:hover { background: var(--ds-borda-padrao); color: var(--ds-texto-padrao); }
 .actionBtnActive { background: var(--ds-interativo-primario); color: var(--ds-texto-sobre-destaque); }
 
 .timer {

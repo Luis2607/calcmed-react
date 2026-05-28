@@ -731,26 +731,36 @@ export function SepseFlow({ onBack }) {
   );
 
   // ====================== Footers por tela ======================
+  // Hint = informação CLÍNICA que NÃO está no botão (Luis 2026-05-28: nunca duplicar).
+  // Quando não há info clínica nova, hint=null (footer mostra só o button).
+  // Button size='lg' (Luis pediu pra testar grande — antes era md default).
   const footers = {
     1: {
-      hint: s.tela1Liberada ? 'Iniciar Bundle da 1ª hora' : (s.total === 0 ? 'Preencher um escore' : 'Dar veredito clínico abaixo'),
-      primary: { label: 'Iniciar Bundle 1ª hora', onClick: () => s.irParaTela(2), disabled: !s.tela1Liberada },
+      // Liberado: botão já diz "Iniciar Bundle 1ª hora" — sem hint. Não-liberado: indica POR QUE.
+      hint: s.tela1Liberada ? null : (s.total === 0 ? 'Preencher um escore' : 'Dar veredito clínico abaixo'),
+      primary: { label: 'Iniciar Bundle 1ª hora', size: 'lg', onClick: () => s.irParaTela(2), disabled: !s.tela1Liberada },
     },
     2: {
-      hint: s.bundlePH < 4 ? `Marcar ${4 - s.bundlePH} ${4 - s.bundlePH === 1 ? 'ação' : 'ações'} da 1ª hora` : 'Seguir para antibioticoterapia',
-      primary: { label: 'Antibioticoterapia', onClick: () => s.irParaTela(3) },
+      // <4 itens: indica falta concreta. Completos: botão já diz "Antibioticoterapia" — sem hint.
+      hint: s.bundlePH < 4 ? `Marcar ${4 - s.bundlePH} ${4 - s.bundlePH === 1 ? 'ação' : 'ações'} da 1ª hora` : null,
+      primary: { label: 'Antibioticoterapia', size: 'lg', onClick: () => s.irParaTela(3) },
     },
     3: {
+      // Sem foco: indica falta. Com foco: hint clínica complementar (prescrever ATB IV é AÇÃO atual; botão é PRÓXIMA tela "Vasopressores").
       hint: !s.foco ? 'Selecionar foco infeccioso' : 'Esquema definido · prescrever ATB IV',
-      primary: { label: 'Vasopressores', onClick: () => s.irParaTela(4), disabled: !s.foco },
+      primary: { label: 'Vasopressores', size: 'lg', onClick: () => s.irParaTela(4), disabled: !s.foco },
     },
     4: {
+      // Hints clínicos baseados em dose (próximo passo NE) — NÃO é o que o button diz ("Metas de ressuscitação").
       hint: neNum < 0.25 ? 'Titular NE até PAM ≥ 65 mmHg' : neNum < 0.5 ? 'NE alta · associar Vasopressina' : 'Choque refratário · Adrenalina + Hidrocortisona',
-      primary: { label: 'Metas de ressuscitação', onClick: () => s.irParaTela(5) },
+      primary: { label: 'Metas de ressuscitação', size: 'lg', onClick: () => s.irParaTela(5) },
     },
     5: {
-      hint: s.metasN < 5 ? `Atingir ${5 - s.metasN} ${5 - s.metasN === 1 ? 'meta' : 'metas'}` : s.icuN < 6 ? 'Completar checklist ICU' : 'Caso estabilizado · encerrar',
-      primary: { label: 'Encerrar caso', onClick: () => setEncerrarOpen(true), variant: 'primary' },
+      // Metas incompletas: indica falta. Tudo completo: botão já diz "Encerrar caso" — sem hint.
+      hint: s.metasN < 5
+        ? `Atingir ${5 - s.metasN} ${5 - s.metasN === 1 ? 'meta' : 'metas'}`
+        : s.icuN < 6 ? 'Completar checklist ICU' : null,
+      primary: { label: 'Encerrar caso', size: 'lg', onClick: () => setEncerrarOpen(true), variant: 'primary' },
     },
   };
 
