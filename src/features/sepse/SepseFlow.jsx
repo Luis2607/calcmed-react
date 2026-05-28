@@ -19,7 +19,6 @@ import { ToggleField } from '../../shared/components/molecules/ToggleField';
 import { InputField } from '../../shared/components/molecules/InputField';
 import { Segmented } from '../../shared/components/molecules/Segmented';
 import { ToggleTab } from '../../shared/components/molecules/ToggleTab';
-import { CheckboxGroup } from '../../shared/components/molecules/CheckboxGroup';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { DetailRow } from '../../shared/components/molecules/DetailRow/DetailRow';
 import { ScoreResult } from '../../shared/components/molecules/ScoreResult/ScoreResult';
@@ -508,29 +507,26 @@ export function SepseFlow({ onBack }) {
 
       {s.foco && (
         <>
-          <div className={styles.group}>
-            <div className={styles.progressHead}>
-              <SectionLabel>Risco MRSA</SectionLabel>
-              <span className={styles.progressMeta}>{s.mrsaN}/5</span>
-            </div>
-            <CheckboxGroup
-              options={RISCO_MRSA.map((r) => ({ value: r.key, label: r.label }))}
-              value={RISCO_MRSA.filter((r) => s.riscoMrsa[r.key]).map((r) => r.key)}
-              onChange={(arr) => RISCO_MRSA.forEach((r) => { if (!!s.riscoMrsa[r.key] !== arr.includes(r.key)) s.toggleRiscoMrsa(r.key); })}
-            />
-          </div>
+          {/* §3.3 da matriz · ChecklistBlock cobre TODA lista de itens com contador
+              (bundle clínico OU fatores de risco). Risco MRSA/MDR tem contador n/5 →
+              ChecklistBlock, não CheckboxGroup (que é só pra lista sem contador). */}
+          <ChecklistBlock
+            tagLabel="Risco MRSA"
+            tagTone="critico"
+            count={`${s.mrsaN}/5`}
+            onInfo={() => setModalId('o-que-e-mrsa')}
+            items={RISCO_MRSA.map((r) => ({ label: r.label, checked: !!s.riscoMrsa[r.key] }))}
+            onToggle={(i) => s.toggleRiscoMrsa(RISCO_MRSA[i].key)}
+          />
 
-          <div className={styles.group}>
-            <div className={styles.progressHead}>
-              <SectionLabel>Risco MDR</SectionLabel>
-              <span className={styles.progressMeta}>{s.mdrN}/5</span>
-            </div>
-            <CheckboxGroup
-              options={RISCO_MDR.map((r) => ({ value: r.key, label: r.label }))}
-              value={RISCO_MDR.filter((r) => s.riscoMdr[r.key]).map((r) => r.key)}
-              onChange={(arr) => RISCO_MDR.forEach((r) => { if (!!s.riscoMdr[r.key] !== arr.includes(r.key)) s.toggleRiscoMdr(r.key); })}
-            />
-          </div>
+          <ChecklistBlock
+            tagLabel="Risco MDR"
+            tagTone="critico"
+            count={`${s.mdrN}/5`}
+            onInfo={() => setModalId('o-que-e-mdr')}
+            items={RISCO_MDR.map((r) => ({ label: r.label, checked: !!s.riscoMdr[r.key] }))}
+            onToggle={(i) => s.toggleRiscoMdr(RISCO_MDR[i].key)}
+          />
 
           <div className={styles.group}>
             <div className={styles.progressHead}>
