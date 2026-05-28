@@ -20,7 +20,6 @@ import { InputField } from '../../shared/components/molecules/InputField';
 import { Segmented } from '../../shared/components/molecules/Segmented';
 import { ToggleTab } from '../../shared/components/molecules/ToggleTab';
 import { RadioGroup } from '../../shared/components/molecules/RadioGroup';
-import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { DetailRow } from '../../shared/components/molecules/DetailRow/DetailRow';
 import { ScoreResult } from '../../shared/components/molecules/ScoreResult/ScoreResult';
 import { ScoreRangeTable } from '../../shared/components/molecules/ScoreRangeTable';
@@ -541,17 +540,15 @@ export function SepseFlow({ onBack }) {
           <SectionLabel>Foco infeccioso</SectionLabel>
           <InfoButton onClick={() => setModalId('o-que-e-foco')} size={20} />
         </div>
-        <div className={styles.focoGrid}>
-          {FOCOS.map((f) => (
-            <OptionCard
-              key={f.value}
-              title={f.label}
-              description={f.desc}
-              selected={s.foco === f.value}
-              onClick={() => s.setFoco(f.value)}
-            />
-          ))}
-        </div>
+        {/* Foco · RadioGroup card 2-col com description (Luis 2026-05-28).
+            Consistência com Veredito T1 e NEWS versão — affordance radio + descrição. */}
+        <RadioGroup
+          name="foco-infeccioso"
+          options={FOCOS}
+          value={s.foco}
+          onChange={(v) => s.setFoco(v)}
+          columns={2}
+        />
       </div>
 
       {s.foco && (
@@ -727,7 +724,8 @@ export function SepseFlow({ onBack }) {
   // ====================== Footers por tela ======================
   // Hint = informação CLÍNICA que NÃO está no botão (Luis 2026-05-28: nunca duplicar).
   // Quando não há info clínica nova, hint=null (footer mostra só o button).
-  // Button size='lg' (Luis pediu pra testar grande — antes era md default).
+  // Button size='lg'. A partir de T2, backLink "← Voltar" pra tela anterior (Luis 2026-05-28).
+  const voltarLink = (toTela) => ({ label: 'Voltar', onClick: () => s.irParaTela(toTela) });
   const footers = {
     1: {
       // Liberado: botão já diz "Iniciar Bundle 1ª hora" — sem hint. Não-liberado: indica POR QUE.
@@ -735,21 +733,25 @@ export function SepseFlow({ onBack }) {
       primary: { label: 'Iniciar Bundle 1ª hora', size: 'lg', onClick: () => s.irParaTela(2), disabled: !s.tela1Liberada },
     },
     2: {
+      backLink: voltarLink(1),
       // <4 itens: indica falta concreta. Completos: botão já diz "Antibioticoterapia" — sem hint.
       hint: s.bundlePH < 4 ? `Marcar ${4 - s.bundlePH} ${4 - s.bundlePH === 1 ? 'ação' : 'ações'} da 1ª hora` : null,
       primary: { label: 'Antibioticoterapia', size: 'lg', onClick: () => s.irParaTela(3) },
     },
     3: {
+      backLink: voltarLink(2),
       // Sem foco: indica falta. Com foco: hint clínica complementar (prescrever ATB IV é AÇÃO atual; botão é PRÓXIMA tela "Vasopressores").
       hint: !s.foco ? 'Selecionar foco infeccioso' : 'Esquema definido · prescrever ATB IV',
       primary: { label: 'Vasopressores', size: 'lg', onClick: () => s.irParaTela(4), disabled: !s.foco },
     },
     4: {
+      backLink: voltarLink(3),
       // Hints clínicos baseados em dose (próximo passo NE) — NÃO é o que o button diz ("Metas de ressuscitação").
       hint: neNum < 0.25 ? 'Titular NE até PAM ≥ 65 mmHg' : neNum < 0.5 ? 'NE alta · associar Vasopressina' : 'Choque refratário · Adrenalina + Hidrocortisona',
       primary: { label: 'Metas de ressuscitação', size: 'lg', onClick: () => s.irParaTela(5) },
     },
     5: {
+      backLink: voltarLink(4),
       // Metas incompletas: indica falta. Tudo completo: botão já diz "Encerrar caso" — sem hint.
       hint: s.metasN < 5
         ? `Atingir ${5 - s.metasN} ${5 - s.metasN === 1 ? 'meta' : 'metas'}`

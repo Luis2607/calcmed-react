@@ -36,6 +36,25 @@
   white-space: nowrap;
 }
 
+/* backLink — link textual "← Voltar" discreto (Luis 2026-05-28).
+   Linha própria acima do hint. Cor primária do DS, sem botão cheio. */
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-1);
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: var(--esp-2);
+  color: var(--ds-interativo-primario);
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.backLink:hover { text-decoration: underline; }
+
 .actions {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));

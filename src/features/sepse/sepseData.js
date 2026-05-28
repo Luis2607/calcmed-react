@@ -233,12 +233,12 @@ export const ESQUEMAS = {
 };
 
 export const FOCOS = [
-  { value: 'pac', label: 'Pulmonar (PAC)', desc: 'Pneumonia adquirida na comunidade' },
-  { value: 'urinario', label: 'Urinário', desc: 'ITU / pielonefrite' },
-  { value: 'abdominal', label: 'Abdominal', desc: 'Peritonite, colangite, abscesso' },
-  { value: 'snc', label: 'SNC / Meningite', desc: 'Meningite, abscesso cerebral' },
-  { value: 'pele', label: 'Pele e partes moles', desc: 'Celulite, erisipela, fasciíte' },
-  { value: 'desconhecido', label: 'Foco desconhecido', desc: 'Origem não identificada' },
+  { value: 'pac', label: 'Pulmonar (PAC)', description: 'Pneumonia adquirida na comunidade' },
+  { value: 'urinario', label: 'Urinário', description: 'ITU / pielonefrite' },
+  { value: 'abdominal', label: 'Abdominal', description: 'Peritonite, colangite, abscesso' },
+  { value: 'snc', label: 'SNC / Meningite', description: 'Meningite, abscesso cerebral' },
+  { value: 'pele', label: 'Pele e partes moles', description: 'Celulite, erisipela, fasciíte' },
+  { value: 'desconhecido', label: 'Foco desconhecido', description: 'Origem não identificada' },
 ];
 
 export const RISCO_MRSA = [

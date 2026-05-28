@@ -12,6 +12,7 @@ export function ActionFooter({
   meta,
   primary,
   secondary,
+  backLink,
   actions = EMPTY_ACTIONS,
   sticky = false,
 }) {
@@ -21,6 +22,15 @@ export function ActionFooter({
 
   return (
     <section className={[styles.footer, sticky ? styles.sticky : ''].filter(Boolean).join(' ')}>
+      {/* backLink (Luis 2026-05-28) — link textual discreto "← Voltar" à esquerda,
+          em linha própria acima do hint/actions. Padrão Opção C da pesquisa NN/g
+          (1 primary + link textual quando há evidência de necessidade). */}
+      {backLink && (
+        <button type="button" className={styles.backLink} onClick={backLink.onClick}>
+          ← {backLink.label || 'Voltar'}
+        </button>
+      )}
+
       {(hint || meta) && (
         <div className={styles.hintRow}>
           {hint && <span className={styles.hint}>{hint}</span>}
