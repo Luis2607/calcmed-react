@@ -239,17 +239,20 @@ export function SepseFlow({ onBack }) {
   const pendenciaT2 = (s.telaMaxVisitada || 1) > 2 && !stepCompleto[2];
   const pendenciaT5 = (s.telaMaxVisitada || 1) >= 5 && !stepCompleto[5] && s.telaAtual !== 5;
 
-  // chips do header (idade/peso + Sepse + bundle%)
+  // chips do header (idade/peso + Sepse + bundle% sempre visível a partir de T2 · Nielsen N1)
   const chips = [];
   if (s.idade !== '') chips.push({ label: `${s.idade}a`, mono: true });
   if (s.peso !== '') chips.push({ label: `${s.peso}kg`, mono: true });
   if (sofaTotal >= 2) chips.push({ label: 'Sepse', tone: 'critico' });
-  if (s.telaAtual >= 2 && s.bundleFeitos > 0) chips.push({ label: `Bundle ${bundlePct}%`, mono: true });
+  if (s.telaAtual >= 2) chips.push({ label: `Bundle ${bundlePct}%`, mono: true });
 
-  // doses (string → número, com defaults)
-  const neNum = (() => { const v = parseNum(s.neDose); return isNaN(v) ? 0.10 : v; })();
-  const epiNum = (() => { const v = parseNum(s.epiDose); return isNaN(v) ? 0.05 : v; })();
-  const dobNum = (() => { const v = parseNum(s.dobDose); return isNaN(v) ? 5 : v; })();
+  // doses (string → número, com defaults) — clamp em ranges clínicos (Nielsen N3 conselho).
+  // Nora 0.01–5 mcg/kg/min · Adre 0.01–1 · Dobuta 1–30. Evita renderizar prescrição absurda
+  // se médico digitar dose fora-do-range (UX warning fica no AlertCard "Próximo passo Nora").
+  const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
+  const neNum = (() => { const v = parseNum(s.neDose); return isNaN(v) ? 0.10 : clamp(v, 0.01, 5); })();
+  const epiNum = (() => { const v = parseNum(s.epiDose); return isNaN(v) ? 0.05 : clamp(v, 0.01, 1); })();
+  const dobNum = (() => { const v = parseNum(s.dobDose); return isNaN(v) ? 5 : clamp(v, 1, 30); })();
 
   const handleSair = () => {
     const temDados = s.iniciadoEm || s.idade || s.peso || sofaTotal > 0;
@@ -293,7 +296,8 @@ export function SepseFlow({ onBack }) {
     setIniciais('');
     s.resetProtocol();
     showToast('Caso arquivado', 'success');
-    setTimeout(() => onBack(), 600);
+    // §B1 (P0) · 600ms → 1500ms: feedback do toast precisa ser visto antes de sair da tela.
+    setTimeout(() => onBack(), 1500);
   };
 
   // §11.H.3 · excluir caso (com ConfirmSheet perigo)
@@ -563,9 +567,11 @@ export function SepseFlow({ onBack }) {
         onToggle={(i) => s.toggleBundle(bundleACItems[i].key)}
       />
 
+      {/* §G1 conselho · label acompanha o estado (Gabriela): em 100% vira "Bundle completo"
+          pra manter coerência visual com a barra verde. */}
       <div className={styles.group}>
         <div className={styles.progressHead}>
-          <span className={styles.progressLabel}>Progresso do bundle</span>
+          <span className={styles.progressLabel}>{s.bundleFeitos === s.bundleTotal ? 'Bundle completo' : 'Progresso do bundle'}</span>
           <span className={styles.progressMeta}>{s.bundleFeitos}/{s.bundleTotal} · {bundlePct}%</span>
         </div>
         <div className={styles.progressTrack}>
@@ -838,8 +844,9 @@ export function SepseFlow({ onBack }) {
     },
     4: {
       secondary: voltarSecondary(3),
-      // Hints clínicos baseados em dose (próximo passo Nora) — NÃO é o que o button diz ("Metas de ressuscitação").
-      hint: neNum < 0.25 ? 'Titular Nora até PAM ≥ 65 mmHg' : neNum < 0.5 ? 'Nora alta · associar Vasopressina' : 'Choque refratário · Adrenalina + Hidrocortisona',
+      // Hints clínicos FACTUAIS sobre o estado atual da Nora — não imperativos que
+      // contradigam o button "Metas de ressuscitação" (Lia L1 conselho 2026-05-28).
+      hint: neNum < 0.25 ? 'Titular Nora até PAM ≥ 65 mmHg' : neNum < 0.5 ? 'Nora alta · considere Vasopressina' : 'Refratário · Adre + Hidrocortisona indicadas',
       primary: { label: 'Metas de ressuscitação', size: 'lg', onClick: () => s.irParaTela(5) },
     },
     5: {

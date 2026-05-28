@@ -74,13 +74,6 @@
   background: var(--ds-retorno-sucesso);
 }
 
-/* grade de foco infeccioso (golden .foco-grid, 2 col) */
-.focoGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--esp-3);
-}
-
 /* painel revelado da droga ativa */
 .drugPainel {
   display: flex;
@@ -122,20 +115,6 @@
 
 .scoreTabs > * {
   flex: 1;
-}
-
-/* Veredito · OptionCard 1 col com gap esp-3 (§2.6) */
-.vereditoStack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-3);
-}
-
-/* Versão NEWS · OptionCard 2 col (§2.6) */
-.versaoGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--esp-3);
 }
 
 /* Toast feedback efêmero · sticky no fundo do viewport (acima da TabBar) (§11.H.6) */
