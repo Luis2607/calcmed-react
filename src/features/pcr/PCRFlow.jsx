@@ -410,8 +410,8 @@ export function PCRFlow({ onBack }) {
         />
       </div>
 
-      {/* Linha do tempo · EventList collapsible */}
-      <EventList events={eventosFormatados} defaultOpen={s.eventos.length > 0 && s.eventos.length <= 3} />
+      {/* Linha do tempo · EventList vem aberta (Luis 2026-05-28) · togglável */}
+      <EventList events={eventosFormatados} />
 
       {/* FAB Adicionar evento (F-PCR-3.6) */}
       <div className={styles.fabAnchor}>

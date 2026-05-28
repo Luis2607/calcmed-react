@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Tag } from '../../molecules/Tag/Tag';
 import { EventItem } from '../../molecules/EventItem';
 import styles from './EventList.module.css';
@@ -19,7 +20,9 @@ import styles from './EventList.module.css';
  *  - events ([{time, offset, title, tag}]): eventos já formatados. Renderizados em
  *    ordem REVERSE (mais novo primeiro · consistente com golden).
  *  - emptyText? (string): texto do estado vazio.
- *  - defaultOpen? (bool): se details abre por default.
+ *  - defaultOpen? (bool): estado inicial aberto/fechado (default TRUE · Luis 2026-05-28:
+ *    linha do tempo deve vir aberta · usuário pode colapsar). Controlado via useState
+ *    + onToggle pra permitir começar aberto MAS continuar togglável.
  *  - title? (string): label do summary (default "Linha do tempo").
  *
  * Tokens-only. Zero hardcode.
@@ -27,9 +30,10 @@ import styles from './EventList.module.css';
 export function EventList({
   events = [],
   emptyText = 'Eventos vão aparecer aqui conforme você opera.',
-  defaultOpen = false,
+  defaultOpen = true,
   title = 'Linha do tempo',
 }) {
+  const [open, setOpen] = useState(defaultOpen);
   // §golden · renderiza reverse (mais novo no topo)
   const reversedEvents = [...events].reverse();
 
@@ -45,7 +49,7 @@ export function EventList({
   }
 
   return (
-    <details className={styles.wrap} open={defaultOpen || undefined}>
+    <details className={styles.wrap} open={open} onToggle={(e) => setOpen(e.currentTarget.open)}>
       <summary className={styles.summary}>
         <div className={styles.summaryRow}>
           <span className={styles.summaryTitle}>{title}</span>
