@@ -13,14 +13,14 @@
 .row:last-child { border-bottom: none; }
 
 .label {
-  font-size: var(--fonte-tamanho-corpo); /* 14 */
+  font: var(--ds-font-corpo-2); /* Figma corpo-secundario 14/400/20 */
+  letter-spacing: var(--ds-tracking-corpo-2); /* 0.14px */
   color: var(--ds-texto-secundario);
   flex-shrink: 0;
 }
 
 .value {
-  font-size: var(--fonte-tamanho-corpo-forte); /* 14 */
-  font-weight: 600;
+  font: var(--ds-font-botao-md); /* Figma botao-md 14/600/20 — único estilo 14/600 do DS */
   color: var(--ds-texto-padrao);
   text-align: right;
 }

@@ -17,11 +17,11 @@
 
 .head { display: flex; flex-direction: column; gap: var(--esp-2); }
 .tagRow { display: flex; align-items: center; gap: var(--esp-2); flex-wrap: wrap; }
-.title { font-size: 18px; font-weight: 600; line-height: 24px; color: var(--ds-texto-padrao); }
+.title { font: var(--ds-font-subtitulo); color: var(--ds-texto-padrao); } /* Figma subtitulo 18/600/28 */
 .subtitle { font-size: 14px; font-weight: 400; line-height: 20px; color: var(--ds-texto-secundario); }
 
 /* variant plain — golden `.exame-card` (card de seção neutro): gap 12px, título 16/600,
    borda padrão (não sutil). Aditivo: variant=default não recebe classe (zero mudança). */
 .variant-plain { gap: var(--esp-3); }
 .variant-plain.state-default { border-color: var(--ds-borda-padrao); }
-.variant-plain .title { font: var(--ds-font-subtitulo); color: var(--ds-texto-padrao); } /* Figma subtitulo 18/600/28 */
+/* título do plain = o mesmo subtitulo do .title default (sem override) */

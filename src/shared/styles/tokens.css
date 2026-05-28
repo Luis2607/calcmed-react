@@ -325,7 +325,7 @@
   --ds-font-num-tab-md: 500 16px/24px var(--fonte-mono);    /* numero-tabular-md */
   --ds-font-num-tab-sm: 500 12px/18px var(--fonte-mono);    /* numero-tabular-sm · FIX size 13→12 */
   --ds-font-crono-mestre: 700 56px/64px var(--fonte-mono);  /* cronometro-mestre (lh AUTO≈64) */
-  --ds-font-crono-card: 700 32px/40px var(--fonte-mono);    /* cronometro-card · Figma lh=32; mantido 40 pois CONSUMIDO (TimerCard/ProtocolHeader) — migrar à parte */
+  --ds-font-crono-card: 700 32px/32px var(--fonte-mono);    /* cronometro-card · Figma lh 100%(=32) · FIX 40→32 */
   --ds-font-crono-sec: 700 22px/22px var(--fonte-mono);     /* cronometro-secondary · FIX lh 28→22 */
   --ds-font-cta-emerg-xl: 600 18px/24px var(--fonte-base);  /* cta-emergencia-xl */
 
