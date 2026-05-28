@@ -155,6 +155,19 @@ export function useSepseState() {
     setBundle((prev) => ({ ...prev, atb: true }));
   };
 
+  // Toggle ATB com registro de hora — quando marca, seta hora; quando desmarca, limpa hora.
+  // Usado pelo ChecklistBlock 1ª linha (golden: clicar item ATB também registra hora — §11.T2.6).
+  const toggleAtbWithTime = () => {
+    marcarInicio();
+    if (bundle.atb) {
+      setBundle((prev) => ({ ...prev, atb: false }));
+      setHoraAtb(null);
+    } else {
+      setBundle((prev) => ({ ...prev, atb: true }));
+      setHoraAtb(Date.now());
+    }
+  };
+
   // Ativar droga vaso (revela painel)
   const ativarDroga = (tipo) => {
     marcarInicio();
@@ -202,7 +215,7 @@ export function useSepseState() {
     eventos, registrarEvento,
     // bundle
     bundle, toggleBundle, bundlePH, bundleAC, bundleFeitos, bundleTotal,
-    horaAtb, registrarHoraAtb,
+    horaAtb, registrarHoraAtb, toggleAtbWithTime,
     pesoAjustado, volume,
     // ATB
     foco, setFoco, riscoMrsa, toggleRiscoMrsa, riscoMdr, toggleRiscoMdr,

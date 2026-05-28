@@ -137,3 +137,17 @@
   grid-template-columns: 1fr 1fr;
   gap: var(--esp-3);
 }
+
+/* Toast feedback efêmero · sticky no fundo do viewport (acima da TabBar) (§11.H.6) */
+.toastWrap {
+  position: fixed;
+  left: var(--esp-4);
+  right: var(--esp-4);
+  bottom: calc(64px + var(--esp-4));
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toastWrap > * {
+  pointer-events: auto;
+}

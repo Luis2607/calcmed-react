@@ -15,7 +15,7 @@ import { StepHeader } from '../../shared/components/molecules/StepHeader/StepHea
 import { SectionLabel } from '../../shared/components/atoms/SectionLabel';
 import { InfoButton } from '../../shared/components/atoms/InfoButton';
 import { Button } from '../../shared/components/atoms/Button';
-import { Toggle } from '../../shared/components/atoms/Toggle/Toggle';
+import { ToggleField } from '../../shared/components/molecules/ToggleField';
 import { InputField } from '../../shared/components/molecules/InputField';
 import { Segmented } from '../../shared/components/molecules/Segmented';
 import { ToggleTab } from '../../shared/components/molecules/ToggleTab';
@@ -23,13 +23,17 @@ import { CheckboxGroup } from '../../shared/components/molecules/CheckboxGroup';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { DetailRow } from '../../shared/components/molecules/DetailRow/DetailRow';
 import { ScoreResult } from '../../shared/components/molecules/ScoreResult/ScoreResult';
+import { DoseDisplay } from '../../shared/components/molecules/DoseDisplay';
 import { ScoreRangeTable } from '../../shared/components/molecules/ScoreRangeTable';
 import { ScoreCriterionGroup } from '../../shared/components/organisms/ScoreCriterionGroup/ScoreCriterionGroup';
 import { ScoreCriterion } from '../../shared/components/organisms/ScoreCriterion/ScoreCriterion';
 import { AlertCard } from '../../shared/components/organisms/AlertCard';
 import { ChecklistBlock } from '../../shared/components/organisms/ChecklistBlock';
 import { ClinicalCard } from '../../shared/components/organisms/ClinicalCard';
-import { InfoSheet, ConfirmSheet, FormSheet, AnnotationSheet } from '../../shared/components/overlays/patterns';
+import { PatientDetail } from '../../shared/components/organisms/PatientDetail';
+import { Timeline } from '../../shared/components/organisms/Timeline';
+import { Toast } from '../../shared/components/molecules/Toast';
+import { InfoSheet, ConfirmSheet, FormSheet, AnnotationSheet, DetailSheet } from '../../shared/components/overlays/patterns';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import styles from './SepseFlow.module.css';
 
@@ -125,6 +129,15 @@ export function SepseFlow({ onBack }) {
   const [encerrarOpen, setEncerrarOpen] = useState(false);
   const [iniciais, setIniciais] = useState('');
   const [now, setNow] = useState(() => Date.now());
+  // Histórico · detalhe + excluir + toast (§11.H da matriz)
+  const [casoIdxAberto, setCasoIdxAberto] = useState(null);
+  const [excluirIdx, setExcluirIdx] = useState(null);
+  const [toast, setToast] = useState(null); // { type, message }
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
+  };
 
   // cronômetro do caso (texto pequeno no header)
   useEffect(() => {
@@ -171,20 +184,64 @@ export function SepseFlow({ onBack }) {
     const meta = s.classificacao
       ? VEREDITO_CARDS.find((v) => v.value === s.classificacao)?.title
       : 'Sepse';
+    // §11.H · caso salvo com dados ricos pro detalhe (PatientDetail + Timeline)
+    const bundleFeitosKeys = Object.keys(s.bundle || {}).filter((k) => s.bundle[k]);
     const novoCaso = {
       id: Date.now().toString(),
       initials: (iniciais || '—').toUpperCase().slice(0, 10),
       date: new Date().toLocaleDateString('pt-BR'),
+      iniciadoEm: s.iniciadoEm,
       duration: durationStr,
+      duracaoMs: dur,
       status: 'Concluído',
       meta,
       sofa: sofaTotal,
+      idade: s.idade,
+      peso: s.peso,
+      foco: s.foco,
+      classificacao: s.classificacao,
+      bundleFeitosKeys,
+      horaAtb: s.horaAtb,
+      metasN: s.metasN,
+      icuN: s.icuN,
+      anotacao: s.anotacao,
+      eventos: s.eventos || [],
     };
     setHistorico([novoCaso, ...historico]);
     setEncerrarOpen(false);
     setIniciais('');
     s.resetProtocol();
-    onBack();
+    showToast('Caso arquivado', 'success');
+    setTimeout(() => onBack(), 600);
+  };
+
+  // §11.H.3 · excluir caso (com ConfirmSheet perigo)
+  const handleExcluirConfirm = () => {
+    if (excluirIdx == null) return;
+    const novoHist = historico.filter((_, i) => i !== excluirIdx);
+    setHistorico(novoHist);
+    setExcluirIdx(null);
+    setCasoIdxAberto(null);
+    showToast('Caso removido do histórico', 'success');
+  };
+
+  // §11.H.4 · compartilhar caso (clipboard + Toast)
+  const handleCompartilhar = (caso) => {
+    const linhas = [
+      'CalcMed · Sepse encerrada',
+      `Paciente: ${caso.initials}`,
+      caso.classificacao ? `Classificação: ${VEREDITO_CARDS.find((v) => v.value === caso.classificacao)?.title}` : null,
+      caso.sofa != null ? `SOFA: ${caso.sofa} pts` : null,
+      caso.foco ? `Foco: ${caso.foco}` : null,
+      `Duração: ${caso.duration}`,
+      `Data: ${caso.date}`,
+    ].filter(Boolean).join('\n');
+    if (navigator.share) {
+      navigator.share({ title: 'Caso Sepse', text: linhas }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(linhas);
+      showToast('Resumo copiado', 'success');
+    }
   };
 
   const modal = modalId ? SEPSE_MODAIS[modalId] : null;
@@ -315,10 +372,18 @@ export function SepseFlow({ onBack }) {
     ? 'Vasopressor para PAM ≥ 60 mmHg (60-65 em > 65 anos)'
     : 'Vasopressor para PAM ≥ 65 mmHg';
 
+  // ATB com hora embutida (§11.T2.6) — item label dinâmico e onToggle especial
+  const horaAtbStr = s.horaAtb
+    ? new Date(s.horaAtb).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+    : null;
+  const atbLabel = horaAtbStr
+    ? `Antibiótico IV · registrado às ${horaAtbStr}`
+    : 'Antibiótico IV de amplo espectro';
+
   const bundlePHItems = [
     { key: 'hemocultura', label: 'Hemocultura × 2 (aeróbio + anaeróbio)' },
     { key: 'lactato', label: 'Lactato sérico' },
-    { key: 'atb', label: 'Antibiótico IV de amplo espectro' },
+    { key: 'atb', label: atbLabel },
     { key: 'cristaloide', label: 'Cristaloide 30 mL/kg' },
   ];
   const bundleACItems = [
@@ -331,21 +396,25 @@ export function SepseFlow({ onBack }) {
 
   const t2 = (
     <div className={styles.tela}>
-      <StepHeader title="Bundle da 1ª hora" subtitle="Ações que salvam vidas na primeira hora da sepse." />
+      <StepHeader
+        title="Bundle da 1ª hora"
+        subtitle="Ações que salvam vidas na primeira hora da sepse."
+        onInfo={() => setModalId('o-que-e-bundle')}
+      />
 
-      <div className={styles.group}>
-        <SectionLabel>Paciente</SectionLabel>
+      {/* §11.T2.1 + §1.11: card-first · "Paciente" consolida idade+peso+alerta≥65+IMC+sub-grupo obeso */}
+      <ClinicalCard variant="plain" title="Paciente">
         <div className={styles.row2}>
           <InputField label="Idade" type="text" mono inputMode="numeric" value={s.idade} onChange={(v) => { s.marcarInicio(); s.setIdade(v); }} placeholder="" showUnit unit="anos" />
           <InputField label="Peso" type="text" mono inputMode="decimal" value={s.peso} onChange={(v) => { s.marcarInicio(); s.setPeso(v); }} placeholder="" showUnit unit="kg" />
         </div>
         {s.numIdade != null && s.numIdade >= 65 && (
-          <AlertCard level="info"><strong>Paciente ≥ 65 anos.</strong> PAM alvo passa a ser 60 a 65 mmHg (SSC 2026).</AlertCard>
+          <AlertCard level="info" title="Paciente ≥ 65 anos">
+            PAM alvo passa a ser 60 a 65 mmHg (SSC 2026 · alvo permissivo em idoso).
+          </AlertCard>
         )}
-      </div>
-
-      <ClinicalCard variant="plain" title="Obeso? (IMC ≥ 30)">
-        <Toggle checked={s.imcObeso} onChange={s.setImcObeso} label="Usar peso ajustado no cálculo de volume" />
+        {/* §11.T2.2 · ToggleField (linha label + Toggle inline, golden `.toggle-row`) */}
+        <ToggleField label="Obeso · IMC ≥ 30 (usar peso ajustado)" checked={s.imcObeso} onChange={s.setImcObeso} />
         {s.imcObeso && (
           <div className={styles.group}>
             <Segmented
@@ -362,12 +431,6 @@ export function SepseFlow({ onBack }) {
         )}
       </ClinicalCard>
 
-      <Button variant={s.horaAtb ? 'secondary' : 'primary'} onClick={s.registrarHoraAtb}>
-        {s.horaAtb
-          ? `✓ ATB registrado às ${new Date(s.horaAtb).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`
-          : 'Registrar hora do ATB'}
-      </Button>
-
       <ChecklistBlock
         tagLabel="1ª linha"
         tagTone="critico"
@@ -375,7 +438,12 @@ export function SepseFlow({ onBack }) {
         subtitle="Em até 1 hora"
         onInfo={() => setModalId('o-que-e-primeira-hora')}
         items={bundlePHItems.map((it) => ({ label: it.label, checked: !!s.bundle[it.key] }))}
-        onToggle={(i) => s.toggleBundle(bundlePHItems[i].key)}
+        onToggle={(i) => {
+          const key = bundlePHItems[i].key;
+          // §11.T2.6 · ATB clicado registra hora (e desmarca limpa) — bom senso golden
+          if (key === 'atb') s.toggleAtbWithTime();
+          else s.toggleBundle(key);
+        }}
       />
 
       {s.volume ? (
@@ -415,7 +483,11 @@ export function SepseFlow({ onBack }) {
   const esquema = s.foco ? ESQUEMAS[s.foco] : null;
   const t3 = (
     <div className={styles.tela}>
-      <StepHeader title="Antibioticoterapia empírica" subtitle="Foco + risco MRSA/MDR definem o esquema. ATB IV em ≤ 1 h." />
+      <StepHeader
+        title="Antibioticoterapia empírica"
+        subtitle="Foco + risco MRSA/MDR definem o esquema. ATB IV em ≤ 1 h."
+        onInfo={() => setModalId('o-que-e-atb')}
+      />
 
       <div className={styles.group}>
         <div className={styles.progressHead}>
@@ -493,16 +565,22 @@ export function SepseFlow({ onBack }) {
   const epi = prescricaoAdrenalina(epiNum, s.numPeso);
   const dob = prescricaoDobutamina(dobNum, s.numPeso);
 
-  // funções de render (NÃO componentes inline — evitam remount/perda de foco no input)
+  // §11.T4.4 · Prescrição com peso visual máximo via DoseDisplay (§5.2 da matriz).
+  // Layout: DoseDisplay (vazão mono teal 32) + AlertCard footnote (preparo + ampolas).
+  // funções de render (NÃO componentes inline — evitam remount/perda de foco no input).
   const renderPrescricao = (p) => (
-    <AlertCard level="result" title={`Prescrição — ${p.droga}`}>
-      {p.droga} ({p.amp}) · <span className={styles.destaque}>{p.preparo}</span> EV em BIC
-      {p.vazao
-        ? <> a <span className={styles.destaque}>{p.vazao} mL/h</span></>
-        : <> · informe o peso (T2) para a vazão</>}
-      {' · '}<span className={styles.destaque}>{p.doseFmt} mcg/kg/min</span>
-      {s.numPeso ? ` · peso ${s.peso} kg` : ''}
-    </AlertCard>
+    <>
+      <DoseDisplay
+        value={p.vazao || '—'}
+        unit="mL/h"
+        via={p.vazao
+          ? `${p.doseFmt} mcg/kg/min · peso ${s.peso} kg`
+          : `Informe o peso (T2) · ${p.doseFmt} mcg/kg/min`}
+      />
+      <AlertCard level="footnote">
+        {p.droga} ({p.amp}) · {p.preparo} EV em BIC
+      </AlertCard>
+    </>
   );
 
   const renderDrugCard = (tipo, nome, role, ativa, painel) => (
@@ -531,9 +609,7 @@ export function SepseFlow({ onBack }) {
       ))}
 
       {renderDrugCard('vaso', 'Vasopressina', '2ª linha · dose fixa', s.vasoAtiva, (
-        <AlertCard level="result" title="Prescrição — Vasopressina">
-          Vasopressina · <span className={styles.destaque}>0,03 U/min IV</span>, dose fixa (não titular).
-        </AlertCard>
+        <DoseDisplay value="0,03" unit="U/min IV" via="Dose fixa · não titular" />
       ))}
 
       {renderDrugCard('epi', 'Adrenalina', '3ª linha', s.epiAtiva, (
@@ -551,9 +627,7 @@ export function SepseFlow({ onBack }) {
       ))}
 
       {renderDrugCard('hidro', 'Hidrocortisona', 'Choque refratário', s.hidroAtiva, (
-        <AlertCard level="result" title="Prescrição — Hidrocortisona">
-          <span className={styles.destaque}>50 mg IV 6/6h</span> (200 mg/dia) ou 8 mg/h em infusão contínua.
-        </AlertCard>
+        <DoseDisplay value="50" unit="mg IV 6/6h" via="200 mg/dia · ou 8 mg/h infusão contínua" />
       ))}
     </div>
   );
@@ -568,7 +642,11 @@ export function SepseFlow({ onBack }) {
 
   const t5 = (
     <div className={styles.tela}>
-      <StepHeader title="Metas de ressuscitação" subtitle="Avaliação dinâmica + bundle de cuidados intensivos." />
+      <StepHeader
+        title="Metas de ressuscitação"
+        subtitle="Avaliação dinâmica + bundle de cuidados intensivos."
+        onInfo={() => setModalId('o-que-e-metas')}
+      />
 
       <ChecklistBlock
         tagLabel="Metas"
@@ -627,8 +705,75 @@ export function SepseFlow({ onBack }) {
       subtitle="Casos concluídos neste aparelho. Não substitui prontuário (LGPD)."
       cases={historico}
       onClear={() => { if (window.confirm('Limpar todo o histórico de sepse?')) setHistorico([]); }}
+      onCaseClick={(c) => setCasoIdxAberto(historico.indexOf(c))}
     />
   );
+
+  // §11.H.2 · construção do detalhe (PatientDetail + Timeline) a partir do caso aberto
+  const casoAberto = casoIdxAberto != null ? historico[casoIdxAberto] : null;
+  const renderCasoDetalhe = () => {
+    if (!casoAberto) return null;
+    const c = casoAberto;
+    const protocolLabel = c.classificacao
+      ? `Sepse · ${VEREDITO_CARDS.find((v) => v.value === c.classificacao)?.title?.toLowerCase() || ''}`
+      : 'Sepse';
+    const summary = [
+      { label: 'Encerrado em', value: c.date },
+      { label: 'Duração', value: c.duration },
+      ...(c.idade ? [{ label: 'Idade', value: `${c.idade} anos` }] : []),
+      ...(c.peso ? [{ label: 'Peso', value: `${c.peso} kg` }] : []),
+    ];
+    const desfechoRows = [];
+    if (c.sofa != null) desfechoRows.push({ label: 'SOFA', value: `${c.sofa} pts` });
+    if (c.foco) desfechoRows.push({ label: 'Foco', value: c.foco });
+    if (c.horaAtb) desfechoRows.push({ label: 'ATB', value: new Date(c.horaAtb).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) });
+    const bundleRows = [];
+    if (typeof c.metasN === 'number') bundleRows.push({ label: 'Metas atingidas', value: `${c.metasN}/5` });
+    if (typeof c.icuN === 'number') bundleRows.push({ label: 'Checklist ICU', value: `${c.icuN}/6` });
+    if (Array.isArray(c.bundleFeitosKeys)) bundleRows.push({ label: 'Bundle 1h+acomp', value: `${c.bundleFeitosKeys.length}/9` });
+    const sections = [
+      ...(desfechoRows.length ? [{ title: 'Desfecho clínico', rows: desfechoRows }] : []),
+      ...(bundleRows.length ? [{ title: 'Bundle', rows: bundleRows }] : []),
+    ];
+
+    // Timeline · eventos do caso (tag → status)
+    const tStart = c.iniciadoEm || (c.date ? null : null);
+    const offsetHora = (ts) => {
+      if (!tStart || !ts) return new Date(ts).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      const diffMin = Math.floor((ts - tStart) / 60000);
+      if (diffMin < 60) return `T+${diffMin}min`;
+      return `T+${Math.floor(diffMin / 60)}h${String(diffMin % 60).padStart(2, '0')}`;
+    };
+    const tagToStatus = { veredito: 'success', bundle: 'info', atb: 'success' };
+    const events = (c.eventos || []).map((ev, i) => ({
+      id: `${ev.hora}-${i}`,
+      time: offsetHora(ev.hora),
+      title: ev.acao,
+      status: tagToStatus[ev.tag] || 'info',
+    }));
+    if (c.horaAtb) {
+      events.push({ id: `atb-${c.horaAtb}`, time: offsetHora(c.horaAtb), title: `ATB administrado às ${new Date(c.horaAtb).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`, status: 'success' });
+    }
+
+    return (
+      <>
+        <PatientDetail
+          initials={c.initials}
+          protocol={protocolLabel}
+          status={c.status}
+          statusTone="novo"
+          summary={summary}
+          sections={sections}
+        />
+        {events.length > 0 && <Timeline title="Linha do tempo" events={events} />}
+        {c.anotacao && (
+          <AlertCard level="footnote" title="Anotação">
+            {c.anotacao}
+          </AlertCard>
+        )}
+      </>
+    );
+  };
 
   const teoriaView = (
     <TheoryScreen
@@ -703,6 +848,39 @@ export function SepseFlow({ onBack }) {
       >
         <InputField label="Iniciais" value={iniciais} onChange={setIniciais} placeholder="ex.: H.G.V." />
       </FormSheet>
+
+      {/* §11.H.2 · Detalhe do caso (PatientDetail + Timeline) */}
+      <DetailSheet
+        open={casoAberto != null}
+        onClose={() => setCasoIdxAberto(null)}
+        title={casoAberto?.initials || ''}
+        description="Caso arquivado · histórico LGPD-compliant deste aparelho"
+        footer={casoAberto ? {
+          secondary: { label: 'Excluir', variant: 'danger', onClick: () => setExcluirIdx(casoIdxAberto) },
+          primary: { label: 'Compartilhar', onClick: () => handleCompartilhar(casoAberto) },
+        } : undefined}
+      >
+        {renderCasoDetalhe()}
+      </DetailSheet>
+
+      {/* §11.H.3 · Excluir confirmação (perigo) */}
+      <ConfirmSheet
+        open={excluirIdx != null}
+        onClose={() => setExcluirIdx(null)}
+        title="Excluir do histórico?"
+        description="Esta ação não pode ser desfeita."
+        confirmLabel="Excluir"
+        cancelLabel="Manter"
+        perigo
+        onConfirm={handleExcluirConfirm}
+      />
+
+      {/* §11.H.6 · Toast feedback efêmero (auto-dismiss 3.5s) */}
+      {toast && (
+        <div className={styles.toastWrap}>
+          <Toast type={toast.type} message={toast.message} onDismiss={() => setToast(null)} />
+        </div>
+      )}
     </>
   );
 }
