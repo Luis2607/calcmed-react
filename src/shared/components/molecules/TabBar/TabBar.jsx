@@ -20,7 +20,7 @@ export function TabBar({ items = EMPTY_ITEMS, activeId, onChange, safeArea = tru
             onClick={() => onChange?.(item.id)}
             aria-current={active ? 'page' : undefined}
           >
-            <Icon name={item.icon} size={22} />
+            <Icon name={item.icon} size={24} />
             <span>{item.label}</span>
             {item.badge && <strong className={styles.badge}>{item.badge}</strong>}
           </button>
