@@ -221,16 +221,21 @@
   color: var(--ds-texto-sobre-destaque);
 }
 
-/* Toast feedback efêmero · sticky no fundo do viewport */
+/* Toast feedback efêmero · topo do viewport (Luis 2026-05-28: notificação no topo).
+   Abaixo do header sticky · z-index alto · não bloqueia toques no conteúdo. */
 .toastWrap {
   position: fixed;
   left: var(--esp-4);
   right: var(--esp-4);
-  bottom: calc(64px + var(--esp-4));
+  top: var(--esp-4);
   z-index: 1000;
   pointer-events: none;
+  display: flex;
+  justify-content: center;
 }
 
 .toastWrap > * {
   pointer-events: auto;
+  width: 100%;
+  max-width: 360px;
 }

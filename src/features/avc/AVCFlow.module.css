@@ -1,0 +1,226 @@
+/* AVC · layout de produto (token-only · zero hardcode).
+   Só o que NENHUM componente do DS cobre: spacing das telas, wizard NIHSS,
+   toggle Cincinnati, split de dose, histórico de PA e toast.
+   Escala: seções 24 / dentro 16 / grupos 12-8 (igual Sepse). */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-6);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-4);
+}
+
+/* idade/peso/PA lado a lado */
+.row2 {
+  display: flex;
+  gap: var(--esp-3);
+}
+
+.row2 > * {
+  flex: 1;
+}
+
+/* destaque de valores (golden .valor-destaque) */
+.destaque {
+  color: var(--ds-interativo-primario);
+  font-weight: 700;
+}
+
+/* cabeçalho de grupo (label + InfoButton) */
+.progressHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ============================================================
+   T1 · Cincinnati
+   ============================================================ */
+.cincinnatiItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+.cincinnatiItem + .cincinnatiItem {
+  margin-top: var(--esp-4);
+  padding-top: var(--esp-4);
+  border-top: 1px solid var(--ds-borda-sutil);
+}
+
+.cincinnatiTitulo {
+  color: var(--ds-texto-padrao);
+  font-weight: 600;
+}
+
+.cincinnatiHelper {
+  color: var(--ds-texto-secundario);
+  font: var(--ds-font-corpo-2);
+}
+
+.janelaHelper {
+  color: var(--ds-texto-secundario);
+  font: var(--ds-font-corpo-2);
+  margin-top: var(--esp-2);
+}
+
+.bypassHint {
+  color: var(--ds-texto-secundario);
+  font: var(--ds-font-corpo-2);
+}
+
+/* ============================================================
+   T2 · NIHSS wizard
+   ============================================================ */
+.nihssStepperInfo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--esp-2);
+}
+
+.nihssPasso {
+  color: var(--ds-texto-secundario);
+  font: var(--ds-font-corpo-2);
+  font-weight: 700;
+}
+
+.nihssDominioNome {
+  color: var(--ds-texto-padrao);
+  font: var(--ds-font-corpo-2);
+}
+
+.progressTrack {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--ds-fundo-elevado);
+  overflow: hidden;
+  margin-top: var(--esp-2);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--ds-interativo-primario);
+  transition: width 0.3s ease;
+}
+
+/* parcial NIHSS (label + valor grande) */
+.parcial {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.parcialLabel {
+  color: var(--ds-texto-secundario);
+  font: var(--ds-font-corpo-2);
+}
+
+.parcialValor {
+  color: var(--ds-interativo-primario);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.nihssNav {
+  display: flex;
+  gap: var(--esp-3);
+}
+
+.nihssNav > * {
+  flex: 1;
+}
+
+/* ============================================================
+   T4 · Dose
+   ============================================================ */
+.pesoChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+}
+
+.doseSplit {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  padding-top: var(--esp-2);
+}
+
+.doseSplit + .doseSplit {
+  border-top: 1px solid var(--ds-borda-sutil);
+}
+
+.doseSplitLabel {
+  color: var(--ds-texto-secundario);
+  font: var(--ds-font-corpo-2);
+}
+
+.doseSplitValor {
+  color: var(--ds-texto-padrao);
+  font: var(--ds-font-corpo-2);
+}
+
+/* ============================================================
+   T5 · Monitoramento
+   ============================================================ */
+.paHistorico {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-1);
+  margin-top: var(--esp-3);
+}
+
+.paHistoricoItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--esp-2) var(--esp-3);
+  border-radius: var(--esp-2);
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-padrao);
+  font: var(--ds-font-corpo-2);
+}
+
+.paHistoricoItemAcima {
+  background: var(--ds-retorno-critico-fundo);
+  color: var(--ds-retorno-critico);
+  font-weight: 700;
+}
+
+/* ============================================================
+   Toast (igual Sepse · sticky acima da TabBar)
+   ============================================================ */
+.toastWrap {
+  position: fixed;
+  left: var(--esp-4);
+  right: var(--esp-4);
+  bottom: calc(64px + var(--esp-4));
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toastWrap > * {
+  pointer-events: auto;
+}
+
+.teoriaFonte {
+  color: var(--ds-texto-terciario);
+  font: var(--ds-font-corpo-2);
+  text-align: center;
+  margin-top: var(--esp-2);
+}

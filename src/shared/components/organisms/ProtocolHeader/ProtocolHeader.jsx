@@ -15,6 +15,13 @@ const ICONS = {
       <path d="M23 9l-6 6M17 9l6 6" />
     </>
   ),
+  // Alias p/ nome que o PCRFlow passa (audioOn ? 'audio' : 'audio-mute')
+  'audio-mute': (
+    <>
+      <path d="M11 5 6 9H2v6h4l5 4V5z" />
+      <path d="M23 9l-6 6M17 9l6 6" />
+    </>
+  ),
   edit: (
     <>
       <path d="M12 20h9" />
