@@ -13,7 +13,11 @@ import { BottomSheet } from '../../shared/components/overlays/BottomSheet';
 import { EventoCardNovo } from '../../shared/components/molecules/EventoCardNovo';
 import { InputField } from '../../shared/components/molecules/InputField';
 import { RitmoIcon } from '../../shared/components/molecules/RitmoIcon';
+import { Segmented } from '../../shared/components/molecules/Segmented';
+import { Select } from '../../shared/components/molecules/Select';
+import { AlertCard } from '../../shared/components/organisms/AlertCard';
 import { SectionLabel } from '../../shared/components/atoms/SectionLabel';
+import { calcPesoPreditoARDSnet, calcTETProfundidade, parseNumber, VENT_PEDIATRIA } from './pcrData';
 import styles from './pcrModais.module.css';
 
 /**
@@ -376,6 +380,112 @@ export function OutroEventoSheet({ open, onClose, onAdd }) {
           placeholder="Ex.: 40 U IV · 100 J sincronizado"
           maxLength={60}
         />
+      </SheetSection>
+    </BottomSheet>
+  );
+}
+
+const FAIXA_OPCOES = Object.entries(VENT_PEDIATRIA).map(([value, v]) => ({ value, label: v.label }));
+
+/**
+ * Modal: VCV (Ventilação Controlada Volume · golden via-aerea-vcv).
+ * Adulto: altura + sexo → peso predito ARDSnet → VC 6-8 × pp.
+ * Pediátrico: select faixa etária → VENT_PEDIATRIA.
+ */
+export function VCVSheet({ open, onClose, pediatrico, altura, sexo, onAltura, onSexo }) {
+  const [faixa, setFaixa] = useState('lactente');
+  const alturaNum = parseNumber(altura);
+  const pp = !pediatrico && alturaNum && !isNaN(alturaNum) ? calcPesoPreditoARDSnet(alturaNum, sexo) : null;
+  const vent = pediatrico ? VENT_PEDIATRIA[faixa] : null;
+
+  return (
+    <BottomSheet open={open} onClose={onClose} title={pediatrico ? 'VCV Pediátrico' : 'VCV · Ventilação Controlada Volume'}>
+      <SheetSection>
+        {pediatrico ? (
+          <>
+            <Select label="Faixa etária" options={FAIXA_OPCOES} value={faixa} onChange={setFaixa} />
+            {vent && (
+              <AlertCard level="info" title={vent.label}>
+                VC {vent.vc} · FR {vent.fr} · PEEP {vent.peep} · Pico {vent.pico} · I:E {vent.ie}
+              </AlertCard>
+            )}
+          </>
+        ) : (
+          <>
+            <InputField label="Altura" type="text" mono inputMode="numeric" value={altura || ''} onChange={onAltura} showUnit unit="cm" />
+            <Segmented label="Sexo" block options={[{ value: 'masc', label: 'Masculino' }, { value: 'fem', label: 'Feminino' }]} value={sexo} onChange={onSexo} />
+            {pp ? (
+              <AlertCard level="info" title="Volume corrente protetor" showValue value={`${Math.round(pp * 6)}-${Math.round(pp * 8)}`} unit="mL">
+                Peso predito {pp} kg · VC 6-8 mL/kg · FR 10-12 · PEEP 5 · FiO₂ 100% inicial · I:E 1:2.
+              </AlertCard>
+            ) : (
+              <AlertCard level="warning" title="Preencha altura e sexo">
+                O volume corrente protetor depende do peso predito (ARDSnet).
+              </AlertCard>
+            )}
+          </>
+        )}
+      </SheetSection>
+    </BottomSheet>
+  );
+}
+
+/**
+ * Modal: PCV (Ventilação Controlada Pressão · golden via-aerea-pcv).
+ */
+export function PCVSheet({ open, onClose, pediatrico }) {
+  const [faixa, setFaixa] = useState('lactente');
+  const vent = pediatrico ? VENT_PEDIATRIA[faixa] : null;
+
+  return (
+    <BottomSheet open={open} onClose={onClose} title={pediatrico ? 'PCV Pediátrico' : 'PCV · Ventilação Controlada Pressão'}>
+      <SheetSection>
+        {pediatrico ? (
+          <>
+            <Select label="Faixa etária" options={FAIXA_OPCOES} value={faixa} onChange={setFaixa} />
+            {vent && (
+              <AlertCard level="info" title={vent.label}>
+                Pico {vent.pico} · FR {vent.fr} · PEEP {vent.peep} · I:E {vent.ie}
+              </AlertCard>
+            )}
+          </>
+        ) : (
+          <AlertCard level="info" title="Pressão controlada" showValue value="12-20" unit="cmH₂O">
+            Pressão pico 12-20 cmH₂O inicial · FR 10-12 · PEEP 5 · FiO₂ 100% · I:E 1:2 · Trigger 1-3 L/min ou -1 a -3 cmH₂O.
+          </AlertCard>
+        )}
+      </SheetSection>
+    </BottomSheet>
+  );
+}
+
+/**
+ * Modal: TET Profundidade (golden via-aerea-tet-profundidade · só pediátrico).
+ * 3 fórmulas: tubo (diam×3) · altura (alt/10+5) · peso (6+peso).
+ */
+export function TETProfundidadeSheet({ open, onClose }) {
+  const [diam, setDiam] = useState('');
+  const [alt, setAlt] = useState('');
+  const [peso, setPeso] = useState('');
+  const calc = calcTETProfundidade({
+    diametro: parseNumber(diam),
+    altura: parseNumber(alt),
+    peso: parseNumber(peso),
+  });
+
+  return (
+    <BottomSheet open={open} onClose={onClose} title="Profundidade do TET">
+      <SheetSection title="Pelo diâmetro do tubo">
+        <InputField label="Diâmetro interno" type="text" mono inputMode="decimal" value={diam} onChange={setDiam} showUnit unit="mm" />
+        {calc.porTubo && <AlertCard level="info" showValue value={calc.porTubo} unit="cm">Profundidade = diâmetro × 3.</AlertCard>}
+      </SheetSection>
+      <SheetSection title="Pela altura">
+        <InputField label="Altura" type="text" mono inputMode="numeric" value={alt} onChange={setAlt} showUnit unit="cm" />
+        {calc.porAltura && <AlertCard level="info" showValue value={calc.porAltura} unit="cm">Profundidade = altura/10 + 5.</AlertCard>}
+      </SheetSection>
+      <SheetSection title="Pelo peso">
+        <InputField label="Peso" type="text" mono inputMode="decimal" value={peso} onChange={setPeso} showUnit unit="kg" />
+        {calc.porPeso && <AlertCard level="info" showValue value={calc.porPeso} unit="cm">Profundidade = 6 + peso.</AlertCard>}
       </SheetSection>
     </BottomSheet>
   );

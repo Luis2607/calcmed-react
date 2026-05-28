@@ -35,6 +35,7 @@ import {
   SelecionarRitmoSheet, AplicarChoqueSheet, ConfirmarRCESheet,
   EncerrarSemRCESheet, PausarSheet, CheckarPulsoRitmoSheet,
   AdrenDoubleTapSheet, HHTTSheet, AdicionarEventoSheet, OutroEventoSheet,
+  VCVSheet, PCVSheet, TETProfundidadeSheet,
 } from './pcrModais';
 import { iniciarMetronomo, pararMetronomo, falar, pararFala } from './pcrAudio';
 import styles from './PCRFlow.module.css';
@@ -599,8 +600,19 @@ export function PCRFlow({ onBack }) {
     },
   };
 
-  // T2 tem 3 botões customizados (Pausa · Stop · RCE)
+  // §hint clínico dinâmico T2 (golden atualizarHintT2)
+  const hintT2 = (() => {
+    if (s.ritmo === 'na') return 'Selecionar ritmo · checar monitor';
+    if (cycleEndReached) return 'Checar pulso · 10 s · trocar compressor';
+    if (adrenState === 'window-overdue') return 'Adrenalina ATRASADA · aplique 1 mg IV/IO agora';
+    if (isChocavel(s.ritmo)) return `Manter compressões · próximo choque ${cargaInicialLabel}`;
+    if (isNaoChocavel(s.ritmo)) return 'Manter compressões · revise 5H/5T';
+    return null;
+  })();
+
+  // T2 tem 3 botões customizados (Pausa · Stop · RCE) + hint clínico dinâmico
   const footerT2 = {
+    hint: hintT2,
     actions: [
       { label: 'Pausa', variant: 'ghost', size: 'lg', onClick: () => setPausarOpen(true) },
       { label: 'Stop', variant: 'danger', size: 'lg', onClick: () => setEncerrarOpen(true) },
@@ -1210,37 +1222,26 @@ export function PCRFlow({ onBack }) {
         <TETTabela rows={TET_TAMANHO_ROWS} />
       </InfoSheet>
 
-      <InfoSheet
+      <TETProfundidadeSheet
         open={aclsModalId === 'tet-prof'}
         onClose={() => setAclsModalId(null)}
-        title="Profundidade do TET"
-      >
-        <PanfletoPlaceholder title="TET Profundidade · 3 fórmulas (tubo × 3 · altura/10+5 · 6+peso)" />
-      </InfoSheet>
+      />
 
-      <InfoSheet
+      <VCVSheet
         open={aclsModalId === 'vcv'}
         onClose={() => setAclsModalId(null)}
-        title={isPediatrico ? 'VCV Pediátrico' : 'VCV · Ventilação Controlada Volume'}
-      >
-        {isPediatrico ? (
-          <PanfletoPlaceholder title="VCV Pediátrico · faixa etária + VENT_PEDIATRIA" />
-        ) : (
-          <PanfletoPlaceholder title="VCV Adulto · altura+sexo → peso predito ARDSnet → VC 6-8 × pp" />
-        )}
-      </InfoSheet>
+        pediatrico={isPediatrico}
+        altura={s.altura}
+        sexo={s.sexo}
+        onAltura={s.setAltura}
+        onSexo={s.setSexo}
+      />
 
-      <InfoSheet
+      <PCVSheet
         open={aclsModalId === 'pcv'}
         onClose={() => setAclsModalId(null)}
-        title={isPediatrico ? 'PCV Pediátrico' : 'PCV · Ventilação Controlada Pressão'}
-      >
-        {isPediatrico ? (
-          <PanfletoPlaceholder title="PCV Pediátrico · faixa etária + VENT_PEDIATRIA" />
-        ) : (
-          <PanfletoPlaceholder title="PCV Adulto · pressão pico 12-20 cmH₂O · FR 10-12 · PEEP 5 · FiO₂ 100% · I:E 1:2" />
-        )}
-      </InfoSheet>
+        pediatrico={isPediatrico}
+      />
 
       {/* Toast sticky */}
       {toast && (
