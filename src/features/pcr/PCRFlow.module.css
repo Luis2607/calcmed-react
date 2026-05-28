@@ -1,0 +1,32 @@
+/* PCR · layout de produto (token-only · zero hardcode). */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-6);
+}
+
+.placeholder {
+  padding: var(--esp-6);
+  border: 1px dashed var(--ds-borda-padrao);
+  border-radius: var(--ds-r-md);
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-terciario);
+  font-size: var(--fonte-tamanho-corpo);
+  text-align: center;
+  line-height: 22px;
+}
+
+/* Toast feedback efêmero · sticky no fundo do viewport */
+.toastWrap {
+  position: fixed;
+  left: var(--esp-4);
+  right: var(--esp-4);
+  bottom: calc(64px + var(--esp-4));
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toastWrap > * {
+  pointer-events: auto;
+}

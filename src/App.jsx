@@ -2,6 +2,7 @@ import { getProtocolById } from './data/protocols';
 import { CADFlow } from './features/cad/CADFlow';
 import { SCAFlow } from './features/sca/SCAFlow';
 import { SepseFlow } from './features/sepse/SepseFlow';
+import { PCRFlow } from './features/pcr/PCRFlow';
 import { Home } from './features/home/Home';
 import { HubHome } from './features/hub/HubHome';
 import { ColorGallery } from './features/ds/ColorGallery';
@@ -42,8 +43,9 @@ export default function App() {
   const isControlsGallery = visibleRoute === 'ds-controles' || qaRoute === 'controles';
   const isGallery = isSheetGallery || isColorGallery || isTypographyGallery || isSpacingGallery || isInputGallery || isControlsGallery;
   const isSepseReact = visibleRoute === 'sepse-react';
+  const isPcrReact = visibleRoute === 'pcr-react';
   const isKnownRoute =
-    visibleRoute === 'home' || visibleRoute === 'hub' || isGallery || isSepseReact || Boolean(activeProtocol);
+    visibleRoute === 'home' || visibleRoute === 'hub' || isGallery || isSepseReact || isPcrReact || Boolean(activeProtocol);
   const showHome = !isGallery && (visibleRoute === 'home' || !isKnownRoute);
 
   if (qaRoute) {
@@ -84,6 +86,10 @@ export default function App() {
 
           {isSepseReact && (
             <SepseFlow onBack={goHome} />
+          )}
+
+          {isPcrReact && (
+            <PCRFlow onBack={goHome} />
           )}
 
           {activeProtocol && activeProtocol.id !== 'cad' && activeProtocol.id !== 'sca' && (
