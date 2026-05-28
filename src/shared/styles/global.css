@@ -70,7 +70,18 @@ html, body {
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  /* Scrollbar mínima/discreta (Luis 2026-05-28: a nativa grossa atrapalha o protótipo). */
+  scrollbar-width: thin;
+  scrollbar-color: var(--ds-borda-padrao) transparent;
 }
+
+.scroll-container::-webkit-scrollbar { width: 4px; }
+.scroll-container::-webkit-scrollbar-track { background: transparent; }
+.scroll-container::-webkit-scrollbar-thumb {
+  background: var(--ds-borda-padrao);
+  border-radius: 999px;
+}
+.scroll-container::-webkit-scrollbar-thumb:hover { background: var(--ds-texto-terciario); }
 
 .hidden {
   display: none !important;

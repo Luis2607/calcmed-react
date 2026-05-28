@@ -23,8 +23,12 @@ export function TimerCard({
   meta,
   onInfo,
   size = 'md', // 'md' (default 32px · SCA) | 'lg' (56px · PCR foco)
+  progress, // 0-100 · mostra barra de progresso (golden .progress-track)
+  progressMarkers, // [{ position: 0-100, label }] · marcadores na barra (adrenalina 3/5 min)
   children,
 }) {
+  const showProgress = typeof progress === 'number';
+  const clamped = showProgress ? Math.min(100, Math.max(0, progress)) : 0;
   return (
     <section className={styles.card} data-tone={tone} data-state={state} data-size={size}>
       <div className={styles.header}>
@@ -36,6 +40,23 @@ export function TimerCard({
       </div>
 
       <strong className={`${styles.value} mono`}>{value}</strong>
+
+      {showProgress && (
+        <div className={styles.progressWrap}>
+          <div className={styles.progressTrack}>
+            <div className={styles.progressFill} style={{ width: `${clamped}%` }} />
+          </div>
+          {Array.isArray(progressMarkers) && progressMarkers.length > 0 && (
+            <div className={styles.progressMarkers} aria-hidden="true">
+              {progressMarkers.map((m, i) => (
+                <span key={i} className={styles.progressMarker} style={{ left: `${m.position}%` }}>
+                  {m.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {description && <p className={styles.description}>{description}</p>}
       {children && <div className={styles.actions}>{children}</div>}

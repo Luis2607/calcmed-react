@@ -55,10 +55,56 @@
   line-height: 20px;
 }
 
+/* Barra de progresso (golden .progress-track) · cor segue o data-state. */
+.progressWrap {
+  position: relative;
+  width: 100%;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 6px;
+  border-radius: var(--ds-r-pill);
+  background: var(--ds-fundo-elevado);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: var(--ds-r-pill);
+  background: var(--ds-interativo-primario);
+  transition: width 0.4s linear;
+}
+
+.card[data-state='cycle-end'] .progressFill,
+.card[data-state='window-overdue'] .progressFill { background: var(--ds-retorno-critico); }
+.card[data-state='window-ok'] .progressFill { background: var(--ds-retorno-sucesso); }
+
+.progressMarkers {
+  position: relative;
+  height: 14px;
+  margin-top: var(--esp-1);
+}
+
+.progressMarker {
+  position: absolute;
+  transform: translateX(-50%);
+  font-family: var(--fonte-mono);
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 600;
+  color: var(--ds-texto-terciario);
+  white-space: nowrap;
+}
+
 .actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: var(--esp-2);
+}
+
+/* §Luis · seletor e botão full-width dentro do card (largura total). */
+.actions > * {
+  width: 100%;
 }
 
 .card[data-tone='critical'] {

@@ -46,7 +46,7 @@ const PCR_TABS = [
   { id: 'teoria', label: 'ACLS | AHA', icon: 'livro' },
 ];
 
-const SEG_BPM = BPM_OPCOES.map((v) => ({ value: v, label: String(v) }));
+const SEG_BPM = BPM_OPCOES.map((v) => ({ value: v, label: `${v} BPM` }));
 const SEG_INTERVALO = INTERVALO_ADREN_OPCOES.map((v) => ({ value: v, label: `${v} min` }));
 
 /**
@@ -353,6 +353,7 @@ export function PCRFlow({ onBack }) {
         state={cycleEndReached ? 'cycle-end' : 'running'}
         onInfo={() => setAclsModalId('qualidade-rcp')}
         size="lg"
+        progress={Math.min(100, (cicloElapsed / CICLO_MS) * 100)}
       >
         <Segmented
           options={SEG_BPM}
@@ -377,6 +378,11 @@ export function PCRFlow({ onBack }) {
         state={adrenState}
         onInfo={() => showToast('Adrenalina · 1 mg IV/IO 3-5 min · diluir 1:10 em SF', 'success')}
         size="lg"
+        progress={Math.min(100, (adrenElapsed / adrenJanela.fimMs) * 100)}
+        progressMarkers={[
+          { position: (adrenJanela.inicioMs / adrenJanela.fimMs) * 100, label: adrenJanela.labelInicio },
+          { position: 100, label: adrenJanela.labelFim },
+        ]}
       >
         <Segmented
           options={SEG_INTERVALO}
