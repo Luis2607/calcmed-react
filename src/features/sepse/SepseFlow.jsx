@@ -381,14 +381,15 @@ export function SepseFlow({ onBack }) {
 
         {s.scoreAtivo === 'news' && (
           <div className={styles.group}>
-            {/* Versão NEWS · RadioGroup card 2-col + description (extensão DS — Luis 2026-05-28) */}
+            {/* Versão NEWS · RadioGroup card 1-col + description (Luis 2026-05-28: descrição
+                quebrava em 2-col; padrão consistente com Veredito/Foco). */}
             <RadioGroup
               label="Versão"
               name="news-versao"
               options={NEWS_VERSAO_OPCOES}
               value={s.news.versao || 'news2'}
               onChange={(v) => s.setNews({ ...s.news, versao: v })}
-              columns={2}
+              columns={1}
             />
             {/* O₂ suplementar · ScoreCriterionGroup binary (mesma anatomia do SIRS) */}
             <ScoreCriterionGroup
@@ -589,14 +590,15 @@ export function SepseFlow({ onBack }) {
           <SectionLabel>Foco infeccioso</SectionLabel>
           <InfoButton onClick={() => setModalId('o-que-e-foco')} size={20} />
         </div>
-        {/* Foco · RadioGroup card 2-col com description (Luis 2026-05-28).
-            Consistência com Veredito T1 e NEWS versão — affordance radio + descrição. */}
+        {/* Foco · RadioGroup card 1-col com description (Luis 2026-05-28).
+            Consistência com Veredito T1 e NEWS versão — affordance radio + descrição.
+            1-col evita quebra de copy clínica (PAC/abdominal/SNC têm 2 linhas cada). */}
         <RadioGroup
           name="foco-infeccioso"
           options={FOCOS}
           value={s.foco}
           onChange={(v) => s.setFoco(v)}
-          columns={2}
+          columns={1}
         />
       </div>
 
@@ -792,8 +794,10 @@ export function SepseFlow({ onBack }) {
   // ====================== Footers por tela ======================
   // Hint = informação CLÍNICA que NÃO está no botão (Luis 2026-05-28: nunca duplicar).
   // Quando não há info clínica nova, hint=null (footer mostra só o button).
-  // Button size='lg'. A partir de T2, backLink "← Voltar" pra tela anterior (Luis 2026-05-28).
-  const voltarLink = (toTela) => ({ label: 'Voltar', onClick: () => s.irParaTela(toTela) });
+  // Button size='lg'. A partir de T2, botão "Voltar" SECUNDÁRIO ao lado do primary
+  // (Luis 2026-05-28 PM: link textual "← Voltar" estava fora do padrão; voltar = botão
+  // secondary ao lado do primary, mesmo footer do golden).
+  const voltarSecondary = (toTela) => ({ label: 'Voltar', variant: 'secondary', size: 'lg', onClick: () => s.irParaTela(toTela) });
   // §2 auditoria · hint T1 pós-veredito com 4 ramos clínicos (golden `proximo-hint-t1`)
   const hintT1 = s.tela1Liberada
     ? (s.classificacao ? VEREDITO_RAMOS[s.classificacao] : null)
@@ -822,24 +826,24 @@ export function SepseFlow({ onBack }) {
       primary: { label: 'Iniciar Bundle 1ª hora', size: 'lg', onClick: () => s.irParaTela(2), disabled: !s.tela1Liberada },
     },
     2: {
-      backLink: voltarLink(1),
+      secondary: voltarSecondary(1),
       // <4 itens: indica falta concreta. Completos: botão já diz "Antibioticoterapia" / "Vasopressores" — sem hint.
       hint: s.bundlePH < 4 ? `Marcar ${4 - s.bundlePH} ${4 - s.bundlePH === 1 ? 'ação' : 'ações'} da 1ª hora` : null,
       primary: t2Primary,
     },
     3: {
-      backLink: voltarLink(2),
+      secondary: voltarSecondary(2),
       hint: t3HintAtivos,
       primary: { label: 'Vasopressores', size: 'lg', onClick: () => s.irParaTela(4), disabled: !s.foco },
     },
     4: {
-      backLink: voltarLink(3),
+      secondary: voltarSecondary(3),
       // Hints clínicos baseados em dose (próximo passo Nora) — NÃO é o que o button diz ("Metas de ressuscitação").
       hint: neNum < 0.25 ? 'Titular Nora até PAM ≥ 65 mmHg' : neNum < 0.5 ? 'Nora alta · associar Vasopressina' : 'Choque refratário · Adrenalina + Hidrocortisona',
       primary: { label: 'Metas de ressuscitação', size: 'lg', onClick: () => s.irParaTela(5) },
     },
     5: {
-      backLink: voltarLink(4),
+      secondary: voltarSecondary(4),
       // Metas incompletas: indica falta. Tudo completo: botão já diz "Encerrar caso" — sem hint.
       hint: s.metasN < 5
         ? `Atingir ${5 - s.metasN} ${5 - s.metasN === 1 ? 'meta' : 'metas'}`
@@ -851,18 +855,12 @@ export function SepseFlow({ onBack }) {
   const telas = { 1: t1, 2: t2, 3: t3, 4: t4, 5: t5 };
 
   // ====================== Histórico / Teoria ======================
-  const historicoView = (
-    <HistoryScreen
-      title="Histórico"
-      subtitle="Casos concluídos neste aparelho."
-      cases={historico}
-      onClear={() => { if (window.confirm('Limpar todo o histórico de sepse?')) setHistorico([]); }}
-      onCaseClick={(c) => setCasoIdxAberto(historico.indexOf(c))}
-    />
-  );
-
-  // §11.H.2 · construção do detalhe (PatientDetail + Timeline) a partir do caso aberto
+  // §11.H.1 · clicar num caso abre detalhe (replace inline; voltar = back no topo do detalhe).
+  // §Luis 2026-05-28: "Limpar Tudo" REMOVIDO da listagem (golden não tem); golden remove caso
+  // a caso via botão Excluir dentro do detalhe.
   const casoAberto = casoIdxAberto != null ? historico[casoIdxAberto] : null;
+
+  // §11.H.2 · detalhe completo: header back + PatientDetail + Timeline + Anotação + ações (golden 1:1)
   const renderCasoDetalhe = () => {
     if (!casoAberto) return null;
     const c = casoAberto;
@@ -926,6 +924,16 @@ export function SepseFlow({ onBack }) {
       </>
     );
   };
+
+  // Lista só mostra a lista — o detalhe abre via <DetailSheet> abaixo (padrão golden).
+  const historicoView = (
+    <HistoryScreen
+      title="Histórico"
+      subtitle="Casos concluídos neste aparelho."
+      cases={historico}
+      onCaseClick={(c) => setCasoIdxAberto(historico.indexOf(c))}
+    />
+  );
 
   const teoriaView = (
     <TheoryScreen

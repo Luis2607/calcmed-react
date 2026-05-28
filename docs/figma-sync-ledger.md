@@ -362,6 +362,14 @@ Atualização 2026-05-27: SCA usa `activePresentation="capsule"` no `ProtocolSte
 - **Motivo:** UX request Gustavo 2026-05-28 (sepse screenshot 2). Sinaliza visualmente que o usuário pulou passos sem completar — sem usar Toast/AlertCard intrusivo.
 - **Status:** aberto
 
+### S16 · HistoryScreen — repassar `onCaseClick` ao HistoryView (FIX)
+- **Componente:** `templates/HistoryScreen` ↔ Figma `History Screen` (TBD/template novo).
+- **O que no código:** template agora recebe + propaga `onCaseClick` pra `HistoryView`. Antes o click no item da lista morria no template (lista não interativa).
+- **O que no Figma:** template não modelado ainda.
+- **Ação no Figma:** ao modelar HistoryScreen, garantir slot Interactive=true no HistoryView embedded.
+- **Motivo:** Luis 2026-05-28 PM — clicar num caso do histórico não abria nada (bug).
+- **Status:** sincronizado (código→ pronto p/ quando o Figma modelar HistoryScreen).
+
 ### S15 · ChecklistBlock — prop `highlightPending` (ESTENDIDO)
 - **Componente:** `organisms/ChecklistBlock` ↔ Figma `calc/checklist-block` (1895:67043).
 - **O que no código:** prop bool `highlightPending`. Quando true, o card recebe borda + tint `retorno/atencao` (variant warning) e os itens **unchecked** ganham wrapper `pendingItem` (border + bg `retorno/critico`). Dispara junto com S14 (step em estado warning).

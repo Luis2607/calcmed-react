@@ -7,7 +7,8 @@ import styles from './Home.module.css';
 const URGENCIA_OPTIONS = [
   { id: 'pcr', label: 'PCR', route: 'pcr', icon: 'heartPulse', title: 'Modo PCR', desc: 'Condução guiada em tempo real' },
   { id: 'sca', label: 'SCA', route: 'sca', icon: 'activity', title: 'Modo SCA', desc: 'ECG, risco e conduta em tempo real' },
-  { id: 'sepse', label: 'Sepse', route: 'sepse', icon: 'droplet', title: 'Modo Sepse', desc: 'Triagem, antibiótico e metas guiadas' },
+  // Sepse aprovada pelo Gustavo 2026-05-28 → cutover Home → React (não iframe). (Era 'sepse' apontando p/ legado.)
+  { id: 'sepse', label: 'Sepse', route: 'sepse-react', icon: 'droplet', title: 'Modo Sepse', desc: 'Triagem, antibiótico e metas guiadas' },
   { id: 'avc', label: 'AVC', route: 'avc', icon: 'brain', title: 'Modo AVC', desc: 'Janela, NIHSS e trombólise guiadas' },
 ];
 

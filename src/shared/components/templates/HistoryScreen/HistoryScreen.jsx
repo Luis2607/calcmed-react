@@ -10,7 +10,7 @@ import styles from './HistoryScreen.module.css';
  *
  * Props:
  *   title? ('Histórico') · subtitle? (nota LGPD da tela)
- *   cases [] · onClear — repassados ao HistoryView
+ *   cases [] · onClear? · onCaseClick? — repassados ao HistoryView
  *   detail? — node do caso aberto (ex.: PatientDetail); se presente, substitui a lista
  */
 export const HistoryScreen = ({
@@ -18,10 +18,11 @@ export const HistoryScreen = ({
   subtitle,
   cases = [],
   onClear,
+  onCaseClick,
   detail,
 }) => (
   <div className={styles.screen}>
     <StepHeader as="h2" title={title} subtitle={subtitle} />
-    {detail ?? <HistoryView cases={cases} onClear={onClear} />}
+    {detail ?? <HistoryView cases={cases} onClear={onClear} onCaseClick={onCaseClick} />}
   </div>
 );
