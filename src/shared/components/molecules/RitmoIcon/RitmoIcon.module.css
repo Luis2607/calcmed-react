@@ -1,0 +1,6 @@
+/* RitmoIcon — molecule code-first (§B1 · DS). Traçado ECG por ritmo. */
+
+.icon {
+  display: block;
+  flex-shrink: 0;
+}

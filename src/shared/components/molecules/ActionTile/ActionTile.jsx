@@ -8,6 +8,7 @@ import { Icon } from '../../atoms/Icon/Icon';
  *
  * Props:
  *   icon     name do Icon (opcional)
+ *   iconNode ReactNode? — ícone customizado (ex.: <RitmoIcon/>) · sobrepõe `icon`.
  *   label    string (obrigatório) — ação
  *   value    string? — status/valor abaixo (ex.: "Não avaliado", "200 J · bifásico")
  *   disabled bool
@@ -15,6 +16,7 @@ import { Icon } from '../../atoms/Icon/Icon';
  */
 export const ActionTile = ({
   icon,
+  iconNode,
   label,
   value,
   disabled = false,
@@ -29,7 +31,9 @@ export const ActionTile = ({
     onClick={onClick}
     {...props}
   >
-    {icon ? (
+    {iconNode ? (
+      <span className={styles.icon}>{iconNode}</span>
+    ) : icon ? (
       <span className={styles.icon}>
         <Icon name={icon} size={20} />
       </span>

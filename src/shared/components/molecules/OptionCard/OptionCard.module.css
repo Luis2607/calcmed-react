@@ -25,6 +25,35 @@
   border-color: var(--ds-interativo-primario);
 }
 
+/* withMedia — slot de mídia à esquerda (RitmoIcon) + conteúdo à direita.
+   §B1 PCR · layout horizontal quando media presente. */
+.card.withMedia {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--esp-4);
+}
+
+.media {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-texto-secundario);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  flex: 1;
+  min-width: 0;
+}
+
+/* media acompanha cor do tone quando selecionado */
+.card[data-tone="critical"][data-selected="true"] .media { color: var(--ds-retorno-critico); }
+.card[data-tone="warning"][data-selected="true"] .media { color: var(--ds-retorno-atencao); }
+.card[data-tone="success"][data-selected="true"] .media { color: var(--ds-retorno-sucesso); }
+
 .card:disabled {
   opacity: 0.5;
   cursor: not-allowed;

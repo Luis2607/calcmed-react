@@ -12,6 +12,7 @@ import { HHTT_ITEMS } from '../../shared/components/molecules/HHTTPills/hhttData
 import { BottomSheet } from '../../shared/components/overlays/BottomSheet';
 import { EventoCardNovo } from '../../shared/components/molecules/EventoCardNovo';
 import { InputField } from '../../shared/components/molecules/InputField';
+import { RitmoIcon } from '../../shared/components/molecules/RitmoIcon';
 import { SectionLabel } from '../../shared/components/atoms/SectionLabel';
 import styles from './pcrModais.module.css';
 
@@ -33,6 +34,7 @@ export function SelecionarRitmoSheet({ open, onClose, onSelect }) {
             title="FV"
             meta="CHOCÁVEL"
             tone="critical"
+            media={<RitmoIcon ritmo="fv" size={48} />}
             description="Fibrilação Ventricular — traçado caótico irregular."
             onClick={() => onSelect('fv')}
           />
@@ -40,6 +42,7 @@ export function SelecionarRitmoSheet({ open, onClose, onSelect }) {
             title="TV sem pulso"
             meta="CHOCÁVEL"
             tone="critical"
+            media={<RitmoIcon ritmo="tv" size={48} />}
             description="Taquicardia Ventricular sem pulso — traçado largo monomórfico."
             onClick={() => onSelect('tv')}
           />
@@ -47,6 +50,7 @@ export function SelecionarRitmoSheet({ open, onClose, onSelect }) {
             title="AESP"
             meta="NÃO-CHOCÁVEL"
             tone="warning"
+            media={<RitmoIcon ritmo="aesp" size={48} />}
             description="Atividade Elétrica Sem Pulso — QRS estreito, sem pulso central."
             onClick={() => onSelect('aesp')}
           />
@@ -54,11 +58,13 @@ export function SelecionarRitmoSheet({ open, onClose, onSelect }) {
             title="Assistolia"
             meta="NÃO-CHOCÁVEL"
             tone="warning"
+            media={<RitmoIcon ritmo="assistolia" size={48} />}
             description="Linha reta — confirmar em 2 derivações."
             onClick={() => onSelect('assistolia')}
           />
           <OptionCard
             title="Não Avaliado"
+            media={<RitmoIcon ritmo="na" size={48} />}
             description="Voltar ao monitor pra avaliar."
             onClick={() => onSelect('na')}
           />

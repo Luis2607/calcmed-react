@@ -10,6 +10,7 @@ import { PanfletoPlaceholder } from '../../shared/components/organisms/PanfletoP
 import { TETTabela } from '../../shared/components/organisms/TETTabela';
 import { TET_TAMANHO_ROWS } from '../../shared/components/organisms/TETTabela/tetData';
 import { ActionTile } from '../../shared/components/molecules/ActionTile/ActionTile';
+import { RitmoIcon } from '../../shared/components/molecules/RitmoIcon';
 import { Segmented } from '../../shared/components/molecules/Segmented';
 import { ToggleTab } from '../../shared/components/molecules/ToggleTab';
 import { InputField } from '../../shared/components/molecules/InputField';
@@ -387,7 +388,7 @@ export function PCRFlow({ onBack }) {
       {/* Linha de ações grandes · golden btn-acao-grande */}
       <div className={styles.actionsRow}>
         <ActionTile
-          icon="heart"
+          iconNode={<RitmoIcon ritmo={s.ritmo} size={36} />}
           label="Selecionar ritmo"
           value={ritmoLabel}
           onClick={() => setRitmoOpen(true)}

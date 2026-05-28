@@ -1,0 +1,1 @@
+export { RitmoIcon } from './RitmoIcon';
