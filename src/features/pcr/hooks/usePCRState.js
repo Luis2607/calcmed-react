@@ -105,13 +105,24 @@ export function usePCRState() {
   const iniciarPCR = () => {
     const now = Date.now();
     setIniciadoEm(now);
-    setCicloIniciadoEm(now);
+    // §F04 Gustavo · timer de ciclo NÃO inicia com o global. Fica null até o médico
+    // sinalizar explicitamente que as compressões começaram (iniciarCompressoes).
+    setCicloIniciadoEm(null);
     setCicloAtual(1);
     setTelaAtual(2);
     setAvisou30s(false);
     setAvisouAdrenJanela(false);
     setAvisouAdrenAtrasada(false);
     registrarEvento('PCR iniciada', '');
+  };
+
+  // §F04 Gustavo · ação explícita que inicia o ciclo de compressões (timer de ciclo).
+  const iniciarCompressoes = () => {
+    const now = Date.now();
+    setCicloIniciadoEm(now);
+    setCicloAtual(1);
+    setAvisou30s(false);
+    registrarEvento('Compressões iniciadas', '');
   };
 
   const irParaTela = (n) => {
@@ -251,7 +262,7 @@ export function usePCRState() {
     setTelaAtual, setAbaAtual, irParaTela,
     // compressões
     cicloAtual, cicloIniciadoEm, bpm, audioOn,
-    setBpm, toggleAudio, checarPulsoRitmoConfirmado,
+    setBpm, toggleAudio, checarPulsoRitmoConfirmado, iniciarCompressoes,
     // ritmo
     ritmo, desfibrilado, setRitmo, setRitmoComUndo, registrarChoque,
     desfazerUltimoEvento,

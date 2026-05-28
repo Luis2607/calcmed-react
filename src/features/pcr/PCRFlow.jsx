@@ -93,19 +93,14 @@ export function PCRFlow({ onBack }) {
   const [excluirIdx, setExcluirIdx] = useState(null);
   const [histFiltro, setHistFiltro] = useState('todas');
 
-  // §D27 golden · ao iniciar PCR, auto-abre Selecionar Ritmo em 350ms + TTS
-  // (cronômetro já está rodando em background)
+  // §F04 Gustavo · ao iniciar PCR, TTS incentiva iniciar compressões (NÃO auto-abre ritmo —
+  // o fluxo agora pede ação explícita "Iniciar compressões"; ritmo é checado depois pelo médico).
   useEffect(() => {
-    if (s.iniciadoEm && s.telaAtual === 2 && s.ritmo === 'na' && !ritmoOpen) {
-      if (s.audioOn) {
-        falar('PCR iniciada. Inicie compressões.');
-      }
-      const id = setTimeout(() => setRitmoOpen(true), 350);
-      return () => clearTimeout(id);
+    if (s.iniciadoEm && s.telaAtual === 2 && s.audioOn && !s.cicloIniciadoEm) {
+      falar('PCR iniciada. Inicie as compressões.');
     }
-    return undefined;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [s.iniciadoEm, s.telaAtual, s.ritmo]);
+  }, [s.iniciadoEm]);
 
   const [toast, setToast] = useState(null);
 
@@ -117,15 +112,15 @@ export function PCRFlow({ onBack }) {
     return () => clearInterval(id);
   }, [s.iniciadoEm]);
 
-  // §Áudio runtime · metrônomo segue bpm + audioOn (cleanup ao desligar).
+  // §Áudio runtime · metrônomo só toca quando as COMPRESSÕES iniciam (F04 · não no Iniciar PCR).
   useEffect(() => {
-    if (s.audioOn && s.iniciadoEm && !s.rce) {
+    if (s.audioOn && s.cicloIniciadoEm && !s.rce) {
       iniciarMetronomo(s.bpm);
     } else {
       pararMetronomo();
     }
     return () => pararMetronomo();
-  }, [s.audioOn, s.iniciadoEm, s.bpm, s.rce]);
+  }, [s.audioOn, s.cicloIniciadoEm, s.bpm, s.rce]);
 
   // §RCE detectado → para metrônomo + TTS
   useEffect(() => {
@@ -139,23 +134,28 @@ export function PCRFlow({ onBack }) {
   const masterElapsed = s.iniciadoEm ? now - s.iniciadoEm : 0;
   const masterStr = formatDuracao(masterElapsed);
 
-  const cicloElapsed = s.cicloIniciadoEm ? now - s.cicloIniciadoEm : 0;
+  // §F04 Gustavo · compressões só contam após ação explícita (cicloIniciadoEm null = aguardando).
+  const compressoesIniciadas = s.cicloIniciadoEm != null;
+  const cicloElapsed = compressoesIniciadas ? now - s.cicloIniciadoEm : 0;
   const cicloElapsedStr = formatDuracao(cicloElapsed);
 
-  // Adrenalina · referência = última dose ou início do caso
-  const adrenRef = s.ultimaAdrenalinaEm || s.iniciadoEm;
-  const adrenElapsed = adrenRef ? now - adrenRef : 0;
+  // §F07 Gustavo · 1ª adrenalina começa ZERADA. Conta só após a 1ª dose (ultimaAdrenalinaEm).
+  const temAdrenalina = s.ultimaAdrenalinaEm != null;
+  const adrenElapsed = temAdrenalina ? now - s.ultimaAdrenalinaEm : 0;
   const adrenElapsedStr = formatDuracao(adrenElapsed);
   const adrenJanela = s.janelaAdren;
 
-  // Estados visuais ciclo (B4/B7 · SEM auto-reset · permanece em cycle-end até ação)
-  const cycleEndReached = cicloElapsed >= CICLO_MS;
-  const cycle30sWarning = cicloElapsed >= CICLO_MS - 30 * 1000 && !cycleEndReached;
+  // Estados visuais ciclo (B4/B7 · SEM auto-reset · só conta se iniciado)
+  const cycleEndReached = compressoesIniciadas && cicloElapsed >= CICLO_MS;
+  const cycle30sWarning = compressoesIniciadas && cicloElapsed >= CICLO_MS - 30 * 1000 && !cycleEndReached;
 
-  // Estado card adrenalina (janela EXATA · B6)
-  let adrenState = 'window-pre';
-  if (adrenElapsed >= adrenJanela.fimMs) adrenState = 'window-overdue';
-  else if (adrenElapsed >= adrenJanela.inicioMs) adrenState = 'window-ok';
+  // Estado card adrenalina (janela EXATA · B6) — idle até a 1ª dose (F07).
+  let adrenState = 'idle';
+  if (temAdrenalina) {
+    adrenState = 'window-pre';
+    if (adrenElapsed >= adrenJanela.fimMs) adrenState = 'window-overdue';
+    else if (adrenElapsed >= adrenJanela.inicioMs) adrenState = 'window-ok';
+  }
 
   // §golden TTS alarmes (anti-spam via flags do state) — 30s · janela aberta · atrasada.
   // Declarado APÓS cicloElapsed/adrenState (depende deles).
@@ -342,47 +342,64 @@ export function PCRFlow({ onBack }) {
     <div className={styles.tela}>
       {renderBanner()}
 
-      {/* Card Compressões · running (B4: NÃO auto-reset · permanece cycle-end até ação) */}
-      <TimerCard
-        label="Compressões"
-        value={cicloElapsedStr}
-        meta={cycleEndReached ? `MARCO ${s.cicloAtual} · CHECAR` : `Ciclo ${s.cicloAtual}`}
-        description={cycleEndReached
-          ? 'Aja: Checar pulso/ritmo para iniciar próximo ciclo.'
-          : `Cadência ${s.bpm}/min · alvo 100-120/min`}
-        state={cycleEndReached ? 'cycle-end' : 'running'}
-        onInfo={() => setAclsModalId('qualidade-rcp')}
-        size="lg"
-        progress={Math.min(100, (cicloElapsed / CICLO_MS) * 100)}
-      >
-        <Segmented
-          options={SEG_BPM}
-          value={s.bpm}
-          onChange={s.setBpm}
-          block
-        />
-      </TimerCard>
+      {/* Card Compressões · F04: aguardando até "Iniciar compressões"; depois running/cycle-end. */}
+      {!compressoesIniciadas ? (
+        <TimerCard
+          label="Compressões"
+          value="00:00"
+          meta="Aguardando"
+          description="Cronômetro do caso já está correndo. Toque em Iniciar compressões quando começar a RCP."
+          state="idle"
+          onInfo={() => setAclsModalId('qualidade-rcp')}
+          size="lg"
+        >
+          <Button variant="primary" size="lg" onClick={s.iniciarCompressoes}>
+            Iniciar compressões
+          </Button>
+        </TimerCard>
+      ) : (
+        <TimerCard
+          label="Compressões"
+          value={cicloElapsedStr}
+          meta={cycleEndReached ? `MARCO ${s.cicloAtual} · CHECAR` : `Ciclo ${s.cicloAtual}`}
+          description={cycleEndReached
+            ? 'Aja: Checar pulso/ritmo para iniciar próximo ciclo.'
+            : `Cadência ${s.bpm}/min · alvo 100-120/min`}
+          state={cycleEndReached ? 'cycle-end' : 'running'}
+          onInfo={() => setAclsModalId('qualidade-rcp')}
+          size="lg"
+          progress={Math.min(100, (cicloElapsed / CICLO_MS) * 100)}
+        >
+          <Segmented
+            options={SEG_BPM}
+            value={s.bpm}
+            onChange={s.setBpm}
+            block
+          />
+        </TimerCard>
+      )}
 
-      {/* Card Adrenalina · janela EXATA (B6) */}
+      {/* Card Adrenalina · F07: zerada até a 1ª dose · janela EXATA (B6) após aplicar */}
       <TimerCard
         label={`Adrenalina · ×${s.adrenalinaCount}`}
         value={adrenElapsedStr}
         meta={
-          adrenState === 'window-overdue' ? 'ATRASADA'
-            : adrenState === 'window-ok' ? 'JANELA ABERTA'
-              : `Próxima em ${s.intervaloAdrenalinaMin} min`
+          !temAdrenalina ? 'Aguardando 1ª dose'
+            : adrenState === 'window-overdue' ? 'ATRASADA'
+              : adrenState === 'window-ok' ? 'JANELA ABERTA'
+                : `Próxima em ${s.intervaloAdrenalinaMin} min`
         }
-        description={s.ultimaAdrenalinaEm
+        description={temAdrenalina
           ? `Desde a última dose · alvo a cada ${s.intervaloAdrenalinaMin} min`
-          : `Janela aberta em ${s.intervaloAdrenalinaMin} min (após início)`}
+          : 'Aplique quando indicado · timer começa na 1ª dose.'}
         state={adrenState}
         onInfo={() => showToast('Adrenalina · 1 mg IV/IO 3-5 min · diluir 1:10 em SF', 'success')}
         size="lg"
-        progress={Math.min(100, (adrenElapsed / adrenJanela.fimMs) * 100)}
-        progressMarkers={[
+        progress={temAdrenalina ? Math.min(100, (adrenElapsed / adrenJanela.fimMs) * 100) : undefined}
+        progressMarkers={temAdrenalina ? [
           { position: (adrenJanela.inicioMs / adrenJanela.fimMs) * 100, label: adrenJanela.labelInicio },
           { position: 100, label: adrenJanela.labelFim },
-        ]}
+        ] : undefined}
       >
         <Segmented
           options={SEG_INTERVALO}
