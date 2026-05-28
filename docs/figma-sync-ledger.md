@@ -237,3 +237,127 @@ Atualização 2026-05-27: SCA usa `activePresentation="capsule"` no `ProtocolSte
 - **O que no código:** props opcionais `showStatusDot` e `showTimerIcon`; variante `timerVariant="stacked"` com padding maior, ações 44px e cronômetro no token `--ds-font-crono-card`.
 - **Ação no Figma:** portar como component properties no header de protocolo.
 - **Status:** aberto
+
+---
+
+## Sepse port 2026-05-28 (port golden → React · sessão completa)
+
+> Bloco de 11 mudanças no DS introduzidas durante o port da Sepse (commits
+> a898dde · f66fc34 · fdb9961 · ee328cd · 765f51e · 1d94b05 · 70691b5).
+> Cada item precisa virar microtask Figma quando o time de DS atualizar a library.
+
+### S1 · AlertCard — layout VERTICAL (CORREÇÃO · fecha task #16 deferida MT-E)
+- **Componente:** `organisms/AlertCard` ↔ Figma `Alert Card 130:4043`.
+- **O que no código (antes):** layout horizontal `[ícone | coluna(título, body)]`. Body herdava indent do row → perda de largura útil em 390px.
+- **O que no código (agora):** layout vertical `topRow [Ícone + Título] + body sem indent`. Padding 16 uniforme, gap `--esp-2`.
+- **O que no Figma:** já era vertical (anatomia correta) — o drift era SÓ no React.
+- **Ação no Figma:** ✅ **nenhuma** (Figma estava certo; código se alinhou).
+- **Substitui:** entrada A2 do ledger original ("layout horizontal mantido") → resolvida.
+- **Status:** sincronizado
+
+### S2 · AnnotationSheet — prop `onClear` (ESTENDIDO · DS.1 aprovado por Luis)
+- **Componente:** `overlays/patterns/AnnotationSheet` ↔ Figma (sem cset dedicado — pattern).
+- **O que no código:** quando `onClear` é passada, renderiza botão secundário **"Limpar"** (variant=fantasma) que zera o textarea SEM fechar o sheet. Sem `onClear`: comportamento atual preservado (só Salvar).
+- **O que no Figma:** AnnotationSheet só tem Salvar + Cancelar.
+- **Ação no Figma:** adicionar variante "Com limpar" (3 botões: Limpar fantasma · Salvar primary · close via X).
+- **Motivo:** golden Sepse `limparAnotacao` zera texto sem fechar (apoio à memória do plantonista).
+- **Status:** aberto
+
+### S3 · HistoryView — prop `onCaseClick` (ESTENDIDO · DS.2 aprovado por Luis)
+- **Componente:** `organisms/HistoryView` ↔ Figma (sem cset dedicado).
+- **O que no código:** quando `onCaseClick(case)` é passada, cada card vira `<button>` clivável (`.cardButton` reset visual + focus-visible). Sem ela: `<div>` estático.
+- **O que no Figma:** não modelado.
+- **Ação no Figma:** criar `history/case-card` com property "Interactive" (boolean) — quando true, hover/focus visíveis.
+- **Status:** aberto
+
+### S4 · ClinicalCard — prop `onInfo` (ESTENDIDO)
+- **Componente:** `organisms/ClinicalCard` ↔ Figma `calc/drug-card-vaso 1965:33074` (base).
+- **O que no código:** prop `onInfo` opcional → renderiza `<InfoButton/>` no canto superior direito do header, alinhado com o título via `.titleRow` flex row justify=space-between.
+- **O que no Figma:** drug-card-vaso golden tem ícone no canto superior direito (cronômetro/info), mas React anterior não usava.
+- **Ação no Figma:** adicionar property "Show info" (boolean) + slot fixo no canto superior direito do header (mesma posição do cronômetro de drug-card).
+- **Status:** aberto
+
+### S5 · ScoreCriterionGroup — `binary` + `alwaysOpen` + `optionsLayout=horizontal` (ESTENDIDO · 3 props)
+- **Componente:** `organisms/ScoreCriterionGroup` ↔ Figma `calc/score-criterion-group 2227:59924`.
+- **O que no código (3 modos novos):**
+  - **`binary`** (bool) + `binaryChecked` + `onBinaryChange` + `points`: anatomia muda pra `<label>` + header com Checkbox + badge no rightCol (sem body, sem chevron). SIRS, NEWS O₂ suplementar.
+  - **`alwaysOpen`** (bool): força conteúdo aberto, esconde chevron, header vira div não-clickable. Replica golden `shouldBeOpenByDefault` (critérios com 2-3 opções).
+  - **`optionsLayout`: 'vertical'|'horizontal'**: layout do `.list`. Em `horizontal`, opções viram cards lado a lado em row (radio + label + pts). Replica golden `shouldRenderHorizontal` (≤24 chars totais, nenhuma >10).
+- **O que no Figma:** ScoreCriterionGroup hoje só tem variants Collapsed-Empty / Collapsed-Filled / Expanded × Dark = 6 vars. Faltam os 3 modos acima.
+- **Ação no Figma:** adicionar properties:
+  - `Mode: Multi-level | Binary | AlwaysOpen-Horizontal`
+  - Quando `Binary`: trocar slot `Selected-criterion + Chevron` por `Checkbox + Badge`.
+  - Quando `AlwaysOpen-Horizontal`: esconder chevron + render `Options` em row (cards mini lado a lado).
+- **Motivo:** golden tinha esses 3 layouts; port React precisa replicar pra cobrir SIRS (binary), Consciência/MEWS Temp (horizontal).
+- **Status:** aberto
+
+### S6 · Radio — prop `description` (ESTENDIDO · atom)
+- **Componente:** `atoms/Radio` ↔ Figma `Radio 128:3623`.
+- **O que no código:** quando `description` (string) é passada, renderiza `<span class=label>` + `<span class=description>` em coluna. Container muda pra `align-items: flex-start` + radio com margin-top 2px. Sem `description`: comportamento atual preservado.
+- **O que no Figma:** Radio só tem label simples (sem description).
+- **Ação no Figma:** adicionar property "Show description" (boolean) + slot de description (12/400/secundário) abaixo do label, alinhado com o radio circle no topo.
+- **Status:** aberto
+
+### S7 · RadioGroup — option ganha `description` (ESTENDIDO · molecule)
+- **Componente:** `molecules/RadioGroup` ↔ Figma `calc/radio-group 173:11246`.
+- **O que no código:** `options: [{value, label, description?, disabled?}]`. Repassa `opt.description` pro `<Radio description=...>` interno. Mantém variant=card/plain + columns=1/2 + radius=card/pill.
+- **O que no Figma:** RadioGroup atual tem opções com label só.
+- **Ação no Figma:** alinhar com S6 (Radio com description) — RadioGroup variant card permite description opcional por option.
+- **Aplicação:** Veredito clínico T1 (4 opções com ramo) + NEWS versão (2 opções com SSC 2026).
+- **Status:** aberto
+
+### S8 · ProtocolHeader actionBtn — fundo cinza (MUDADO deliberado · decisão Luis)
+- **Componente:** `organisms/ProtocolHeader` `.actionBtn` ↔ Figma (variant pendente).
+- **O que no código (antes):** border 1.5px teal + background transparent + color teal.
+- **O que no código (agora):** background `var(--ds-fundo-elevado)` (cinza neutro) + color `--ds-texto-secundario` + sem borda. Estado active (badge "há anotação"): fundo teal sólido + texto branco.
+- **O que no Figma:** anterior tinha borda teal.
+- **Ação no Figma:** atualizar master do header actionBtn pra fundo cinza neutro (igual closeBtn dos sheets). State Active = fundo teal sólido.
+- **Motivo:** Luis 2026-05-28 — borda teal distrai da informação clínica; fundo cinza é mais discreto.
+- **Status:** aberto
+
+### S9 · ProtocolSteps — conector visual entre StepItems (ESTENDIDO)
+- **Componente:** `molecules/ProtocolSteps` ↔ Figma `nav/stepper-top 1831:18555`.
+- **O que no código:** entre cada par de StepItems renderiza `<span class=connector data-done>` (linha tracejada teal quando step anterior está `completed`). Centro vertical alinhado com o centro do círculo (margin-top `--esp-4`). CSS `.connector` já existia mas não estava sendo wirado no JSX.
+- **O que no Figma:** stepper-top atual mostra só 5 StepItems sem conector entre eles.
+- **Ação no Figma:** adicionar elemento `connector` entre StepItems (linha tracejada 2px, gradient `--ds-borda-padrao`, sólido `--ds-retorno-sucesso` quando completed).
+- **Status:** aberto
+
+### S10 · BottomSheet (InfoSheet) — `leadingIcon` "i" deprecated no padrão (PADRÃO DE APLICAÇÃO)
+- **Componente:** `overlays/BottomSheet` + `InfoSheet` pattern.
+- **O que no código:** removido `leadingIcon="i"` de TODOS os consumidores (CADFlow, SCAFlow, SepseFlow, CadSheets, PcrSheets, ScaSheets, SepseSheets). A prop continua existindo no DS pra casos extremos.
+- **O que no Figma:** BottomSheet tem property `Show leading icon` ativa por default em info sheets.
+- **Ação no Figma:** mudar default do `Show leading icon` pra OFF nos InfoSheet templates (decisão de aplicação).
+- **Motivo:** Luis 2026-05-28 — ícone à esquerda do título cria coluna extra que reduz largura útil + ruído visual.
+- **Status:** aberto
+
+### S11 · SheetList — bullet item texto corrido (FIX INTERNO · sem mudança no Figma)
+- **Componente:** `molecules/sheet/SheetList`.
+- **O que no código (antes):** `<li class=bulletItem>{item}</li>` — quando item tinha múltiplos elementos (`<strong>X</strong>` + texto), `.bulletItem` (display:flex) os interpretava como flex items separados → criava 2 colunas.
+- **O que no código (agora):** `<li><span class=bulletText>{item}</span></li>` — conteúdo vira 1 bloco com texto corrido.
+- **O que no Figma:** SheetList no Figma já era texto corrido (anatomia correta).
+- **Ação no Figma:** ✅ **nenhuma** (Figma estava certo; código se alinhou).
+- **Status:** sincronizado
+
+---
+
+## Resumo executivo das 11 mudanças (próxima sync Figma)
+
+| # | Componente | Tipo | Status |
+|---|---|---|---|
+| S1 | AlertCard | CORREÇÃO (código→Figma) | 🟢 sincronizado |
+| S2 | AnnotationSheet | ESTENDIDO (onClear) | 🟠 aberto |
+| S3 | HistoryView | ESTENDIDO (onCaseClick) | 🟠 aberto |
+| S4 | ClinicalCard | ESTENDIDO (onInfo) | 🟠 aberto |
+| S5 | ScoreCriterionGroup | ESTENDIDO (3 modos) | 🟠 aberto |
+| S6 | Radio | ESTENDIDO (description) | 🟠 aberto |
+| S7 | RadioGroup | ESTENDIDO (option description) | 🟠 aberto |
+| S8 | ProtocolHeader actionBtn | MUDADO (fundo cinza) | 🟠 aberto |
+| S9 | ProtocolSteps | ESTENDIDO (conector) | 🟠 aberto |
+| S10 | InfoSheet leadingIcon | DEPRECATED na aplicação | 🟠 aberto |
+| S11 | SheetList | FIX (código→Figma) | 🟢 sincronizado |
+
+**Total a aplicar no Figma:** 9 itens abertos (2 já sincronizados ↔ código alinhou ao Figma).
+
+**Próximos passos sugeridos** quando o time pegar sync:
+1. **Prioritários** (afetam consumidores existentes em produção): S4 (ClinicalCard.onInfo), S5 (ScoreCriterionGroup 3 modos), S6+S7 (Radio/RadioGroup description), S8 (actionBtn cinza), S9 (Stepper conector).
+2. **Patterns** (criar variants nos sheet templates): S2 (AnnotationSheet com Limpar), S3 (HistoryView interactive), S10 (InfoSheet sem leadingIcon default).
