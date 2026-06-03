@@ -30,7 +30,7 @@ import { ClinicalCard } from '../../shared/components/organisms/ClinicalCard';
 import { Timeline } from '../../shared/components/organisms/Timeline';
 import { SheetSection, SheetDetailRow, SheetText } from '../../shared/components/molecules/sheet';
 import { Toast } from '../../shared/components/molecules/Toast';
-import { InfoSheet, ConfirmSheet, FormSheet, AnnotationSheet, DetailSheet } from '../../shared/components/overlays/patterns';
+import { InfoSheet, ConfirmSheet, AnnotationSheet, DetailSheet, SavePatientSheet } from '../../shared/components/overlays/patterns';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import styles from './SepseFlow.module.css';
 
@@ -179,6 +179,7 @@ function ScoreAccordion({ sistemas, stateObj, onSelect, namePrefix }) {
 export function SepseFlow({ onBack }) {
   const s = useSepseState();
   const [historico, setHistorico] = usePersistedState('sepse_historico', []);
+  const [histFiltro, setHistFiltro] = useState('todas');
 
   const [modalId, setModalId] = useState(null);
   const [anotarOpen, setAnotarOpen] = useState(false);
@@ -246,6 +247,8 @@ export function SepseFlow({ onBack }) {
   if (sofaTotal >= 2) chips.push({ label: 'Sepse', tone: 'critico' });
   if (s.telaAtual >= 2) chips.push({ label: `Bundle ${bundlePct}%`, mono: true });
 
+  const desfechoSepse = s.classificacao ? (VEREDITO_OPCOES.find((v) => v.value === s.classificacao)?.label || 'Sepse') : 'Sepse';
+
   // doses (string → número, com defaults) — clamp em ranges clínicos (Nielsen N3 conselho).
   // Nora 0.01–5 mcg/kg/min · Adre 0.01–1 · Dobuta 1–30. Evita renderizar prescrição absurda
   // se médico digitar dose fora-do-range (UX warning fica no AlertCard "Próximo passo Nora").
@@ -282,6 +285,8 @@ export function SepseFlow({ onBack }) {
       sofa: sofaTotal,
       idade: s.idade,
       peso: s.peso,
+      sexo: s.sexo,
+      desfecho: meta,
       foco: s.foco,
       classificacao: s.classificacao,
       bundleFeitosKeys,
@@ -296,8 +301,15 @@ export function SepseFlow({ onBack }) {
     setIniciais('');
     s.resetProtocol();
     showToast('Caso arquivado', 'success');
-    // §B1 (P0) · 600ms → 1500ms: feedback do toast precisa ser visto antes de sair da tela.
-    setTimeout(() => onBack(), 1500);
+    s.setAbaAtual('historico');
+  };
+
+  // Finalizar sem salvar → reset ao estado padrão (#7).
+  const handleFinalizarSemSalvar = () => {
+    setEncerrarOpen(false);
+    setIniciais('');
+    s.resetProtocol();
+    showToast('Protocolo reiniciado');
   };
 
   // §11.H.3 · excluir caso (com ConfirmSheet perigo)
@@ -855,7 +867,7 @@ export function SepseFlow({ onBack }) {
       hint: s.metasN < 5
         ? `Atingir ${5 - s.metasN} ${5 - s.metasN === 1 ? 'meta' : 'metas'}`
         : s.icuN < 6 ? 'Completar checklist UTI' : null,
-      primary: { label: 'Encerrar caso', size: 'lg', onClick: () => setEncerrarOpen(true), variant: 'primary' },
+      primary: { label: 'Finalizar', size: 'lg', onClick: () => setEncerrarOpen(true), variant: 'primary' },
     },
   };
 
@@ -908,7 +920,7 @@ export function SepseFlow({ onBack }) {
 
     return (
       <>
-        <SheetSection title="Caso">
+        <SheetSection boxed title="Caso">
           <SheetDetailRow label="Encerrado em" value={c.date} />
           <SheetDetailRow label="Duração" value={c.duration} />
           {c.idade && <SheetDetailRow label="Idade" value={`${c.idade} anos`} />}
@@ -916,7 +928,7 @@ export function SepseFlow({ onBack }) {
         </SheetSection>
 
         {temDesfecho && (
-          <SheetSection title="Desfecho clínico">
+          <SheetSection boxed title="Desfecho clínico">
             {c.sofa != null && <SheetDetailRow label="SOFA" value={`${c.sofa} pts`} />}
             {veredito && <SheetDetailRow label="Veredito" value={veredito} />}
             {focoLabel && <SheetDetailRow label="Foco" value={focoLabel} />}
@@ -935,7 +947,7 @@ export function SepseFlow({ onBack }) {
         {events.length > 0 && <Timeline title="Linha do tempo" events={events} />}
 
         {c.anotacao && (
-          <SheetSection title="Anotação">
+          <SheetSection boxed title="Anotação">
             <SheetText>{c.anotacao}</SheetText>
           </SheetSection>
         )}
@@ -947,12 +959,25 @@ export function SepseFlow({ onBack }) {
     );
   };
 
+  // §filtro por classificação/veredito · regra Rafael · ≥2 desfechos reais (Luis 2026-05-29).
+  const SEPSE_FILTROS = [
+    { value: 'todas', label: 'Todas' },
+    { value: 'definida', label: 'Definida' },
+    { value: 'provavel', label: 'Provável' },
+    { value: 'possivel', label: 'Possível' },
+    { value: 'improvavel', label: 'Improvável' },
+  ];
+  const historicoFiltradoSepse = histFiltro === 'todas'
+    ? historico
+    : historico.filter((c) => c.classificacao === histFiltro);
+
   // Lista só mostra a lista — o detalhe abre via <DetailSheet> abaixo (padrão golden).
   const historicoView = (
     <HistoryScreen
       title="Histórico"
       subtitle="Casos concluídos neste aparelho."
-      cases={historico}
+      cases={historicoFiltradoSepse}
+      filters={historico.length > 0 ? { options: SEPSE_FILTROS, value: histFiltro, onChange: setHistFiltro } : undefined}
       onCaseClick={(c) => setCasoIdxAberto(historico.indexOf(c))}
     />
   );
@@ -1019,17 +1044,23 @@ export function SepseFlow({ onBack }) {
         onConfirm={onBack}
       />
 
-      <FormSheet
+      <SavePatientSheet
         open={encerrarOpen}
         onClose={() => setEncerrarOpen(false)}
-        title="Arquivar caso"
-        description="Iniciais do paciente · apoio à memória, sem dados sensíveis (LGPD)."
-        saveLabel="Arquivar"
-        canSave={iniciais.trim().length > 0}
+        iniciais={iniciais}
+        onIniciais={(v) => setIniciais(v.toUpperCase())}
+        idade={s.idade}
+        onIdade={s.setIdade}
+        peso={s.peso}
+        onPeso={s.setPeso}
+        sexo={s.sexo}
+        onSexo={s.setSexo}
+        observacoes={s.anotacao}
+        onObservacoes={s.setAnotacao}
+        desfecho={desfechoSepse}
         onSave={handleEncerrar}
-      >
-        <InputField label="Iniciais" value={iniciais} onChange={setIniciais} placeholder="ex.: H.G.V." />
-      </FormSheet>
+        onDiscard={handleFinalizarSemSalvar}
+      />
 
       {/* §11.H.2 · Detalhe do caso (PatientDetail + Timeline) */}
       {/* DetailSheet só com iniciais no header (golden 1:1: "GUSTAVO" sem subtítulo;

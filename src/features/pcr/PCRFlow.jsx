@@ -13,14 +13,17 @@ import { TET_TAMANHO_ROWS } from '../../shared/components/organisms/TETTabela/te
 import { ActionTile } from '../../shared/components/molecules/ActionTile/ActionTile';
 import { RitmoIcon } from '../../shared/components/molecules/RitmoIcon';
 import { Segmented } from '../../shared/components/molecules/Segmented';
+import { RadioGroup } from '../../shared/components/molecules/RadioGroup';
 import { ToggleTab } from '../../shared/components/molecules/ToggleTab';
 import { InputField } from '../../shared/components/molecules/InputField';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { SheetSection, SheetDetailRow, SheetText } from '../../shared/components/molecules/sheet';
 import { Button } from '../../shared/components/atoms/Button';
+import { Icon } from '../../shared/components/atoms/Icon';
 import { FAB } from '../../shared/components/atoms/FAB';
 import { Toast } from '../../shared/components/molecules/Toast';
-import { ConfirmSheet, InfoSheet, AnnotationSheet, DetailSheet } from '../../shared/components/overlays/patterns';
+import { ConfirmSheet, InfoSheet, AnnotationSheet, DetailSheet, FormSheet } from '../../shared/components/overlays/patterns';
+import { BottomSheet } from '../../shared/components/overlays/BottomSheet';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import { usePCRState } from './hooks/usePCRState';
 import {
@@ -33,7 +36,7 @@ import {
 } from './pcrData';
 import {
   SelecionarRitmoSheet, AplicarChoqueSheet, ConfirmarRCESheet,
-  EncerrarSemRCESheet, PausarSheet,
+  EncerrarSemRCESheet, PausarSheet, CheckarPulsoRitmoSheet,
   AdrenDoubleTapSheet, HHTTSheet, AdicionarEventoSheet, OutroEventoSheet,
   VCVSheet, PCVSheet, TETProfundidadeSheet,
 } from './pcrModais';
@@ -72,7 +75,15 @@ export function PCRFlow({ onBack }) {
   const [choqueOpen, setChoqueOpen] = useState(false);
   const [rceOpen, setRceOpen] = useState(false);
   const [encerrarOpen, setEncerrarOpen] = useState(false);
+  const [salvarOpen, setSalvarOpen] = useState(false);
+  const [novaPcrOpen, setNovaPcrOpen] = useState(false);
   const [pausarOpen, setPausarOpen] = useState(false);
+  const [checarOpen, setCheckarOpen] = useState(false);
+  // §contexto de abertura do SelecionarRitmoSheet · define o que acontece ao escolher:
+  //  'inicial'  → pós-Iniciar PCR (registra ritmo, NÃO incrementa ciclo)
+  //  'recheck'  → pós-"Checar ritmo/pulso" sem pulso (registra + novo ciclo)
+  //  'manual'   → tile "Selecionar ritmo" na T2 (atualização avulsa do ritmo)
+  const [ritmoContext, setRitmoContext] = useState('manual');
   const [adrenDoubleTapOpen, setAdrenDoubleTapOpen] = useState(false);
   const [hhttOpen, setHhttOpen] = useState(false);
   const [bannerVisible, setBannerVisible] = useState(true);
@@ -234,13 +245,13 @@ export function PCRFlow({ onBack }) {
   // ============================================================
   // AÇÕES CLÍNICAS
   // ============================================================
-  // §F11+F14 · seleção direta de ritmo ramifica (decisão Luis 2026-05-28):
-  //   FV/TV → perguntar se chocou · AESP/Assist → retoma compressões + 5H/5T
-  //   organizado c/ pulso → RCE · NA → só registra.
+  // §F11+F14 · seleção de ritmo ramifica conforme o CONTEXTO de abertura (Luis 2026-05-28):
+  //   organizado c/ pulso → RCE · inicial → registra (sem novo ciclo) · recheck/manual → +ciclo.
   const onSelecionarRitmo = (ritmo) => {
     setRitmoOpen(false);
+    const ctx = ritmoContext;
 
-    // Ritmo organizado + pulso → RCE (F14). Em T1 (sem PCR), não é parada.
+    // Ritmo organizado + pulso → RCE (F14). Sem PCR aberta não é parada.
     if (ritmo === 'organizado') {
       if (!s.iniciadoEm) {
         showToast('Ritmo organizado com pulso · sem indicação de PCR', 'success');
@@ -250,15 +261,21 @@ export function PCRFlow({ onBack }) {
       return;
     }
 
-    // T1 · botão "Checar ritmo/pulso" antes de iniciar → inicia PCR + registra ritmo.
-    if (!s.iniciadoEm) {
-      s.iniciarPCR();
+    // Ritmo INICIAL (logo após Iniciar PCR): registra SEM incrementar ciclo — as compressões
+    // ainda começam pelo botão "Iniciar compressões" (F04). Chocável → choque; não-chocável → 5H/5T.
+    if (ctx === 'inicial') {
       s.setRitmo(ritmo);
-      showToast(`PCR iniciada · Ritmo: ${getRitmoLabel(ritmo)}`, 'success');
+      if (isChocavel(ritmo)) {
+        setChoqueOpen(true);
+      } else if (isNaoChocavel(ritmo)) {
+        setTimeout(() => setHhttOpen(true), 250);
+      }
+      showToast(`Ritmo inicial · ${getRitmoLabel(ritmo)}`, 'success');
       return;
     }
 
-    // T2 · ramificação clínica completa
+    // RECHECK (pós-checar pulso, sem pulso) ou MANUAL (tile): registra com undo + ramifica.
+    // Não-chocável retoma compressões (novo ciclo de 2 min · golden D36).
     const undo = s.setRitmoComUndo(ritmo);
     if (isChocavel(ritmo)) {
       setChoqueOpen(true); // FV/TV → perguntar se chocou
@@ -267,6 +284,30 @@ export function PCRFlow({ onBack }) {
       setTimeout(() => setHhttOpen(true), 250); // 5H/5T (golden D36)
     }
     showToast(`Ritmo: ${getRitmoLabel(ritmo)}`, 'success', undo);
+  };
+
+  // T1 · Iniciar PCR → inicia o cronômetro do caso E já pede o ritmo inicial (Luis 2026-05-28).
+  const onIniciarPCR = () => {
+    s.iniciarPCR();
+    setRitmoContext('inicial');
+    setRitmoOpen(true);
+  };
+
+  // T2 · "Checar ritmo/pulso" → pergunta ritmo organizado + pulso (CheckarPulsoRitmoSheet).
+  const onChecarPulsoRitmo = () => setCheckarOpen(true);
+
+  // SIM (ritmo organizado + pulso) → RCE direto → T3 pós-PCR (tela de salvar).
+  const onChecarComPulso = () => {
+    setCheckarOpen(false);
+    s.confirmarRCE([]);
+    showToast('RCE · ritmo organizado com pulso', 'success');
+  };
+
+  // NÃO (sem pulso) → reabre Selecionar Ritmo pra registrar o ritmo atual (contexto recheck).
+  const onChecarSemPulso = () => {
+    setCheckarOpen(false);
+    setRitmoContext('recheck');
+    setTimeout(() => setRitmoOpen(true), 250);
   };
 
   const onAplicarAdrenalina = () => {
@@ -315,24 +356,19 @@ export function PCRFlow({ onBack }) {
   };
 
   // ============================================================
-  // T1 · IDLE
+  // T1 · IDLE · hero minimalista (Luis 2026-05-28: tela só com o botão Iniciar pulsando;
+  // ao tocar, já pede o ritmo inicial). Sem cards zerados.
   // ============================================================
   const t1 = (
-    <div className={styles.tela}>
-      <TimerCard
-        label="Compressões"
-        value="00:00"
-        meta="Aguardando"
-        description="Cadência alvo · 100-120/min"
-        state="idle"
-      />
-      <TimerCard
-        label="Adrenalina · ×0"
-        value="00:00"
-        meta="Aguardando 1ª dose"
-        description={`Janela exata em ${s.intervaloAdrenalinaMin} min após o início`}
-        state="idle"
-      />
+    <div className={styles.t1Hero}>
+      <span className={styles.t1IconRing} aria-hidden="true">
+        <Icon name="batimento" size={44} />
+      </span>
+      <h2 className={styles.t1Title}>Pronto para iniciar</h2>
+      <p className={styles.t1Text}>
+        Toque em <strong>Iniciar PCR</strong>: o cronômetro do caso começa e você registra o ritmo
+        inicial no monitor.
+      </p>
     </div>
   );
 
@@ -435,6 +471,17 @@ export function PCRFlow({ onBack }) {
             onChange={s.setBpm}
             block
           />
+          {/* §Checar ritmo/pulso · ação-chave do marco de 2 min, DENTRO do card de Compressões
+              (igual "Apliquei agora" no card de Adrenalina · Luis 2026-05-28). Abre a pergunta
+              "ritmo organizado + pulso?" → SIM = RCE · NÃO = registrar ritmo atual. Vermelho no
+              fim do ciclo pra reforçar a urgência. */}
+          <Button
+            variant={cycleEndReached ? 'danger' : 'primary'}
+            size="md"
+            onClick={onChecarPulsoRitmo}
+          >
+            Checar ritmo / pulso
+          </Button>
         </TimerCard>
       )}
 
@@ -481,7 +528,7 @@ export function PCRFlow({ onBack }) {
           iconNode={<RitmoIcon ritmo={s.ritmo} size={36} />}
           label="Selecionar ritmo"
           value={ritmoLabel}
-          onClick={() => setRitmoOpen(true)}
+          onClick={() => { setRitmoContext('manual'); setRitmoOpen(true); }}
         />
         <ActionTile
           icon="zap"
@@ -494,15 +541,6 @@ export function PCRFlow({ onBack }) {
 
       {/* Linha do tempo · EventList vem aberta (Luis 2026-05-28) · togglável */}
       <EventList events={eventosFormatados} />
-
-      {/* FAB Adicionar evento (F-PCR-3.6) */}
-      <div className={styles.fabAnchor}>
-        <FAB
-          icon="plus"
-          ariaLabel="Adicionar evento"
-          onClick={() => setEventoOpen(true)}
-        />
-      </div>
     </div>
   );
 
@@ -518,7 +556,11 @@ export function PCRFlow({ onBack }) {
     { tone: 'info', title: 'CDT 32-37,5 °C por 24h', desc: 'Controle térmico se paciente inconsciente.' },
   ];
 
-  const t3 = (
+  // §T3 ramifica pelo desfecho (Luis 2026-05-28): RCE → cuidados pós-PCR · encerrada → resumo.
+  const desfechoEncerradoLabel = s.paciente.desfecho === 'obito'
+    ? 'Óbito declarado'
+    : 'Suspensa por decisão clínica';
+  const t3 = s.rce ? (
     <div className={styles.tela}>
       <BannerContextual
         tone="success"
@@ -539,17 +581,35 @@ export function PCRFlow({ onBack }) {
       <BannerContextual
         tone="warning"
         title="Atento à recidiva"
-        description="Se a parada voltar, toque 'Registrar nova parada'. O cronômetro do caso continua o mesmo."
+        description="Se a parada voltar, toque 'Nova PCR'. O cronômetro do caso continua o mesmo."
       />
+    </div>
+  ) : (
+    <div className={styles.tela}>
+      <BannerContextual
+        tone="critical"
+        title={`PCR encerrada · ${s.paciente.desfecho === 'obito' ? 'Óbito' : 'Suspensa'}`}
+        description={`${desfechoEncerradoLabel}. Documente o caso e salve no histórico.`}
+      />
+      <div className={styles.cuidadosList}>
+        <div className={styles.cuidadoItem} data-tone="info">
+          <span className={styles.cuidadoBullet} aria-hidden="true" />
+          <div className={styles.cuidadoContent}>
+            <span className={styles.cuidadoTitle}>Resumo do caso</span>
+            <span className={styles.cuidadoDesc}>
+              {`${s.cicloAtual} ciclo(s) · adrenalina ×${s.adrenalinaCount} · ritmo final ${ritmoLabel}`}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 
   // ============================================================
   // T4 · SALVAR PACIENTE (F-PCR-3.9 · Luis A5: SEM campo altura)
   // ============================================================
-  const t4 = (
-    <div className={styles.tela}>
-      <div className={styles.formStack}>
+  const salvarForm = (
+    <div className={styles.formStack}>
         <div className={styles.formField}>
           <label className={styles.formLabel} htmlFor="t4-iniciais">Iniciais</label>
           <input
@@ -606,45 +666,29 @@ export function PCRFlow({ onBack }) {
 
         <div className={styles.formField}>
           <label className={styles.formLabel}>Sexo</label>
-          <div className={styles.chipsRow}>
-            {[
-              { value: 'ni', label: 'Não informado' },
-              { value: 'm', label: 'Masculino' },
-              { value: 'f', label: 'Feminino' },
-            ].map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                className={styles.chip}
-                data-selected={s.paciente.sexo === opt.value ? 'true' : 'false'}
-                onClick={() => s.setPaciente({ ...s.paciente, sexo: opt.value })}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
+          <Segmented
+            block
+            options={[{ value: 'm', label: 'Masculino' }, { value: 'f', label: 'Feminino' }]}
+            value={s.paciente.sexo === 'm' || s.paciente.sexo === 'f' ? s.paciente.sexo : null}
+            onChange={(v) => s.setPaciente({ ...s.paciente, sexo: v })}
+          />
+          <span className={styles.formHelper}>Opcional · sem seleção fica &quot;não informado&quot;.</span>
         </div>
 
         <div className={styles.formField}>
           <label className={styles.formLabel}>Desfecho</label>
-          <div className={styles.chipsRow}>
-            {[
+          <RadioGroup
+            name="pcr-desfecho"
+            columns={2}
+            options={[
               { value: 'revertida', label: 'Revertida' },
               { value: 'nao-revertida', label: 'Não revertida' },
               { value: 'obito', label: 'Óbito' },
               { value: 'suspensa', label: 'Suspensa' },
-            ].map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                className={styles.chip}
-                data-selected={s.paciente.desfecho === opt.value ? 'true' : 'false'}
-                onClick={() => s.setPaciente({ ...s.paciente, desfecho: opt.value })}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
+            ]}
+            value={s.paciente.desfecho}
+            onChange={(v) => s.setPaciente({ ...s.paciente, desfecho: v })}
+          />
         </div>
 
         <div className={styles.formField}>
@@ -659,27 +703,20 @@ export function PCRFlow({ onBack }) {
           />
         </div>
       </div>
-    </div>
   );
 
-  const telas = { 1: t1, 2: t2, 3: t3, 4: t4 };
+  const telas = { 1: t1, 2: t2, 3: t3 };
 
   // ============================================================
   // FOOTERS
   // ============================================================
   const footerT1 = {
-    hint: 'Iniciar cronômetros e operação',
-    secondary: {
-      label: 'Checar ritmo/pulso',
-      variant: 'secondary',
-      size: 'lg',
-      onClick: () => setRitmoOpen(true),
-    },
+    hint: 'Toque para iniciar o cronômetro e registrar o ritmo',
     primary: {
       label: 'Iniciar PCR',
       size: 'lg',
-      onClick: s.iniciarPCR,
-      // §F01 Gustavo · urgência visual (pulse) — botão "escondidinho" precisa chamar atenção.
+      onClick: onIniciarPCR,
+      // §F01 Gustavo · urgência visual (pulse) — único botão da tela, chama a ação.
       className: styles.iniciarPulse,
     },
   };
@@ -704,13 +741,16 @@ export function PCRFlow({ onBack }) {
     ],
   };
 
-  // T3 footer · 3 ações (Finalizar/Nova PCR/Salvar paciente)
-  const footerT3 = {
-    actions: [
-      { label: 'Finalizar', variant: 'ghost', size: 'md', onClick: () => setEncerrarOpen(true) },
-      { label: 'Nova PCR', variant: 'secondary', size: 'md', onClick: () => s.registrarRecidiva() },
-      { label: 'Salvar paciente', variant: 'primary', size: 'md', onClick: () => s.irParaTela(4) },
-    ],
+  // T3 footer · pós-RCE: só "Nova PCR" (recidiva) + "Salvar paciente" (abre o sheet com
+  // Salvar / Finalizar sem salvar). "Encerrar sem RCE" não aparece aqui — é contraditório
+  // pós-RCE; só existe na T2 (botão Stop). (Luis 2026-05-28)
+  // RCE → recidiva (Nova PCR) + salvar · encerrada (óbito/suspensa) → só salvar (recidiva não cabe).
+  const footerT3 = s.rce ? {
+    secondary: { label: 'Nova PCR', variant: 'secondary', size: 'lg', onClick: () => setNovaPcrOpen(true) },
+    primary: { label: 'Salvar paciente', variant: 'primary', size: 'lg', onClick: () => setSalvarOpen(true) },
+  } : {
+    hint: 'Documente o desfecho e salve o caso',
+    primary: { label: 'Salvar paciente', variant: 'primary', size: 'lg', onClick: () => setSalvarOpen(true) },
   };
 
   // T4 footer · secondary + primary (gate iniciais ≥1)
@@ -739,18 +779,20 @@ export function PCRFlow({ onBack }) {
       anonimo: false,
     };
     setHistorico([novoCaso, ...historico]);
+    setSalvarOpen(false);
+    s.resetarEstado();
     showToast('Paciente salvo · Caso arquivado no histórico.', 'success');
-    setTimeout(() => {
-      s.resetarEstado();
-      onBack();
-    }, 1500);
-  };
-  const footerT4 = {
-    secondary: { label: 'Sair sem salvar', variant: 'ghost', size: 'lg', onClick: () => setSairOpen(true) },
-    primary: { label: 'Salvar paciente', variant: 'primary', size: 'lg', onClick: salvarPacienteT4, disabled: !iniciaisOk },
+    s.setAbaAtual('historico');
   };
 
-  const footers = { 1: footerT1, 2: footerT2, 3: footerT3, 4: footerT4 };
+  // Finalizar sem salvar → reset ao estado padrão (#7).
+  const handleFinalizarSemSalvar = () => {
+    setSalvarOpen(false);
+    s.resetarEstado();
+    showToast('Protocolo reiniciado');
+  };
+
+  const footers = { 1: footerT1, 2: footerT2, 3: footerT3 };
 
   // ============================================================
   // HISTÓRICO / TEORIA
@@ -796,14 +838,14 @@ export function PCRFlow({ onBack }) {
 
     return (
       <>
-        <SheetSection title="Caso">
+        <SheetSection boxed title="Caso">
           <SheetDetailRow label="Início" value={c.iniciadoEm ? new Date(c.iniciadoEm).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—'} />
           <SheetDetailRow label="Duração total" value={dur} />
           {c.idade && <SheetDetailRow label="Idade" value={`${c.idade} anos${c.idadeMeses ? ` ${c.idadeMeses}m` : ''}`} />}
           {c.peso && <SheetDetailRow label="Peso" value={`${c.peso} kg`} />}
         </SheetSection>
 
-        <SheetSection title="Desfecho clínico">
+        <SheetSection boxed title="Desfecho clínico">
           <SheetDetailRow label="Desfecho" value={statusDoDesfecho(c.desfecho)} />
           <SheetDetailRow label="Ritmo final" value={ritmoFinalLabel} />
         </SheetSection>
@@ -856,34 +898,23 @@ export function PCRFlow({ onBack }) {
     }
   };
 
+  // §filtros por desfecho via prop padrão `filters` do HistoryScreen (#6 · era wrap custom · Luis 2026-05-28).
+  // Chips roláveis abaixo do título; estrutura idêntica às outras centrais.
   const historicoView = (
-    <div className={styles.historicoWrap}>
-      {/* §filtros chip por desfecho (golden) — só aparecem com casos */}
-      {historico.length > 0 && (
-        <div className={styles.histFiltros}>
-          {HISTORICO_FILTROS.map((f) => (
-            <button
-              key={f.value}
-              type="button"
-              className={styles.histChip}
-              data-selected={histFiltro === f.value ? 'true' : 'false'}
-              onClick={() => setHistFiltro(f.value)}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
-      )}
-      <HistoryScreen
-        title="Histórico"
-        subtitle="Casos PCR encerrados neste aparelho."
-        cases={historicoFormatado}
-        onCaseClick={(c) => {
-          const realIdx = historico.findIndex((h) => h.id === c.id);
-          setCasoIdxAberto(realIdx);
-        }}
-      />
-    </div>
+    <HistoryScreen
+      title="Histórico"
+      subtitle="Casos PCR encerrados neste aparelho."
+      cases={historicoFormatado}
+      filters={historico.length > 0 ? {
+        options: HISTORICO_FILTROS,
+        value: histFiltro,
+        onChange: setHistFiltro,
+      } : undefined}
+      onCaseClick={(c) => {
+        const realIdx = historico.findIndex((h) => h.id === c.id);
+        setCasoIdxAberto(realIdx);
+      }}
+    />
   );
 
   // ============================================================
@@ -989,13 +1020,14 @@ export function PCRFlow({ onBack }) {
             : 'FV/TV refratária · 1ª dose 300 mg bolus · 2ª dose 150 mg após próximo choque. Diluir em SG 5% 20 mL.'}
       </AlertCard>
 
-      {/* Lidocaína */}
+      {/* Lidocaína · adulto = dose por peso (input no próprio card · DS valueInput) */}
       <AlertCard
         level="info"
         title="Lidocaína"
         showValue
         value={isPediatrico && dosesPed ? `${dosesPed.lidoMg}` : lidoAdulto ? `${lidoAdulto.d1}-${lidoAdulto.d2}` : '1-1,5 mg/kg'}
         unit={isPediatrico ? 'mg IV/IO (1 mg/kg)' : lidoAdulto ? `mg · máx ${lidoAdulto.dmax}` : ''}
+        valueInput={!isPediatrico ? { label: 'Peso do paciente', value: s.peso || '', onChange: s.setPeso, placeholder: 'Ex.: 70', unit: 'kg' } : undefined}
       >
         {isPediatrico && dosesPed
           ? `Pediátrico (${pesoNum} kg) · 1 mg/kg = ${dosesPed.lidoMg} mg em bolus.`
@@ -1093,14 +1125,17 @@ export function PCRFlow({ onBack }) {
   // ============================================================
   // CHIPS HEADER
   // ============================================================
+  // Chips do header só durante a PCR aberta · idle T1 fica limpa (sem "Ciclo 1" solto · Luis 2026-05-28).
   const chips = [];
-  if (s.cicloAtual > 0) chips.push({ label: `Ciclo ${s.cicloAtual}`, mono: true });
-  if (s.adrenalinaCount > 0) chips.push({ label: `Adren ×${s.adrenalinaCount}`, mono: true });
-  if (s.ritmo && s.ritmo !== 'na') {
-    const tone = isChocavel(s.ritmo) ? 'critico' : isNaoChocavel(s.ritmo) ? 'atencao' : undefined;
-    chips.push({ label: getRitmoLabel(s.ritmo), tone });
+  if (s.iniciadoEm) {
+    if (s.cicloAtual > 0) chips.push({ label: `Ciclo ${s.cicloAtual}`, mono: true });
+    if (s.adrenalinaCount > 0) chips.push({ label: `Adren ×${s.adrenalinaCount}`, mono: true });
+    if (s.ritmo && s.ritmo !== 'na') {
+      const tone = isChocavel(s.ritmo) ? 'critico' : isNaoChocavel(s.ritmo) ? 'atencao' : undefined;
+      chips.push({ label: getRitmoLabel(s.ritmo), tone });
+    }
+    if (s.rce) chips.push({ label: 'RCE', tone: 'novo' });
   }
-  if (s.rce) chips.push({ label: 'RCE', tone: 'novo' });
 
   return (
     <>
@@ -1142,6 +1177,9 @@ export function PCRFlow({ onBack }) {
         historico={historicoView}
         teoria={teoriaView}
         footer={footers[s.telaAtual]}
+        fab={s.telaAtual === 2 ? (
+          <FAB icon="plus" ariaLabel="Adicionar evento" onClick={() => setEventoOpen(true)} />
+        ) : undefined}
       />
 
       {/* Sair confirm */}
@@ -1157,9 +1195,46 @@ export function PCRFlow({ onBack }) {
 
       {/* Decisão clínica modais */}
       <SelecionarRitmoSheet open={ritmoOpen} onClose={() => setRitmoOpen(false)} onSelect={onSelecionarRitmo} />
+      <CheckarPulsoRitmoSheet
+        open={checarOpen}
+        onClose={() => setCheckarOpen(false)}
+        onComPulso={onChecarComPulso}
+        onSemPulso={onChecarSemPulso}
+      />
       <AplicarChoqueSheet open={choqueOpen} onClose={() => setChoqueOpen(false)} cargaLabel={cargaInicialLabel} onConfirm={onAplicarChoque} />
       <ConfirmarRCESheet open={rceOpen} onClose={() => setRceOpen(false)} onConfirm={onConfirmarRCE} />
       <EncerrarSemRCESheet open={encerrarOpen} onClose={() => setEncerrarOpen(false)} onConfirm={onEncerrarSemRCE} />
+
+      {/* Salvar paciente · bottomsheet padrão (#7 · era a super-tela T4) */}
+      <FormSheet
+        open={salvarOpen}
+        onClose={() => setSalvarOpen(false)}
+        title="Salvar paciente"
+        description="Dados do caso · apoio à memória (LGPD). Não substitui prontuário."
+        saveLabel="Salvar paciente"
+        cancelLabel="Finalizar sem salvar"
+        onSave={salvarPacienteT4}
+        onCancel={handleFinalizarSemSalvar}
+        canSave={iniciaisOk}
+      >
+        {salvarForm}
+      </FormSheet>
+
+      {/* Nova PCR · mesmo paciente (recidiva) ou outro paciente (reset)? (Luis 2026-05-28) */}
+      <BottomSheet
+        open={novaPcrOpen}
+        onClose={() => setNovaPcrOpen(false)}
+        title="Nova PCR"
+        description="É uma recidiva no mesmo paciente ou um novo paciente?"
+        footer={{
+          secondary: { label: 'Outro paciente', variant: 'secondary', onClick: () => { s.resetarEstado(); setNovaPcrOpen(false); } },
+          primary: { label: 'Mesmo paciente', variant: 'primary', onClick: () => { s.registrarRecidiva(); setNovaPcrOpen(false); } },
+        }}
+      >
+        <SheetText variant="auxiliary">
+          "Mesmo paciente" registra uma recidiva e mantém os dados. "Outro paciente" reinicia o protocolo do zero.
+        </SheetText>
+      </BottomSheet>
       <PausarSheet open={pausarOpen} onClose={() => setPausarOpen(false)} onConfirm={onPausar} />
       <AdrenDoubleTapSheet
         open={adrenDoubleTapOpen}

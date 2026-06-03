@@ -24,11 +24,45 @@
   gap: var(--esp-3);
 }
 
-/* Ancora do FAB pra T2 — wrap relative pra position absolute do FAB funcionar */
-.fabAnchor {
-  position: relative;
-  height: 0;
-  margin-top: var(--esp-2);
+/* §T1 hero minimalista (Luis 2026-05-28) — tela inicial só com o botão Iniciar pulsando no
+   footer; o corpo mostra um estado de prontidão centralizado (sem cards zerados). O FAB da T2
+   agora vive no slot do ProtocolShell (fixo acima do footer · não rola mais junto). */
+.t1Hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--esp-4);
+  padding: var(--esp-6) var(--esp-5);
+  min-height: 360px;
+}
+
+.t1IconRing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 88px;
+  border-radius: var(--ds-r-pill);
+  background: var(--ds-retorno-critico-fundo);
+  color: var(--ds-retorno-critico);
+}
+
+.t1Title {
+  margin: 0;
+  font: var(--ds-font-tit-pag); /* titulo-pagina 24/700/32 */
+  letter-spacing: var(--ds-tracking-tit-pag);
+  color: var(--ds-texto-padrao);
+}
+
+.t1Text {
+  margin: 0;
+  max-width: 280px;
+  font: var(--ds-font-corpo-2); /* corpo-secundario 14/400/20 */
+  letter-spacing: var(--ds-tracking-corpo-2);
+  color: var(--ds-texto-secundario);
 }
 
 /* T3 · Lista de cuidados pós-RCE */
@@ -212,39 +246,8 @@
   .iniciarPulse { animation: none; }
 }
 
-/* Histórico · wrap + filtros chip */
-.historicoWrap {
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-4);
-}
-
-.histFiltros {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--esp-2);
-}
-
-.histChip {
-  padding: var(--esp-2) var(--esp-3);
-  border: 1px solid var(--ds-borda-padrao);
-  border-radius: var(--ds-r-pill);
-  background: var(--ds-fundo-cartao);
-  color: var(--ds-texto-secundario);
-  font-family: var(--fonte-base);
-  font-size: var(--fonte-tamanho-corpo-2);
-  font-weight: 600;
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s, color 0.15s;
-}
-
-.histChip:hover { border-color: var(--ds-interativo-primario); }
-
-.histChip[data-selected="true"] {
-  background: var(--ds-interativo-primario);
-  border-color: var(--ds-interativo-primario);
-  color: var(--ds-texto-sobre-destaque);
-}
+/* Histórico · filtros agora via prop `filters` do HistoryScreen (Chip DS + .filters do template).
+   Wrap/chip custom removidos (Luis 2026-05-28 · #6 padronização). */
 
 /* Toast feedback efêmero · DENTRO da tela do app (Luis 2026-05-28).
    position absolute ancora no .viewport-container (relative + overflow hidden) → fica

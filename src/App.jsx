@@ -3,6 +3,7 @@ import { CADFlow } from './features/cad/CADFlow';
 import { SCAFlow } from './features/sca/SCAFlow';
 import { SepseFlow } from './features/sepse/SepseFlow';
 import { PCRFlow } from './features/pcr/PCRFlow';
+import { AVCFlow } from './features/avc/AVCFlow';
 import { Home } from './features/home/Home';
 import { HubHome } from './features/hub/HubHome';
 import { ColorGallery } from './features/ds/ColorGallery';
@@ -12,6 +13,7 @@ import { SpacingGallery } from './features/ds/SpacingGallery';
 import { InputGallery } from './features/ds/InputGallery';
 import { SheetGallery } from './features/ds/SheetGallery';
 import { GoldenProtocolFrame } from './shared/components/layout/GoldenProtocolFrame';
+import { DevPanel } from './shared/components/layout/DevPanel/DevPanel';
 import { usePersistedState } from './shared/hooks/usePersistedState';
 
 export default function App() {
@@ -44,8 +46,9 @@ export default function App() {
   const isGallery = isSheetGallery || isColorGallery || isTypographyGallery || isSpacingGallery || isInputGallery || isControlsGallery;
   const isSepseReact = visibleRoute === 'sepse-react';
   const isPcrReact = visibleRoute === 'pcr-react';
+  const isAvcReact = visibleRoute === 'avc-react';
   const isKnownRoute =
-    visibleRoute === 'home' || visibleRoute === 'hub' || isGallery || isSepseReact || isPcrReact || Boolean(activeProtocol);
+    visibleRoute === 'home' || visibleRoute === 'hub' || isGallery || isSepseReact || isPcrReact || isAvcReact || Boolean(activeProtocol);
   const showHome = !isGallery && (visibleRoute === 'home' || !isKnownRoute);
 
   if (qaRoute) {
@@ -92,11 +95,16 @@ export default function App() {
             <PCRFlow onBack={goHome} />
           )}
 
+          {isAvcReact && (
+            <AVCFlow onBack={goHome} />
+          )}
+
           {activeProtocol && activeProtocol.id !== 'cad' && activeProtocol.id !== 'sca' && (
             <GoldenProtocolFrame protocol={activeProtocol} onBack={goHome} />
           )}
         </div>
       </div>
+      <DevPanel route={visibleRoute} />
     </div>
   );
 }

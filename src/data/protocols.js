@@ -50,7 +50,7 @@ export const PROTOCOLS = [
     shortTitle: 'AVC',
     subtitle: 'Janela, NIHSS, contraindicacoes, trombolise e historico.',
     domain: 'neurologia',
-    phase: MIGRATION_PHASES.queued,
+    phase: MIGRATION_PHASES.inProgress,
     priority: 4,
     htmlPath: '../calcmed/src/protocolos/avc/avc.html',
     legacyPath: '/golden/src/protocolos/avc/avc.html',

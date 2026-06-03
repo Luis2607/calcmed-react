@@ -10,7 +10,8 @@ const URGENCIA_OPTIONS = [
   { id: 'sca', label: 'SCA', route: 'sca', icon: 'activity', title: 'Modo SCA', desc: 'ECG, risco e conduta em tempo real' },
   // Sepse aprovada pelo Gustavo 2026-05-28 → cutover Home → React (não iframe). (Era 'sepse' apontando p/ legado.)
   { id: 'sepse', label: 'Sepse', route: 'sepse-react', icon: 'droplet', title: 'Modo Sepse', desc: 'Triagem, antibiótico e metas guiadas' },
-  { id: 'avc', label: 'AVC', route: 'avc', icon: 'brain', title: 'Modo AVC', desc: 'Janela, NIHSS e trombólise guiadas' },
+  // AVC portado p/ React (port-avc) → cutover Home → React. Golden permanece em ?route=avc p/ QA lado-a-lado.
+  { id: 'avc', label: 'AVC', route: 'avc-react', icon: 'brain', title: 'Modo AVC', desc: 'Janela, NIHSS e trombólise guiadas' },
 ];
 
 const PLANTAO = [

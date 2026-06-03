@@ -14,7 +14,8 @@ import { EventoCardNovo } from '../../shared/components/molecules/EventoCardNovo
 import { InputField } from '../../shared/components/molecules/InputField';
 import { RitmoIcon } from '../../shared/components/molecules/RitmoIcon';
 import { Segmented } from '../../shared/components/molecules/Segmented';
-import { Select } from '../../shared/components/molecules/Select';
+import { RadioGroup } from '../../shared/components/molecules/RadioGroup';
+import { Checkbox } from '../../shared/components/atoms/Checkbox';
 import { AlertCard } from '../../shared/components/organisms/AlertCard';
 import { SectionLabel } from '../../shared/components/atoms/SectionLabel';
 import { calcPesoPreditoARDSnet, calcTETProfundidade, parseNumber, VENT_PEDIATRIA } from './pcrData';
@@ -47,7 +48,7 @@ export function SelecionarRitmoSheet({ open, onClose, onSelect }) {
             meta="CHOCÁVEL"
             tone="critical"
             media={<RitmoIcon ritmo="tv" size={48} />}
-            description="Taquicardia Ventricular sem pulso — traçado largo monomórfico."
+            description="Taquicardia Ventricular sem pulso — QRS largo e rápido, regular ou polimórfico."
             onClick={() => onSelect('tv')}
           />
           <OptionCard
@@ -55,7 +56,7 @@ export function SelecionarRitmoSheet({ open, onClose, onSelect }) {
             meta="NÃO-CHOCÁVEL"
             tone="warning"
             media={<RitmoIcon ritmo="aesp" size={48} />}
-            description="Atividade Elétrica Sem Pulso — QRS estreito, sem pulso central."
+            description="Atividade Elétrica Sem Pulso — ritmo organizado no monitor (QRS estreito ou largo), sem pulso central."
             onClick={() => onSelect('aesp')}
           />
           <OptionCard
@@ -113,6 +114,8 @@ export function ConfirmarRCESheet({ open, onClose, onConfirm }) {
     { key: 'etco2', label: 'ETCO₂ > 40 mmHg (súbito e mantido)' },
     { key: 'pa', label: 'Onda PA invasiva (pulsátil consistente)' },
   ];
+  const [marcados, setMarcados] = useState([]);
+  const toggle = (k) => setMarcados((prev) => (prev.includes(k) ? prev.filter((x) => x !== k) : [...prev, k]));
 
   return (
     <BottomSheet
@@ -121,11 +124,13 @@ export function ConfirmarRCESheet({ open, onClose, onConfirm }) {
       title="Confirmar RCE"
       description="Marque os critérios observados (apoio cognitivo · não é gate)."
       footer={{
-        primary: { label: 'Confirmar RCE', variant: 'primary', onClick: () => onConfirm(criterios.map((c) => c.key)) },
+        primary: { label: 'Confirmar RCE', variant: 'primary', onClick: () => onConfirm(marcados) },
       }}
     >
       <SheetSection>
-        <SheetList items={criterios.map((c) => c.label)} />
+        {criterios.map((c) => (
+          <Checkbox key={c.key} label={c.label} checked={marcados.includes(c.key)} onChange={() => toggle(c.key)} />
+        ))}
         <SheetText variant="auxiliary">
           Mesmo critério parcial é evidência. Decida clinicamente.
         </SheetText>
@@ -138,28 +143,23 @@ export function ConfirmarRCESheet({ open, onClose, onConfirm }) {
  * Modal: ENCERRAR SEM RCE (2 opções · golden `encerrar-sem-rce`).
  */
 export function EncerrarSemRCESheet({ open, onClose, onConfirm }) {
+  const [escolha, setEscolha] = useState(null);
+  const opcoes = [
+    { value: 'obito', label: 'Óbito declarado', description: 'Critério de morte cumprido. Não há indicação de seguir RCP.' },
+    { value: 'suspensa', label: 'Suspensa por decisão clínica', description: 'Suspensa após avaliação clínica. Não é óbito declarado.' },
+  ];
   return (
     <BottomSheet
       open={open}
       onClose={onClose}
       title="Encerrar sem RCE?"
       description="Escolha o desfecho clínico. O caso vai pro histórico."
+      footer={{
+        primary: { label: 'Confirmar desfecho', variant: 'danger', onClick: () => escolha && onConfirm(escolha), disabled: !escolha },
+      }}
     >
       <SheetSection>
-        <div className={styles.stack}>
-          <OptionCard
-            title="Óbito declarado"
-            tone="critical"
-            description="Critério de morte cumprido. Não há indicação de seguir RCP."
-            onClick={() => onConfirm('obito')}
-          />
-          <OptionCard
-            title="Suspensa por decisão clínica"
-            tone="warning"
-            description="Suspensa após avaliação clínica. Não é óbito declarado."
-            onClick={() => onConfirm('suspensa')}
-          />
-        </div>
+        <RadioGroup name="encerrar-desfecho" options={opcoes} value={escolha} onChange={setEscolha} columns={1} />
       </SheetSection>
     </BottomSheet>
   );
@@ -184,28 +184,30 @@ export function PausarSheet({ open, onClose, onConfirm }) {
 
 /**
  * Modal: CHECAR PULSO/RITMO (gate D41 · golden `checar-pulso-ritmo`).
- * 2 opções pós-checagem: tem pulso → confirmar RCE · sem pulso → checar ritmo.
+ * Pergunta única "ritmo organizado + pulso?": SIM → RCE (tela pós-RCE) ·
+ * NÃO → reabre Selecionar Ritmo pra registrar o ritmo atual (Luis 2026-05-28).
  */
 export function CheckarPulsoRitmoSheet({ open, onClose, onComPulso, onSemPulso }) {
   return (
     <BottomSheet
       open={open}
       onClose={onClose}
-      title="Paciente tem pulso?"
-      description="Cheque pulso central (carótida ou femoral) por até 10 segundos."
+      title="Ritmo organizado com pulso?"
+      description="Cheque o monitor e o pulso central (carótida ou femoral) por até 10 segundos."
     >
       <SheetSection>
         <div className={styles.stack}>
           <OptionCard
-            title="Tem pulso"
+            title="Sim · ritmo organizado e pulso"
+            meta="RCE"
             tone="success"
-            description="Confirmar RCE — vai pra tela pós-RCE."
+            description="Retorno da circulação espontânea — vai pra cuidados pós-PCR."
             onClick={onComPulso}
           />
           <OptionCard
-            title="Sem pulso"
+            title="Não · sem pulso"
             tone="warning"
-            description="Checar ritmo no monitor — ciclo incrementa."
+            description="Selecionar o ritmo atual no monitor e seguir o ciclo."
             onClick={onSemPulso}
           />
         </div>
@@ -411,7 +413,7 @@ export function VCVSheet({ open, onClose, pediatrico, altura, sexo, onAltura, on
       <SheetSection>
         {pediatrico ? (
           <>
-            <Select label="Faixa etária" options={FAIXA_OPCOES} value={faixa} onChange={setFaixa} />
+            <RadioGroup name="faixa-etaria" label="Faixa etária" options={FAIXA_OPCOES} value={faixa} onChange={setFaixa} columns={1} />
             {vent && (
               <AlertCard level="info" title={vent.label}>
                 VC {vent.vc} · FR {vent.fr} · PEEP {vent.peep} · Pico {vent.pico} · I:E {vent.ie}
@@ -450,7 +452,7 @@ export function PCVSheet({ open, onClose, pediatrico }) {
       <SheetSection>
         {pediatrico ? (
           <>
-            <Select label="Faixa etária" options={FAIXA_OPCOES} value={faixa} onChange={setFaixa} />
+            <RadioGroup name="faixa-etaria" label="Faixa etária" options={FAIXA_OPCOES} value={faixa} onChange={setFaixa} columns={1} />
             {vent && (
               <AlertCard level="info" title={vent.label}>
                 Pico {vent.pico} · FR {vent.fr} · PEEP {vent.peep} · I:E {vent.ie}
@@ -482,18 +484,23 @@ export function TETProfundidadeSheet({ open, onClose }) {
   });
 
   return (
-    <BottomSheet open={open} onClose={onClose} title="Profundidade do TET">
-      <SheetSection title="Pelo diâmetro do tubo">
-        <InputField label="Diâmetro interno" type="text" mono inputMode="decimal" value={diam} onChange={setDiam} showUnit unit="mm" />
-        {calc.porTubo && <AlertCard level="info" showValue value={calc.porTubo} unit="cm">Profundidade = diâmetro × 3.</AlertCard>}
+    <BottomSheet
+      open={open}
+      onClose={onClose}
+      title="Profundidade do TET"
+      description="Estime a profundidade de fixação na rima labial. Use qualquer um dos três métodos."
+    >
+      <SheetSection>
+        <InputField label="Diâmetro interno do tubo" type="text" mono inputMode="decimal" value={diam} onChange={setDiam} placeholder="Ex.: 4,0" showUnit unit="mm" helperText="Profundidade = diâmetro × 3" />
+        {calc.porTubo && <AlertCard level="info" showValue value={calc.porTubo} unit="cm" />}
       </SheetSection>
-      <SheetSection title="Pela altura">
-        <InputField label="Altura" type="text" mono inputMode="numeric" value={alt} onChange={setAlt} showUnit unit="cm" />
-        {calc.porAltura && <AlertCard level="info" showValue value={calc.porAltura} unit="cm">Profundidade = altura/10 + 5.</AlertCard>}
+      <SheetSection>
+        <InputField label="Altura" type="text" mono inputMode="numeric" value={alt} onChange={setAlt} placeholder="Ex.: 90" showUnit unit="cm" helperText="Profundidade = altura ÷ 10 + 5" />
+        {calc.porAltura && <AlertCard level="info" showValue value={calc.porAltura} unit="cm" />}
       </SheetSection>
-      <SheetSection title="Pelo peso">
-        <InputField label="Peso" type="text" mono inputMode="decimal" value={peso} onChange={setPeso} showUnit unit="kg" />
-        {calc.porPeso && <AlertCard level="info" showValue value={calc.porPeso} unit="cm">Profundidade = 6 + peso.</AlertCard>}
+      <SheetSection>
+        <InputField label="Peso" type="text" mono inputMode="decimal" value={peso} onChange={setPeso} placeholder="Ex.: 12" showUnit unit="kg" helperText="Profundidade = 6 + peso" />
+        {calc.porPeso && <AlertCard level="info" showValue value={calc.porPeso} unit="cm" />}
       </SheetSection>
     </BottomSheet>
   );
@@ -508,11 +515,9 @@ export function HHTTSheet({ open, onClose }) {
       open={open}
       onClose={onClose}
       title="Causas reversíveis · revise agora"
-      closeLabel="Já revisei"
+      description="Ritmo não-chocável (AESP/Assistolia) exige busca ativa por causas reversíveis. Reveja agora:"
+      acknowledgeLabel="Já revisei"
     >
-      <SheetText>
-        Ritmo não-chocável (AESP/Assistolia) exige busca ativa por causas reversíveis. Reveja agora:
-      </SheetText>
       <HHTTPills items={HHTT_ITEMS} />
     </InfoSheet>
   );

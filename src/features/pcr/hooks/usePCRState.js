@@ -234,7 +234,10 @@ export function usePCRState() {
       obito: 'Óbito declarado',
       suspensa: 'Suspensa por decisão clínica',
     };
-    setTelaAtual(4);
+    // §T3 é a tela final pós-evento (RCE ou encerramento). A antiga super-tela T4 (salvar)
+    // virou bottomsheet, então telaAtual=4 não existe mais — ia cair no fallback da T1 idle
+    // (bug Luis 2026-05-28). O conteúdo da T3 ramifica por `rce` no PCRFlow.
+    setTelaAtual(3);
     setPaciente((p) => ({ ...p, desfecho: motivo === 'obito' ? 'obito' : 'suspensa' }));
     registrarEvento(`PCR encerrada · ${labels[motivo] || motivo}`, 'critico');
   };
