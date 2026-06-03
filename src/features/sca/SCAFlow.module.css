@@ -1,499 +1,58 @@
-.flow {
-  height: 100%;
-  min-height: 0;
+/* SCA · layout de produto · token-only · v2 (migrado pro padrão data-driven · Luis 2026-05-29).
+   O visual vem dos componentes DS (ClinicalCard, ChecklistBlock, OptionCard, AlertCard,
+   RadioGroup, TimerCard) — sem markup/cor custom. Estas classes são só de layout. */
+
+.tela {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(255, 241, 242, 0.72) 0, rgba(248, 250, 252, 0) 180px),
-    var(--ds-fundo-padrao);
+  gap: var(--esp-6); /* 24px entre seções (igual aos outros protocolos) */
 }
 
-.body {
-  flex: 1;
-  min-height: 0;
+/* Sub-grupo dentro de um ClinicalCard (label + controle, ou pilha de RadioGroups). */
+.group {
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
+  gap: var(--esp-3);
 }
 
-.content {
-  padding: var(--esp-5);
-  padding-bottom: var(--esp-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-5);
-}
-
-.setupCard,
-.clinicalBlock,
-.scoreCard,
-.handoffCard {
-  border: 1px solid var(--ds-borda-padrao);
-  border-radius: var(--ds-r-sm);
-  background: var(--ds-fundo-cartao);
-  box-shadow: var(--sombra-cartao);
-}
-
-.setupCard {
-  padding: var(--esp-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-4);
-}
-
-.setupCard h2 {
-  margin-top: var(--esp-2);
-  color: var(--ds-texto-padrao);
-  font-size: var(--fonte-tamanho-titulo-sheet);
-  line-height: 24px;
-}
-
-.setupCard p,
-.selectBody,
-.medCard p,
-.handoffCard p {
-  color: var(--ds-texto-secundario);
-  font-size: var(--fonte-tamanho-corpo);
-  line-height: 20px;
-}
-
-.setupSummary,
-.scoreControls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--esp-2);
-}
-
-.inputGrid {
+/* Inputs pareados (idade/peso, etc.). */
+.row2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--esp-3);
 }
 
-.clinicalBlock {
-  padding: var(--esp-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-4);
-}
-
-.blockHeader,
-.scoreHeader,
-.selectHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--esp-3);
-}
-
-.blockHeader strong,
-.scoreHeader span,
-.selectHeader strong {
-  color: var(--ds-texto-padrao);
-  font-size: var(--fonte-tamanho-corpo);
-  line-height: 20px;
-}
-
-.blockHeader > strong:last-child {
-  color: var(--ds-interativo-primario);
-  font-size: var(--fonte-tamanho-auxiliar);
-}
-
-.checkboxList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-3);
-}
-
-.segmentGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--esp-3);
-}
-
-.selectCard {
+/* Botão que age como "campo" (abre sheet) · largura total, conteúdo à esquerda. */
+.fieldTrigger {
   width: 100%;
-  min-height: 72px;
-  padding: var(--esp-4);
-  border: 1.5px solid var(--ds-borda-padrao);
-  border-radius: var(--ds-r-sm);
-  background: var(--ds-fundo-cartao);
-  color: var(--ds-texto-padrao);
+  justify-content: flex-start;
+}
+
+/* Lista de linhas de conduta (T5). */
+.condutaList {
   display: flex;
   flex-direction: column;
   gap: var(--esp-2);
-  text-align: left;
-  cursor: pointer;
-  transition: border-color 0.15s, background-color 0.15s, transform 0.15s;
-}
-
-.selectCard:hover {
-  border-color: var(--ds-interativo-primario);
-  background: var(--ds-fundo-hover);
-}
-
-.selectCard[data-selected="true"] {
-  border-color: var(--ds-interativo-primario);
-  background: rgba(0, 121, 147, 0.07);
-  box-shadow: inset 0 0 0 1px var(--ds-interativo-primario);
-}
-
-.selectCard[data-tone="critical"][data-selected="true"] {
-  border-color: #dc2626;
-  background: rgba(254, 242, 242, 0.92);
-  box-shadow: inset 0 0 0 1px #dc2626;
-}
-
-.selectCard[data-tone="warning"][data-selected="true"] {
-  border-color: var(--ds-retorno-atencao);
-  background: var(--ds-retorno-atencao-fundo);
-  box-shadow: inset 0 0 0 1px var(--ds-retorno-atencao);
-}
-
-.selectHeader em {
-  color: var(--ds-texto-terciario);
-  font-style: normal;
-  font-size: var(--fonte-tamanho-auxiliar);
-  font-weight: 700;
-}
-
-.omiGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--esp-3);
-}
-
-.omiCard {
-  min-height: 148px;
-  padding: var(--esp-3);
-  border-radius: var(--ds-r-sm);
-  border: 1.5px solid var(--ds-borda-padrao);
-  background: var(--ds-fundo-cartao);
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-3);
-  text-align: left;
-  cursor: pointer;
-}
-
-.omiCard[data-selected="true"] {
-  border-color: #e11d48;
-  background: #fff1f2;
-  box-shadow: inset 0 0 0 1px #e11d48;
-}
-
-.omiCard span:last-child {
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-1);
-}
-
-.omiCard strong {
-  color: var(--ds-texto-padrao);
-  font-size: var(--fonte-tamanho-corpo);
-  line-height: 18px;
-}
-
-.omiCard em {
-  color: var(--ds-texto-secundario);
-  font-style: normal;
-  font-size: var(--fonte-tamanho-auxiliar);
-  line-height: 16px;
-}
-
-.miniEcg {
-  height: 36px;
-  border-radius: var(--ds-r-xs);
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(148, 163, 184, 0.22) 0,
-    rgba(148, 163, 184, 0.22) 1px,
-    transparent 1px,
-    transparent 12px
-  );
-  display: grid;
-  grid-template-columns: 1fr 20px 1fr;
-  align-items: center;
-  gap: 2px;
-  overflow: hidden;
-}
-
-.miniEcg span,
-.miniEcg strong {
-  height: 2px;
-  background: var(--ds-texto-terciario);
-  display: block;
-}
-
-.miniEcg strong {
-  height: 28px;
-  clip-path: polygon(0 52%, 32% 52%, 50% 0, 68% 52%, 100% 52%, 100% 58%, 66% 58%, 50% 100%, 34% 58%, 0 58%);
-}
-
-.miniEcg[data-active="true"] span,
-.miniEcg[data-active="true"] strong {
-  background: #e11d48;
-}
-
-.scoreCard {
-  padding: var(--esp-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-3);
-}
-
-.scoreHeader strong {
-  color: var(--ds-interativo-primario);
-  font-size: var(--fonte-tamanho-numero);
-  line-height: 1;
-}
-
-.scoreTrack {
-  height: 10px;
-  border-radius: var(--ds-r-pill);
-  background: linear-gradient(90deg, #d1fae5, #fef3c7, #fecaca);
-  overflow: hidden;
-}
-
-.scoreTrack span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: rgba(15, 23, 42, 0.34);
-}
-
-.scoreScale {
-  display: flex;
-  justify-content: space-between;
-  color: var(--ds-texto-terciario);
-  font-size: var(--fonte-tamanho-micro);
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.infoGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--esp-3);
-}
-
-.infoTile,
-.medCard,
-.caseItem,
-.outcomeCard {
-  border: 1px solid var(--ds-borda-padrao);
-  border-radius: var(--ds-r-sm);
-  background: var(--ds-fundo-cartao);
-}
-
-.infoTile {
-  padding: var(--esp-3);
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-1);
-}
-
-.infoTile span {
-  color: var(--ds-texto-terciario);
-  font-size: var(--fonte-tamanho-micro);
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.infoTile strong {
-  color: var(--ds-texto-padrao);
-  font-size: var(--fonte-tamanho-corpo);
-}
-
-.medGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--esp-3);
-}
-
-.medCard {
-  min-height: 128px;
-  padding: var(--esp-4);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--esp-2);
-}
-
-.medCard strong {
-  color: var(--ds-texto-padrao);
-  font-size: var(--fonte-tamanho-titulo-sheet);
-  line-height: 24px;
-}
-
-.medCard span {
-  color: var(--ds-retorno-atencao);
-  font-size: var(--fonte-tamanho-auxiliar);
-  font-weight: 800;
-}
-
-.outcomeStack,
-.caseList,
-.theoryGrid {
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-3);
-}
-
-.outcomeCard {
-  padding: var(--esp-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-3);
-}
-
-.outcomeCard[data-active="true"] {
-  border-color: var(--ds-interativo-primario);
-  box-shadow: inset 4px 0 0 var(--ds-interativo-primario), var(--sombra-cartao);
-}
-
-.outcomeCard h3 {
-  color: var(--ds-texto-padrao);
-  font-size: var(--fonte-tamanho-titulo-sheet);
-  line-height: 24px;
-}
-
-.outcomeCard ul {
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-2);
+  margin: 0;
   padding-left: var(--esp-5);
   color: var(--ds-texto-secundario);
   font-size: var(--fonte-tamanho-corpo);
   line-height: 20px;
 }
 
-.handoffCard {
-  padding: var(--esp-4);
+/* Toast efêmero · DENTRO da tela do app (mesmo padrão dos outros protocolos). */
+.toastWrap {
+  position: absolute;
+  left: var(--esp-4);
+  right: var(--esp-4);
+  top: var(--esp-4);
+  z-index: 1000;
+  pointer-events: none;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--esp-3);
+  justify-content: center;
 }
 
-.handoffCard div {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-1);
-}
-
-.handoffCard span {
-  color: var(--ds-texto-terciario);
-  font-size: var(--fonte-tamanho-micro);
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.handoffCard strong {
-  color: var(--ds-texto-padrao);
-  font-size: var(--fonte-tamanho-corpo);
-}
-
-.caseItem {
-  padding: var(--esp-3);
-  display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--esp-3);
-}
-
-.caseAvatar {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--ds-r-pill);
-  background: #fff1f2;
-  color: #be123c;
-  display: grid;
-  place-items: center;
-  font-size: var(--fonte-tamanho-corpo);
-  font-weight: 800;
-}
-
-.caseItem div:nth-child(2) {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.caseItem strong {
-  color: var(--ds-texto-padrao);
-  font-size: var(--fonte-tamanho-corpo);
-  line-height: 18px;
-}
-
-.caseItem span {
-  color: var(--ds-texto-terciario);
-  font-size: var(--fonte-tamanho-auxiliar);
-}
-
-.toast {
-  margin: var(--esp-3) var(--esp-5) 0;
-  padding: var(--esp-3) var(--esp-4);
-  border-radius: var(--ds-r-sm);
-  background: var(--ds-retorno-sucesso-fundo);
-  border: 1px solid var(--ds-retorno-sucesso-borda);
-  color: var(--ds-retorno-sucesso);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--esp-3);
-  font-size: var(--fonte-tamanho-corpo);
-  font-weight: 700;
-}
-
-.toast button {
-  border: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  cursor: pointer;
-}
-
-:global(.modo-escuro) .flow {
-  background:
-    linear-gradient(180deg, rgba(127, 29, 29, 0.22) 0, rgba(15, 23, 42, 0) 190px),
-    var(--ds-fundo-padrao);
-}
-
-:global(.modo-escuro) .setupCard,
-:global(.modo-escuro) .clinicalBlock,
-:global(.modo-escuro) .scoreCard,
-:global(.modo-escuro) .handoffCard,
-:global(.modo-escuro) .selectCard,
-:global(.modo-escuro) .omiCard,
-:global(.modo-escuro) .medCard,
-:global(.modo-escuro) .caseItem,
-:global(.modo-escuro) .outcomeCard,
-:global(.modo-escuro) .infoTile {
-  background: var(--ds-fundo-cartao);
-}
-
-@media (min-width: 431px) {
-  .segmentGrid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 360px) {
-  .inputGrid,
-  .omiGrid,
-  .infoGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .handoffCard,
-  .blockHeader,
-  .scoreHeader {
-    align-items: flex-start;
-    flex-direction: column;
-  }
+.toastWrap > * {
+  pointer-events: auto;
+  width: 100%;
 }

@@ -1,0 +1,6 @@
+/* Pilha de opções dentro dos sheets (mesma do padrão pcrModais · gap DS). */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
