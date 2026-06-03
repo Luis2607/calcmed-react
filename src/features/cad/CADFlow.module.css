@@ -1,0 +1,132 @@
+/* CAD · layout de produto (token-only · zero hardcode).
+   Só o que NENHUM componente do DS cobre: spacing das telas, log de
+   reavaliações, itens de critério com sub-texto, resumo e toast.
+   Escala: seções 24 / dentro 16 / grupos 12-8 (igual AVC/Sepse). */
+
+.tela {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-6);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+/* idade/peso/Na-Cl lado a lado */
+.row2 {
+  display: flex;
+  gap: var(--esp-3);
+}
+
+.row2 > * {
+  flex: 1;
+}
+
+/* destaque de valores (golden .valor-destaque) */
+.destaque {
+  color: var(--ds-interativo-primario);
+  font-weight: 700;
+}
+
+.helper {
+  color: var(--ds-texto-secundario);
+  font: var(--ds-font-corpo-2);
+  margin-top: var(--esp-1);
+}
+
+/* ============================================================
+   T4 · log de reavaliações
+   ============================================================ */
+.logList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  margin-top: var(--esp-3);
+}
+
+.logItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-3);
+  padding: var(--esp-2) var(--esp-3);
+  border-radius: var(--esp-2);
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-padrao);
+  font: var(--ds-font-corpo-2);
+}
+
+.logHora {
+  color: var(--ds-texto-secundario);
+  font-weight: 600;
+}
+
+.logInsulina {
+  color: var(--ds-retorno-sucesso);
+  font-weight: 700;
+}
+
+/* ============================================================
+   T5 · itens de critério com sub-texto
+   ============================================================ */
+.criterio {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+.criterio + .criterio {
+  margin-top: var(--esp-4);
+  padding-top: var(--esp-4);
+  border-top: 1px solid var(--ds-borda-sutil);
+}
+
+.criterioSub {
+  color: var(--ds-texto-secundario);
+  font: var(--ds-font-corpo-2);
+}
+
+/* ============================================================
+   T6 · resumo de atendimento
+   ============================================================ */
+.resumo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.resumoRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--esp-3);
+}
+
+.resumoLabel {
+  color: var(--ds-texto-secundario);
+  font: var(--ds-font-corpo-2);
+}
+
+.resumoValor {
+  color: var(--ds-texto-padrao);
+  font-weight: 600;
+}
+
+/* ============================================================
+   Toast (igual AVC/Sepse · sticky acima da TabBar)
+   ============================================================ */
+.toastWrap {
+  position: fixed;
+  left: var(--esp-4);
+  right: var(--esp-4);
+  bottom: calc(64px + var(--esp-4));
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toastWrap > * {
+  pointer-events: auto;
+}
