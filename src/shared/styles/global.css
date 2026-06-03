@@ -70,18 +70,12 @@ html, body {
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  /* Scrollbar mínima/discreta (Luis 2026-05-28: a nativa grossa atrapalha o protótipo). */
-  scrollbar-width: thin;
-  scrollbar-color: var(--ds-borda-padrao) transparent;
+  /* Scrollbar OCULTA · rola só com roda/touch (Luis 2026-05-28: a barra atrapalha o protótipo). */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge legado */
 }
 
-.scroll-container::-webkit-scrollbar { width: 4px; }
-.scroll-container::-webkit-scrollbar-track { background: transparent; }
-.scroll-container::-webkit-scrollbar-thumb {
-  background: var(--ds-borda-padrao);
-  border-radius: 999px;
-}
-.scroll-container::-webkit-scrollbar-thumb:hover { background: var(--ds-texto-terciario); }
+.scroll-container::-webkit-scrollbar { width: 0; height: 0; display: none; } /* WebKit */
 
 .hidden {
   display: none !important;

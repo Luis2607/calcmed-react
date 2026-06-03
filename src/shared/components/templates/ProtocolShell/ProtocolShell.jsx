@@ -44,6 +44,7 @@ export const ProtocolShell = ({
   historico,
   teoria,
   footer,
+  fab, // node opcional · FAB flutuante ancorado acima do footer (ex.: PCR T2)
 }) => {
   const content =
     activeTab === 'historico' ? historico : activeTab === 'teoria' ? teoria : executar;
@@ -68,7 +69,12 @@ export const ProtocolShell = ({
 
       <main className={styles.body}>{content}</main>
 
-      {activeTab === 'executar' && footer ? <ActionFooter {...footer} /> : null}
+      {activeTab === 'executar' && footer ? (
+        <div className={styles.footerWrap}>
+          {activeTab === 'executar' ? fab : null}
+          <ActionFooter {...footer} />
+        </div>
+      ) : null}
 
       <TabBar items={tabs} activeId={activeTab} onChange={onTabChange} sticky />
     </div>

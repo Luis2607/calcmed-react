@@ -1,0 +1,14 @@
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.row2 {
+  display: flex;
+  gap: var(--esp-3);
+}
+
+.row2 > * {
+  flex: 1;
+}

@@ -133,10 +133,11 @@
    quando ambos presentes. Só cor/borda/fundo via token; value mantém o tamanho.
    ============================================================ */
 
-/* idle — pré-iniciar (mudo) */
+/* idle — pré-iniciar (mudo): fill branco + borda (não cinza · Luis 2026-05-28).
+   Só o texto fica mudo (terciário); o card mantém superfície de cartão. */
 .card[data-state='idle'] {
-  background: var(--ds-fundo-elevado);
-  border-color: var(--ds-borda-sutil);
+  background: var(--ds-fundo-cartao);
+  border-color: var(--ds-borda-padrao);
 }
 .card[data-state='idle'] .label,
 .card[data-state='idle'] .value {

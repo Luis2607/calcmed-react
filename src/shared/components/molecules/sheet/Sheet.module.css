@@ -133,6 +133,13 @@
   gap: var(--esp-2);
 }
 
+/* boxed — grupo com fundo cinza (detalhe de histórico · espelha o legado) */
+.sectionBoxed {
+  background: var(--ds-fundo-elevado);
+  border-radius: var(--radius-card);
+  padding: var(--esp-3) var(--esp-4);
+}
+
 .sectionTitle {
   font-size: var(--fonte-tamanho-rotulo);
   font-weight: 700;

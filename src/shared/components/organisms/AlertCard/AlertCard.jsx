@@ -1,3 +1,4 @@
+import { InputField } from '../../molecules/InputField';
 import styles from './AlertCard.module.css';
 
 export const AlertCard = ({
@@ -9,6 +10,10 @@ export const AlertCard = ({
   showValue = false, // Figma "Show Value" — exibe Dose + Unit (cor do level)
   value,
   unit,
+  // valueInput (DS): renderiza um input compacto DENTRO do card (ex.: peso) p/ doses
+  // por peso. O `value` exibido é recalculado pelo PARENT a partir desse input.
+  // { label, value, onChange, placeholder?, unit? }
+  valueInput,
   className = '',
   ...props
 }) => {
@@ -78,6 +83,21 @@ export const AlertCard = ({
         {showIcon && <div className={styles.iconWrapper}>{getIcon()}</div>}
         {title && <span className={styles.title}>{title}</span>}
       </div>
+      {valueInput && (
+        <div className={styles.inputRow}>
+          <InputField
+            label={valueInput.label}
+            type="text"
+            inputMode="decimal"
+            mono
+            value={valueInput.value}
+            onChange={valueInput.onChange}
+            placeholder={valueInput.placeholder}
+            unit={valueInput.unit}
+            showUnit={Boolean(valueInput.unit)}
+          />
+        </div>
+      )}
       {showValue && value != null && (
         <div className={styles.value}>
           <span className={`${styles.dose} mono`}>{value}</span>

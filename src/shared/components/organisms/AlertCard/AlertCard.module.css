@@ -51,6 +51,9 @@
   color: var(--ds-texto-secundario);
 }
 
+/* valueInput — input compacto dentro do card (dose por peso). */
+.inputRow { margin-top: var(--esp-1); }
+
 /* Show Value (Figma) — Dose 32 Bold + Unit 20 Medium · cor herdada do level */
 .value { display: flex; align-items: baseline; gap: var(--esp-1); }
 .dose { font-size: 32px; font-weight: 700; line-height: 40px; letter-spacing: -0.02em; font-feature-settings: 'tnum'; }

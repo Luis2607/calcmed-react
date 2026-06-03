@@ -15,7 +15,8 @@
 .containerWithDescription { align-items: flex-start; }
 .containerWithDescription .radioWrapper { margin-top: 2px; }
 
-/* Texto · label + description em coluna (modo descrito) */
+/* Texto · label + description em coluna (modo descrito). gap 2px DELIBERADO: label e sua
+   própria descrição são um par coeso/apertado (Luis 2026-05-29 confirmou que estava correto). */
 .text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
 .label { font-size: 14px; font-weight: 600; color: var(--ds-texto-padrao); }
 .description { font-size: 12px; line-height: 16px; color: var(--ds-texto-secundario); }

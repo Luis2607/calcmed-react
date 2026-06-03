@@ -33,6 +33,7 @@ export function BottomSheet({
   showCloseButton = true,
   showHandle = true,
   footer,
+  blocking = false, // sheets bloqueantes (decisão obrigatória) não recebem "Fechar" automático
   maxHeight = 'auto',
   children,
 }) {
@@ -182,7 +183,8 @@ export function BottomSheet({
           closeLabel={closeLabel}
         />
         <SheetBody>{children}</SheetBody>
-        <SheetFooter footer={footer} />
+        {/* Não-bloqueante sem footer próprio → botão "Fechar" automático no rodapé (Luis 2026-05-28). */}
+        <SheetFooter footer={footer ?? (blocking ? undefined : { primary: { label: closeLabel, onClick: () => onClose?.() } })} />
       </div>
     </div>
   );

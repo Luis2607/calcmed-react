@@ -7,3 +7,4 @@ export { ActionSheet } from './ActionSheet';
 export { ChecklistSheet } from './ChecklistSheet';
 export { DetailSheet } from './DetailSheet';
 export { AnnotationSheet } from './AnnotationSheet';
+export { SavePatientSheet } from './SavePatientSheet';

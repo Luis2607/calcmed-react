@@ -18,4 +18,17 @@
   gap: var(--esp-6); /* 24px entre seções (golden .tela-corpo) */
   padding: var(--esp-6) var(--esp-4); /* 24 vertical / 16 horizontal */
   overflow-y: auto;
+  /* Scrollbar OCULTA · rola só com roda/touch (Luis 2026-05-28). É ESTE o scroller dos
+     protocolos (não o .scroll-container global) — por isso a barra gorda persistia. */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge legado */
+}
+.body::-webkit-scrollbar { width: 0; height: 0; display: none; } /* WebKit */
+
+/* Footer + FAB · wrapper relative pra ancorar o FAB (bottom:100%) logo acima do
+   ActionFooter. Fica fixo no fim do frame (fora do scroll do .body) — resolve o FAB
+   que "rolava junto"/flutuava no meio quando o conteúdo era curto (Luis 2026-05-28). */
+.footerWrap {
+  position: relative;
+  flex-shrink: 0;
 }
