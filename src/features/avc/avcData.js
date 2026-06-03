@@ -68,7 +68,7 @@ export function janelaInfo(min) {
   if (min == null) return { texto: 'Janela: —', fora: false };
   const h = Math.floor(min / 60);
   const m = min % 60;
-  let faixa = '';
+  let faixa;
   if (min < 270) faixa = ' · janela padrão (< 4.5h)';
   else if (min < 540) faixa = ' · janela estendida (4.5-9h · perfusão)';
   else if (min < 1440) faixa = ' · só trombectomia (avaliar)';
