@@ -1,5 +1,10 @@
 # F0.3 · Captura de estrutura — 5 fluxos golden (shell)
 
+> **STATUS (2026-06-03) — doc HISTÓRICO.** Esta é uma captura de planejamento de 2026-05-27.
+> Os templates L2 (`ProtocolShell` / `HistoryScreen` / `TheoryScreen`) e o porte React dos **5 fluxos
+> JÁ FORAM feitos** — ver `calcmed-react/src/features/{cad,avc,sca,sepse,pcr}`. O "golden" lido aqui
+> agora vive em `_prototipo/_legado-html/calcmed/`. Mantido só como registro do planejamento.
+
 > Lido direto do golden (`_prototipo/calcmed/src/protocolos/<id>/<id>.html`, validado com Gustavo).
 > Objetivo: **destravar os templates L2** (`ProtocolShell` / `HistoryScreen` / `TheoryScreen`)
 > garantindo que nasçam cobrindo os **5** fluxos — não só CAD/SCA. Captura LEVE (estrutura/esqueleto),
