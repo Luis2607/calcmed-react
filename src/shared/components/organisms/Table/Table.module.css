@@ -1,0 +1,76 @@
+/* Table — organism genérico do DS. Token-only. Leitura apenas.
+   Espaçamento generoso (12/16), 1ª coluna quebra linha alinhada ao topo,
+   colunas de valor mono + nowrap. Substitui markup de tabela ad-hoc. */
+
+.wrap {
+  width: 100%;
+  background: var(--ds-fundo-cartao);
+  border: 1px solid var(--ds-cartao-borda);
+  border-radius: var(--radius-card);
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+.caption {
+  display: block;
+  padding: var(--esp-3) var(--esp-4) 0;
+  color: var(--ds-texto-terciario);
+  font-size: var(--fonte-tamanho-rotulo);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--fonte-base);
+}
+
+.th {
+  padding: var(--esp-3) var(--esp-4);
+  color: var(--ds-texto-terciario);
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  border-bottom: 1px solid var(--ds-borda-padrao);
+  white-space: nowrap;
+  text-align: left;
+}
+
+.th[data-align='right'] { text-align: right; }
+.th[data-align='center'] { text-align: center; }
+
+.row { border-bottom: 1px solid var(--ds-borda-sutil); }
+.row:last-child { border-bottom: none; }
+
+.td {
+  padding: var(--esp-3) var(--esp-4);
+  font-size: var(--fonte-tamanho-corpo-2);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ds-texto-padrao);
+  vertical-align: top;
+  text-align: left;
+}
+
+.td[data-align='right'] { text-align: right; }
+.td[data-align='center'] { text-align: center; }
+
+.mono {
+  font-family: var(--fonte-mono);
+  font-feature-settings: 'tnum';
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.emphasis {
+  font-weight: 600;
+  color: var(--ds-texto-padrao);
+}
+
+.row[data-tone='success'] .td {
+  color: var(--ds-retorno-sucesso);
+}
