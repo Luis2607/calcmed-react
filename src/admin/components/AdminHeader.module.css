@@ -1,0 +1,118 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  flex-shrink: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-6);
+  padding: 0 var(--esp-8);
+  background: var(--ds-fundo-cartao);
+  border-bottom: 1px solid var(--ds-borda-padrao);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-8);
+  min-width: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+}
+
+.brandMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--esp-8);
+  height: var(--esp-8);
+  flex-shrink: 0;
+  border-radius: var(--ds-r-sm);
+  background: var(--ds-interativo-primario);
+  color: var(--ds-texto-sobre-destaque);
+  font: var(--ds-font-subtitulo);
+}
+
+.brandText {
+  font: var(--ds-font-rot-campo);
+  color: var(--ds-texto-padrao);
+  white-space: nowrap;
+}
+
+.brandSub {
+  color: var(--ds-texto-terciario);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-1);
+}
+
+.navItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2);
+  padding: var(--esp-2) var(--esp-4);
+  border-radius: var(--radius-pill);
+  font: var(--ds-font-rot-campo);
+  color: var(--ds-texto-secundario);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.navItem:hover {
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-padrao);
+}
+
+.navItemActive,
+.navItemActive:hover {
+  background: var(--interativo-primario-tint-08);
+  color: var(--ds-interativo-primario);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-4);
+  flex-shrink: 0;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--esp-8);
+  height: var(--esp-8);
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-secundario);
+  font: var(--ds-font-badge);
+}
+
+.accountName {
+  font: var(--ds-font-rot-campo);
+  color: var(--ds-texto-padrao);
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .accountName { display: none; }
+  .header { padding: 0 var(--esp-4); }
+  .left { gap: var(--esp-4); }
+}

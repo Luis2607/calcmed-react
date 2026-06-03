@@ -1,0 +1,95 @@
+.wrap {
+  position: relative;
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.block {
+  width: 100%;
+}
+
+/* Dropdown encostado no trigger (sem gap → hover não fecha ao descer pro menu) */
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 100%;
+  z-index: 20;
+  margin-top: var(--esp-1);
+  padding: var(--esp-2);
+  background: var(--ds-fundo-cartao);
+  border: 1px solid var(--ds-borda-padrao);
+  border-radius: var(--radius-card);
+  box-shadow: var(--sombra-modal);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Ponte invisível pra cobrir o gap do margin-top (mantém o hover contínuo) */
+.menu::before {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--esp-2));
+  left: 0;
+  right: 0;
+  height: var(--esp-2);
+}
+
+/* Item multi (com Checkbox) */
+.item {
+  padding: var(--esp-2);
+  border-radius: var(--ds-r-sm);
+  white-space: nowrap;
+}
+
+.item:hover {
+  background: var(--ds-fundo-elevado);
+}
+
+/* Item single (sem check) */
+.option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: var(--esp-2) var(--esp-3);
+  border: none;
+  background: transparent;
+  border-radius: var(--ds-r-sm);
+  color: var(--ds-texto-padrao);
+  font: var(--ds-font-valor-campo);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.option:hover {
+  background: var(--ds-fundo-elevado);
+}
+
+.optionActive,
+.optionActive:hover {
+  background: var(--interativo-primario-tint-08);
+  color: var(--ds-interativo-primario);
+}
+
+.sep {
+  height: 1px;
+  background: var(--ds-borda-sutil);
+  margin: var(--esp-1) 0;
+}
+
+.clear {
+  text-align: left;
+  width: 100%;
+  padding: var(--esp-2);
+  border: none;
+  background: transparent;
+  border-radius: var(--ds-r-sm);
+  color: var(--ds-texto-link);
+  font: var(--ds-font-botao-sm);
+  cursor: pointer;
+}
+
+.clear:hover {
+  background: var(--ds-fundo-elevado);
+}

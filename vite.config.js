@@ -52,4 +52,13 @@ function goldenMasterPlugin() {
 
 export default defineConfig({
   plugins: [react(), goldenMasterPlugin()],
+  build: {
+    rollupOptions: {
+      input: {
+        // App mobile (frame 390px) + Admin de Escores (desktop) — duas páginas.
+        main: resolve(currentDir, 'index.html'),
+        admin: resolve(currentDir, 'admin.html'),
+      },
+    },
+  },
 });

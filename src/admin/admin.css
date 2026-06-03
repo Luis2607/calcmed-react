@@ -1,0 +1,45 @@
+/* Admin de Escores — reset do frame mobile.
+   O app mobile usa .page-wrapper/.viewport-container (390px). O admin é desktop
+   full-screen: aqui só garantimos que o body preencha a tela com o fundo do DS. */
+html, body, #admin-root {
+  height: 100%;
+}
+
+body {
+  background: var(--fundo-pagina);
+  overflow: hidden; /* o scroll vive dentro dos painéis do admin */
+}
+
+/* ============================================================
+   Scrollbars discretas — alinhadas à ID visual do CalcMed.
+   O app mobile esconde de vez (.scroll-container); no desktop a gente afina:
+   trilho transparente + thumb fino arredondado (token de borda), some no fundo.
+   ============================================================ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ds-borda-padrao) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--ds-borda-padrao);
+  border-radius: var(--radius-pill);
+  border: 3px solid transparent; /* afina o thumb visível e dá respiro */
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--ds-texto-terciario);
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
