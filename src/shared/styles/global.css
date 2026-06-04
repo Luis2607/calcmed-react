@@ -52,6 +52,24 @@ html, body {
 }
 
 @media (max-width: 430px) {
+  /* Mobile real: trava o app na área VISÍVEL (dvh, não vh) e impede a página de rolar.
+     Só os scrollers internos (.scroll-container / .body do protocolo) rolam — assim a
+     TabBar/footer ficam realmente fixos no fim da tela (Luis 2026-06-04: barra inferior
+     "subia junto" porque body usava 100vh > 100dvh e a página inteira rolava). */
+  html,
+  body {
+    height: 100dvh;
+    min-height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+  #root {
+    height: 100dvh;
+  }
+  .page-wrapper {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
   .viewport-container {
     width: 100%;
     height: 100dvh;
