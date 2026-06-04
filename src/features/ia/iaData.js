@@ -12,12 +12,12 @@ export const ILLUSTRATIVE = 'Confira no protocolo do seu serviço.';
 // capacidade distinta (dose · conduta · exame · comparação · protocolo · resumo),
 // ordenadas por urgência. Poucas e de propósito: a faixa rola na horizontal.
 export const STARTERS = [
-  { label: 'dose de adrenalina?', value: 'q:adrena', icon: 'seringa' },
-  { label: 'paciente hipotenso', value: 'q:hipo', icon: 'batimento' },
-  { label: 'interpreta uma gasometria', value: 'q:gaso', icon: 'gota' },
-  { label: 'noradrenalina ou dobutamina?', value: 'q:noradobu', icon: 'coracao' },
-  { label: 'protocolo de PCR', value: 'proto:pcr', icon: 'protocolos' },
-  { label: 'resume pra evolução', value: 'q:resumo', icon: 'editar' },
+  { label: 'dose de adrenalina?', value: 'q:adrena' },
+  { label: 'paciente hipotenso', value: 'q:hipo' },
+  { label: 'interpreta uma gasometria', value: 'q:gaso' },
+  { label: 'noradrenalina ou dobutamina?', value: 'q:noradobu' },
+  { label: 'protocolo de PCR', value: 'proto:pcr' },
+  { label: 'resume pra evolução', value: 'q:resumo' },
 ];
 
 const PCR_STEPS = [

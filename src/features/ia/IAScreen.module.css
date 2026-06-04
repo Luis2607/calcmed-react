@@ -316,7 +316,6 @@
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
   padding: var(--esp-2) var(--esp-3);
   border: 1px solid var(--ds-borda-padrao);
   border-radius: var(--radius-pill);
@@ -332,7 +331,6 @@
 }
 .suggestChip:hover { background: var(--ds-fundo-hover); border-color: var(--ds-interativo-primario); }
 .suggestChip:active { background: var(--ds-fundo-elevado); }
-.suggestChip :global(svg) { color: var(--ds-interativo-primario); flex-shrink: 0; }
 
 /* ---------- Resposta interrompida (parada no meio do streaming) ---------- */
 .interrupted {
