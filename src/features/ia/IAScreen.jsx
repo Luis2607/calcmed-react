@@ -4,7 +4,9 @@ import { AIResponseRenderer, SuggestionChips } from '../../shared/components/ai'
 import { Toast } from '../../shared/components/molecules/Toast';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import { IAOnboarding } from './IAOnboarding';
+import { MessageActions } from './MessageActions';
 import { respond, STARTERS } from './iaData';
+import { countUnits, sliceResponse, responseToText } from './iaStream';
 import styles from './IAScreen.module.css';
 
 const uid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-4);
@@ -12,6 +14,13 @@ const nowTs = () => Date.now();
 const truncate = (s, n = 42) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
 const finePointer = () =>
   typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: fine)').matches;
+
+function greetingPrefix() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Bom dia';
+  if (h < 18) return 'Boa tarde';
+  return 'Boa noite';
+}
 
 function relativeTime(ts) {
   const min = Math.floor((Date.now() - ts) / 60000);
@@ -44,39 +53,80 @@ function TypingDots() {
 }
 
 /**
- * IAScreen — assistente clínico do protótipo.
- *
- * Fluxo: a aba IA abre DIRETO num chat novo (pronto pra digitar). O histórico de
- * conversas fica atrás do ícone de relógio no header (não é o foco). Respostas
- * são estruturadas (AIResponseRenderer, variante plain). O roteiro (iaData) faz
- * o papel do backend nesta demo.
- *
- * "Digitando" é estado EFÊMERO por conversa (nunca persiste).
+ * StreamingMessage — revela a resposta progressivamente (efeito de digitação).
+ * Mantém o progresso EFÊMERO (não persiste). Ao parar (stopSignal) ou terminar,
+ * chama onDone(units, stopped) para o pai finalizar.
+ */
+function StreamingMessage({ response, onSelect, onCopied, onProgress, onDone, stopSignal }) {
+  // Remonta a cada novo stream (key no pai) → units/refs começam zerados.
+  const [units, setUnits] = useState(0);
+  const unitsRef = useRef(0);
+  const intervalRef = useRef(null);
+  const stopRef = useRef(stopSignal);
+  const doneRef = useRef(false);
+
+  useEffect(() => {
+    const total = countUnits(response);
+    intervalRef.current = setInterval(() => {
+      const n = unitsRef.current + 1;
+      unitsRef.current = n;
+      setUnits(n);
+      onProgress?.();
+      if (n >= total) {
+        clearInterval(intervalRef.current);
+        if (!doneRef.current) { doneRef.current = true; onDone?.(n, false); }
+      }
+    }, 26);
+    return () => clearInterval(intervalRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (stopSignal === stopRef.current) return;
+    stopRef.current = stopSignal;
+    clearInterval(intervalRef.current);
+    if (!doneRef.current) { doneRef.current = true; onDone?.(unitsRef.current, true); }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stopSignal]);
+
+  return (
+    <AIResponseRenderer response={sliceResponse(response, units)} variant="plain" onSelect={onSelect} onCopied={onCopied} />
+  );
+}
+
+/**
+ * IAScreen — assistente clínico do protótipo: chat direto (com streaming),
+ * histórico, onboarding de 1º acesso e ações por mensagem.
  */
 export function IAScreen({ onBack }) {
   const [conversations, setConversations] = usePersistedState('ia_conversations', []);
   const [onboarded, setOnboarded] = usePersistedState('ia_onboarded', false);
-  const [activeId, setActiveId] = useState('new'); // 'new' = chat novo · id = conversa salva
+  const [activeId, setActiveId] = useState('new');
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const [draft, setDraft] = useState('');
   const [showJump, setShowJump] = useState(false);
   const [pending, setPending] = useState({}); // { [convId]: count } — efêmero
+  const [streamingId, setStreamingId] = useState(null); // msg em streaming (efêmero)
+  const [streamNonce, setStreamNonce] = useState(0); // key p/ remontar o StreamingMessage
+  const [stopSignal, setStopSignal] = useState(0);
   const [toast, setToast] = useState(null);
-  const scrollerRef = useRef(null); // a área de mensagens (único elemento que rola)
+  const scrollerRef = useRef(null);
   const inputRef = useRef(null);
   const timers = useRef({});
   const toastTimer = useRef(null);
   const activeIdRef = useRef(activeId);
+
+  const active = activeId !== 'new' ? conversations.find((c) => c.id === activeId) : null;
+  const messages = active?.messages ?? [];
+  const pendingActive = active ? pending[active.id] || 0 : 0;
+  const busy = pendingActive > 0 || streamingId != null;
 
   const showToast = (message) => {
     setToast(message);
     if (toastTimer.current) clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setToast(null), 1800);
   };
-
-  const active = activeId !== 'new' ? conversations.find((c) => c.id === activeId) : null;
-  const messages = active?.messages ?? [];
-  const pendingActive = active ? pending[active.id] || 0 : 0;
 
   const isNearBottom = () => {
     const el = scrollerRef.current;
@@ -88,6 +138,7 @@ export function IAScreen({ onBack }) {
     if (el) el.scrollTo({ top: el.scrollHeight, behavior });
     setShowJump(false);
   };
+  const keepBottom = () => { if (isNearBottom()) scrollToBottom('auto'); };
 
   useEffect(() => { activeIdRef.current = activeId; }, [activeId]);
   useEffect(() => () => {
@@ -95,7 +146,7 @@ export function IAScreen({ onBack }) {
     if (toastTimer.current) clearTimeout(toastTimer.current);
   }, []);
 
-  // Sanitiza dados legados: remove placeholders "pending" persistidos por versões antigas.
+  // Sanitiza dados legados (placeholders pending de versões antigas).
   useEffect(() => {
     setConversations((prev) => {
       if (!prev.some((c) => c.messages.some((m) => m.pending))) return prev;
@@ -104,13 +155,11 @@ export function IAScreen({ onBack }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Foco no input ao abrir/trocar de chat (só em ponteiro fino p/ não forçar teclado no mobile).
-  // Em conversa com histórico, rola pro fim.
   useEffect(() => {
-    if (historyOpen) return;
+    if (historyOpen || aboutOpen) return;
     requestAnimationFrame(() => scrollToBottom('auto'));
     if (finePointer()) inputRef.current?.focus();
-  }, [activeId, historyOpen]);
+  }, [activeId, historyOpen, aboutOpen]);
 
   const openHistory = () => setHistoryOpen(true);
   const newChat = () => { setActiveId('new'); setHistoryOpen(false); setDraft(''); setShowJump(false); };
@@ -121,11 +170,17 @@ export function IAScreen({ onBack }) {
     if (activeId === id) setActiveId('new');
   };
 
+  const updateMessage = (convId, msgId, patch) =>
+    setConversations((prev) =>
+      prev.map((c) => (c.id === convId ? { ...c, messages: c.messages.map((m) => (m.id === msgId ? { ...m, ...patch } : m)) } : c)),
+    );
+
   const send = (displayText, lookup) => {
+    if (busy) return;
     const now = nowTs();
     const convId = active ? active.id : uid();
     const isNew = !active;
-    const userMsg = { id: uid(), role: 'user', text: displayText };
+    const userMsg = { id: uid(), role: 'user', text: displayText, lookup: lookup ?? displayText };
 
     setConversations((prev) => {
       if (isNew) {
@@ -145,16 +200,13 @@ export function IAScreen({ onBack }) {
     if (finePointer()) inputRef.current?.focus();
 
     const response = respond(lookup ?? displayText);
-    // Velocidade onde importa: dose/crítico respondem rápido; o resto "pensa" um pouco.
-    const fast = response.intent === 'dose' || response.intent === 'critico';
-    const delay = fast ? 450 : Math.min(1300, 600 + (response.blocks?.length || 1) * 160);
+    const think = response.intent === 'dose' || response.intent === 'critico' ? 280 : 460;
     const tid = uid();
     timers.current[tid] = setTimeout(() => {
       const viewing = activeIdRef.current === convId;
-      const stick = viewing && isNearBottom();
-      const aiMsg = { id: uid(), role: 'ai', response };
+      const aiId = uid();
       setConversations((prev) =>
-        prev.map((c) => (c.id === convId ? { ...c, messages: [...c.messages, aiMsg], updatedAt: nowTs() } : c)),
+        prev.map((c) => (c.id === convId ? { ...c, messages: [...c.messages, { id: aiId, role: 'ai', response }], updatedAt: nowTs() } : c)),
       );
       setPending((p) => {
         const n = { ...p };
@@ -162,23 +214,98 @@ export function IAScreen({ onBack }) {
         if (!n[convId]) delete n[convId];
         return n;
       });
-      if (viewing && stick) requestAnimationFrame(() => scrollToBottom('smooth'));
-      else if (viewing) setShowJump(true);
+      if (viewing) {
+        setStreamingId(aiId); // inicia o streaming dessa mensagem
+        setStreamNonce((n) => n + 1);
+        requestAnimationFrame(() => scrollToBottom('smooth'));
+      }
       delete timers.current[tid];
-    }, delay);
+    }, think);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const text = draft.trim();
-    if (!text) return;
+    if (!text || busy) return;
     send(text, text);
     setDraft('');
   };
 
-  // -------------------- ONBOARDING (1º acesso) --------------------
+  const handleStop = () => {
+    if (streamingId) {
+      setStopSignal((s) => s + 1); // o StreamingMessage finaliza no ponto atual
+      return;
+    }
+    // ainda "pensando": cancela a resposta pendente
+    Object.keys(timers.current).forEach((tid) => { clearTimeout(timers.current[tid]); delete timers.current[tid]; });
+    setPending((p) => { const n = { ...p }; if (active) delete n[active.id]; return n; });
+  };
+
+  const finishStream = (msgId, units, stopped) => {
+    if (stopped && active) updateMessage(active.id, msgId, { revealedUnits: units });
+    setStreamingId(null);
+    requestAnimationFrame(() => scrollToBottom('auto'));
+  };
+
+  const copyResponse = (resp) => {
+    try { navigator.clipboard?.writeText(responseToText(resp)); } catch { /* noop */ }
+    showToast('Resposta copiada');
+  };
+  const setFeedback = (msgId, value) => {
+    if (active) updateMessage(active.id, msgId, { feedback: value });
+    if (value) showToast('Obrigado pelo retorno');
+  };
+  const regenerate = (m) => {
+    if (busy || !active) return;
+    const idx = messages.findIndex((x) => x.id === m.id);
+    const prevUser = messages.slice(0, idx).reverse().find((x) => x.role === 'user');
+    // clone p/ nova identidade → o StreamingMessage reinicia o streaming
+    const response = { ...respond(prevUser?.lookup ?? prevUser?.text ?? '') };
+    updateMessage(active.id, m.id, { response, revealedUnits: undefined, feedback: undefined });
+    setStreamingId(m.id);
+    setStreamNonce((n) => n + 1);
+    requestAnimationFrame(() => scrollToBottom('smooth'));
+  };
+
+  const renderAi = (m, isLast) => {
+    if (m.id === streamingId) {
+      return (
+        <StreamingMessage
+          key={`stream-${streamNonce}`}
+          response={m.response}
+          onSelect={(value, meta) => send(meta?.label ?? value, value)}
+          onCopied={showToast}
+          onProgress={keepBottom}
+          onDone={(units, stopped) => finishStream(m.id, units, stopped)}
+          stopSignal={stopSignal}
+        />
+      );
+    }
+    const resp = m.revealedUnits != null ? sliceResponse(m.response, m.revealedUnits) : m.response;
+    return (
+      <>
+        <AIResponseRenderer
+          response={resp}
+          variant="plain"
+          onSelect={(value, meta) => send(meta?.label ?? value, value)}
+          onCopied={showToast}
+        />
+        <MessageActions
+          onCopy={() => copyResponse(resp)}
+          feedback={m.feedback ?? null}
+          onFeedback={(v) => setFeedback(m.id, v)}
+          onRegenerate={isLast && !busy ? () => regenerate(m) : undefined}
+        />
+      </>
+    );
+  };
+
+  // -------------------- ONBOARDING / SOBRE --------------------
   if (!onboarded) {
     return <IAOnboarding onContinue={() => setOnboarded(true)} onBack={onBack} />;
+  }
+  if (aboutOpen) {
+    return <IAOnboarding onContinue={() => setAboutOpen(false)} onBack={() => setAboutOpen(false)} ctaLabel="Fechar" />;
   }
 
   // -------------------- HISTÓRICO --------------------
@@ -230,6 +357,10 @@ export function IAScreen({ onBack }) {
               </ul>
             </>
           )}
+
+          <button type="button" className={styles.aboutLink} onClick={() => setAboutOpen(true)}>
+            <Icon name="informacao" size={16} /> Sobre a IA · avisos
+          </button>
         </div>
       </div>
     );
@@ -262,6 +393,7 @@ export function IAScreen({ onBack }) {
         {empty ? (
           <div className={styles.empty}>
             <span className={styles.emptyMark}><Icon name="sparkles" size={28} /></span>
+            <span className={styles.greeting}>{greetingPrefix()}</span>
             <h2 className={styles.emptyTitle}>Como posso ajudar no plantão?</h2>
             <p className={styles.emptyText}>
               Pergunte uma dose, descreva um caso, mande um exame ou peça um resumo — a resposta vem
@@ -271,19 +403,14 @@ export function IAScreen({ onBack }) {
           </div>
         ) : (
           <div className={styles.thread} role="log" aria-live="polite">
-            {messages.map((m) =>
+            {messages.map((m, i) =>
               m.role === 'user' ? (
                 <div key={m.id} className={styles.userRow}>
                   <div className={styles.userBubble}>{m.text}</div>
                 </div>
               ) : (
                 <div key={m.id} className={styles.aiRow}>
-                  <AIResponseRenderer
-                    response={m.response}
-                    variant="plain"
-                    onSelect={(value, meta) => send(meta?.label ?? value, value)}
-                    onCopied={showToast}
-                  />
+                  {renderAi(m, i === messages.length - 1)}
                 </div>
               ),
             )}
@@ -310,9 +437,15 @@ export function IAScreen({ onBack }) {
           aria-label="Mensagem para a IA"
           enterKeyHint="send"
         />
-        <button type="submit" className={styles.send} disabled={!draft.trim()} aria-label="Enviar">
-          <Icon name="executar" size={20} />
-        </button>
+        {busy ? (
+          <button type="button" className={styles.stop} onClick={handleStop} aria-label="Parar">
+            <span className={styles.stopSquare} />
+          </button>
+        ) : (
+          <button type="submit" className={styles.send} disabled={!draft.trim()} aria-label="Enviar">
+            <Icon name="executar" size={20} />
+          </button>
+        )}
       </form>
     </div>
   );

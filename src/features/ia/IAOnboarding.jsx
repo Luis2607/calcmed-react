@@ -6,7 +6,7 @@ import styles from './IAOnboarding.module.css';
  * ia_onboarded). Explica o que é a IA (assistente clínico do CalcMed, não um
  * chatbot genérico) e dá os avisos de segurança antes do uso.
  *
- * Props: onContinue() · onBack?()
+ * Props: onContinue() · onBack?() · ctaLabel?
  */
 const POINTS = [
   {
@@ -26,7 +26,7 @@ const POINTS = [
   },
 ];
 
-export function IAOnboarding({ onContinue, onBack }) {
+export function IAOnboarding({ onContinue, onBack, ctaLabel = 'Entendi, começar' }) {
   return (
     <div className={styles.screen}>
       {onBack && (
@@ -58,7 +58,7 @@ export function IAOnboarding({ onContinue, onBack }) {
 
       <div className={styles.footer}>
         <button type="button" className={styles.cta} onClick={onContinue}>
-          Entendi, começar
+          {ctaLabel}
         </button>
         <p className={styles.fineprint}>
           Demonstração · conteúdo clínico ilustrativo, validação final pelo time médico.
