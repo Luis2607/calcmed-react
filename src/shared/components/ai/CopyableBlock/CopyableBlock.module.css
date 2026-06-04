@@ -19,8 +19,7 @@
 }
 
 .text {
-  font-size: var(--fonte-tamanho-auxiliar);
-  line-height: 20px;
+  font: var(--ds-font-corpo-2);
   color: var(--ds-texto-padrao);
   padding-right: 40px;
   white-space: pre-wrap;

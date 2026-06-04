@@ -22,7 +22,6 @@
 }
 
 .content {
-  font-size: var(--fonte-tamanho-corpo);
-  line-height: 21px;
+  font: var(--ds-font-corpo); /* 16/24 */
   color: var(--ds-texto-padrao);
 }

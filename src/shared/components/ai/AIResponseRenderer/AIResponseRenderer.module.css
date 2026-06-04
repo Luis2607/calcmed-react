@@ -17,7 +17,7 @@
   margin-top: 2px;
 }
 .headingEmoji {
-  font-size: 16px;
+  font-size: var(--fonte-tamanho-input);
   line-height: 1;
 }
 

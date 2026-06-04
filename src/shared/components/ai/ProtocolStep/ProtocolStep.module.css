@@ -40,7 +40,7 @@
   height: 22px;
   border-radius: 50%;
   font-family: var(--fonte-mono);
-  font-size: 11px;
+  font-size: var(--fonte-tamanho-rotulo);
   font-weight: 700;
   border: 1px solid var(--ds-borda-padrao);
   color: var(--ds-texto-terciario);
@@ -48,8 +48,7 @@
 }
 
 .label {
-  font-size: var(--fonte-tamanho-auxiliar);
-  line-height: 18px;
+  font: var(--ds-font-corpo-2);
   color: var(--ds-texto-secundario);
 }
 
