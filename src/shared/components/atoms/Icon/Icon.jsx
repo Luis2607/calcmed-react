@@ -15,6 +15,7 @@ const ALIAS_MAP = {
   'barChart': 'escores',
   'swap': 'conversores',
   'clock': 'tempo',
+  'lock': 'cadeado',
   'info': 'informacao',
   'sun': 'modo-claro',
   'bell': 'notificacao',
@@ -379,6 +380,14 @@ export const Icon = ({ name, size = 24, className = '', color = 'currentColor', 
           <>
             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
             <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+          </>
+        );
+
+      case 'cadeado': // privacidade / dados — cadeado fechado
+        return (
+          <>
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </>
         );
 

@@ -1,100 +1,16 @@
-/* Modal de boas-vindas / avisos da IA — overlay sobre o chat (não tela cheia). */
-.overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 30;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--esp-4);
-  background: var(--ds-fundo-sobreposicao);
-  animation: iaModalFade 0.18s ease both;
-}
-
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-height: 100%;
-  border-radius: var(--ds-r-lg, 16px);
-  background: var(--ds-fundo-cartao);
-  box-shadow: var(--sombra-modal);
-  overflow: hidden;
-  animation: iaModalUp 0.24s cubic-bezier(0.2, 0, 0.2, 1) both;
-}
-
-@keyframes iaModalFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes iaModalUp {
-  from { opacity: 0; transform: translateY(12px) scale(0.98); }
-  to { opacity: 1; transform: none; }
-}
-
-.close {
-  position: absolute;
-  top: var(--esp-3);
-  right: var(--esp-3);
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border: 0;
-  background: transparent;
-  color: var(--ds-texto-terciario);
-  cursor: pointer;
-  border-radius: var(--radius-pill);
-}
-.close:hover { background: var(--ds-fundo-hover); color: var(--ds-texto-padrao); }
-
-.scroll {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-4);
-  padding: var(--esp-6) var(--esp-5) var(--esp-4);
-  scrollbar-width: none;
-}
-.scroll::-webkit-scrollbar { width: 0; display: none; }
-
-.mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-card);
-  background: var(--interativo-primario-tint-08);
-  color: var(--ds-interativo-primario);
-}
-
-.title {
-  font-size: 26px;
-  line-height: 32px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--ds-texto-padrao);
-}
+/* Corpo do InfoSheet de boas-vindas/avisos. Tipografia via tokens do DS. */
 
 .intro {
-  font-size: var(--fonte-tamanho-corpo);
-  line-height: 23px;
+  font: var(--ds-font-corpo);
   color: var(--ds-texto-secundario);
+  margin-bottom: var(--esp-5);
 }
-.intro strong { color: var(--ds-texto-padrao); font-weight: 700; }
 
 .points {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: var(--esp-4);
-  margin-top: var(--esp-1);
 }
 
 .point {
@@ -103,61 +19,37 @@
   gap: var(--esp-3);
 }
 
-.pointIcon {
+.icon {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
-  font-size: 17px;
   border-radius: var(--ds-r-sm, 8px);
   background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-secundario);
 }
+.icon[data-tone='warning'] { background: var(--ds-retorno-atencao-fundo); color: var(--ds-retorno-atencao); }
+.icon[data-tone='success'] { background: var(--ds-retorno-sucesso-fundo); color: var(--ds-retorno-sucesso); }
 
-.pointText {
+.text {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 .pointTitle {
-  font-size: var(--fonte-tamanho-corpo);
+  font: var(--ds-font-rot-campo);
   font-weight: 800;
   color: var(--ds-texto-padrao);
 }
 .pointDesc {
-  font-size: var(--fonte-tamanho-auxiliar);
-  line-height: 19px;
+  font: var(--ds-font-corpo-2);
   color: var(--ds-texto-secundario);
 }
 
-.footer {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--esp-3);
-  padding: var(--esp-4) var(--esp-5) var(--esp-5);
-  border-top: 1px solid var(--ds-borda-sutil);
-}
-
-.cta {
-  width: 100%;
-  height: var(--input-altura);
-  border: 0;
-  border-radius: var(--radius-button);
-  background: var(--ds-interativo-primario);
-  color: var(--ds-texto-sobre-destaque);
-  font-family: var(--fonte-base);
-  font-size: var(--fonte-tamanho-input);
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
-.cta:hover { background: var(--ds-interativo-primario-hover); }
-
 .fineprint {
-  font-size: var(--fonte-tamanho-micro);
-  line-height: 16px;
+  font: var(--ds-font-legenda);
   color: var(--ds-texto-terciario);
-  text-align: center;
+  margin-top: var(--esp-5);
 }
