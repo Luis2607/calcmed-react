@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useCADState } from './hooks/useCADState';
 import {
-  fmtCronometro, fmtMMSS, fmtHMS, fmtDuracao, formatHora, fmtNum,
+  fmtCronometro, fmtMMSS, fmtHMS, fmtDuracao, formatHora, fmtNum, parseNum,
   labelModo, POTASSIO_OPCOES,
   recomendacaoReaval, recomendacaoKReaval, anionGap, avaliarAG,
   subtituloResolucaoHgt, subtituloResolucaoHco3, subtituloResolucaoAg,
@@ -9,6 +9,7 @@ import {
   metaGlicemiaPediatrica, dentroSanity,
   AGUARDO_K_SEGUNDOS, REAVAL_SEGUNDOS, BLOQUEIO_PEDIATRICO_SEGUNDOS,
   HGT_REAVAL_MIN, HGT_REAVAL_MAX,
+  IDADE_MAX, PESO_MAX,
 } from './cadData';
 import { CAD_MODAIS, CadModalBody } from './cadModais';
 import { ProtocolShell } from '../../shared/components/templates/ProtocolShell/ProtocolShell';
@@ -163,7 +164,9 @@ export function CADFlow({ onBack }) {
     const ultHgt = (s.medidas || []).filter((m) => m.hgt != null).slice(-1)[0];
     setMedHgtAnterior(ultHgt ? String(ultHgt.hgt) : '');
     setMedHgt('');
-    setMedInsulina(s.doseInsulinaUh != null ? fmtNum(s.doseInsulinaUh) : (s.doseUh || ''));
+    // type=number rejeita vírgula; usa ponto decimal no value
+    const doseNum = s.doseInsulinaUh != null ? s.doseInsulinaUh : (s.numPeso != null ? s.numPeso * 0.1 : null);
+    setMedInsulina(doseNum != null ? Number(doseNum).toFixed(1) : '');
     setMedGaso(false);
     setMedPh(''); setMedHco3(''); setMedNa(''); setMedCl(''); setMedK(''); setMedBohb('');
     setMedidaOpen(true);
@@ -266,6 +269,12 @@ export function CADFlow({ onBack }) {
   const metaPed = metaGlicemiaPediatrica(s.modo);
   const glicemiaImplausivel = s.glicemia !== '' && !dentroSanity('glicemia', parseFloat(String(s.glicemia).replace(',', '.')));
 
+  // Validação faixa peso e idade (bloquear + erro inline).
+  const numIdadeVal = parseNum(s.idade);
+  const numPesoVal = parseNum(s.peso);
+  const idadeForaFaixa = s.idade !== '' && (!isNaN(numIdadeVal)) && (numIdadeVal <= 0 || numIdadeVal > IDADE_MAX);
+  const pesoForaFaixa = s.peso !== '' && (!isNaN(numPesoVal)) && (numPesoVal <= 0 || numPesoVal > PESO_MAX);
+
   const handleCompartilhar = (c) => {
     const texto = `CalcMed · CAD encerrada\nPaciente: ${c.initials}\nProtocolo: ${labelModo(c.modo)}\nDuração: ${c.duration}\nData: ${c.date}`;
     if (navigator.share) navigator.share({ title: 'Caso CAD', text: texto }).catch(() => {});
@@ -279,8 +288,30 @@ export function CADFlow({ onBack }) {
 
       <ClinicalCard variant="plain" title="Dados de triagem">
         <div className={styles.row2}>
-          <InputField label="Idade" type="number" mono value={s.idade} onChange={s.setIdade} placeholder="Ex.: 32" unit="anos" showUnit />
-          <InputField label="Peso" type="number" mono value={s.peso} onChange={s.setPeso} placeholder="Ex.: 70" unit="kg" showUnit />
+          <InputField
+            label="Idade"
+            type="number"
+            mono
+            value={s.idade}
+            onChange={s.setIdade}
+            placeholder="Ex.: 32"
+            unit="anos"
+            showUnit
+            state={idadeForaFaixa ? 'error' : 'default'}
+            helperText={idadeForaFaixa ? `Valor fora da faixa (1–${IDADE_MAX} anos).` : undefined}
+          />
+          <InputField
+            label="Peso"
+            type="number"
+            mono
+            value={s.peso}
+            onChange={s.setPeso}
+            placeholder="Ex.: 70"
+            unit="kg"
+            showUnit
+            state={pesoForaFaixa ? 'error' : 'default'}
+            helperText={pesoForaFaixa ? `Valor fora da faixa (1–${PESO_MAX} kg).` : undefined}
+          />
         </div>
       </ClinicalCard>
 

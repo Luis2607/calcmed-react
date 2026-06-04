@@ -157,7 +157,7 @@ export function sodioCorrigido(sodio, glicemia) {
   if (naCorr < 135) conduta = 'Mantenha NaCl 0,9%.';
   else if (naCorr < 150) conduta = 'Troque para NaCl 0,45%.';
   else conduta = 'Use NaCl 0,45% e monitore.';
-  return { valor: naCorr, valorFmt: naCorr.toFixed(1), conduta };
+  return { valor: naCorr, valorFmt: fmtNum(naCorr, 1), conduta };
 }
 
 // Faixas de potássio (golden modal relancar-k · 4 faixas).
@@ -203,7 +203,7 @@ export const AGUARDO_K_SEGUNDOS = 2 * 60 * 60; // 2h de reposição KCl
 export function doseInsulina(peso) {
   const p = parseNum(peso);
   if (isNaN(p) || p <= 0) return null;
-  return (p * 0.1).toFixed(1);
+  return fmtNum(p * 0.1, 1);
 }
 
 // Meta de glicemia pediátrica na T3 (golden ajustarDoseT3Pediatrico).

@@ -148,6 +148,10 @@ export function useCADState() {
     reiniciarReaval();
     if (m.hgt != null) registrarEvento(`HGT ${m.hgt} mg/dL`, 'medida');
     if (m.hgt != null && m.hgt < 200) setResolucao((r) => ({ ...r, hgt: true }));
+    // HCO3 ≥ 18 ou pH ≥ 7,30 fecha critério de acidose (independente da ordem de entrada na T5).
+    if ((m.hco3 != null && m.hco3 >= 18) || (m.ph != null && m.ph >= 7.3)) {
+      setResolucao((r) => ({ ...r, hco3: true }));
+    }
     // K novo < 3,5 suspende infusão e volta pra reposição.
     if (m.k != null && m.k < 3.5) {
       setPotassio('baixo');
