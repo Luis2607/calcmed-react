@@ -34,8 +34,9 @@ function ChecklistFromBlock({ block }) {
   );
 }
 
-/** Mapeia um bloco do payload → componente do DS. */
-function renderBlock(block, i) {
+/** Mapeia um bloco do payload → componente do DS. `onSelect(value)` torna
+ *  seletor de contexto e chips interativos (continuação da conversa). */
+function renderBlock(block, i, onSelect) {
   switch (block.type) {
     case 'primary_action':
       return (
@@ -68,7 +69,14 @@ function renderBlock(block, i) {
         </AlertCard>
       );
     case 'context_selector':
-      return <ContextSelector key={i} question={block.question} options={block.options} />;
+      return (
+        <ContextSelector
+          key={i}
+          question={block.question}
+          options={block.options}
+          onSelect={onSelect ? (value) => onSelect(value) : undefined}
+        />
+      );
     case 'copyable':
       return <CopyableBlock key={i} text={block.text} variants={block.variants} />;
     case 'expandable':
@@ -80,7 +88,14 @@ function renderBlock(block, i) {
     case 'limitation':
       return <LimitationNote key={i} title={block.title}>{block.content}</LimitationNote>;
     case 'chips':
-      return <SuggestionChips key={i} label={block.label} items={block.items} />;
+      return (
+        <SuggestionChips
+          key={i}
+          label={block.label}
+          items={block.items}
+          onSelect={onSelect ? (item) => onSelect(item.value ?? item.label, item) : undefined}
+        />
+      );
     case 'text':
       return <p key={i} style={{ fontSize: 'var(--fonte-tamanho-corpo)', lineHeight: '21px', color: 'var(--ds-texto-secundario)' }}>{block.content}</p>;
     default:
@@ -97,10 +112,12 @@ function renderBlock(block, i) {
  *  - response: {
  *      intent, risk_level, title, context,
  *      blocks: [{ type, ... }],
- *      actions: [{ label, type }]   // viram SuggestionChips no rodapé
+ *      actions: [{ label, type, value }]   // viram SuggestionChips no rodapé
  *    }
+ *  - onSelect(value, meta): continuação da conversa ao tocar seletor/chip/ação
+ *    (opcional; sem ele a resposta é apenas visual, como na galeria do DS).
  */
-export const AIResponseRenderer = ({ response }) => {
+export const AIResponseRenderer = ({ response, onSelect }) => {
   if (!response) return null;
   const { intent, risk_level: risk, title, context, blocks = [], actions = [] } = response;
 
@@ -114,9 +131,12 @@ export const AIResponseRenderer = ({ response }) => {
           intentLabel={intent ? INTENT_LABELS[intent] ?? intent : undefined}
         />
       )}
-      {blocks.map(renderBlock)}
+      {blocks.map((block, i) => renderBlock(block, i, onSelect))}
       {actions.length > 0 && (
-        <SuggestionChips items={actions.map((a) => ({ label: a.label }))} />
+        <SuggestionChips
+          items={actions.map((a) => ({ label: a.label, value: a.value }))}
+          onSelect={onSelect ? (item) => onSelect(item.value ?? item.label, item) : undefined}
+        />
       )}
     </AIResponse>
   );

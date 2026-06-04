@@ -6,6 +6,7 @@ import { PCRFlow } from './features/pcr/PCRFlow';
 import { AVCFlow } from './features/avc/AVCFlow';
 import { Home } from './features/home/Home';
 import { HubHome } from './features/hub/HubHome';
+import { IAScreen } from './features/ia/IAScreen';
 import { ColorGallery } from './features/ds/ColorGallery';
 import { DsDashboard } from './features/ds/DsDashboard';
 import { TypographyGallery } from './features/ds/TypographyGallery';
@@ -53,8 +54,9 @@ export default function App() {
   const isSepseReact = visibleRoute === 'sepse-react' || visibleRoute === 'sepse';
   const isPcrReact = visibleRoute === 'pcr-react' || visibleRoute === 'pcr';
   const isAvcReact = visibleRoute === 'avc-react' || visibleRoute === 'avc';
+  const isIA = visibleRoute === 'ia';
   const isKnownRoute =
-    visibleRoute === 'home' || visibleRoute === 'hub' || isGallery || isSepseReact || isPcrReact || isAvcReact || Boolean(activeProtocol);
+    visibleRoute === 'home' || visibleRoute === 'hub' || isIA || isGallery || isSepseReact || isPcrReact || isAvcReact || Boolean(activeProtocol);
   const showHome = !isGallery && (visibleRoute === 'home' || !isKnownRoute);
 
   const switchTo = (mode) => {
@@ -102,6 +104,8 @@ export default function App() {
           {isSpacingGallery && <SpacingGallery />}
 
           {isInputGallery && <InputGallery />}
+
+          {isIA && <IAScreen onBack={goHome} />}
 
           {visibleRoute === 'hub' && (
             <HubHome

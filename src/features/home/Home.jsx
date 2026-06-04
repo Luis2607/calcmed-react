@@ -45,7 +45,7 @@ const NAV = [
   { label: 'Início', icon: 'home', active: true },
   { label: 'Busca', icon: 'search' },
   { label: 'Escala', icon: 'calendar' },
-  { label: 'IA', icon: 'sparkles' },
+  { label: 'IA', icon: 'sparkles', route: 'ia' },
   { label: 'Menu', icon: 'menu' },
 ];
 
@@ -231,6 +231,7 @@ export function Home({ onNavigate, isDark = false, onToggleTheme }) {
             key={tab.label}
             type="button"
             className={`${styles.tab} ${tab.active ? styles.tabActive : ''}`}
+            onClick={tab.route ? () => onNavigate(tab.route) : undefined}
           >
             <Icon name={tab.icon} size={24} />
             {tab.label}
