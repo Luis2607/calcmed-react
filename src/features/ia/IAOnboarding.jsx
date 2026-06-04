@@ -2,11 +2,11 @@ import { Icon } from '../../shared/components/atoms/Icon';
 import styles from './IAOnboarding.module.css';
 
 /**
- * IAOnboarding — tela de 1º acesso à IA do CalcMed (mostrada uma vez, flag
- * ia_onboarded). Explica o que é a IA (assistente clínico do CalcMed, não um
- * chatbot genérico) e dá os avisos de segurança antes do uso.
+ * IAOnboarding — modal de boas-vindas da IA do CalcMed (1º acesso, flag
+ * ia_onboarded) e de "rever avisos". Aparece como overlay sobre o chat (não
+ * toma a tela inteira): explica o que é a IA e dá os avisos de segurança.
  *
- * Props: onContinue() · onBack?() · ctaLabel?
+ * Props: onContinue() · onClose?() (X / backdrop) · ctaLabel?
  */
 const POINTS = [
   {
@@ -26,43 +26,45 @@ const POINTS = [
   },
 ];
 
-export function IAOnboarding({ onContinue, onBack, ctaLabel = 'Entendi, começar' }) {
+export function IAOnboarding({ onContinue, onClose, ctaLabel = 'Entendi, começar' }) {
   return (
-    <div className={styles.screen}>
-      {onBack && (
-        <button type="button" className={styles.back} onClick={onBack} aria-label="Voltar ao app">
-          <Icon name="voltar" size={22} />
-        </button>
-      )}
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.card} role="dialog" aria-modal="true" aria-label="Sobre a IA do CalcMed" onClick={(e) => e.stopPropagation()}>
+        {onClose && (
+          <button type="button" className={styles.close} onClick={onClose} aria-label="Fechar">
+            <Icon name="fechar" size={20} />
+          </button>
+        )}
 
-      <div className={styles.scroll}>
-        <span className={styles.mark}><Icon name="sparkles" size={30} /></span>
-        <h1 className={styles.title}>IA do CalcMed</h1>
-        <p className={styles.intro}>
-          O assistente clínico do CalcMed para urgência e emergência. As respostas vêm
-          <strong> estruturadas e com o próximo passo</strong> — não é um chatbot genérico.
-        </p>
+        <div className={styles.scroll}>
+          <span className={styles.mark}><Icon name="sparkles" size={28} /></span>
+          <h1 className={styles.title}>IA do CalcMed</h1>
+          <p className={styles.intro}>
+            O assistente clínico do CalcMed para urgência e emergência. As respostas vêm
+            <strong> estruturadas e com o próximo passo</strong> — não é um chatbot genérico.
+          </p>
 
-        <ul className={styles.points}>
-          {POINTS.map((p) => (
-            <li key={p.title} className={styles.point}>
-              <span className={styles.pointIcon} aria-hidden="true">{p.emoji}</span>
-              <span className={styles.pointText}>
-                <span className={styles.pointTitle}>{p.title}</span>
-                <span className={styles.pointDesc}>{p.desc}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
+          <ul className={styles.points}>
+            {POINTS.map((p) => (
+              <li key={p.title} className={styles.point}>
+                <span className={styles.pointIcon} aria-hidden="true">{p.emoji}</span>
+                <span className={styles.pointText}>
+                  <span className={styles.pointTitle}>{p.title}</span>
+                  <span className={styles.pointDesc}>{p.desc}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <div className={styles.footer}>
-        <button type="button" className={styles.cta} onClick={onContinue}>
-          {ctaLabel}
-        </button>
-        <p className={styles.fineprint}>
-          Demonstração · conteúdo clínico ilustrativo, validação final pelo time médico.
-        </p>
+        <div className={styles.footer}>
+          <button type="button" className={styles.cta} onClick={onContinue}>
+            {ctaLabel}
+          </button>
+          <p className={styles.fineprint}>
+            Demonstração · conteúdo clínico ilustrativo, validação final pelo time médico.
+          </p>
+        </div>
       </div>
     </div>
   );
