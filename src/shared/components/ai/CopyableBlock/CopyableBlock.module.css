@@ -22,7 +22,7 @@
   font-size: var(--fonte-tamanho-auxiliar);
   line-height: 20px;
   color: var(--ds-texto-padrao);
-  padding-right: 76px;
+  padding-right: 40px;
   white-space: pre-wrap;
 }
 
@@ -32,14 +32,13 @@
   right: var(--esp-2);
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--ds-borda-padrao);
   background: var(--ds-fundo-cartao);
   color: var(--ds-interativo-primario);
-  font-size: var(--fonte-tamanho-micro);
-  font-weight: 700;
   cursor: pointer;
 }
 

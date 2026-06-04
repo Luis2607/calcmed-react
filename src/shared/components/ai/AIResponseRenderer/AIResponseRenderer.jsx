@@ -37,7 +37,7 @@ function ChecklistFromBlock({ block }) {
 
 /** Mapeia um bloco do payload → componente do DS. `onSelect(value)` torna
  *  seletor de contexto e chips interativos (continuação da conversa). */
-function renderBlock(block, i, onSelect) {
+function renderBlock(block, i, onSelect, onCopied) {
   switch (block.type) {
     case 'primary_action':
       return (
@@ -46,7 +46,7 @@ function renderBlock(block, i, onSelect) {
         </PrimaryAction>
       );
     case 'dose':
-      return <DoseBlock key={i} value={block.value} unit={block.unit} via={block.via} copyText={block.copyText} />;
+      return <DoseBlock key={i} value={block.value} unit={block.unit} via={block.via} copyText={block.copyText} onCopied={onCopied} />;
     case 'table':
       return <Table key={i} columns={block.columns} rows={block.rows} caption={block.caption} getRowTone={block.getRowTone} />;
     case 'interpretation':
@@ -79,7 +79,7 @@ function renderBlock(block, i, onSelect) {
         />
       );
     case 'copyable':
-      return <CopyableBlock key={i} text={block.text} variants={block.variants} />;
+      return <CopyableBlock key={i} text={block.text} variants={block.variants} onCopied={onCopied} />;
     case 'expandable':
       return (
         <ExpandableSection key={i} title={block.title} hint={block.hint} defaultOpen={block.defaultOpen}>
@@ -119,8 +119,9 @@ function renderBlock(block, i, onSelect) {
  *    }
  *  - onSelect(value, meta): continuação da conversa ao tocar seletor/chip/ação
  *    (opcional; sem ele a resposta é apenas visual, como na galeria do DS).
+ *  - onCopied(msg): callback quando um bloco copiável é copiado (ex.: toast).
  */
-export const AIResponseRenderer = ({ response, onSelect, variant = 'card' }) => {
+export const AIResponseRenderer = ({ response, onSelect, onCopied, variant = 'card' }) => {
   if (!response) return null;
   const { intent, risk_level: risk, title, context, blocks = [], actions = [] } = response;
 
@@ -134,7 +135,7 @@ export const AIResponseRenderer = ({ response, onSelect, variant = 'card' }) => 
           intentLabel={intent ? INTENT_LABELS[intent] ?? intent : undefined}
         />
       )}
-      {blocks.map((block, i) => renderBlock(block, i, onSelect))}
+      {blocks.map((block, i) => renderBlock(block, i, onSelect, onCopied))}
       {actions.length > 0 && (
         <SuggestionChips
           items={actions.map((a) => ({ label: a.label, value: a.value }))}

@@ -12,12 +12,18 @@ import styles from './CopyableBlock.module.css';
  * Props:
  *  - text: texto único (quando não há variações)
  *  - variants: [{ label, text }] — alterna o formato; sobrepõe `text`
+ *  - onCopied(msg): callback após copiar (ex.: abrir toast)
  */
-export const CopyableBlock = ({ text, variants }) => {
+export const CopyableBlock = ({ text, variants, onCopied }) => {
   const list = variants && variants.length ? variants : null;
   const [active, setActive] = useState(0);
   const { copied, copy } = useCopy();
   const current = list ? list[active]?.text : text;
+
+  const handleCopy = () => {
+    copy(current);
+    onCopied?.('Texto copiado');
+  };
 
   return (
     <div className={styles.block}>
@@ -35,11 +41,11 @@ export const CopyableBlock = ({ text, variants }) => {
         <button
           type="button"
           className={styles.copy}
-          onClick={() => copy(current)}
+          onClick={handleCopy}
           aria-label={copied ? 'Texto copiado' : 'Copiar texto'}
+          title="Copiar"
         >
           <Icon name={copied ? 'confirmacao' : 'copiar'} size={15} />
-          {copied ? 'Copiado' : 'Copiar'}
         </button>
       </div>
     </div>

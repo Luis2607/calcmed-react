@@ -326,6 +326,23 @@
 .jump:hover { background: var(--ds-fundo-hover); }
 
 /* ---------- Composer (sticky na base, como a TabBar da Home) ---------- */
+/* ---------- Toast (topo, sobre a conversa) ---------- */
+.toastHost {
+  position: absolute;
+  top: var(--esp-3);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  width: max-content;
+  max-width: calc(100% - var(--esp-8));
+  animation: iaToastIn 0.22s cubic-bezier(0.2, 0, 0.2, 1) both;
+}
+
+@keyframes iaToastIn {
+  from { opacity: 0; transform: translate(-50%, -8px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
 /* ---------- Composer (travado na base do app-shell) ---------- */
 .composer {
   flex-shrink: 0;
