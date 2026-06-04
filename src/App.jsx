@@ -59,7 +59,15 @@ export default function App() {
     <div className="page-wrapper">
       <div className={`viewport-container ${isPediatricMode ? 'modo-pediatrico' : ''} ${isDark ? 'modo-escuro' : ''}`.trim()}>
         <div className="scroll-container">
-          {showHome && <Home onNavigate={handleNavigate} isDark={isDark} onToggleTheme={() => setIsDark(!isDark)} />}
+          {showHome && (
+            <Home
+              onNavigate={handleNavigate}
+              isDark={isDark}
+              onToggleTheme={() => setIsDark(!isDark)}
+              isPediatric={isPediatricMode}
+              setIsPediatric={setIsPediatricMode}
+            />
+          )}
 
           {isSheetGallery && <SheetGallery />}
 

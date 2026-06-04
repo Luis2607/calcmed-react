@@ -22,6 +22,10 @@ export function HubHome({ onNavigate, isPediatric, setIsPediatric }) {
     }
   };
 
+  // PCR, Sepse e AVC já foram portados para React; usa rota React em vez do iframe legado.
+  const REACT_ROUTES = { pcr: 'pcr-react', sepse: 'sepse-react', avc: 'avc-react' };
+  const getRoute = (id) => REACT_ROUTES[id] ?? id;
+
   const getDomainClass = (domain) => {
     switch (domain) {
       case 'protocolos':
@@ -89,7 +93,7 @@ export function HubHome({ onNavigate, isPediatric, setIsPediatric }) {
               <button
                 key={protocol.id}
                 type="button"
-                onClick={() => onNavigate(protocol.id)}
+                onClick={() => onNavigate(getRoute(protocol.id))}
                 className={`${styles.card} ${getDomainClass(protocol.domain)}`}
               >
                 <div>

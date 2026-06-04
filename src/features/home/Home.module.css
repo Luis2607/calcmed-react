@@ -422,7 +422,7 @@
   background: transparent;
   padding: 0;
   width: 100%;
-  cursor: default;
+  cursor: pointer;
 }
 
 .grid {
