@@ -112,8 +112,36 @@
 
 /* Proximidade (Gestalt): a pergunta e a resposta dela formam UM grupo; cada
    nova pergunta abre o dobro de espaço pra se descolar do par anterior. */
-.userRow { display: flex; justify-content: flex-end; }
+.userRow { display: flex; align-items: center; justify-content: flex-end; gap: var(--esp-1); }
 .userRow:not(:first-child) { margin-top: var(--esp-3); }
+
+/* Editar/reenviar a última pergunta — discreto (aparece no hover/foco; sempre
+   visível no toque). */
+.editBtn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  color: var(--ds-texto-terciario);
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+  opacity: 0;
+  transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.userRow:hover .editBtn { opacity: 1; }
+.editBtn:hover { background: var(--ds-fundo-hover); color: var(--ds-texto-padrao); }
+.editBtn:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--ds-borda-foco);
+  outline-offset: 2px;
+}
+@media (hover: none) {
+  .editBtn { opacity: 1; }
+}
 .userBubble {
   max-width: 82%;
   padding: var(--esp-2) var(--esp-3);
@@ -356,7 +384,7 @@
 .composer {
   flex-shrink: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-end; /* botão enviar fica na base quando o textarea cresce */
   gap: var(--esp-2);
   padding: var(--esp-3) var(--esp-4);
   background: var(--ds-fundo-cartao);
@@ -365,15 +393,22 @@
 .input {
   flex: 1;
   min-width: 0;
-  height: var(--input-altura);
-  padding: 0 var(--esp-4);
+  min-height: var(--input-altura);
+  max-height: 128px; /* ~5 linhas; depois rola por dentro */
+  padding: var(--esp-3) var(--esp-4);
   border: 1px solid var(--ds-input-borda);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-card);
   background: var(--ds-input-fundo);
   color: var(--ds-input-texto);
   font-family: var(--fonte-base);
   font-size: var(--fonte-tamanho-input);
+  line-height: 1.4;
+  resize: none;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: block;
 }
+.input::-webkit-scrollbar { width: 0; display: none; }
 .input::placeholder { color: var(--ds-input-placeholder); }
 .input:focus { outline: none; border-color: var(--ds-input-borda-foco); }
 

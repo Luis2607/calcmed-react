@@ -16,6 +16,20 @@ const truncate = (s, n = 42) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
 const finePointer = () =>
   typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: fine)').matches;
 
+// Composer multilinha: cresce de 1 até ~5 linhas (depois rola). max-height no CSS.
+const autoGrow = (el) => {
+  if (!el) return;
+  el.style.height = 'auto';
+  el.style.height = `${el.scrollHeight}px`;
+};
+// Enter envia · Shift+Enter quebra linha · respeita composição IME.
+const composerKeyDown = (e, submit) => {
+  if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+    e.preventDefault();
+    submit(e);
+  }
+};
+
 function greetingPrefix() {
   const h = new Date().getHours();
   if (h < 12) return 'Bom dia';
@@ -242,6 +256,7 @@ export function IAScreen({ onBack }) {
     if (!text || busy) return;
     send(text, text);
     setDraft('');
+    requestAnimationFrame(() => autoGrow(inputRef.current)); // volta o textarea a 1 linha
   };
 
   // Composer do histórico: começa uma conversa NOVA e já abre o chat.
@@ -252,6 +267,7 @@ export function IAScreen({ onBack }) {
     setHistoryOpen(false);
     send(text, text, true);
     setDraft('');
+    requestAnimationFrame(() => autoGrow(inputRef.current));
   };
 
   const handleStop = () => {
@@ -294,6 +310,23 @@ export function IAScreen({ onBack }) {
     setStreamingId(m.id);
     setStreamNonce((n) => n + 1);
     requestAnimationFrame(() => scrollToBottom('smooth'));
+  };
+
+  // Editar/reenviar a própria pergunta: devolve o texto ao composer e remove
+  // essa pergunta + o que veio depois (o usuário reformula e manda de novo).
+  const editMessage = (m) => {
+    if (busy || !active) return;
+    const idx = messages.findIndex((x) => x.id === m.id);
+    if (idx < 0) return;
+    setConversations((prev) =>
+      prev.map((c) => (c.id === active.id ? { ...c, messages: c.messages.slice(0, idx) } : c)),
+    );
+    setStreamingId(null);
+    setDraft(m.text);
+    requestAnimationFrame(() => {
+      autoGrow(inputRef.current);
+      inputRef.current?.focus();
+    });
   };
 
   const renderAi = (m, isLast) => {
@@ -394,10 +427,13 @@ export function IAScreen({ onBack }) {
         </div>
 
         <form className={styles.composer} onSubmit={handleSubmitNew}>
-          <input
+          <textarea
+            ref={inputRef}
             className={styles.input}
             value={draft}
-            onChange={(e) => setDraft(e.target.value)}
+            rows={1}
+            onChange={(e) => { setDraft(e.target.value); autoGrow(e.target); }}
+            onKeyDown={(e) => composerKeyDown(e, handleSubmitNew)}
             placeholder="Começar uma nova conversa…"
             aria-label="Nova mensagem para a IA"
             enterKeyHint="send"
@@ -414,6 +450,7 @@ export function IAScreen({ onBack }) {
 
   // -------------------- CHAT (padrão) --------------------
   const empty = messages.length === 0;
+  const lastUserIdx = messages.map((x) => x.role).lastIndexOf('user');
   return (
     <div className={styles.screen}>
       <ProtocolHeader
@@ -448,6 +485,17 @@ export function IAScreen({ onBack }) {
             {messages.map((m, i) =>
               m.role === 'user' ? (
                 <div key={m.id} className={styles.userRow}>
+                  {i === lastUserIdx && !busy && (
+                    <button
+                      type="button"
+                      className={styles.editBtn}
+                      onClick={() => editMessage(m)}
+                      aria-label="Editar e reenviar"
+                      title="Editar"
+                    >
+                      <Icon name="editar" size={14} />
+                    </button>
+                  )}
                   <div className={styles.userBubble}>{m.text}</div>
                 </div>
               ) : (
@@ -486,11 +534,13 @@ export function IAScreen({ onBack }) {
       )}
 
       <form className={styles.composer} onSubmit={handleSubmit}>
-        <input
+        <textarea
           ref={inputRef}
           className={styles.input}
           value={draft}
-          onChange={(e) => setDraft(e.target.value)}
+          rows={1}
+          onChange={(e) => { setDraft(e.target.value); autoGrow(e.target); }}
+          onKeyDown={(e) => composerKeyDown(e, handleSubmit)}
           placeholder="Dose, conduta, exame…"
           aria-label="Mensagem para a IA"
           enterKeyHint="send"
