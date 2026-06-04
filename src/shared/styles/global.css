@@ -78,11 +78,11 @@ html, body {
    Sobe o FAB um pouco para não cobrir esses elementos. */
 @media (max-width: 430px) {
   .app-mode-switch {
-    bottom: 76px;
+    bottom: 104px;
     left: 12px;
   }
   .app-mode-switch--right {
-    bottom: 76px;
+    bottom: 104px;
     right: 12px;
     left: auto;
   }
