@@ -109,8 +109,31 @@ export function SCAFlow({ onBack }) {
 
   const setPacienteCampo = (campo, valor) => s.setPaciente({ ...s.paciente, [campo]: valor });
 
-  const dadosT1Ok = !isNaN(idadeNum) && !isNaN(pesoNum) && !!s.paciente.queixa;
+  // Validação de faixa: peso > 0 e ≤ 350 kg; idade > 0 e ≤ 120 anos.
+  const idadeValida = !isNaN(idadeNum) && idadeNum > 0 && idadeNum <= 120;
+  const pesoValido = !isNaN(pesoNum) && pesoNum > 0 && pesoNum <= 350;
+  const idadeErro = s.paciente.idade !== '' && s.paciente.idade != null && !idadeValida
+    ? 'Idade deve estar entre 1 e 120 anos.' : null;
+  const pesoErro = s.paciente.peso !== '' && s.paciente.peso != null && !pesoValido
+    ? 'Peso deve estar entre 1 e 350 kg.' : null;
+
+  const dadosT1Ok = idadeValida && pesoValido && !!s.paciente.queixa;
   const t2Ok = tela2Valida({ ecgClasse: s.ecgClasse, stemiLocalizacao: s.stemiLocalizacao, sinaisOmi: s.sinaisOmi, lockSoftOmiConfirmado: s.lockSoftOmiConfirmado });
+
+  // Gate T3: exige escore preenchido E troponina informada (ou pulada).
+  const tropInformada = (s.tropInicial !== null && s.tropInicial !== '') || s.tropPulada;
+  const t3Ok = escore.preenchido && tropInformada;
+  const t3Hint = !escore.preenchido && !tropInformada
+    ? 'Preencha o escore e informe a troponina para continuar.'
+    : !escore.preenchido
+      ? 'Preencha ao menos 1 escore para continuar.'
+      : !tropInformada
+        ? 'Informe a troponina (ou pulse) para continuar.'
+        : decisao.titulo;
+
+  // Gate T4: exige escolha do antiagregante P2Y12.
+  const t4Ok = !!s.p2y12Escolhido;
+  const t4Hint = t4Ok ? 'Conduta definida' : 'Escolha o antiagregante P2Y12 para continuar.';
 
   const condutaTitulo = conduta?.titulo || decisao.titulo;
 
@@ -171,8 +194,20 @@ export function SCAFlow({ onBack }) {
 
       <ClinicalCard variant="plain" title="Dados do paciente" onInfo={() => setInfoSheet('paciente')}>
         <div className={styles.row2}>
-          <InputField label="Idade" type="text" mono inputMode="numeric" maxLength={3} value={s.paciente.idade ?? ''} onChange={(v) => setPacienteCampo('idade', v)} showUnit unit="anos" />
-          <InputField label="Peso" type="text" mono inputMode="decimal" maxLength={5} value={s.paciente.peso ?? ''} onChange={(v) => setPacienteCampo('peso', v)} showUnit unit="kg" />
+          <InputField
+            label="Idade" type="text" mono inputMode="numeric" maxLength={3}
+            value={s.paciente.idade ?? ''} onChange={(v) => setPacienteCampo('idade', v)}
+            showUnit unit="anos"
+            state={idadeErro ? 'error' : 'default'}
+            helperText={idadeErro ?? undefined}
+          />
+          <InputField
+            label="Peso" type="text" mono inputMode="decimal" maxLength={5}
+            value={s.paciente.peso ?? ''} onChange={(v) => setPacienteCampo('peso', v)}
+            showUnit unit="kg"
+            state={pesoErro ? 'error' : 'default'}
+            helperText={pesoErro ?? undefined}
+          />
         </div>
         <Select
           label="Queixa principal"
@@ -484,8 +519,8 @@ export function SCAFlow({ onBack }) {
   const footers = {
     1: { hint: 'Realidade do serviço + idade, peso e queixa', primary: { label: 'Continuar', size: 'lg', onClick: () => s.irParaTela(2), disabled: !dadosT1Ok, rightIcon: 'chevronRight', showRightIcon: true } },
     2: { hint: 'Classifique o ECG para avançar', secondary: { label: 'Voltar', variant: 'secondary', size: 'lg', onClick: () => s.irParaTela(1) }, primary: { label: 'Continuar', size: 'lg', onClick: () => s.irParaTela(3), disabled: !t2Ok, rightIcon: 'chevronRight', showRightIcon: true } },
-    3: { hint: decisao.titulo, secondary: { label: 'Voltar', variant: 'secondary', size: 'lg', onClick: () => s.irParaTela(2) }, primary: { label: 'Continuar', size: 'lg', onClick: () => s.irParaTela(4), rightIcon: 'chevronRight', showRightIcon: true } },
-    4: { hint: 'Conduta definida', secondary: { label: 'Voltar', variant: 'secondary', size: 'lg', onClick: () => s.irParaTela(3) }, primary: { label: 'Continuar', size: 'lg', onClick: () => s.irParaTela(5), rightIcon: 'chevronRight', showRightIcon: true } },
+    3: { hint: t3Hint, secondary: { label: 'Voltar', variant: 'secondary', size: 'lg', onClick: () => s.irParaTela(2) }, primary: { label: 'Continuar', size: 'lg', onClick: () => s.irParaTela(4), disabled: !t3Ok, rightIcon: 'chevronRight', showRightIcon: true } },
+    4: { hint: t4Hint, secondary: { label: 'Voltar', variant: 'secondary', size: 'lg', onClick: () => s.irParaTela(3) }, primary: { label: 'Continuar', size: 'lg', onClick: () => s.irParaTela(5), disabled: !t4Ok, rightIcon: 'chevronRight', showRightIcon: true } },
     5: { hint: 'Salve o caso ou finalize sem salvar', secondary: { label: 'Voltar', variant: 'secondary', size: 'lg', onClick: () => s.irParaTela(4) }, primary: { label: 'Finalizar', size: 'lg', onClick: () => setSalvarOpen(true), leftIcon: 'salvar', showLeftIcon: true } },
   };
 
