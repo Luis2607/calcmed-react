@@ -23,7 +23,8 @@ const isEpoch = (raw) => {
 };
 
 export function DevPanel({ route }) {
-  const [open, setOpen] = useState(true);
+  // Inicia recolhido p/ não cobrir a TabBar no deploy mobile (Luis 2026-06-04).
+  const [open, setOpen] = useState(false);
   const cfg = PROTOCOLOS[route];
   if (!cfg) return null;
 
