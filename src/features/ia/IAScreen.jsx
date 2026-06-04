@@ -53,7 +53,8 @@ export function IAScreen({ onBack }) {
   const [draft, setDraft] = useState('');
   const [showJump, setShowJump] = useState(false);
   const [pending, setPending] = useState({}); // { [convId]: count } — efêmero
-  const scrollRef = useRef(null);
+  const rootRef = useRef(null);
+  const scrollerRef = useRef(null); // o .scroll-container externo (quem realmente rola)
   const timers = useRef({});
   const activeIdRef = useRef(activeId);
 
@@ -63,15 +64,26 @@ export function IAScreen({ onBack }) {
   const pendingActive = active ? pending[active.id] || 0 : 0;
 
   const isNearBottom = () => {
-    const el = scrollRef.current;
+    const el = scrollerRef.current;
     if (!el) return true;
     return el.scrollHeight - el.scrollTop - el.clientHeight < 80;
   };
   const scrollToBottom = (behavior = 'smooth') => {
-    const el = scrollRef.current;
+    const el = scrollerRef.current;
     if (el) el.scrollTo({ top: el.scrollHeight, behavior });
     setShowJump(false);
   };
+
+  // O scroll acontece no .scroll-container externo (composer/appbar ficam sticky).
+  // Achamos esse elemento e ouvimos o scroll dele p/ a seta de "ir ao fim".
+  useEffect(() => {
+    const scroller = rootRef.current?.closest('.scroll-container') || null;
+    scrollerRef.current = scroller;
+    if (!scroller) return undefined;
+    const onScroll = () => setShowJump(!isNearBottom());
+    scroller.addEventListener('scroll', onScroll, { passive: true });
+    return () => scroller.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Espelha o activeId num ref p/ os timeouts saberem se a conversa ainda está aberta.
   useEffect(() => { activeIdRef.current = activeId; }, [activeId]);
@@ -163,7 +175,7 @@ export function IAScreen({ onBack }) {
   // -------------------- LISTA --------------------
   if (!inChat) {
     return (
-      <div className={styles.screen}>
+      <div className={styles.screen} ref={rootRef}>
         <header className={styles.appbar}>
           {onBack && (
             <button type="button" className={styles.iconBtn} onClick={onBack} aria-label="Voltar">
@@ -225,7 +237,7 @@ export function IAScreen({ onBack }) {
   // -------------------- CHAT --------------------
   const empty = messages.length === 0;
   return (
-    <div className={styles.screen}>
+    <div className={styles.screen} ref={rootRef}>
       <header className={styles.appbar}>
         <button type="button" className={styles.iconBtn} onClick={backToList} aria-label="Voltar para conversas">
           <Icon name="voltar" size={22} />
@@ -239,7 +251,7 @@ export function IAScreen({ onBack }) {
         </button>
       </header>
 
-      <div className={styles.conversation} ref={scrollRef} onScroll={() => setShowJump(!isNearBottom())}>
+      <div className={styles.conversation}>
         {empty ? (
           <div className={styles.empty}>
             <span className={styles.emptyMark}><Icon name="sparkles" size={28} /></span>
@@ -270,9 +282,11 @@ export function IAScreen({ onBack }) {
       </div>
 
       {showJump && (
-        <button type="button" className={styles.jump} onClick={() => scrollToBottom()} aria-label="Ir para o fim">
-          <Icon name="chevronDown" size={20} />
-        </button>
+        <div className={styles.jumpDock}>
+          <button type="button" className={styles.jump} onClick={() => scrollToBottom()} aria-label="Ir para o fim">
+            <Icon name="chevronDown" size={20} />
+          </button>
+        </div>
       )}
 
       <form className={styles.composer} onSubmit={handleSubmit}>

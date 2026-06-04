@@ -1,14 +1,15 @@
 .screen {
-  position: relative;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-height: 0;
+  min-height: 100%;
   background: var(--ds-fundo-padrao);
 }
 
-/* ---------- App bar ---------- */
+/* ---------- App bar (sticky no topo, como a Home) ---------- */
 .appbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -79,12 +80,8 @@
 /* ---------- Lista de conversas ---------- */
 .listScroll {
   flex: 1;
-  min-height: 0;
-  overflow-y: auto;
   padding: var(--esp-4);
-  scrollbar-width: none;
 }
-.listScroll::-webkit-scrollbar { width: 0; display: none; }
 
 .listLabel {
   display: block;
@@ -180,17 +177,13 @@
 }
 .convDelete:hover { color: var(--ds-retorno-critico); background: var(--ds-fundo-hover); }
 
-/* ---------- Conversa ---------- */
+/* ---------- Conversa (flui no scroll externo; composer fica sticky) ---------- */
 .conversation {
   flex: 1;
-  min-height: 0;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   padding: var(--esp-4);
-  scrollbar-width: none;
 }
-.conversation::-webkit-scrollbar { width: 0; display: none; }
 
 .thread {
   display: flex;
@@ -284,12 +277,18 @@
   color: var(--ds-texto-secundario);
 }
 
-/* ---------- Seta de descer ---------- */
+/* ---------- Seta de descer (sticky, flutua acima do composer, sem reservar espaço) ---------- */
+.jumpDock {
+  position: sticky;
+  bottom: 84px;
+  height: 0;
+  align-self: stretch;
+  z-index: 4;
+}
 .jump {
   position: absolute;
   right: var(--esp-4);
-  bottom: 84px;
-  z-index: 4;
+  bottom: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -304,8 +303,11 @@
 }
 .jump:hover { background: var(--ds-fundo-hover); }
 
-/* ---------- Composer ---------- */
+/* ---------- Composer (sticky na base, como a TabBar da Home) ---------- */
 .composer {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
   flex-shrink: 0;
   display: flex;
   align-items: center;
