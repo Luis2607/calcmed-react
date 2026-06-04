@@ -125,7 +125,29 @@
 
 ---
 
-## Backlog priorizado de correções (proposta)
+## ✅ Status — corrigido em 2026-06-04 (P0+P1+P2)
+
+Dono optou por **corrigir tudo** com postura **bloquear + validar faixa**. Implementado e
+verificado (build + Playwright + crawler de regressão = 0 erros de console). Commits:
+`4301525` (radio value/deselect), `27b534a` (Home/Hub), `39a613e` (CAD), `3e94e80` (SCA),
+`9804da4` (Sepse), `7d906dd` (AVC), `1842cdd` (PCR).
+
+- ✅ Radio `value` + deselect de escore (T1, T5).
+- ✅ Validação de faixa idade/peso + bloqueio (SCA/CAD/Sepse/AVC); sem dose/volume negativos (T2).
+- ✅ Formatação PT-BR + pré-preenche insulina + HCO₃ T5 (CAD · T3).
+- ✅ Gating SCA T3 (escore+troponina) e T4 (P2Y12) (T6).
+- ✅ Home: abas Adulto/Pediatra, barra inferior e cards (navegam ou “Em breve”); Hub→React.
+- ✅ Sepse: T3 (ATB) acessível pelo stepper.
+- ✅ PCR: banner “0s” e card de adrenalina atrasada visível.
+- ✅ AVC: janela >24h (seletor de dia) + horário inválido com erro.
+- ↔ Ferramentas de dev (DevPanel + “Pular 5 min” CAD): **mantidas** no deploy p/ teste (decisão).
+
+> Pendências menores remanescentes (cosméticas / falsos-positivos do harness): rótulo
+> “Entendi vs Fechar” em sheet de Teoria SCA; tooltip de passo desabilitado no stepper.
+
+---
+
+## Backlog priorizado de correções (proposta original)
 
 **P0 — bugs claros, baixo risco, alto valor (corrigir já):**
 1. Passar `value={opt.value}` em `RadioGroup` e `ScoreCriterionGroup` (T1).

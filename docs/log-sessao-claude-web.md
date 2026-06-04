@@ -129,6 +129,30 @@ Commits desta sessão (mais novo no topo):
 
 ---
 
+### [4301525 + 6 commits] Correções pós-QA (P0+P1+P2) — fundação + 5 agentes por fluxo
+- **Pedido:** após o relatório de QA, dono escolheu **corrigir tudo (P0+P1+P2)** com postura
+  **bloquear + validar faixa**.
+- **Método:** fundação compartilhada feita pelo assistente (p/ agentes não conflitarem nos
+  mesmos arquivos), depois 5 agentes de implementação em paralelo (Home+Hub, CAD, SCA,
+  Sepse, AVC+PCR), cada um nos seus arquivos, buildando e verificando com Playwright em
+  porta própria. Revisão de diffs + build + crawler de regressão pelo assistente antes de commitar.
+- **Commits:**
+  - `4301525` fix(ds): Radio recebe `value` + deselect de item de escore (RadioGroup, ScoreCriterionGroup).
+  - `27b534a` fix(home): abas Adulto/Pediatra ligadas; barra inferior/cards (navegam ou toast “Em breve”); Hub abre React.
+  - `39a613e` fix(cad): formatação vírgula (sódio/insulina), pré-preenche insulina, HCO₃ T5, valida faixa idade/peso.
+  - `3e94e80` fix(sca): valida faixa + gating T3 (escore+troponina) e T4 (P2Y12).
+  - `9804da4` fix(sepse): guard de peso (sem volume negativo) + acesso à T3 (ATB) pelo stepper.
+  - `7d906dd` fix(avc): janela >24h (seletor Hoje/Ontem/Anteontem) + horário inválido.
+  - `1842cdd` fix(pcr): banner só após iniciar compressões + card de adrenalina ATRASADA visível.
+- **Verificação:** cada agente passou seus testes Playwright; build OK; **crawler de regressão
+  em 13 rotas = 0 erros de console/página**, e cliques mortos da Home caíram de 10 → 3
+  (restantes são falsos-positivos do harness, ex.: “Início” faz scroll ao topo).
+- **Decisões P2 resolvidas:** Hub unificado nas versões React; janela AVC >24h via seletor de
+  dia; ferramentas de dev (DevPanel + “Pular 5 min” do CAD) **mantidas** no deploy (uso de teste).
+- **Status:** ✅ todos commitados. Backlog P0/P1/P2 do relatório de QA endereçado.
+
+---
+
 ## Itens avaliados e NÃO alterados (de propósito)
 
 - **`safe-area-inset-bottom` nos BottomSheets** — melhoria para iPhone com notch; opcional,
