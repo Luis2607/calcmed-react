@@ -14,6 +14,7 @@ import { TagsGallery } from './TagsGallery';
 import { ClinicalGallery } from './ClinicalGallery';
 import { UrgencyGallery } from './UrgencyGallery';
 import { SheetGallery } from './SheetGallery';
+import { AiResponseSystemGallery } from './AiResponseSystemGallery';
 
 const CATEGORIES = [
   { id: 'colors', label: 'Cores semanticas', icon: '🎨' },
@@ -27,10 +28,11 @@ const CATEGORIES = [
   { id: 'tags', label: 'Tags e Chips', icon: '🏷️' },
   { id: 'clinicos', label: 'Componentes Clínicos', icon: '🩺' },
   { id: 'urgencia', label: 'Central de Urgência (kit)', icon: '🚑' },
-  { id: 'bottomsheets', label: 'Bottom Sheets (QA)', icon: '📋' }
+  { id: 'bottomsheets', label: 'Bottom Sheets (QA)', icon: '📋' },
+  { id: 'ia-respostas', label: 'IA · Sistema de Respostas', icon: '🤖' }
 ];
 
-export function DsDashboard() {
+export function DsDashboard({ onExit }) {
   const [activeTab, setActiveTab] = useState('colors');
 
   // Sincronizar a aba ativa com o parâmetro 'qa' da URL na inicialização e mudanças
@@ -90,6 +92,11 @@ export function DsDashboard() {
         </nav>
 
         <footer className={styles.sidebarFooter}>
+          {onExit && (
+            <button type="button" className={styles.exitButton} onClick={onExit}>
+              ⇄ Voltar à seleção
+            </button>
+          )}
           <div className={styles.devBadge}>Modo Administrador</div>
           <span className={styles.versionLabel}>DS v6.5 · 2026</span>
         </footer>
@@ -110,6 +117,7 @@ export function DsDashboard() {
           {activeTab === 'clinicos' && <ClinicalGallery />}
           {activeTab === 'urgencia' && <UrgencyGallery />}
           {activeTab === 'bottomsheets' && <SheetGallery />}
+          {activeTab === 'ia-respostas' && <AiResponseSystemGallery />}
         </div>
       </main>
     </div>
