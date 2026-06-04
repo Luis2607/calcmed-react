@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * useCopy — copia texto para a área de transferência e expõe um estado
@@ -19,6 +19,9 @@ export function useCopy(timeout = 1600) {
       setCopied(false);
     }
   }, [timeout]);
+
+  // Limpa o timer no unmount (evita setState em componente desmontado).
+  useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
 
   return { copied, copy };
 }

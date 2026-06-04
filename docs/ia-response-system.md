@@ -109,3 +109,9 @@ visual (galeria do DS); com ele, seletores/chips/ações continuam a conversa
 - Conversas persistidas em `localStorage` (`ia_conversations`); exclusão com **Desfazer** (toast).
 - `iaData.js` é o **roteiro de demonstração** (faz o papel do backend): classificação por heurística
   `matchText` + tokens; um backend real devolveria o mesmo contrato de resposta.
+- **Robustez (auditoria fundacional, P0):** cada bloco é envolvido por um `BlockBoundary` — payload
+  malformado falha sozinho, sem branquear a resposta. `rich()` ignora não-string (evita crash).
+  `matchText` usa **limites de palavra** ("noradrenalina" não casa "adrenalina"; `ph`/`pam` no fim da
+  frase), só cai em comparação com sinal explícito, prioriza **conduta crítica** sobre marcador
+  laboratorial isolado, e cobre hipercalemia amplamente (+ rota navegável). `responseToText` leva
+  **ressalva de proveniência** e não perde rótulo de seção do checklist.

@@ -62,12 +62,20 @@ export function responseToText(response) {
         lines.push(`${b.title ? `${b.title}: ` : ''}${strip(b.content)}`);
         break;
       case 'checklist':
+        if (b.tagLabel) lines.push(strip(b.tagLabel)); // não perde o rótulo da seção
         (b.items || []).forEach((it) => lines.push(`- ${typeof it === 'string' ? it : it.label}`));
         break;
-      case 'interpretation':
-        (b.rows || []).forEach((r) => lines.push(Object.values(r).map((v) => (typeof v === 'string' ? v : '')).filter(Boolean).join('  ')));
+      case 'interpretation': {
+        const cols = b.columns || [];
+        (b.rows || []).forEach((r) => {
+          // serializa pela ORDEM das colunas (não pela ordem das chaves do objeto)
+          const cells = (cols.length ? cols.map((c) => r[c.key]) : Object.values(r))
+            .filter((v) => typeof v === 'string' && v);
+          if (cells.length) lines.push(cells.join('  '));
+        });
         if (typeof b.reading === 'string') lines.push(strip(b.reading));
         break;
+      }
       case 'stepper':
         (b.steps || []).forEach((s, i) => lines.push(`${i + 1}. ${typeof s === 'string' ? s : s.label}`));
         break;
@@ -81,5 +89,7 @@ export function responseToText(response) {
         break;
     }
   }
-  return lines.filter(Boolean).join('\n');
+  const body = lines.filter(Boolean).join('\n');
+  // Proveniência clínica: o que sai do app (prontuário/WhatsApp) carrega a ressalva.
+  return body ? `${body}\n\n— Gerado pela IA do CalcMed. Confira no protocolo do seu serviço.` : body;
 }

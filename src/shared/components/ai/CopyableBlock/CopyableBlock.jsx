@@ -15,14 +15,16 @@ import styles from './CopyableBlock.module.css';
 export const CopyableBlock = ({ text, variants }) => {
   const list = variants && variants.length ? variants : null;
   const [active, setActive] = useState(0);
-  const current = list ? list[active]?.text : text;
+  // clamp: se `variants` encolher, não estoura o índice (copiaria string vazia).
+  const safe = list ? Math.min(active, list.length - 1) : 0;
+  const current = list ? list[safe]?.text : text;
 
   return (
     <div className={styles.block}>
       {list && (
         <div className={styles.formats}>
           {list.map((v, i) => (
-            <Chip key={v.label} state={i === active ? 'active' : 'default'} onClick={() => setActive(i)}>
+            <Chip key={`${v.label}-${i}`} state={i === safe ? 'active' : 'default'} onClick={() => setActive(i)}>
               {v.label}
             </Chip>
           ))}
