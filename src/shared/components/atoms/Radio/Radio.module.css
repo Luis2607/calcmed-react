@@ -58,9 +58,13 @@
   box-sizing: border-box;
 }
 
-.container:hover:not(.disabled) .circle {
-  border-color: var(--ds-interativo-primario);
-  background-color: var(--interativo-primario-tint-04);
+/* hover só em ponteiro real (mouse): no toque o :hover "gruda" e deixa o fundo
+   cinza-azulado preso até tocar fora, atrapalhando a marcação (Luis 2026-06-04). */
+@media (hover: hover) {
+  .container:hover:not(.disabled) .circle {
+    border-color: var(--ds-interativo-primario);
+    background-color: var(--interativo-primario-tint-04);
+  }
 }
 
 .input:focus-visible + .circle {

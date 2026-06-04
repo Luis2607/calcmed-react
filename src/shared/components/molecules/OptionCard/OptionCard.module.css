@@ -21,8 +21,12 @@
   transition: border-color 0.2s, background-color 0.2s;
 }
 
-.card:hover:not(:disabled) {
-  border-color: var(--ds-interativo-primario);
+/* hover só em ponteiro real (mouse): no toque o :hover "gruda" a borda até tocar
+   fora, atrapalhando a marcação da opção (Luis 2026-06-04). */
+@media (hover: hover) {
+  .card:hover:not(:disabled) {
+    border-color: var(--ds-interativo-primario);
+  }
 }
 
 /* withMedia — slot de mídia à esquerda (RitmoIcon) + conteúdo à direita.

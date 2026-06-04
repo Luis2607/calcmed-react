@@ -70,7 +70,10 @@
   box-sizing: border-box;
   transition: border-color 0.15s, background 0.15s, color 0.15s;
 }
-.rangeChip:hover:not(:disabled) { border-color: var(--ds-texto-secundario); }
+/* hover só em ponteiro real (mouse) — evita o estado preso no toque (Luis 2026-06-04). */
+@media (hover: hover) {
+  .rangeChip:hover:not(:disabled) { border-color: var(--ds-texto-secundario); }
+}
 .rangeChip:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* selecionado — borda 2px no tone (golden `.selecionado`), padding -1px p/ compensar */
