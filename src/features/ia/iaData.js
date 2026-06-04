@@ -322,7 +322,7 @@ const RESPONSES = {
     blocks: [
       { type: 'text', content: 'Em uma frase: **disfunção orgânica** por resposta desregulada à infecção, com **hipotensão** que exige vasopressor e/ou **lactato elevado** mesmo após volume adequado.' },
       { type: 'divider' },
-      { type: 'heading', emoji: '🎯', text: 'Como reconhecer' },
+      { type: 'heading', icon: 'busca', text: 'Como reconhecer' },
       {
         type: 'list',
         items: [
@@ -331,7 +331,7 @@ const RESPONSES = {
         ],
       },
       { type: 'divider' },
-      { type: 'heading', emoji: '💉', text: 'Por que noradrenalina primeiro' },
+      { type: 'heading', icon: 'seringa', text: 'Por que noradrenalina primeiro' },
       { type: 'text', content: 'É o vasopressor de **1ª linha**: eleva a PAM com **menor risco arritmogênico** que a dopamina e mantém a perfusão sem taquicardia excessiva.' },
       { type: 'expandable', title: 'E quando associar vasopressina?', content: 'Como 2º agente quando a noradrenalina sobe além de doses moderadas, para reduzir a dose total de catecolamina — conforme protocolo institucional.' },
       {
@@ -351,18 +351,18 @@ const RESPONSES = {
 // a ferramenta correspondente. Na demo, respondem de forma intencional.
 const TOOL_STUB = {
   intent: 'aprendizado',
-  title: 'Ferramenta em demonstração',
+  title: 'Cálculo por peso',
   blocks: [
-    { type: 'text', content: 'No produto, este passo abriria a calculadora ou a referência correspondente. Esta tela demonstra o sistema de respostas.' },
-    { type: 'chips', label: 'Continuar', items: STARTERS },
+    { type: 'text', content: 'Aqui entra a dose ajustada ao peso do paciente — no app, este passo abre a calculadora já com os dados do caso.' },
+    { type: 'chips', label: 'Enquanto isso', items: STARTERS },
   ],
 };
 
 const FALLBACK = {
   intent: 'ambigua',
-  title: 'Posso ajudar com isso',
+  title: 'Não entendi',
   blocks: [
-    { type: 'text', content: 'Esta é uma demonstração do AI Response System do CalcMed. Reconheço dose, conduta, exame, protocolo, comparação e resumo — toque em um exemplo para ver:' },
+    { type: 'text', content: 'Reformula em uma linha — ou começa por um destes:' },
     { type: 'chips', items: STARTERS },
   ],
 };

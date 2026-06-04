@@ -117,8 +117,8 @@ export function IAScreen({ onBack }) {
   const pendingActive = active ? pending[active.id] || 0 : 0;
   const busy = pendingActive > 0 || streamingId != null;
 
-  const showToast = (message, undo) => {
-    setToast({ message, undo });
+  const showToast = (message, undo, type = 'success') => {
+    setToast({ message, undo, type });
     if (toastTimer.current) clearTimeout(toastTimer.current);
     // Toasts com "Desfazer" ficam mais tempo (janela de recuperação).
     toastTimer.current = setTimeout(() => setToast(null), undo ? 5000 : 1800);
@@ -353,7 +353,7 @@ export function IAScreen({ onBack }) {
         {toast && (
           <div className={styles.toastHost}>
             <Toast
-              type="success"
+              type={toast.type || 'success'}
               message={toast.message}
               onUndo={toast.undo ? () => { toast.undo(); dismissToast(); } : undefined}
             />
@@ -426,7 +426,7 @@ export function IAScreen({ onBack }) {
       {toast && (
         <div className={styles.toastHost}>
           <Toast
-            type="success"
+            type={toast.type || 'success'}
             message={toast.message}
             onUndo={toast.undo ? () => { toast.undo(); dismissToast(); } : undefined}
           />

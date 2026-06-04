@@ -1,4 +1,5 @@
 import { useState, Fragment } from 'react';
+import { Icon } from '../../atoms/Icon';
 import { AIResponse } from '../AIResponse';
 import { ResponseHeader } from '../ResponseHeader';
 import { PrimaryAction } from '../PrimaryAction';
@@ -61,7 +62,11 @@ function renderBlock(block, i, onSelect) {
     case 'heading':
       return (
         <h4 key={i} className={styles.heading}>
-          {block.emoji && <span className={styles.headingEmoji} aria-hidden="true">{block.emoji}</span>}
+          {block.icon ? (
+            <span className={styles.headingIcon} aria-hidden="true"><Icon name={block.icon} size={18} /></span>
+          ) : (
+            block.emoji && <span className={styles.headingEmoji} aria-hidden="true">{block.emoji}</span>
+          )}
           {rich(block.text)}
         </h4>
       );
