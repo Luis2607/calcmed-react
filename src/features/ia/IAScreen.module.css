@@ -25,7 +25,7 @@
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--ds-texto-terciario);
+  color: var(--ds-texto-secundario);
   margin-bottom: var(--esp-2);
 }
 
@@ -74,7 +74,7 @@
 }
 .convDate {
   font-size: var(--fonte-tamanho-micro);
-  color: var(--ds-texto-terciario);
+  color: var(--ds-texto-secundario); /* contraste AA (terciario ~2,5:1 falhava) */
 }
 
 .convDelete {
@@ -83,10 +83,11 @@
   align-items: center;
   justify-content: center;
   width: 44px;
-  margin-left: var(--esp-1);
+  height: 44px; /* alvo de toque 44×44 garantido (antes dependia do stretch) */
+  margin-left: var(--esp-2); /* afasta de "abrir" (toque não apaga sem querer) */
   border: 0;
   background: transparent;
-  color: var(--ds-texto-terciario);
+  color: var(--ds-texto-secundario);
   cursor: pointer;
   border-radius: var(--radius-pill);
 }
@@ -187,7 +188,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--ds-texto-terciario);
+  background: var(--ds-texto-secundario);
   animation: iaTyping 1.2s infinite ease-in-out;
 }
 .typing i:nth-child(2) { animation-delay: 0.18s; }
@@ -407,7 +408,7 @@
   display: block;
 }
 .input::-webkit-scrollbar { width: 0; display: none; }
-.input::placeholder { color: var(--ds-input-placeholder); }
+.input::placeholder { color: var(--ds-texto-secundario); }
 .input:focus { outline: none; border-color: var(--ds-input-borda-foco); }
 
 .send {
@@ -438,6 +439,7 @@
   border: 0;
   border-radius: 50%;
   background: var(--brand-navy-deep);
+  box-shadow: inset 0 0 0 1px var(--ds-borda-padrao); /* contorno no dark (fundo×fundo ~1:1) */
   color: var(--ds-branco);
   cursor: pointer;
   transition: opacity 0.15s ease;

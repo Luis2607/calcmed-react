@@ -18,6 +18,8 @@ import styles from './CopyButton.module.css';
  *  - className: chrome do botão
  *  - onCopied?: callback após disparar a cópia
  */
+const SR_ONLY = { position: 'absolute', width: 1, height: 1, margin: -1, padding: 0, overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap', border: 0 };
+
 export function CopyButton({ text, label = 'Copiar', copiedLabel = 'Copiado', size = 16, className = '', onCopied }) {
   const { copied, copy } = useCopy();
 
@@ -39,6 +41,8 @@ export function CopyButton({ text, label = 'Copiar', copiedLabel = 'Copiado', si
         <span className={styles.copy}><Icon name="copiar" size={size} /></span>
         <span className={styles.check}><Icon name="confirmacao" size={size} /></span>
       </span>
+      {/* anuncia o sucesso ao leitor de tela (o check visual sozinho é silencioso) */}
+      <span role="status" aria-live="polite" style={SR_ONLY}>{copied ? copiedLabel : ''}</span>
     </button>
   );
 }

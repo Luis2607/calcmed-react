@@ -13,7 +13,7 @@
   border: 0;
   border-radius: var(--ds-r-sm, 8px);
   background: transparent;
-  color: var(--ds-texto-terciario);
+  color: var(--ds-texto-secundario); /* contraste AA p/ ícone interativo (terciario ~2,5:1) */
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }

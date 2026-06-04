@@ -337,12 +337,14 @@ sem match → `FALLBACK` ("Não entendi").
 - **Feedback do 👍/👎** vira BottomSheet de motivos (não é validação clínica).
 - **Correções de segurança clínica** (revisões 3-óticas): anafilaxia rotulada **adulto** + remoção do atalho para dose de **PCR** (A3); "não sei" oferece o **diferencial** em vez de funilar para sepse (A4).
 
-> **Revisões de QA realizadas:** 3 revisões profundas sob óticas diferentes
-> (usabilidade/heurísticas · acessibilidade WCAG · segurança clínica/UX writing).
-> Achados de copy/clínicos e a11y de menor esforço já aplicados; críticos de
-> interação (guard anti-double-tap, parar-no-pensando, streaming+aviso, cópia com
-> erro, undo empilhado), refino de delay por urgência e contrastes pendentes —
-> ver backlog de QA.
+> **Revisões de QA realizadas:** 3 revisões profundas (usabilidade · acessibilidade WCAG ·
+> segurança clínica) + 2 auditorias fundacionais (categorização/contrato · renderer/componentes).
+> **Correções aplicadas (P0→P2):** render robusto (ErrorBoundary por bloco, `rich()` type-safe),
+> cópia clínica (ressalva + rótulos), categorização (word-boundary, conduta>laboratório, hipercalemia),
+> grafo sem becos, guard anti-double-tap, "parar no pensando" recuperável, delay por intenção com rótulo
+> de estado, e a11y (contraste AA dos cinzas, alvo 44px da lixeira, "Parar" no dark, live-region de
+> "Copiado", reduced-motion). Pendências menores conhecidas: ContextSelector sem estado de seleção
+> visual, fabricação de dados no resumo (M6) — backlog.
 
 ---
 
