@@ -1,0 +1,85 @@
+/* IA — utilidades de streaming e serialização das respostas estruturadas.
+ * O streaming "fatia" a resposta em UNITS (palavras nos blocos de texto, itens
+ * nas listas, 1 por bloco inteiro) para revelar progressivamente, como se a IA
+ * estivesse digitando. responseToText serializa a resposta para copiar. */
+
+const strip = (s) => String(s ?? '').replace(/\*\*(.+?)\*\*/g, '$1');
+const words = (s) => strip(s).trim().split(/\s+/).filter(Boolean);
+
+function blockUnits(b) {
+  if (b.type === 'text' || b.type === 'primary_action') return Math.max(1, words(b.content).length);
+  if (b.type === 'heading') return Math.max(1, words(b.text).length);
+  if (b.type === 'list') return Math.max(1, (b.items || []).length);
+  return 1; // bloco "inteiro" (tabela, dose, alerta…) revela de uma vez
+}
+
+/** Total de units de uma resposta (p/ saber quando o streaming terminou). */
+export function countUnits(response) {
+  return (response?.blocks || []).reduce((sum, b) => sum + blockUnits(b), 0);
+}
+
+/** Resposta parcial até `units` (frontier truncada). null = resposta completa. */
+export function sliceResponse(response, units) {
+  if (units == null || units >= countUnits(response)) return response;
+  const out = [];
+  let acc = 0;
+  for (const b of response.blocks || []) {
+    const cost = blockUnits(b);
+    if (units >= acc + cost) { out.push(b); acc += cost; continue; }
+    const into = units - acc; // units já reveladas dentro deste bloco
+    if (into > 0) {
+      if (b.type === 'text' || b.type === 'primary_action') out.push({ ...b, content: words(b.content).slice(0, into).join(' ') });
+      else if (b.type === 'heading') out.push({ ...b, text: words(b.text).slice(0, into).join(' ') });
+      else if (b.type === 'list') out.push({ ...b, items: (b.items || []).slice(0, into) });
+      else out.push(b);
+    }
+    break;
+  }
+  // ações (chips de rodapé) só quando a resposta termina
+  return { ...response, blocks: out, actions: [] };
+}
+
+/** Serializa a resposta para texto puro (copiar resposta inteira). */
+export function responseToText(response) {
+  const lines = [];
+  if (response.title) lines.push(response.title);
+  for (const b of response.blocks || []) {
+    switch (b.type) {
+      case 'text':
+      case 'primary_action':
+        lines.push(strip(b.content ?? b.title));
+        break;
+      case 'heading':
+        lines.push(`${b.emoji ? `${b.emoji} ` : ''}${strip(b.text)}`);
+        break;
+      case 'list':
+        (b.items || []).forEach((it) => lines.push(`• ${strip(it)}`));
+        break;
+      case 'dose':
+        lines.push([b.value, b.unit, b.via].filter(Boolean).join(' '));
+        break;
+      case 'alert':
+        lines.push(`${b.title ? `${b.title}: ` : ''}${strip(b.content)}`);
+        break;
+      case 'checklist':
+        (b.items || []).forEach((it) => lines.push(`- ${typeof it === 'string' ? it : it.label}`));
+        break;
+      case 'interpretation':
+        (b.rows || []).forEach((r) => lines.push(Object.values(r).map((v) => (typeof v === 'string' ? v : '')).filter(Boolean).join('  ')));
+        if (typeof b.reading === 'string') lines.push(strip(b.reading));
+        break;
+      case 'stepper':
+        (b.steps || []).forEach((s, i) => lines.push(`${i + 1}. ${typeof s === 'string' ? s : s.label}`));
+        break;
+      case 'copyable':
+        lines.push(b.text ?? b.variants?.[0]?.text ?? '');
+        break;
+      case 'expandable':
+        lines.push(`${strip(b.title)} — ${strip(b.content)}`);
+        break;
+      default:
+        break;
+    }
+  }
+  return lines.filter(Boolean).join('\n');
+}

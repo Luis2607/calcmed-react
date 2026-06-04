@@ -290,6 +290,15 @@
   background: var(--interativo-primario-tint-08);
   color: var(--ds-interativo-primario);
 }
+.greeting {
+  font-size: var(--fonte-tamanho-rotulo);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-interativo-primario);
+  margin-bottom: -6px;
+}
+
 .emptyTitle {
   font-size: 22px;
   line-height: 28px;
@@ -297,6 +306,25 @@
   letter-spacing: -0.01em;
   color: var(--ds-texto-padrao);
 }
+
+/* Link "Sobre a IA / avisos" no rodapé do histórico */
+.aboutLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  margin-top: var(--esp-5);
+  padding: var(--esp-2) var(--esp-3);
+  border: 0;
+  background: transparent;
+  color: var(--ds-texto-secundario);
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-auxiliar);
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+}
+.aboutLink:hover { background: var(--ds-fundo-hover); color: var(--ds-texto-padrao); }
 .emptyText {
   font-size: var(--fonte-tamanho-corpo);
   line-height: 22px;
@@ -385,3 +413,26 @@
 }
 .send:hover:not(:disabled) { background: var(--ds-interativo-primario-hover); }
 .send:disabled { opacity: 0.45; cursor: default; }
+
+/* Botão Parar (durante "pensando"/streaming) */
+.stop {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--input-altura);
+  height: var(--input-altura);
+  border: 0;
+  border-radius: 50%;
+  background: var(--brand-navy-deep, #0d1b2a);
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.stop:hover { opacity: 0.88; }
+.stopSquare {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  background: currentColor;
+}
