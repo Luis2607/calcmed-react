@@ -355,9 +355,7 @@ export function IAScreen({ onBack }) {
           </button>
         </div>
 
-        {aboutOpen && (
-          <IAOnboarding onContinue={() => setAboutOpen(false)} onClose={() => setAboutOpen(false)} ctaLabel="Fechar" />
-        )}
+        <IAOnboarding open={aboutOpen} onClose={() => setAboutOpen(false)} ctaLabel="Fechar" />
       </div>
     );
   }
@@ -392,8 +390,7 @@ export function IAScreen({ onBack }) {
             <span className={styles.greeting}>{greetingPrefix()}</span>
             <h2 className={styles.emptyTitle}>Como posso ajudar no plantão?</h2>
             <p className={styles.emptyText}>
-              Pergunte uma dose, descreva um caso, mande um exame ou peça um resumo — a resposta vem
-              estruturada e com o próximo passo.
+              Dose, conduta, interpretação de exame ou um resumo pra evolução. É só perguntar.
             </p>
             <SuggestionChips label="Comece por" items={STARTERS} onSelect={(item) => send(item.label, item.value)} />
           </div>
@@ -444,9 +441,7 @@ export function IAScreen({ onBack }) {
         )}
       </form>
 
-      {!onboarded && (
-        <IAOnboarding onContinue={() => setOnboarded(true)} onClose={onBack} />
-      )}
+      <IAOnboarding open={!onboarded} onClose={() => setOnboarded(true)} />
     </div>
   );
 }

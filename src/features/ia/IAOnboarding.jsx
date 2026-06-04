@@ -1,71 +1,65 @@
 import { Icon } from '../../shared/components/atoms/Icon';
+import { InfoSheet } from '../../shared/components/overlays/patterns';
 import styles from './IAOnboarding.module.css';
 
 /**
- * IAOnboarding — modal de boas-vindas da IA do CalcMed (1º acesso, flag
- * ia_onboarded) e de "rever avisos". Aparece como overlay sobre o chat (não
- * toma a tela inteira): explica o que é a IA e dá os avisos de segurança.
+ * IAOnboarding — boas-vindas/avisos da IA do CalcMed como BottomSheet do DS
+ * (pattern InfoSheet). 1º acesso (flag ia_onboarded) e "rever avisos".
  *
- * Props: onContinue() · onClose?() (X / backdrop) · ctaLabel?
+ * Props: open · onClose() (X/backdrop/CTA) · ctaLabel?
  */
 const POINTS = [
   {
-    emoji: '⚠️',
-    title: 'Apoio à decisão, não substituto',
-    desc: 'As respostas ajudam o seu raciocínio. A decisão e a responsabilidade clínica são sempre suas.',
+    icon: 'atencao',
+    tone: 'warning',
+    title: 'Quem decide é você',
+    desc: 'A IA organiza o raciocínio. A conduta e a responsabilidade continuam suas.',
   },
   {
-    emoji: '✅',
-    title: 'Confira sempre',
-    desc: 'Pode haver imprecisões. Valide doses e condutas com o protocolo da sua instituição.',
+    icon: 'confirmacao',
+    tone: 'success',
+    title: 'Confirme antes de aplicar',
+    desc: 'Ela pode errar. Cheque dose e conduta no protocolo do seu serviço.',
   },
   {
-    emoji: '🔒',
-    title: 'Sem dados que identifiquem o paciente',
-    desc: 'Converse com a informação clínica — sem nome, prontuário ou identificadores.',
+    icon: 'cadeado',
+    tone: 'neutral',
+    title: 'Nada que identifique o paciente',
+    desc: 'Fale da clínica — sem nome, leito ou prontuário.',
   },
 ];
 
-export function IAOnboarding({ onContinue, onClose, ctaLabel = 'Entendi, começar' }) {
+export function IAOnboarding({ open, onClose, ctaLabel = 'Entendi, começar' }) {
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.card} role="dialog" aria-modal="true" aria-label="Sobre a IA do CalcMed" onClick={(e) => e.stopPropagation()}>
-        {onClose && (
-          <button type="button" className={styles.close} onClick={onClose} aria-label="Fechar">
-            <Icon name="fechar" size={20} />
-          </button>
-        )}
+    <InfoSheet
+      open={open}
+      onClose={onClose}
+      title="IA do CalcMed"
+      description="Apoio clínico pro plantão."
+      leadingIcon={<Icon name="sparkles" size={20} />}
+      tone="info"
+      acknowledgeLabel={ctaLabel}
+    >
+      <p className={styles.intro}>
+        Pergunte uma dose, descreva um caso ou mande um exame. A resposta vem direto ao ponto —
+        conduta, dose e o próximo passo.
+      </p>
 
-        <div className={styles.scroll}>
-          <span className={styles.mark}><Icon name="sparkles" size={28} /></span>
-          <h1 className={styles.title}>IA do CalcMed</h1>
-          <p className={styles.intro}>
-            O assistente clínico do CalcMed para urgência e emergência. As respostas vêm
-            <strong> estruturadas e com o próximo passo</strong> — não é um chatbot genérico.
-          </p>
+      <ul className={styles.points}>
+        {POINTS.map((p) => (
+          <li key={p.title} className={styles.point}>
+            <span className={styles.icon} data-tone={p.tone} aria-hidden="true">
+              <Icon name={p.icon} size={18} />
+            </span>
+            <span className={styles.text}>
+              <span className={styles.pointTitle}>{p.title}</span>
+              <span className={styles.pointDesc}>{p.desc}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
 
-          <ul className={styles.points}>
-            {POINTS.map((p) => (
-              <li key={p.title} className={styles.point}>
-                <span className={styles.pointIcon} aria-hidden="true">{p.emoji}</span>
-                <span className={styles.pointText}>
-                  <span className={styles.pointTitle}>{p.title}</span>
-                  <span className={styles.pointDesc}>{p.desc}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className={styles.footer}>
-          <button type="button" className={styles.cta} onClick={onContinue}>
-            {ctaLabel}
-          </button>
-          <p className={styles.fineprint}>
-            Demonstração · conteúdo clínico ilustrativo, validação final pelo time médico.
-          </p>
-        </div>
-      </div>
-    </div>
+      <p className={styles.fineprint}>Demonstração — conteúdo clínico ilustrativo.</p>
+    </InfoSheet>
   );
 }

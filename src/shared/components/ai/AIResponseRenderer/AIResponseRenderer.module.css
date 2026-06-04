@@ -2,8 +2,7 @@
    ChatGPT/Claude: heading (emoji + negrito), parágrafo, lista, divider. */
 
 .text {
-  font-size: var(--fonte-tamanho-corpo);
-  line-height: 22px;
+  font: var(--ds-font-corpo); /* corpo canônico do DS · 16/24 */
   color: var(--ds-texto-secundario);
 }
 .text strong { color: var(--ds-texto-padrao); font-weight: 700; }
@@ -12,8 +11,7 @@
   display: flex;
   align-items: center;
   gap: var(--esp-2);
-  font-size: 15px;
-  line-height: 20px;
+  font: var(--ds-font-subtitulo); /* 18/28 600 */
   font-weight: 800;
   color: var(--ds-texto-padrao);
   margin-top: 2px;
@@ -33,15 +31,14 @@
 .list li {
   position: relative;
   padding-left: var(--esp-4);
-  font-size: var(--fonte-tamanho-corpo);
-  line-height: 21px;
+  font: var(--ds-font-corpo); /* 16/24 */
   color: var(--ds-texto-secundario);
 }
 .list li::before {
   content: '';
   position: absolute;
   left: 3px;
-  top: 9px;
+  top: 10px;
   width: 5px;
   height: 5px;
   border-radius: 50%;
