@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Scratch de QA/verificacao (tooling efemero · achados vao p/ docs/)
+_qa/
+_shot*.mjs
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
