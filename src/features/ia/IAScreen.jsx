@@ -85,7 +85,7 @@ function StreamingMessage({ response, startUnits = 0, onSelect, onProgress, onDo
         clearInterval(intervalRef.current);
         if (!doneRef.current) { doneRef.current = true; onDone?.(n, false); }
       }
-    }, 26);
+    }, 48); // revelação mais gradual (antes 26ms) — texto "vem vindo" com calma
     return () => clearInterval(intervalRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -227,7 +227,9 @@ export function IAScreen({ onBack }) {
     if (finePointer()) inputRef.current?.focus();
 
     const response = respond(lookup ?? displayText);
-    const think = response.intent === 'dose' || response.intent === 'critico' ? 280 : 460;
+    // "Pensando" ~2–3s antes de começar a responder (sensação de raciocínio).
+    // Urgências (dose/crítico) pensam um pouco menos; o resto, um pouco mais.
+    const think = response.intent === 'dose' || response.intent === 'critico' ? 2000 : 2700;
     const tid = uid();
     timers.current[tid] = setTimeout(() => {
       const viewing = activeIdRef.current === convId;
@@ -526,8 +528,7 @@ export function IAScreen({ onBack }) {
               className={styles.suggestChip}
               onClick={() => send(s.label, s.value)}
             >
-              <Icon name={s.icon} size={16} />
-              <span>{s.label}</span>
+              {s.label}
             </button>
           ))}
         </div>
