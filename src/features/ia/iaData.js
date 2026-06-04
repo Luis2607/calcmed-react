@@ -12,6 +12,7 @@ export const ILLUSTRATIVE =
 export const STARTERS = [
   { label: 'dose de adrenalina?', value: 'q:adrena' },
   { label: 'paciente hipotenso', value: 'q:hipo' },
+  { label: 'noradrenalina ou dobutamina?', value: 'q:noradobu' },
   { label: 'K 7,1 com QRS largo', value: 'crit:k' },
   { label: 'interpreta uma gasometria', value: 'q:gaso' },
   { label: 'protocolo de PCR', value: 'proto:pcr' },
