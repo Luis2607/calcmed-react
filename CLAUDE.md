@@ -54,7 +54,11 @@ pergunta↔resposta no thread).
 - Tom clínico, direto, humano. **Não** soar como IA genérica. Auditar a copy
   antes de entregar.
 
-## 6. Verificação
+## 6. Entrega e verificação
 
-- `npm run build` deve passar. Após merge na produção, conferir que o hash do
+- **Tudo vai direto para produção.** Política do dono (Luis): cada mudança
+  concluída é mergeada em `main` (sem aprovação manual a cada ciclo) e segue
+  pro deploy. Não acumular trabalho em branch esperando review.
+- `npm run build` deve passar **antes** do merge.
+- Após o merge, confirmar que o deploy ficou READY na Vercel e que o hash do
   bundle servido em `calcmed-react.vercel.app` bate com o `dist/` local.
