@@ -68,6 +68,12 @@ html, body {
   transform: translateY(-1px);
 }
 
+/* Variante do DS: canto direito (esquerda é a sidebar/marca). */
+.app-mode-switch--right {
+  left: auto;
+  right: 16px;
+}
+
 .viewport-container {
   width: 390px;
   height: 844px;

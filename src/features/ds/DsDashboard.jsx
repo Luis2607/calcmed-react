@@ -61,6 +61,16 @@ export function DsDashboard({ onExit }) {
 
   return (
     <div className={styles.dashboard}>
+      {onExit && (
+        <button
+          type="button"
+          className="app-mode-switch app-mode-switch--right"
+          onClick={onExit}
+          aria-label="Ir para o protótipo"
+        >
+          ⇄ Ver protótipo
+        </button>
+      )}
       {/* Sidebar na esquerda */}
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
@@ -92,11 +102,6 @@ export function DsDashboard({ onExit }) {
         </nav>
 
         <footer className={styles.sidebarFooter}>
-          {onExit && (
-            <button type="button" className={styles.exitButton} onClick={onExit}>
-              ⇄ Voltar à seleção
-            </button>
-          )}
           <div className={styles.devBadge}>Modo Administrador</div>
           <span className={styles.versionLabel}>DS v6.5 · 2026</span>
         </footer>

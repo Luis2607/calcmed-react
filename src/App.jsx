@@ -57,26 +57,26 @@ export default function App() {
     visibleRoute === 'home' || visibleRoute === 'hub' || isGallery || isSepseReact || isPcrReact || isAvcReact || Boolean(activeProtocol);
   const showHome = !isGallery && (visibleRoute === 'home' || !isKnownRoute);
 
-  const backToChooser = () => {
+  const switchTo = (mode) => {
     if (typeof window !== 'undefined' && (qaRoute || routeOverride)) {
       window.history.replaceState(null, '', window.location.pathname);
     }
-    setAppMode(null);
+    setAppMode(mode);
   };
 
   // Deep-link de QA (?qa=) abre o Design System direto, sem passar pela seleção.
   if (qaRoute) {
-    return <DsDashboard onExit={backToChooser} />;
+    return <DsDashboard onExit={() => switchTo('prototype')} />;
   }
 
-  // Sem deep-link de rota e sem visão escolhida → mostra a seleção.
+  // Sem deep-link de rota e sem visão escolhida → mostra a seleção (só no 1º acesso).
   if (!routeOverride && appMode == null) {
     return <EntryChooser onChoose={setAppMode} />;
   }
 
   // Visão Design System escolhida na seleção.
   if (appMode === 'ds' && !routeOverride) {
-    return <DsDashboard onExit={backToChooser} />;
+    return <DsDashboard onExit={() => switchTo('prototype')} />;
   }
 
   return (
@@ -84,10 +84,10 @@ export default function App() {
       <button
         type="button"
         className="app-mode-switch"
-        onClick={backToChooser}
-        aria-label="Trocar visão (protótipo / Design System)"
+        onClick={() => switchTo('ds')}
+        aria-label="Ir para o Design System"
       >
-        ⇄ Seleção
+        ⇄ Design System
       </button>
       <div className={`viewport-container ${isPediatricMode ? 'modo-pediatrico' : ''} ${isDark ? 'modo-escuro' : ''}`.trim()}>
         <div className="scroll-container">
