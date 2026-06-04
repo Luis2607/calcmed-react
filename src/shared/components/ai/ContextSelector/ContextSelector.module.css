@@ -5,9 +5,8 @@
 }
 
 .question {
-  font-size: var(--fonte-tamanho-corpo);
+  font: var(--ds-font-corpo); /* 16/24 */
   font-weight: 600;
-  line-height: 21px;
   color: var(--ds-texto-padrao);
 }
 

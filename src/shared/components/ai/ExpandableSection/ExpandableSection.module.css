@@ -27,7 +27,7 @@
 }
 
 .title {
-  font-size: var(--fonte-tamanho-corpo);
+  font: var(--ds-font-corpo); /* 16/24 */
   font-weight: 700;
   color: var(--ds-texto-padrao);
 }
