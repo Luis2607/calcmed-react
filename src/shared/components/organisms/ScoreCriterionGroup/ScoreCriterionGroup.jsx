@@ -146,8 +146,13 @@ export const ScoreCriterionGroup = ({
                 >
                   <Radio
                     name={groupName}
+                    value={opt.value != null ? opt.value : String(i)}
                     checked={isSel}
                     onChange={() => onChange && onChange(i)}
+                    /* radio nativo não dispara onChange ao reclicar a opção já marcada;
+                       o onClick permite "desmarcar" (toggle p/ zerar o item do escore),
+                       já que o hook trata reclique como toggle→null (Luis 2026-06-04). */
+                    onClick={isSel ? () => onChange && onChange(i) : undefined}
                   />
                   <span className={styles.optionLabel}>{opt.label}</span>
                   <span className={styles.optionPts}>{opt.points}</span>

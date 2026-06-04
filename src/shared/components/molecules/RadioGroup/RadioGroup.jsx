@@ -30,6 +30,7 @@ export const RadioGroup = ({
           <Radio
             key={opt.value}
             name={name}
+            value={opt.value}
             label={opt.label}
             description={opt.description}
             checked={selected}
