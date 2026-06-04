@@ -170,6 +170,7 @@ Esta taxonomia é **a fonte de verdade** para os componentes que precisam existi
 
 ### 8.5 Ações por mensagem
 - **RF-14** Rodapé de cada resposta: **copiar resposta inteira**, **👍/👎**, **regenerar** (só na última).
+- **RF-14.1** Tocar **👍/👎** abre um **BottomSheet de feedback** (DS): chips de motivo (multi-seleção; conjuntos distintos para útil/não-útil) + texto livre opcional + aviso "sem dados do paciente". O sinal binário vira retorno estruturado (não é validação clínica).
 - **RF-15** **Copiar** mostra micro-interação (ícone → check → volta) e só confirma em **cópia real**.
 - **RF-16** Em **bloco-card** (ex.: dose), o copiar é **flutuante no topo-direito do card** (não embaixo), com espaçamento que não quebra o conteúdo.
 - **RF-17** **Editar** a última pergunta: devolve o texto ao composer e remove o último par (reformular e reenviar).
@@ -218,7 +219,7 @@ sem match → `FALLBACK` ("Não entendi").
 
 **A. Dose de adrenalina** — `q:adrena` *(desambiguação)*
 - `→ adrena:pcr` (Adrenalina na PCR, adulto) — ações: *Ver ACLS* (`stub:tool`), *Dose pediátrica* (`adrena:ped`)
-- `→ adrena:ana` (Anafilaxia) — ação: *Dose pediátrica* (`adrena:ped`)
+- `→ adrena:ana` (Anafilaxia **adulto**) — ação: *Refratário → infusão* (`adrena:choque`) · *(removido o atalho "Dose pediátrica" que levava à dose de PCR — correção de segurança A3)*
 - `→ adrena:choque` (Infusão no choque) — ação: *Comparar com noradrenalina* (`q:noradobu`)
 - `→ adrena:ped` (PCR pediátrica) — terminal
 
@@ -227,7 +228,7 @@ sem match → `FALLBACK` ("Não entendi").
 - `→ hipo:sangramento` (Choque hemorrágico)
 - `→ hipo:cardio` (Choque cardiogênico)
 - `→ adrena:ana` (Anafilaxia — reaproveita o nó de dose)
-- `→ hipo:naosei` (triagem por dados objetivos) — chips: *PAM atual*/*Recebeu volume* (`hipo:sepse`), *Lactato* (`q:gaso`)
+- `→ hipo:naosei` (sem hipótese fechada) — chips do **diferencial** (não funila mais p/ sepse · correção A4): *Séptico* (`hipo:sepse`), *Hemorrágico* (`hipo:sangramento`), *Cardiogênico* (`hipo:cardio`), *Interpretar gasometria* (`q:gaso`)
 
 **C. Gasometria** — `q:gaso` *(interpretação)* — chips: *Calcular Winter*/*Ânion gap* (`stub:tool`), *Relacionar com sepse* (`hipo:sepse`)
 
@@ -329,6 +330,18 @@ sem match → `FALLBACK` ("Não entendi").
 - Ações **abaixo** da resposta (não ao lado).
 - Sugestões em **faixa horizontal** (não chips empilhados que quebram).
 - Onboarding como **BottomSheet do DS** (não modal ad-hoc), com **ícones** (não emoji).
+- **Badge de intenção é interno** (taxonomia nossa) — não aparece na UI do chat; só na galeria do DS (`card`).
+- **Ícone da IA** = sparkle (`ia`); o glyph anterior era um sol, idêntico ao modo-claro.
+- **Streaming pausado** (~2–3s "pensando" + revelação gradual ~48ms) — sensação de raciocínio; dose/crítico mais rápidos.
+- **Feedback do 👍/👎** vira BottomSheet de motivos (não é validação clínica).
+- **Correções de segurança clínica** (revisões 3-óticas): anafilaxia rotulada **adulto** + remoção do atalho para dose de **PCR** (A3); "não sei" oferece o **diferencial** em vez de funilar para sepse (A4).
+
+> **Revisões de QA realizadas:** 3 revisões profundas sob óticas diferentes
+> (usabilidade/heurísticas · acessibilidade WCAG · segurança clínica/UX writing).
+> Achados de copy/clínicos e a11y de menor esforço já aplicados; críticos de
+> interação (guard anti-double-tap, parar-no-pensando, streaming+aviso, cópia com
+> erro, undo empilhado), refino de delay por urgência e contrastes pendentes —
+> ver backlog de QA.
 
 ---
 

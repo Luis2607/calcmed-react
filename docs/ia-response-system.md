@@ -81,19 +81,31 @@ de continuação da conversa (interatividade).
 
 - **Container/estrutura:** `AIResponse` (variantes `card` p/ doc, `plain` p/ chat), `AIResponseRenderer`, `ResponseHeader`.
 - **Blocos novos:** `PrimaryAction`, `SuggestionChips`, `DoseBlock`, `CopyableBlock`, `ExpandableSection`, `ContextSelector`, `InterpretationBlock`, `LimitationNote`, `ProtocolStep`.
+- **Ações/átomos:** `CopyButton` (copiar com micro-interação de check; só confirma cópia real).
 - **Reuso do DS:** `Table`, `ChecklistBlock`, `AlertCard`, `Chip`, `DoseDisplay`, `Tag`.
 
 `AIResponseRenderer` aceita `onSelect(value, meta)` — sem ele a resposta é só
 visual (galeria do DS); com ele, seletores/chips/ações continuam a conversa
 (usado na tela de IA do protótipo).
 
+**Badge de intenção é interno:** o `ResponseHeader` só mostra o rótulo de intenção
+("Triagem contextual" etc.) na variante `card` (galeria/doc do DS). Na UI do chat
+(`plain`) o badge **não aparece** — a taxonomia é nossa, não do usuário.
+
 ## Tela de IA no protótipo
 
 `src/features/ia/` — aba "IA" do Home:
 
-- Abre **direto num chat novo** (pronto p/ digitar). Histórico atrás do ícone de relógio (header direito).
+- **Header** = variante do `ProtocolHeader` das centrais (mesma altura/tipografia). Ícone da IA = `ia` (sparkle).
+- Abre **direto num chat novo**. Histórico atrás do ícone de relógio (header direito); cards só **nome + data**; o histórico tem **composer próprio** (inicia conversa nova).
+- **Sugestões iniciais** numa **faixa horizontal rolável** (curadas, sem ícone) acima do composer, só no estado vazio.
 - Respostas em **largura cheia** (`AIResponse variant="plain"`), com reveal progressivo dos blocos.
-- "Digitando…" efêmero (nunca persiste); delay menor p/ dose/crítico.
-- Conversas persistidas em `localStorage` (`ia_conversations`).
-- `iaData.js` é o **roteiro de demonstração** (faz o papel do backend): um backend
-  real devolveria o mesmo contrato de resposta.
+- **Streaming:** "pensando" ~2–3s antes (menos p/ dose/crítico), revelação por unidades (~48ms). **Parar** congela e marca "Resposta interrompida" → **Continuar** retoma do ponto exato. Progresso efêmero (nunca persiste cru). Respeita `prefers-reduced-motion` (a fazer: pular streaming).
+- **Ações por mensagem** (`MessageActions`): copiar (`CopyButton`, micro-check), 👍/👎, regenerar (só na última).
+- **Feedback estruturado:** 👍/👎 abre o `IAFeedbackSheet` (BottomSheet do DS) com chips de motivo (multi-seleção, conjuntos distintos p/ up/down) + texto opcional + fineprint "sem dados do paciente"; grava `feedbackReasons`/`feedbackDetail` na mensagem.
+- **Editar/reenviar** a última pergunta (devolve ao composer e trunca o último par).
+- **Composer** multilinha (`textarea` auto-resize 1→~5 linhas; Enter envia, Shift+Enter quebra).
+- **Onboarding** de 1º acesso = `InfoSheet` **bloqueante** (só fecha pelo CTA); "Sobre a IA · avisos" reabre não-bloqueante.
+- Conversas persistidas em `localStorage` (`ia_conversations`); exclusão com **Desfazer** (toast).
+- `iaData.js` é o **roteiro de demonstração** (faz o papel do backend): classificação por heurística
+  `matchText` + tokens; um backend real devolveria o mesmo contrato de resposta.

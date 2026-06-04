@@ -106,6 +106,7 @@ componente, sem tocar nos demais).
 | **UserBubble** | text `Message` (cinza sóbrio `fundo/elevado`) | DS pattern |
 | **ConvCard** (histórico) | text `Title`·`Date` (só nome + data) | DS pattern |
 | **InterruptedNote** | text + ação `Continuar` | DS pattern |
+| **FeedbackSheet** (`IAFeedbackSheet`) | BottomSheet + chips de motivo (multi-seleção) + Textarea + footer "Enviar". `Tipo`=Útil·Não-útil (conjuntos de chips distintos). | DS pattern (sobre BottomSheet) |
 
 ---
 
@@ -216,7 +217,8 @@ jornada. Conectar com **FigJam/flow arrows** ou prototype links para o P.O. nave
 2. **Unificar os dois "Icon"** — existe o átomo `Icon` (dicionário grande PT-BR + aliases EN) **e** um
    `Icon` SVG **local** dentro do `ProtocolHeader` (dicionário reduzido: back/audio/edit/exit/clock/plus).
    No Figma, **um** componente Icon; o ProtocolHeader deve consumir o átomo (e o ícone `plus` que
-   adicionei entra nesse set unificado).
+   adicionei entra nesse set unificado). **Nota:** o glyph `ia` foi corrigido (era um sol idêntico ao
+   `modo-claro`) → agora é um **sparkle**; `sparkles` é alias de `ia`. Garantir o sparkle no Figma.
 3. **Família Table = 1 componente + presets** — `Table` (organism) é a base; `ScoreRangeTable`,
    `TETTabela` e `InterpretationBlock` são **wrappers de colunas fixas**. No Figma: **uma** `Table` com
    variants/instâncias, não 4 tabelas.
