@@ -217,6 +217,16 @@ export function SepseFlow({ onBack }) {
   const sofaTotal = somaSofa(s.sofa);
   const bundlePct = Math.round((s.bundleFeitos / s.bundleTotal) * 100);
 
+  // Validação de peso: rejeita ≤ 0 ou > 350 kg (guard clínico Bug 2)
+  const numPesoRaw = parseNum(s.peso);
+  const pesoInvalido = s.peso !== '' && (isNaN(numPesoRaw) || numPesoRaw <= 0 || numPesoRaw > 350);
+  const pesoErroMsg = (() => {
+    if (s.peso === '') return null;
+    if (isNaN(numPesoRaw) || numPesoRaw <= 0) return 'Peso deve ser maior que 0 kg';
+    if (numPesoRaw > 350) return 'Peso máximo permitido: 350 kg';
+    return null;
+  })();
+
   // ====================== Step gates (Gustavo 2026-05-28) ======================
   // Warning stepper: step visitado mas com itens pendentes vira 'warning' (laranja "!").
   // Itens pendentes do step ganham highlight vermelho (ChecklistBlock.highlightPending).
@@ -229,9 +239,13 @@ export function SepseFlow({ onBack }) {
     5: s.metasN >= 5 && s.icuN >= 6, // metas + checklist UTI
   };
   // Estado por step. 'warning' = num < telaAtual OU num <= telaMaxVisitada, e !completo.
+  // Bug 3: passo ATB (num=3) é considerado visitado quando telaMaxVisitada ≥ 2,
+  // mesmo que o footer tenha pulado T3 via atalho "Vasopressores" — garante que o
+  // usuário sempre consegue chegar à T3 pelo stepper para revisar/ajustar o foco.
   const stepStates = [1, 2, 3, 4, 5].map((num) => {
     if (num === s.telaAtual) return 'active';
-    const visitado = num < s.telaAtual || num <= (s.telaMaxVisitada || 1);
+    let visitado = num < s.telaAtual || num <= (s.telaMaxVisitada || 1);
+    if (num === 3 && (s.telaMaxVisitada || 1) >= 2) visitado = true;
     if (visitado) return stepCompleto[num] ? 'completed' : 'warning';
     return 'pending';
   });
@@ -502,7 +516,19 @@ export function SepseFlow({ onBack }) {
       <ClinicalCard variant="plain" title="Paciente">
         <div className={styles.row2}>
           <InputField label="Idade" type="text" mono inputMode="numeric" value={s.idade} onChange={(v) => { s.marcarInicio(); s.setIdade(v); }} placeholder="" showUnit unit="anos" />
-          <InputField label="Peso" type="text" mono inputMode="decimal" value={s.peso} onChange={(v) => { s.marcarInicio(); s.setPeso(v); }} placeholder="" showUnit unit="kg" />
+          <InputField
+            label="Peso"
+            type="text"
+            mono
+            inputMode="decimal"
+            value={s.peso}
+            onChange={(v) => { s.marcarInicio(); s.setPeso(v); }}
+            placeholder=""
+            showUnit
+            unit="kg"
+            state={pesoInvalido ? 'error' : undefined}
+            helperText={pesoErroMsg}
+          />
         </div>
         {s.numIdade != null && s.numIdade >= 65 && (
           <AlertCard level="info" title="Paciente ≥ 65 anos">
@@ -553,7 +579,8 @@ export function SepseFlow({ onBack }) {
         }}
       />
 
-      {s.volume ? (
+      {/* Bug 2: não exibir volume com peso inválido (≤ 0 ou > 350 kg) */}
+      {s.volume && !pesoInvalido ? (
         <AlertCard level="result" title="Cristaloide 30 mL/kg" showValue value={s.volume.volumeMl.toLocaleString('pt-BR')} unit="mL">
           Ringer Lactato · 30 mL/kg em 1-3 h · peso {s.volume.pesoUsado} kg
           {s.pesoAjustado != null && s.numPeso ? ` (ajustado de ${s.numPeso} kg reais)` : ''}.

@@ -400,10 +400,11 @@ export function calcularPesoAjustado({ imcObeso, peso, altura, sexo }) {
   return Math.max(0, Math.round(ajustado));
 }
 
-// Volume cristaloide (30 mL/kg) · usa peso ajustado se houver
+// Volume cristaloide (30 mL/kg) · usa peso ajustado se houver.
+// Retorna null quando peso inválido (≤ 0) — evita exibir volume negativo.
 export function calcularVolume({ peso, pesoAjustado }) {
   const pesoUsado = pesoAjustado ?? peso;
-  if (!pesoUsado) return null;
+  if (!pesoUsado || pesoUsado <= 0) return null;
   return { pesoUsado, volumeMl: Math.round(pesoUsado * 30) };
 }
 
