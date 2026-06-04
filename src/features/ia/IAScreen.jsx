@@ -48,12 +48,21 @@ function relativeTime(ts) {
   return d === 1 ? 'ontem' : `${d} d`;
 }
 
-function TypingDots() {
+// Rótulo do "pensando" por intenção (semântica de estado, não só pontinhos).
+const THINK_LABELS = {
+  dose: 'Calculando a dose…', critico: 'Avaliando o risco…', exame: 'Interpretando…',
+  protocolo: 'Montando o protocolo…', comparacao: 'Comparando…', aprendizado: 'Organizando…',
+  resumo: 'Resumindo…', triagem: 'Pensando na triagem…', operacional: 'Montando a conduta…',
+};
+
+function TypingDots({ label = 'Pensando…' }) {
   return (
     <div className={styles.aiRow}>
       <div className={styles.typingWrap}>
-        <span className={styles.typingLabel}><Icon name="sparkles" size={14} /> IA · CalcMed</span>
-        <span className={styles.typing} aria-label="IA digitando">
+        <span className={styles.typingLabel}>
+          <span aria-hidden="true"><Icon name="sparkles" size={14} /></span> {label}
+        </span>
+        <span className={styles.typing} aria-label={label}>
           <i /><i /><i />
         </span>
       </div>
@@ -67,16 +76,24 @@ function TypingDots() {
  * chama onDone(units, stopped) para o pai finalizar.
  */
 function StreamingMessage({ response, startUnits = 0, onSelect, onProgress, onDone, stopSignal }) {
-  // Remonta a cada novo stream (key no pai) → units/refs começam em startUnits
+  // prefers-reduced-motion: nasce já completo (sem "digitar") — evita setState no effect.
+  const reduce = typeof window !== 'undefined' && window.matchMedia
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const total = countUnits(response);
+  const initial = reduce ? total : startUnits;
+  // Remonta a cada novo stream (key no pai) → units/refs começam em initial
   // (0 num stream novo; revealedUnits ao "Continuar" uma resposta interrompida).
-  const [units, setUnits] = useState(startUnits);
-  const unitsRef = useRef(startUnits);
+  const [units, setUnits] = useState(initial);
+  const unitsRef = useRef(initial);
   const intervalRef = useRef(null);
   const stopRef = useRef(stopSignal);
   const doneRef = useRef(false);
 
   useEffect(() => {
-    const total = countUnits(response);
+    if (reduce) {
+      if (!doneRef.current) { doneRef.current = true; onDone?.(total, false); }
+      return;
+    }
     intervalRef.current = setInterval(() => {
       const n = unitsRef.current + 1;
       unitsRef.current = n;
@@ -122,6 +139,7 @@ export function IAScreen({ onBack }) {
   const [stopSignal, setStopSignal] = useState(0);
   const [toast, setToast] = useState(null);
   const [fbSheet, setFbSheet] = useState({ open: false, msgId: null, value: null });
+  const [pendingLabel, setPendingLabel] = useState('Pensando…');
   const scrollerRef = useRef(null);
   const inputRef = useRef(null);
   const timers = useRef({});
@@ -233,9 +251,12 @@ export function IAScreen({ onBack }) {
     if (finePointer()) inputRef.current?.focus();
 
     const response = respond(lookup ?? displayText);
-    // "Pensando" ~2–3s antes de começar a responder (sensação de raciocínio).
-    // Urgências (dose/crítico) pensam um pouco menos; o resto, um pouco mais.
-    const think = response.intent === 'dose' || response.intent === 'critico' ? 2000 : 2700;
+    setPendingLabel(THINK_LABELS[response.intent] || 'Pensando…');
+    // "Pensar" por intenção: urgência (dose/crítico/protocolo) responde rápido;
+    // raciocínio mais longo só onde agrega (comparação/aprendizado).
+    const urgent = ['dose', 'critico', 'protocolo'].includes(response.intent);
+    const slow = ['comparacao', 'aprendizado'].includes(response.intent);
+    const think = urgent ? 700 : slow ? 2400 : 1500;
     const tid = uid();
     timers.current[tid] = setTimeout(() => {
       const viewing = activeIdRef.current === convId;
@@ -559,7 +580,7 @@ export function IAScreen({ onBack }) {
                 </div>
               ),
             )}
-            {pendingActive > 0 && <TypingDots />}
+            {pendingActive > 0 && <TypingDots label={pendingLabel} />}
           </div>
         )}
       </div>
