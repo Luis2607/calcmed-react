@@ -1,0 +1,28 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--esp-3);
+  border-radius: var(--ds-r-sm, 8px);
+  border: 1px solid var(--ds-borda-padrao);
+  background: var(--interativo-primario-tint-06);
+}
+
+.block[data-tone='critico'] {
+  background: var(--ds-retorno-critico-fundo);
+  border-color: var(--ds-retorno-critico-borda);
+}
+
+.label {
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-texto-terciario);
+}
+
+.content {
+  font-size: var(--fonte-tamanho-corpo);
+  line-height: 21px;
+  color: var(--ds-texto-padrao);
+}

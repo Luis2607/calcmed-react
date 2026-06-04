@@ -1,5 +1,20 @@
-import { Chip } from '../../shared/components/molecules/Chip';
 import { AlertCard } from '../../shared/components/organisms/AlertCard';
+import { ChecklistBlock } from '../../shared/components/organisms/ChecklistBlock';
+import { Table } from '../../shared/components/organisms/Table';
+import {
+  AIResponse,
+  ResponseHeader,
+  PrimaryAction,
+  SuggestionChips,
+  DoseBlock,
+  CopyableBlock,
+  ExpandableSection,
+  ContextSelector,
+  InterpretationBlock,
+  LimitationNote,
+  AIResponseRenderer,
+  INTENT_LABELS,
+} from '../../shared/components/ai';
 import styles from './AiResponseSystemGallery.module.css';
 
 /* ============================================================
@@ -226,24 +241,6 @@ const ANATOMY = [
   ['Limitations', 'Quando depende de protocolo local ou validação clínica.'],
 ];
 
-// ---------- 9. Componentização ----------
-const COMPONENTS = [
-  ['Response Header', 'Título da condição/assunto + tag de intenção.', 'Topo de quase toda resposta.'],
-  ['Context Line', 'Linha de contexto clínico resumido.', 'Logo abaixo do header em condutas.'],
-  ['Primary Action Block', 'Destaque da ação principal.', 'Operational Response, protocolos.'],
-  ['Compact Dose Block', 'Dose + unidade em mono, copiável.', 'Compact Answer de dose.'],
-  ['Clinical Table', 'Tabela enxuta de comparação/parâmetros.', 'Comparison / Interpretation.'],
-  ['Checklist Block', 'Itens de verificação acionáveis.', 'Condutas paralelas.'],
-  ['Alert Block', 'Alerta semântico (info/atenção/crítico).', 'Risco real — reusa AlertCard.'],
-  ['Suggestion Chips', 'Próximos passos e refinamentos.', 'Rodapé de quase toda resposta — reusa Chip.'],
-  ['Copyable Block', 'Texto pronto p/ reaproveitar.', 'Copyable Summary.'],
-  ['Stepper / Protocol Step', 'Etapa atual + próxima decisão.', 'Protocol Stepper.'],
-  ['Context Selector', 'Pergunta de contexto + chips.', 'Pergunta ambígua.'],
-  ['Interpretation Block', 'Parâmetros + leitura + passo.', 'Exames e scores.'],
-  ['Limitation Note', 'Nota de segurança/validação.', 'Quando falta contexto ou protocolo local.'],
-  ['Expandable Section', 'Progressive disclosure.', 'Learning Layer, detalhes opcionais.'],
-];
-
 // ---------- 10. Flows ----------
 const FLOWS = [
   {
@@ -289,6 +286,26 @@ const FLOWS = [
   },
 ];
 
+// ---------- 12. Handoff · payload de demonstração ----------
+// Mesmo contrato do JSON exibido na seção — alimenta o AIResponseRenderer ao vivo.
+const DEMO_RESPONSE = {
+  intent: 'operacional',
+  risk_level: 'alto',
+  title: 'Choque séptico provável',
+  context: 'PAM baixa após volume + lactato elevado',
+  blocks: [
+    { type: 'primary_action', content: 'Iniciar noradrenalina — dose inicial conforme protocolo institucional' },
+    {
+      type: 'checklist',
+      tagLabel: 'Condutas paralelas',
+      tagTone: 'atencao',
+      items: ['Reavaliar perfusão', 'Monitorar diurese', 'Considerar acesso central'],
+    },
+    { type: 'limitation', content: 'Exemplo ilustrativo. Doses e condutas dependem de validação médica e protocolo local.' },
+  ],
+  actions: [{ label: 'Calcular dose por peso' }, { label: 'Copiar conduta' }],
+};
+
 // ============================================================
 //  Sub-componentes de apresentação
 // ============================================================
@@ -310,24 +327,40 @@ function RiskTag({ level }) {
   return <span className={styles.riskTag} data-risk={level}>{RISK[level]}</span>;
 }
 
-function ResponseMock({ title, contextLine, children, footnote }) {
+// Wrapper de exemplo: compõe os componentes REAIS do kit de IA (AIResponse +
+// ResponseHeader + LimitationNote). Os exemplos da galeria renderizam o DS de
+// verdade — não há mais mock visual paralelo.
+function ResponseMock({ title, contextLine, children, footnote, intent, risk }) {
   return (
-    <div className={styles.mock}>
-      <div className={styles.mockBar}>
-        <span className={styles.mockDot} /><span className={styles.mockDot} /><span className={styles.mockDot} />
-        <span className={styles.mockBarLabel}>Resposta CalcMed IA</span>
-      </div>
-      <div className={styles.mockBody}>
-        {title && <div className={styles.mockTitle}>{title}</div>}
-        {contextLine && <div className={styles.mockContext}>{contextLine}</div>}
-        {children}
-        {footnote && <p className={styles.mockNote}>{footnote}</p>}
-      </div>
-    </div>
+    <AIResponse risk={risk}>
+      {(title || intent) && (
+        <ResponseHeader
+          title={title}
+          context={contextLine}
+          intent={intent}
+          intentLabel={intent ? INTENT_LABELS[intent] : undefined}
+        />
+      )}
+      {children}
+      {footnote && <LimitationNote>{footnote}</LimitationNote>}
+    </AIResponse>
   );
 }
 
 const ILLUSTRATIVE = 'Exemplo ilustrativo. Conteúdo clínico final deve ser validado pelo time médico.';
+
+// Card de especificação de componente — nome + nota + demo viva do componente real.
+function ComponentSpec({ name, note, children }) {
+  return (
+    <div className={styles.compSpec}>
+      <div className={styles.compSpecHead}>
+        <code className={styles.compSpecName}>{name}</code>
+        <span className={styles.compSpecNote}>{note}</span>
+      </div>
+      <div className={styles.compSpecDemo}>{children}</div>
+    </div>
+  );
+}
 
 // ============================================================
 //  Página
@@ -525,27 +558,35 @@ export function AiResponseSystemGallery() {
       >
         <div className={styles.anatomyLayout}>
           <ResponseMock
+            intent="operacional"
+            risk="alto"
             title="Choque séptico provável"
             contextLine="PAM 58 após volume · lactato 5 mmol/L"
             footnote={ILLUSTRATIVE}
           >
-            <div className={styles.anaPrimary}>
-              <span className={styles.miniLabel}>Próxima ação</span>
+            <PrimaryAction>
               Iniciar <strong>noradrenalina</strong> — meta PAM ≥ 65 mmHg
-            </div>
-            <ul className={styles.anaChecklist}>
-              <li>Reavaliar perfusão e diurese</li>
-              <li>Coletar culturas + iniciar ATB &lt; 1h</li>
-              <li>Considerar acesso central</li>
-            </ul>
+            </PrimaryAction>
+            <ChecklistBlock
+              tagLabel="Condutas paralelas"
+              tagTone="atencao"
+              count="0/3"
+              items={[
+                { label: 'Reavaliar perfusão e diurese', checked: false },
+                { label: 'Coletar culturas + iniciar ATB < 1h', checked: false },
+                { label: 'Considerar acesso central', checked: false },
+              ]}
+            />
             <AlertCard level="critical" title="Sinal de alerta">
               Lactato &gt; 4 indica hipoperfusão — reavaliar resposta em 1h.
             </AlertCard>
-            <div className={styles.chipRow}>
-              <Chip state="active">Calcular dose por peso</Chip>
-              <Chip>Metas do protocolo</Chip>
-              <Chip>Copiar conduta</Chip>
-            </div>
+            <SuggestionChips
+              items={[
+                { label: 'Calcular dose por peso', active: true },
+                'Metas do protocolo',
+                'Copiar conduta',
+              ]}
+            />
           </ResponseMock>
 
           <ol className={styles.anatomyList}>
@@ -593,12 +634,8 @@ export function AiResponseSystemGallery() {
           </div>
           <div className={styles.vlCard}>
             <h3>Chips</h3>
-            <p>Próximo passo, refinamento, contexto e ações rápidas. Reusa o componente <code>Chip</code> do DS.</p>
-            <div className={styles.chipRow}>
-              <Chip state="active">Ver ACLS</Chip>
-              <Chip>Dose pediátrica</Chip>
-              <Chip>Copiar</Chip>
-            </div>
+            <p>Próximo passo, refinamento, contexto e ações rápidas. <code>SuggestionChips</code> compõe o <code>Chip</code> do DS.</p>
+            <SuggestionChips items={[{ label: 'Ver ACLS', active: true }, 'Dose pediátrica', 'Copiar']} />
           </div>
           <div className={styles.vlCard}>
             <h3>Copy</h3>
@@ -610,18 +647,72 @@ export function AiResponseSystemGallery() {
       {/* 9. Componentização */}
       <Section
         n={9}
-        eyebrow="UI"
+        eyebrow="UI · componentes vivos"
         title="Componentização"
-        intro="Depois da taxonomia e dos patterns. Componentes por FUNÇÃO, nunca por doença. Errado: “Card de Sepse”. Certo: “Operational Response”, “Dose Block”."
+        intro="Componentes por FUNÇÃO, nunca por doença. A camada de IA vive em src/shared/components/ai/ e é construída sobre os componentes que já temos. Abaixo, os componentes reais renderizados — não mocks."
       >
-        <div className={styles.compGrid}>
-          {COMPONENTS.map(([name, fn, when]) => (
-            <div key={name} className={styles.compCard}>
-              <strong>{name}</strong>
-              <p>{fn}</p>
-              <span className={styles.compWhen}>{when}</span>
-            </div>
-          ))}
+        {/* Camada nova de IA */}
+        <h3 className={styles.compGroupTitle}>Camada nova de IA <span className={styles.tagNovo}>novo</span></h3>
+        <div className={styles.specGrid}>
+          <ComponentSpec name="ResponseHeader" note="Badge de intenção + título + contexto.">
+            <ResponseHeader intent="operacional" intentLabel={INTENT_LABELS.operacional} title="Choque séptico provável" context="PAM 58 após volume · lactato 5" />
+          </ComponentSpec>
+          <ComponentSpec name="PrimaryAction" note="Destaque da próxima ação.">
+            <PrimaryAction>Iniciar <strong>noradrenalina</strong> — meta PAM ≥ 65</PrimaryAction>
+          </ComponentSpec>
+          <ComponentSpec name="DoseBlock" note="Dose objetiva + copiar. Compõe DoseDisplay.">
+            <DoseBlock value="1 mg" unit="IV/IO" via="a cada 3–5 min" />
+          </ComponentSpec>
+          <ComponentSpec name="SuggestionChips" note="Próximos passos. Compõe Chip.">
+            <SuggestionChips items={[{ label: 'Ver ACLS', active: true }, 'Dose pediátrica', 'Copiar']} />
+          </ComponentSpec>
+          <ComponentSpec name="ContextSelector" note="Resolve ambiguidade antes de responder.">
+            <ContextSelector question="Em qual contexto?" options={['PCR', 'Anafilaxia', 'Choque', 'Pediatria']} />
+          </ComponentSpec>
+          <ComponentSpec name="CopyableBlock" note="Texto reaproveitável com variações de formato.">
+            <CopyableBlock variants={[{ label: 'Curto', text: 'Choque séptico provável. Nora em curso + ATB.' }, { label: 'WhatsApp', text: 'Choque séptico 🚨 nora + ATB iniciados.' }]} />
+          </ComponentSpec>
+          <ComponentSpec name="ExpandableSection" note="Progressive disclosure inline (Learning Layer).">
+            <ExpandableSection title="Por que noradrenalina primeiro?" hint="aprofundar">
+              Vasopressor de escolha no choque séptico: aumenta a PA com menor risco arritmogênico que a dopamina.
+            </ExpandableSection>
+          </ComponentSpec>
+          <ComponentSpec name="LimitationNote" note="Nota de segurança. Compõe AlertCard (footnote).">
+            <LimitationNote>Conteúdo ilustrativo — validar com protocolo institucional.</LimitationNote>
+          </ComponentSpec>
+          <ComponentSpec name="InterpretationBlock" note="Tabela + leitura + próxima etapa. Compõe Table.">
+            <InterpretationBlock
+              columns={[{ key: 'p', label: 'Parâmetro', emphasis: true }, { key: 'v', label: 'Valor', mono: true, align: 'right' }]}
+              rows={[{ p: 'pH', v: '7.28' }, { p: 'HCO₃', v: '14' }]}
+              reading={<><strong>Acidose metabólica</strong> com compensação parcial.</>}
+              tone="atencao"
+              chips={['Calcular Winter']}
+            />
+          </ComponentSpec>
+          <ComponentSpec name="AIResponse" note="Container da resposta (barra + blocos + risco).">
+            <AIResponse risk="alto">
+              <ResponseHeader intent="critico" intentLabel={INTENT_LABELS.critico} title="K 7,1 com QRS largo" />
+              <PrimaryAction tone="critico">Gluconato de cálcio agora — estabilizar membrana.</PrimaryAction>
+            </AIResponse>
+          </ComponentSpec>
+        </div>
+
+        {/* Reuso do DS */}
+        <h3 className={styles.compGroupTitle}>Reuso do DS <span className={styles.tagReuso}>reuso</span></h3>
+        <div className={styles.tableScroll}>
+          <table className={styles.table}>
+            <thead>
+              <tr><th>Bloco da resposta</th><th>Componente do DS</th><th>Observação</th></tr>
+            </thead>
+            <tbody>
+              <tr><td className={styles.tdStrong}>Alert Block</td><td className={styles.tdInput}>AlertCard</td><td>Risco real — níveis info/atenção/crítico/footnote.</td></tr>
+              <tr><td className={styles.tdStrong}>Clinical Table</td><td className={styles.tdInput}>Table</td><td>Tabela canônica do DS (comparação/parâmetros).</td></tr>
+              <tr><td className={styles.tdStrong}>Checklist Block</td><td className={styles.tdInput}>ChecklistBlock</td><td>Condutas paralelas com contador.</td></tr>
+              <tr><td className={styles.tdStrong}>Suggestion Chips</td><td className={styles.tdInput}>Chip</td><td>Encapsulado por SuggestionChips.</td></tr>
+              <tr><td className={styles.tdStrong}>Dose</td><td className={styles.tdInput}>DoseDisplay</td><td>Encapsulado por DoseBlock (+ copiar).</td></tr>
+              <tr><td className={styles.tdStrong}>Badge de intenção</td><td className={styles.tdInput}>tokens de Tag</td><td>Cores via --ds-tag-* no ResponseHeader.</td></tr>
+            </tbody>
+          </table>
         </div>
       </Section>
 
@@ -657,68 +748,60 @@ export function AiResponseSystemGallery() {
           {/* Compact Answer */}
           <div className={styles.example}>
             <span className={styles.exampleTag}>Compact Answer · Adrenalina na PCR</span>
-            <ResponseMock title="Adrenalina na PCR" footnote={ILLUSTRATIVE}>
-              <div className={styles.doseBlock}>
-                <span className={styles.doseValue}>1 mg</span>
-                <span className={styles.doseUnit}>IV/IO · a cada 3–5 min</span>
-              </div>
+            <ResponseMock intent="dose" title="Adrenalina na PCR" footnote={ILLUSTRATIVE}>
+              <DoseBlock value="1 mg" unit="IV/IO" via="a cada 3–5 min" />
               <p className={styles.exampleP}>Sem teto de dose na parada. Manter RCP de alta qualidade entre as doses.</p>
-              <div className={styles.chipRow}>
-                <Chip state="active">Ver ACLS</Chip>
-                <Chip>Dose pediátrica</Chip>
-                <Chip>Copiar</Chip>
-              </div>
+              <SuggestionChips items={[{ label: 'Ver ACLS', active: true }, 'Dose pediátrica']} />
             </ResponseMock>
           </div>
 
           {/* Context Selector */}
           <div className={styles.example}>
             <span className={styles.exampleTag}>Context Selector · “Dose de adrenalina?”</span>
-            <ResponseMock title="Em qual contexto?" footnote={ILLUSTRATIVE}>
-              <p className={styles.exampleP}>A dose muda conforme a indicação. Selecione:</p>
-              <div className={styles.chipRow}>
-                <Chip>PCR</Chip>
-                <Chip>Anafilaxia</Chip>
-                <Chip>Broncoespasmo</Chip>
-                <Chip>Choque</Chip>
-                <Chip>Pediatria</Chip>
-              </div>
+            <ResponseMock intent="ambigua" title="Em qual contexto?" footnote={ILLUSTRATIVE}>
+              <ContextSelector
+                question="A dose muda conforme a indicação. Selecione:"
+                options={['PCR', 'Anafilaxia', 'Broncoespasmo', 'Choque', 'Pediatria']}
+              />
             </ResponseMock>
           </div>
 
           {/* Operational Response */}
           <div className={styles.example}>
             <span className={styles.exampleTag}>Operational Response · Choque séptico</span>
-            <ResponseMock title="Choque séptico provável" contextLine="PAM 58 após volume · lactato 5" footnote={ILLUSTRATIVE}>
-              <div className={styles.anaPrimary}>
-                <span className={styles.miniLabel}>Próxima ação</span>
+            <ResponseMock intent="operacional" risk="alto" title="Choque séptico provável" contextLine="PAM 58 após volume · lactato 5" footnote={ILLUSTRATIVE}>
+              <PrimaryAction>
                 Iniciar <strong>noradrenalina</strong> — meta PAM ≥ 65
-              </div>
-              <ul className={styles.anaChecklist}>
-                <li>ATB empírico &lt; 1h + culturas</li>
-                <li>Reavaliar perfusão em 1h</li>
-              </ul>
-              <div className={styles.chipRow}>
-                <Chip state="active">Calcular dose</Chip>
-                <Chip>Copiar conduta</Chip>
-              </div>
+              </PrimaryAction>
+              <ChecklistBlock
+                tagLabel="Condutas paralelas"
+                tagTone="atencao"
+                count="0/2"
+                items={[
+                  { label: 'ATB empírico < 1h + culturas', checked: false },
+                  { label: 'Reavaliar perfusão em 1h', checked: false },
+                ]}
+              />
+              <SuggestionChips items={[{ label: 'Calcular dose', active: true }, 'Copiar conduta']} />
             </ResponseMock>
           </div>
 
           {/* Comparison Table */}
           <div className={styles.example}>
             <span className={styles.exampleTag}>Comparison Table · Nora vs Dobuta</span>
-            <ResponseMock title="Noradrenalina × Dobutamina" footnote={ILLUSTRATIVE}>
-              <div className={styles.tableScroll}>
-                <table className={styles.miniTable}>
-                  <thead><tr><th></th><th>Noradrenalina</th><th>Dobutamina</th></tr></thead>
-                  <tbody>
-                    <tr><td>Ação</td><td>Vasopressor (α)</td><td>Inotrópico (β1)</td></tr>
-                    <tr><td>Efeito</td><td>↑ PA</td><td>↑ débito</td></tr>
-                    <tr><td>Quando</td><td>Choque com PA baixa</td><td>Baixo débito</td></tr>
-                  </tbody>
-                </table>
-              </div>
+            <ResponseMock intent="comparacao" title="Noradrenalina × Dobutamina" footnote={ILLUSTRATIVE}>
+              <Table
+                columns={[
+                  { key: 'criterio', label: '', emphasis: true },
+                  { key: 'nora', label: 'Noradrenalina' },
+                  { key: 'dobu', label: 'Dobutamina' },
+                ]}
+                rows={[
+                  { criterio: 'Ação', nora: 'Vasopressor (α)', dobu: 'Inotrópico (β1)' },
+                  { criterio: 'Efeito', nora: '↑ PA', dobu: '↑ débito' },
+                  { criterio: 'Quando', nora: 'Choque com PA baixa', dobu: 'Baixo débito' },
+                ]}
+              />
               <p className={styles.exampleP}><strong>Regra prática:</strong> PA baixa → nora primeiro; débito baixo com PA ok → dobuta.</p>
             </ResponseMock>
           </div>
@@ -726,37 +809,33 @@ export function AiResponseSystemGallery() {
           {/* Interpretation Result */}
           <div className={styles.example}>
             <span className={styles.exampleTag}>Interpretation Result · Gasometria</span>
-            <ResponseMock title="Gasometria arterial" footnote={ILLUSTRATIVE}>
-              <div className={styles.tableScroll}>
-                <table className={styles.miniTable}>
-                  <thead><tr><th>Parâmetro</th><th>Valor</th><th></th></tr></thead>
-                  <tbody>
-                    <tr><td>pH</td><td className="mono">7.28</td><td><RiskTag level="medio" /></td></tr>
-                    <tr><td>pCO₂</td><td className="mono">28</td><td className={styles.tdMuted}>compensando</td></tr>
-                    <tr><td>HCO₃</td><td className="mono">14</td><td><RiskTag level="alto" /></td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <p className={styles.exampleP}><strong>Acidose metabólica</strong> com compensação respiratória parcial.</p>
-              <div className={styles.chipRow}>
-                <Chip state="active">Calcular Winter</Chip>
-                <Chip>Ânion gap</Chip>
-                <Chip>Relacionar com sepse</Chip>
-              </div>
+            <ResponseMock intent="exame" title="Gasometria arterial" footnote={ILLUSTRATIVE}>
+              <InterpretationBlock
+                columns={[
+                  { key: 'param', label: 'Parâmetro', emphasis: true },
+                  { key: 'valor', label: 'Valor', mono: true, align: 'right' },
+                  { key: 'flag', label: '', align: 'right' },
+                ]}
+                rows={[
+                  { param: 'pH', valor: '7.28', flag: <RiskTag level="medio" /> },
+                  { param: 'pCO₂', valor: '28', flag: <span className={styles.tdMuted}>compensando</span> },
+                  { param: 'HCO₃', valor: '14', flag: <RiskTag level="alto" /> },
+                ]}
+                reading={<><strong>Acidose metabólica</strong> com compensação respiratória parcial.</>}
+                tone="atencao"
+                chips={['Calcular Winter', 'Ânion gap', 'Relacionar com sepse']}
+              />
             </ResponseMock>
           </div>
 
           {/* Guided Flow */}
           <div className={styles.example}>
             <span className={styles.exampleTag}>Guided Flow · Paciente hipotenso</span>
-            <ResponseMock title="Qual cenário parece mais provável?" footnote={ILLUSTRATIVE}>
-              <div className={styles.chipRow}>
-                <Chip>Sepse</Chip>
-                <Chip>Sangramento</Chip>
-                <Chip>Cardiogênico</Chip>
-                <Chip>Anafilaxia</Chip>
-                <Chip>Não sei</Chip>
-              </div>
+            <ResponseMock intent="triagem" title="Triagem guiada" footnote={ILLUSTRATIVE}>
+              <ContextSelector
+                question="Qual cenário parece mais provável?"
+                options={['Sepse', 'Sangramento', 'Cardiogênico', 'Anafilaxia', 'Não sei']}
+              />
               <p className={styles.exampleP}>Depois: volume recebido? PAM? lactato? sinais de choque?</p>
             </ResponseMock>
           </div>
@@ -764,16 +843,14 @@ export function AiResponseSystemGallery() {
           {/* Copyable Summary */}
           <div className={styles.example}>
             <span className={styles.exampleTag}>Copyable Summary · Evolução</span>
-            <ResponseMock title="Resumo para evolução" footnote={ILLUSTRATIVE}>
-              <div className={styles.copyBlock}>
-                <p>Paciente com choque séptico provável. PAM 58 após reposição volêmica, lactato 5. Iniciada noradrenalina com meta PAM ≥ 65 e ATB empírico.</p>
-                <button type="button" className={styles.copyBtn}>Copiar</button>
-              </div>
-              <div className={styles.chipRow}>
-                <Chip>Encurtar</Chip>
-                <Chip>Formato prontuário</Chip>
-                <Chip>WhatsApp</Chip>
-              </div>
+            <ResponseMock intent="resumo" title="Resumo para evolução" footnote={ILLUSTRATIVE}>
+              <CopyableBlock
+                variants={[
+                  { label: 'Prontuário', text: 'Paciente com choque séptico provável. PAM 58 mmHg após reposição volêmica, lactato 5 mmol/L. Iniciada noradrenalina com meta PAM ≥ 65 e ATB empírico < 1h.' },
+                  { label: 'Curto', text: 'Choque séptico provável. Nora em curso (meta PAM ≥ 65) + ATB empírico.' },
+                  { label: 'WhatsApp', text: 'Choque séptico provável 🚨 PAM 58 pós-volume, lactato 5. Iniciei nora (meta PAM ≥ 65) e ATB.' },
+                ]}
+              />
             </ResponseMock>
           </div>
         </div>
@@ -820,6 +897,12 @@ export function AiResponseSystemGallery() {
     { "label": "Copiar conduta", "type": "copy" }
   ]
 }`}</pre>
+
+        {/* Renderer ao vivo: o MESMO payload acima, montado pelo AIResponseRenderer. */}
+        <div className={styles.rendererDemo}>
+          <span className={styles.miniLabel}>↑ payload · ↓ AIResponseRenderer (DS ao vivo)</span>
+          <AIResponseRenderer response={DEMO_RESPONSE} />
+        </div>
 
         <ul className={styles.handoffList}>
           <li>A IA identifica a <strong>intenção</strong> e estrutura o conteúdo em <strong>blocks</strong>.</li>

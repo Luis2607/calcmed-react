@@ -1,0 +1,17 @@
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+}
+
+.reading {
+  font-size: var(--fonte-tamanho-corpo);
+  line-height: 21px;
+  color: var(--ds-texto-padrao);
+  padding-left: var(--esp-3);
+  border-left: 3px solid var(--ds-borda-padrao);
+}
+.reading[data-tone='atencao'] { border-left-color: var(--ds-retorno-atencao); }
+.reading[data-tone='critico'] { border-left-color: var(--ds-retorno-critico); }
+.reading[data-tone='sucesso'] { border-left-color: var(--ds-retorno-sucesso); }
+.reading[data-tone='info']    { border-left-color: var(--ds-interativo-primario); }

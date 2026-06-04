@@ -1,0 +1,51 @@
+.response {
+  border: 1px solid var(--ds-borda-padrao);
+  border-radius: var(--ds-r-lg, 16px);
+  background: var(--ds-fundo-cartao);
+  overflow: hidden;
+  box-shadow: var(--sombra-cartao);
+}
+
+/* Risco alto: rail esquerdo sóbrio (sem decorar — sinaliza prioridade). */
+.response[data-risk='alto'] {
+  border-left: 3px solid var(--ds-retorno-critico);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  padding: var(--esp-2) var(--esp-3);
+  background: var(--ds-fundo-elevado);
+  border-bottom: 1px solid var(--ds-borda-sutil);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ds-interativo-primario);
+}
+
+.riskFlag {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--ds-retorno-critico-fundo);
+  color: var(--ds-retorno-critico);
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-3);
+  padding: var(--esp-4);
+}

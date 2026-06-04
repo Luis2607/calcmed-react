@@ -1,0 +1,19 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+}
+
+.label {
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-texto-terciario);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+}

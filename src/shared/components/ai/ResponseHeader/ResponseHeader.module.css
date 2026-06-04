@@ -1,0 +1,42 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.title {
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--ds-texto-padrao);
+}
+
+.context {
+  font-size: var(--fonte-tamanho-auxiliar);
+  line-height: 18px;
+  color: var(--ds-texto-secundario);
+}
+
+.intent {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  font-size: var(--fonte-tamanho-micro);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-secundario);
+}
+.intent[data-intent='dose']        { background: var(--ds-tag-diluicoes-fundo);    color: var(--ds-tag-diluicoes-texto); }
+.intent[data-intent='ambigua']     { background: var(--ds-tag-calculadoras-fundo); color: var(--ds-tag-calculadoras-texto); }
+.intent[data-intent='operacional'] { background: var(--ds-tag-urgencias-fundo);    color: var(--ds-tag-urgencias-texto); }
+.intent[data-intent='exame']       { background: var(--ds-tag-protocolos-fundo);   color: var(--ds-tag-protocolos-texto); }
+.intent[data-intent='comparacao']  { background: var(--ds-tag-conversores-fundo);  color: var(--ds-tag-conversores-texto); }
+.intent[data-intent='protocolo']   { background: var(--ds-tag-escores-fundo);      color: var(--ds-tag-escores-texto); }
+.intent[data-intent='aprendizado'] { background: var(--informativo-fundo);         color: var(--informativo-primario); }
+.intent[data-intent='resumo']      { background: var(--ds-fundo-elevado);          color: var(--ds-texto-secundario); }
+.intent[data-intent='triagem']     { background: var(--retorno-atencao-fundo);     color: var(--retorno-atencao); }
+.intent[data-intent='critico']     { background: var(--retorno-critico-fundo);     color: var(--retorno-critico); }
