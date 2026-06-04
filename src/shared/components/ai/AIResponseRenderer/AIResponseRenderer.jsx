@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import { useState, Fragment, Component } from 'react';
 import { Icon } from '../../atoms/Icon';
 import { AIResponse } from '../AIResponse';
 import { ResponseHeader } from '../ResponseHeader';
@@ -20,13 +20,26 @@ import styles from './AIResponseRenderer.module.css';
 /** Negrito inline: converte **texto** em <strong> e \n em quebra de linha.
  *  Mantém a formatação clara (hierarquia/ênfase) sem markdown pesado. */
 function rich(content) {
-  if (typeof content !== 'string') return content;
+  if (content == null) return null;
+  if (typeof content === 'number') content = String(content);
+  // objeto/array → não renderiza cru (evita crash "Objects are not valid as a React child")
+  if (typeof content !== 'string') return null;
   return content.split('\n').map((line, li) => (
     <Fragment key={li}>
       {li > 0 && <br />}
       {line.split(/\*\*(.+?)\*\*/g).map((seg, i) => (i % 2 === 1 ? <strong key={i}>{seg}</strong> : seg))}
     </Fragment>
   ));
+}
+
+/** Boundary por bloco: um payload malformado falha sozinho, sem branquear a
+ *  resposta inteira (o sistema é alimentado por payload de IA, não-confiável). */
+class BlockBoundary extends Component {
+  state = { failed: false };
+  static getDerivedStateFromError() { return { failed: true }; }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
 }
 
 /** Checklist com estado local — para o render se sentir vivo (toggle real). */
@@ -56,7 +69,7 @@ function renderBlock(block, i, onSelect) {
     case 'primary_action':
       return (
         <PrimaryAction key={i} label={block.label} tone={block.tone}>
-          {rich(block.content ?? block.title)}
+          {rich(block.content || block.title)}
         </PrimaryAction>
       );
     case 'heading':
@@ -79,7 +92,7 @@ function renderBlock(block, i, onSelect) {
     case 'divider':
       return <hr key={i} className={styles.divider} />;
     case 'dose':
-      return <DoseBlock key={i} value={block.value} unit={block.unit} via={block.via} copyText={block.copyText} />;
+      return <DoseBlock key={i} value={block.value} unit={block.unit} via={block.via} copyable={block.copyable} copyText={block.copyText} />;
     case 'table':
       return <Table key={i} columns={block.columns} rows={block.rows} caption={block.caption} getRowTone={block.getRowTone} />;
     case 'interpretation':
@@ -100,7 +113,7 @@ function renderBlock(block, i, onSelect) {
     case 'alert':
       return (
         <AlertCard key={i} level={block.level || 'critical'} title={block.title}>
-          {block.content}
+          {rich(block.content)}
         </AlertCard>
       );
     case 'context_selector':
@@ -117,13 +130,13 @@ function renderBlock(block, i, onSelect) {
     case 'expandable':
       return (
         <ExpandableSection key={i} title={block.title} hint={block.hint} defaultOpen={block.defaultOpen}>
-          {block.content}
+          {rich(block.content)}
         </ExpandableSection>
       );
     case 'stepper':
       return <ProtocolStep key={i} label={block.label} current={block.current} steps={block.steps} />;
     case 'limitation':
-      return <LimitationNote key={i}>{block.content}</LimitationNote>;
+      return <LimitationNote key={i}>{rich(block.content)}</LimitationNote>;
     case 'chips':
       return (
         <SuggestionChips
@@ -169,7 +182,11 @@ export const AIResponseRenderer = ({ response, onSelect, variant = 'card' }) => 
           intentLabel={variant === 'card' && intent ? INTENT_LABELS[intent] ?? intent : undefined}
         />
       )}
-      {blocks.map((block, i) => renderBlock(block, i, onSelect))}
+      {blocks.map((block, i) => (
+        <BlockBoundary key={`${block?.type || 'blk'}-${i}`}>
+          {renderBlock(block, i, onSelect)}
+        </BlockBoundary>
+      ))}
       {actions.length > 0 && (
         <SuggestionChips
           items={actions.map((a) => ({ label: a.label, value: a.value }))}

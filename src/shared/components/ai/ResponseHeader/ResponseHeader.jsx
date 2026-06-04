@@ -21,7 +21,7 @@ export const ResponseHeader = ({ title, context, intent, intentLabel }) => (
         {intentLabel ?? intent}
       </span>
     )}
-    <h3 className={styles.title}>{title}</h3>
+    {title && <h3 className={styles.title}>{title}</h3>}
     {context && <p className={styles.context}>{context}</p>}
   </header>
 );

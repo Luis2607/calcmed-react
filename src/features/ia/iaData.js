@@ -175,6 +175,7 @@ const RESPONSES = {
   // ---- Interpretação de exame ----
   'q:gaso': {
     intent: 'exame',
+    risk_level: 'medio',
     title: 'Gasometria arterial',
     blocks: [
       {
@@ -196,6 +197,7 @@ const RESPONSES = {
           { label: 'Calcular Winter', value: 'stub:tool' },
           { label: 'Ânion gap', value: 'stub:tool' },
           { label: 'Relacionar com sepse', value: 'hipo:sepse' },
+          { label: 'K alto / ECG', value: 'crit:k' },
         ],
       },
       { type: 'limitation', content: ILLUSTRATIVE },
@@ -371,18 +373,23 @@ const FALLBACK = {
 // Casa texto livre com um token de roteiro (heurística simples de demonstração).
 // Ordem importa: específicos e críticos primeiro.
 function matchText(text) {
-  const t = (text || '').toLowerCase();
+  const t = (typeof text === 'string' ? text : '').toLowerCase();
   const has = (...keys) => keys.some((k) => t.includes(k));
+  // palavra inteira (evita falso negativo no fim da frase e match dentro de palavras)
+  const word = (...ws) => ws.some((w) => new RegExp(`\\b${w}\\b`).test(t));
   const explica = has('explica', 'explique', 'o que é', 'o que e', 'aprend', 'mecanismo', 'por que');
 
-  // Adrenalina (por contexto)
-  if (t.includes('adrenalina') && t.includes('pcr')) return 'adrena:pcr';
-  if (t.includes('adrenalina') && has('anafilax', 'alergi')) return 'adrena:ana';
-  if (t.includes('adrenalina') && has('choque', 'infus')) return 'adrena:choque';
-  if (t.includes('adrenalina')) return 'q:adrena';
+  // Adrenalina (por contexto) — palavra inteira: "noradrenalina" NÃO casa
+  // "adrenalina" (substring), senão roubaria a comparação de vasopressores.
+  const adre = word('adrenalina');
+  if (adre && t.includes('pcr')) return 'adrena:pcr';
+  if (adre && has('anafilax', 'alergi')) return 'adrena:ana';
+  if (adre && has('choque', 'infus')) return 'adrena:choque';
+  if (adre) return 'q:adrena';
 
-  // Alerta crítico
-  if (has('hipercalem', 'k 7', 'k7', 'k+ 7', 'potássio alto', 'potassio alto', 'qrs largo')) return 'crit:k';
+  // Alerta crítico de hipercalemia — pattern MAIS grave: cobertura ampla.
+  const kAlto = /\bk\+?\s*\.?\s*[6-9]/.test(t) || /(pot[aá]ssio)\W{0,6}[6-9]/.test(t);
+  if (has('hipercalem', 'qrs largo', 'potássio alto', 'potassio alto') || kAlto) return 'crit:k';
 
   // Aprendizado (antes da conduta operacional)
   if (explica && has('sepse', 'séptico', 'septico')) return 'learn:sepse';
@@ -390,16 +397,19 @@ function matchText(text) {
   // Protocolo guiado
   if (has('protocolo', 'acls', 'parada cardio', 'reanima')) return 'proto:pcr';
 
-  // Comparação
+  // Comparação — só com DOIS agentes OU sinal explícito de comparação
+  // (evita "dose de noradrenalina" cair na tabela comparativa).
+  const compara = has(' ou ', ' vs', 'versus', 'comparar', 'compara', 'diferença', 'diferenca', 'melhor');
   if (t.includes('noradrenalina') && t.includes('dobutamina')) return 'q:noradobu';
-  if (has('noradrenalina', 'dobutamina', 'vasopressor')) return 'q:noradobu';
+  if (has('noradrenalina', 'dobutamina', 'vasopressor') && compara) return 'q:noradobu';
+
+  // Conduta crítica ANTES do marcador laboratorial isolado
+  // (sepse/choque vencem "lactato": "lactato 5 no choque séptico" → conduta, não gaso).
+  if (has('séptico', 'septico', 'sepse')) return 'hipo:sepse';
+  if (has('hipotens', 'pressão baixa', 'pressao baixa', 'paciente ruim', 'choque') || word('pam')) return 'q:hipo';
 
   // Interpretação de exame
-  if (has('gaso', 'gasometria', 'ph ', 'hco3', 'hco₃', 'lactato', 'ânion', 'anion')) return 'q:gaso';
-
-  // Conduta operacional / triagem
-  if (has('séptico', 'septico', 'sepse')) return 'hipo:sepse';
-  if (has('hipotens', 'pressão baixa', 'pressao baixa', 'paciente ruim', 'choque', 'pam ')) return 'q:hipo';
+  if (has('gaso', 'gasometria', 'hco3', 'hco₃', 'lactato', 'ânion', 'anion') || word('ph')) return 'q:gaso';
 
   // Resumo copiável
   if (has('resume', 'resumo', 'evolu', 'prontuário', 'prontuario', 'passagem', 'whatsapp')) return 'q:resumo';

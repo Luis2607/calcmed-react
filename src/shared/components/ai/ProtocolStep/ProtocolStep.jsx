@@ -15,7 +15,7 @@ export const ProtocolStep = ({ label = 'Protocolo', current = 0, steps = [] }) =
   const total = steps.length;
   return (
     <div className={styles.block}>
-      <span className={styles.eyebrow}>{label} · etapa {Math.min(current + 1, total)} de {total}</span>
+      <span className={styles.eyebrow}>{label}{total > 0 && ` · etapa ${Math.min(current + 1, total)} de ${total}`}</span>
       <ol className={styles.list}>
         {steps.map((raw, i) => {
           const step = typeof raw === 'string' ? { label: raw } : raw;
