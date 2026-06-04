@@ -109,6 +109,26 @@ Commits desta sessão (mais novo no topo):
 
 ---
 
+### [docs] QA comportamental — varredura dirigida por browser (5 agentes)
+- **Pedido:** "seja um QA nível elite... procure problemas, bugs, áreas que deveriam
+  clicar e não funcionam, cenários mal executados".
+- **Método:** crawler Playwright/Chromium (mobile 390px) detectando cliques mortos +
+  erros de console em 13 rotas; depois 5 agentes em paralelo (Home+Hub, SCA, CAD, PCR,
+  AVC+Sepse) executando cenários completos (progressão de passos, gating, cálculos,
+  modais, timers, persistência).
+- **Resultado:** nenhum crash, **0 erros de console**, e os **cálculos clínicos conferidos
+  estão corretos** (doses, escores, tempos). Problemas concentrados em *wiring* (UI sem
+  handler na Home), *validação de entrada* (aceita negativos/absurdos), *formatação PT-BR*
+  (ponto×vírgula no CAD) e *gating* de passos.
+- **Entregável:** `docs/qa-comportamental-2026-06-04.md` (achados por fluxo + severidade +
+  causa provável + backlog priorizado P0/P1/P2). Tooling/screenshots ficaram em `_qa/` e
+  `/tmp` (gitignored).
+- **Arquivos:** `docs/qa-comportamental-2026-06-04.md` (novo).
+- **Status:** ✅ relatório commitado. Correções **aguardando priorização do usuário**
+  (ver backlog P0/P1/P2 no relatório).
+
+---
+
 ## Itens avaliados e NÃO alterados (de propósito)
 
 - **`safe-area-inset-bottom` nos BottomSheets** — melhoria para iPhone com notch; opcional,
