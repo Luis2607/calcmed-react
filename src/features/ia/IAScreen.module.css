@@ -82,7 +82,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
+  width: 44px;
   margin-left: var(--esp-1);
   border: 0;
   background: transparent;
@@ -305,6 +305,52 @@
 .suggestChip:hover { background: var(--ds-fundo-hover); border-color: var(--ds-interativo-primario); }
 .suggestChip:active { background: var(--ds-fundo-elevado); }
 .suggestChip :global(svg) { color: var(--ds-interativo-primario); flex-shrink: 0; }
+
+/* ---------- Resposta interrompida (parada no meio do streaming) ---------- */
+.interrupted {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  flex-wrap: wrap;
+}
+.interruptedLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fonte-tamanho-auxiliar);
+  font-weight: 600;
+  color: var(--ds-retorno-atencao);
+}
+.continueBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px var(--esp-3);
+  border: 1px solid var(--ds-borda-padrao);
+  border-radius: var(--radius-pill);
+  background: var(--ds-fundo-cartao);
+  color: var(--ds-texto-padrao);
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-auxiliar);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.continueBtn:hover { background: var(--ds-fundo-hover); border-color: var(--ds-interativo-primario); }
+.continueBtn:disabled { opacity: 0.5; cursor: default; }
+
+/* ---------- Foco visível (teclado) — botões de chrome que zeram outline ---------- */
+.send:focus-visible,
+.stop:focus-visible,
+.jump:focus-visible,
+.convOpen:focus-visible,
+.convDelete:focus-visible,
+.suggestChip:focus-visible,
+.continueBtn:focus-visible,
+.aboutLink:focus-visible {
+  outline: 2px solid var(--ds-borda-foco);
+  outline-offset: 2px;
+}
 
 /* ---------- Composer (travado na base do app-shell) ---------- */
 .composer {

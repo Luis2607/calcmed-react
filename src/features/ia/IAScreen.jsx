@@ -51,10 +51,11 @@ function TypingDots() {
  * Mantém o progresso EFÊMERO (não persiste). Ao parar (stopSignal) ou terminar,
  * chama onDone(units, stopped) para o pai finalizar.
  */
-function StreamingMessage({ response, onSelect, onProgress, onDone, stopSignal }) {
-  // Remonta a cada novo stream (key no pai) → units/refs começam zerados.
-  const [units, setUnits] = useState(0);
-  const unitsRef = useRef(0);
+function StreamingMessage({ response, startUnits = 0, onSelect, onProgress, onDone, stopSignal }) {
+  // Remonta a cada novo stream (key no pai) → units/refs começam em startUnits
+  // (0 num stream novo; revealedUnits ao "Continuar" uma resposta interrompida).
+  const [units, setUnits] = useState(startUnits);
+  const unitsRef = useRef(startUnits);
   const intervalRef = useRef(null);
   const stopRef = useRef(stopSignal);
   const doneRef = useRef(false);
@@ -264,9 +265,19 @@ export function IAScreen({ onBack }) {
   };
 
   const finishStream = (msgId, units, stopped) => {
-    if (stopped && active) updateMessage(active.id, msgId, { revealedUnits: units });
+    // Parado → guarda até onde revelou (resposta interrompida). Concluído → limpa
+    // revealedUnits para a resposta aparecer completa (inclusive após "Continuar").
+    if (active) updateMessage(active.id, msgId, { revealedUnits: stopped ? units : undefined });
     setStreamingId(null);
     requestAnimationFrame(() => scrollToBottom('auto'));
+  };
+
+  // Retoma uma resposta interrompida do ponto em que parou (revealedUnits).
+  const continueStream = (m) => {
+    if (busy) return;
+    setStreamingId(m.id);
+    setStreamNonce((n) => n + 1);
+    requestAnimationFrame(() => scrollToBottom('smooth'));
   };
 
   const setFeedback = (msgId, value) => {
@@ -291,6 +302,7 @@ export function IAScreen({ onBack }) {
         <StreamingMessage
           key={`stream-${streamNonce}`}
           response={m.response}
+          startUnits={m.revealedUnits ?? 0}
           onSelect={(value, meta) => send(meta?.label ?? value, value)}
           onProgress={keepBottom}
           onDone={(units, stopped) => finishStream(m.id, units, stopped)}
@@ -298,7 +310,8 @@ export function IAScreen({ onBack }) {
         />
       );
     }
-    const resp = m.revealedUnits != null ? sliceResponse(m.response, m.revealedUnits) : m.response;
+    const interrupted = m.revealedUnits != null;
+    const resp = interrupted ? sliceResponse(m.response, m.revealedUnits) : m.response;
     return (
       <>
         <AIResponseRenderer
@@ -306,6 +319,16 @@ export function IAScreen({ onBack }) {
           variant="plain"
           onSelect={(value, meta) => send(meta?.label ?? value, value)}
         />
+        {interrupted && (
+          <div className={styles.interrupted}>
+            <span className={styles.interruptedLabel}>
+              <Icon name="atencao" size={14} /> Resposta interrompida
+            </span>
+            <button type="button" className={styles.continueBtn} onClick={() => continueStream(m)} disabled={busy}>
+              <Icon name="play" size={14} /> Continuar
+            </button>
+          </div>
+        )}
         <MessageActions
           copyText={() => responseToText(resp)}
           feedback={m.feedback ?? null}
@@ -421,7 +444,7 @@ export function IAScreen({ onBack }) {
             </p>
           </div>
         ) : (
-          <div className={styles.thread} role="log" aria-live="polite">
+          <div className={styles.thread} role="log" aria-live="polite" aria-busy={busy || undefined}>
             {messages.map((m, i) =>
               m.role === 'user' ? (
                 <div key={m.id} className={styles.userRow}>
