@@ -82,3 +82,12 @@
   gap: var(--esp-3);
   padding: var(--esp-4);
 }
+
+/* Proximidade (Gestalt): nem todo respiro é igual. O título liga-se ao bloco
+   que introduz — mais ar ANTES do heading (abre uma seção), menos DEPOIS
+   (vincula título e conteúdo). O divider continua como régua de seção; quando
+   um heading vem logo após ele, anula-se a dupla separação. */
+.body > h4 { margin-top: var(--esp-2); }
+.body > h4:first-child { margin-top: 0; }
+.body > h4 + * { margin-top: calc(-1 * var(--esp-2)); }
+.body > hr + h4 { margin-top: calc(-1 * var(--esp-2)); }
