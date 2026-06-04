@@ -102,6 +102,18 @@ html, body {
 }
 
 @media (max-width: 430px) {
+  /* Mobile: trava a página na altura visível (100dvh) — o body NÃO rola.
+     Só o scroll interno do frame (.scroll-container / a área de mensagens da IA)
+     rola. Sem isso, o body cresce além do dvh e arrasta header/composer "fixos". */
+  html, body {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .page-wrapper {
+    height: 100dvh;
+    min-height: 0;
+  }
   .viewport-container {
     width: 100%;
     height: 100dvh;
