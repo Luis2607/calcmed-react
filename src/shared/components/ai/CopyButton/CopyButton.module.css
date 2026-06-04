@@ -1,0 +1,51 @@
+/* Base mínima: só layout. O chrome (tamanho/fundo/borda) vem do className do
+   consumidor — o CopyButton só carrega a lógica + a animação dos glifos. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Pilha copiar↔check: um por cima do outro, cross-fade + pop. */
+.stack {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+.copy,
+.check {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.2, 0, 0.2, 1);
+}
+.copy {
+  opacity: 1;
+  transform: none;
+}
+.check {
+  opacity: 0;
+  transform: scale(0.5);
+  color: var(--ds-retorno-sucesso);
+}
+.stack[data-copied] .copy {
+  opacity: 0;
+  transform: scale(0.5);
+}
+.stack[data-copied] .check {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy,
+  .check {
+    transition: opacity 0.12s ease;
+    transform: none;
+  }
+  .check { transform: none; }
+  .stack[data-copied] .copy { transform: none; }
+}

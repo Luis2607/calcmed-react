@@ -14,6 +14,7 @@ export function InfoSheet({
   tone = 'info',
   acknowledgeLabel = 'Entendi',
   onAcknowledge,
+  blocking = false, // só fecha pelo CTA (sem backdrop/ESC/X) — p/ avisos obrigatórios
   children,
 }) {
   const handleAck = () => {
@@ -29,6 +30,9 @@ export function InfoSheet({
       description={description}
       leadingIcon={leadingIcon}
       tone={tone}
+      closeOnBackdrop={!blocking}
+      closeOnEsc={!blocking}
+      showCloseButton={!blocking}
       footer={{
         primary: { label: acknowledgeLabel, onClick: handleAck },
       }}

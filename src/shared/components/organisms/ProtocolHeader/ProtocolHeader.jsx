@@ -41,6 +41,12 @@ const ICONS = {
       <path d="M12 7v5l3 2" />
     </>
   ),
+  plus: (
+    <>
+      <path d="M12 5v14" />
+      <path d="M5 12h14" />
+    </>
+  ),
 };
 
 function Icon({ name }) {

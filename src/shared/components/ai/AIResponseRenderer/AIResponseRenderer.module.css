@@ -19,6 +19,11 @@
   font-size: var(--fonte-tamanho-input);
   line-height: 1;
 }
+.headingIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--ds-interativo-primario);
+}
 
 .list {
   list-style: none;

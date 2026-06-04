@@ -14,13 +14,19 @@ import styles from './InterpretationBlock.module.css';
  *  - tone: 'atencao' | 'critico' | 'sucesso' | 'info' (cor da leitura)
  *  - chips: itens para SuggestionChips (próxima etapa)
  *  - getRowTone: repassado ao Table (realce de linha)
+ *  - onSelect(value, meta): clique nos chips de próxima etapa (continua a conversa)
  */
-export const InterpretationBlock = ({ columns, rows, reading, tone = 'info', chips, getRowTone }) => (
+export const InterpretationBlock = ({ columns, rows, reading, tone = 'info', chips, getRowTone, onSelect }) => (
   <div className={styles.block}>
     <Table columns={columns} rows={rows} getRowTone={getRowTone} />
     {reading && (
       <p className={styles.reading} data-tone={tone}>{reading}</p>
     )}
-    {chips && chips.length > 0 && <SuggestionChips items={chips} />}
+    {chips && chips.length > 0 && (
+      <SuggestionChips
+        items={chips}
+        onSelect={onSelect ? (item) => onSelect(item.value ?? item.label, item) : undefined}
+      />
+    )}
   </div>
 );

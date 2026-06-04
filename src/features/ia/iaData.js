@@ -3,21 +3,21 @@
  * AIResponseRenderer). Conteúdo clínico ilustrativo; o produto final
  * plugaria um backend no lugar deste roteiro. */
 
-export const ILLUSTRATIVE =
-  'Exemplo ilustrativo. Conteúdo clínico final deve ser validado pelo time médico.';
+export const ILLUSTRATIVE = 'Confira no protocolo do seu serviço.';
 
 // Sugestões iniciais (estado vazio + fallback). value = token de roteiro.
 // Cobrem a amplitude dos patterns: ambígua, triagem, crítico, exame, protocolo,
 // aprendizado e resumo. Comparação é alcançável por texto/ações.
+// Sugestões iniciais — curadas pelo MAIOR valor de plantão, cada uma uma
+// capacidade distinta (dose · conduta · exame · comparação · protocolo · resumo),
+// ordenadas por urgência. Poucas e de propósito: a faixa rola na horizontal.
 export const STARTERS = [
-  { label: 'dose de adrenalina?', value: 'q:adrena' },
-  { label: 'paciente hipotenso', value: 'q:hipo' },
-  { label: 'noradrenalina ou dobutamina?', value: 'q:noradobu' },
-  { label: 'K 7,1 com QRS largo', value: 'crit:k' },
-  { label: 'interpreta uma gasometria', value: 'q:gaso' },
-  { label: 'protocolo de PCR', value: 'proto:pcr' },
-  { label: 'me explica sepse', value: 'learn:sepse' },
-  { label: 'resume pra evolução', value: 'q:resumo' },
+  { label: 'dose de adrenalina?', value: 'q:adrena', icon: 'seringa' },
+  { label: 'paciente hipotenso', value: 'q:hipo', icon: 'batimento' },
+  { label: 'interpreta uma gasometria', value: 'q:gaso', icon: 'gota' },
+  { label: 'noradrenalina ou dobutamina?', value: 'q:noradobu', icon: 'coracao' },
+  { label: 'protocolo de PCR', value: 'proto:pcr', icon: 'protocolos' },
+  { label: 'resume pra evolução', value: 'q:resumo', icon: 'editar' },
 ];
 
 const PCR_STEPS = [
@@ -322,7 +322,7 @@ const RESPONSES = {
     blocks: [
       { type: 'text', content: 'Em uma frase: **disfunção orgânica** por resposta desregulada à infecção, com **hipotensão** que exige vasopressor e/ou **lactato elevado** mesmo após volume adequado.' },
       { type: 'divider' },
-      { type: 'heading', emoji: '🎯', text: 'Como reconhecer' },
+      { type: 'heading', icon: 'busca', text: 'Como reconhecer' },
       {
         type: 'list',
         items: [
@@ -331,7 +331,7 @@ const RESPONSES = {
         ],
       },
       { type: 'divider' },
-      { type: 'heading', emoji: '💉', text: 'Por que noradrenalina primeiro' },
+      { type: 'heading', icon: 'seringa', text: 'Por que noradrenalina primeiro' },
       { type: 'text', content: 'É o vasopressor de **1ª linha**: eleva a PAM com **menor risco arritmogênico** que a dopamina e mantém a perfusão sem taquicardia excessiva.' },
       { type: 'expandable', title: 'E quando associar vasopressina?', content: 'Como 2º agente quando a noradrenalina sobe além de doses moderadas, para reduzir a dose total de catecolamina — conforme protocolo institucional.' },
       {
@@ -351,18 +351,18 @@ const RESPONSES = {
 // a ferramenta correspondente. Na demo, respondem de forma intencional.
 const TOOL_STUB = {
   intent: 'aprendizado',
-  title: 'Ferramenta em demonstração',
+  title: 'Cálculo por peso',
   blocks: [
-    { type: 'text', content: 'No produto, este passo abriria a calculadora ou a referência correspondente. Esta tela demonstra o sistema de respostas.' },
-    { type: 'chips', label: 'Continuar', items: STARTERS },
+    { type: 'text', content: 'Aqui entra a dose ajustada ao peso do paciente — no app, este passo abre a calculadora já com os dados do caso.' },
+    { type: 'chips', label: 'Enquanto isso', items: STARTERS },
   ],
 };
 
 const FALLBACK = {
   intent: 'ambigua',
-  title: 'Posso ajudar com isso',
+  title: 'Não entendi',
   blocks: [
-    { type: 'text', content: 'Esta é uma demonstração do AI Response System do CalcMed. Reconheço dose, conduta, exame, protocolo, comparação e resumo — toque em um exemplo para ver:' },
+    { type: 'text', content: 'Reformula em uma linha — ou começa por um destes:' },
     { type: 'chips', items: STARTERS },
   ],
 };

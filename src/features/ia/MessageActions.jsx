@@ -1,4 +1,4 @@
-import { Icon } from '../../shared/components/atoms/Icon';
+import { CopyButton } from '../../shared/components/ai';
 import styles from './MessageActions.module.css';
 
 /**
@@ -6,7 +6,8 @@ import styles from './MessageActions.module.css';
  * copiar resposta inteira · útil (👍) · não útil (👎) · regenerar.
  *
  * Props:
- *  - onCopy() · feedback ('up'|'down'|null) · onFeedback(value) · onRegenerate?()
+ *  - copyText (string | () => string) · feedback ('up'|'down'|null)
+ *  - onFeedback(value) · onRegenerate?()
  */
 const ThumbUp = (props) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -25,12 +26,10 @@ const Regen = (props) => (
   </svg>
 );
 
-export function MessageActions({ onCopy, feedback, onFeedback, onRegenerate }) {
+export function MessageActions({ copyText, feedback, onFeedback, onRegenerate }) {
   return (
     <div className={styles.row}>
-      <button type="button" className={styles.btn} onClick={onCopy} aria-label="Copiar resposta" title="Copiar resposta">
-        <Icon name="copiar" size={16} />
-      </button>
+      <CopyButton text={copyText} className={styles.btn} size={16} label="Copiar resposta" />
       <button
         type="button"
         className={`${styles.btn} ${feedback === 'up' ? styles.active : ''}`}
