@@ -1,25 +1,31 @@
-.block {
+.wrap {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--esp-3);
+  flex-direction: column;
+  gap: 6px;
+}
+
+.block {
   padding: var(--esp-3) var(--esp-4);
   border-radius: var(--ds-r-sm, 8px);
   background: var(--ds-fundo-elevado);
 }
 
+/* Copiar = ícone discreto, ancorado à direita, ABAIXO do card. */
+.copyRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .copy {
-  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--ds-borda-padrao);
   background: var(--ds-fundo-cartao);
   color: var(--ds-interativo-primario);
-  font-size: var(--fonte-tamanho-auxiliar);
-  font-weight: 700;
   cursor: pointer;
   transition: background 0.15s ease;
 }

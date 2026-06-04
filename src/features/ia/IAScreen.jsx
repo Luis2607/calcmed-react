@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Icon } from '../../shared/components/atoms/Icon';
 import { AIResponseRenderer, SuggestionChips } from '../../shared/components/ai';
+import { Toast } from '../../shared/components/molecules/Toast';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import { respond, STARTERS } from './iaData';
 import styles from './IAScreen.module.css';
@@ -58,10 +59,18 @@ export function IAScreen({ onBack }) {
   const [draft, setDraft] = useState('');
   const [showJump, setShowJump] = useState(false);
   const [pending, setPending] = useState({}); // { [convId]: count } — efêmero
+  const [toast, setToast] = useState(null);
   const scrollerRef = useRef(null); // a área de mensagens (único elemento que rola)
   const inputRef = useRef(null);
   const timers = useRef({});
+  const toastTimer = useRef(null);
   const activeIdRef = useRef(activeId);
+
+  const showToast = (message) => {
+    setToast(message);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(null), 1800);
+  };
 
   const active = activeId !== 'new' ? conversations.find((c) => c.id === activeId) : null;
   const messages = active?.messages ?? [];
@@ -79,7 +88,10 @@ export function IAScreen({ onBack }) {
   };
 
   useEffect(() => { activeIdRef.current = activeId; }, [activeId]);
-  useEffect(() => () => { Object.values(timers.current).forEach(clearTimeout); }, []);
+  useEffect(() => () => {
+    Object.values(timers.current).forEach(clearTimeout);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+  }, []);
 
   // Sanitiza dados legados: remove placeholders "pending" persistidos por versões antigas.
   useEffect(() => {
@@ -233,6 +245,12 @@ export function IAScreen({ onBack }) {
         </button>
       </header>
 
+      {toast && (
+        <div className={styles.toastHost}>
+          <Toast type="success" message={toast} />
+        </div>
+      )}
+
       <div className={styles.conversation} ref={scrollerRef} onScroll={() => setShowJump(!isNearBottom())}>
         {empty ? (
           <div className={styles.empty}>
@@ -257,6 +275,7 @@ export function IAScreen({ onBack }) {
                     response={m.response}
                     variant="plain"
                     onSelect={(value, meta) => send(meta?.label ?? value, value)}
+                    onCopied={showToast}
                   />
                 </div>
               ),
