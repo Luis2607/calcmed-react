@@ -32,10 +32,15 @@ export const ChecklistBlock = ({ tagLabel, tagTone = 'critico', count, subtitle,
     <div className={styles.items}>
       {items.map((it, i) => {
         const pendente = highlightPending && !it.checked;
+        // Em modo highlightPending a geometria do item (padding + borda) fica
+        // SEMPRE reservada; marcar só troca a cor da borda — sem encolher/pular.
+        const itemClass = highlightPending
+          ? [styles.item, pendente ? styles.pendingItem : ''].filter(Boolean).join(' ')
+          : undefined;
         return (
           <div
             key={i}
-            className={pendente ? styles.pendingItem : undefined}
+            className={itemClass}
             data-pending={pendente ? 'true' : undefined}
           >
             <Checkbox

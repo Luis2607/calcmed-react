@@ -14,7 +14,6 @@
   font: var(--ds-font-subtitulo); /* 18/28 600 */
   font-weight: 800;
   color: var(--ds-texto-padrao);
-  margin-top: 2px;
 }
 .headingEmoji {
   font-size: var(--fonte-tamanho-input);

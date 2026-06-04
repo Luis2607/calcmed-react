@@ -40,9 +40,15 @@
    Itens unchecked ganham borda crítica sutil — UM sinal claro, sem ruído visual.
    Conselho (Luis 2026-05-28 PM): duplo-destaque (card + items) ficou agressivo;
    ficamos só com o item-level (Gabriela: 1 sinal claro basta · Lia: menos é mais). */
-.pendingItem {
+/* Geometria reservada: TODO item de um checklist com highlightPending carrega o
+   mesmo box (padding + borda transparente). Assim marcar/desmarcar só muda a cor
+   da borda — nunca o tamanho (sem layout-shift ao clicar). */
+.item {
   padding: var(--esp-2) var(--esp-3);
   border-radius: var(--ds-r-md);
-  border: 1px solid var(--ds-retorno-critico);
+  border: 1px solid transparent;
   background-color: transparent;
+}
+.pendingItem {
+  border-color: var(--ds-retorno-critico);
 }

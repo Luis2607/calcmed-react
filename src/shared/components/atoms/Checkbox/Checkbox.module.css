@@ -38,13 +38,16 @@
 .box {
   width: 24px;
   height: 24px;
+  min-width: 24px; /* nunca encolhe, mesmo dentro de um flex apertado */
+  min-height: 24px;
+  flex-shrink: 0;
   border-radius: var(--ds-r-xs); /* 4px · Figma checkbox 128:3664 */
   border: 2px solid var(--ds-borda-padrao);
   background-color: var(--ds-fundo-superficie);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s, border-color 0.15s, transform 0.08s;
+  transition: background 0.15s, border-color 0.15s;
   box-sizing: border-box;
 }
 
