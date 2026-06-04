@@ -3,21 +3,21 @@
  * AIResponseRenderer). Conteúdo clínico ilustrativo; o produto final
  * plugaria um backend no lugar deste roteiro. */
 
-export const ILLUSTRATIVE =
-  'Exemplo ilustrativo. Conteúdo clínico final deve ser validado pelo time médico.';
+export const ILLUSTRATIVE = 'Confira no protocolo do seu serviço.';
 
 // Sugestões iniciais (estado vazio + fallback). value = token de roteiro.
 // Cobrem a amplitude dos patterns: ambígua, triagem, crítico, exame, protocolo,
 // aprendizado e resumo. Comparação é alcançável por texto/ações.
+// Sugestões iniciais — curadas pelo MAIOR valor de plantão, cada uma uma
+// capacidade distinta (dose · conduta · exame · comparação · protocolo · resumo),
+// ordenadas por urgência. Poucas e de propósito: a faixa rola na horizontal.
 export const STARTERS = [
-  { label: 'dose de adrenalina?', value: 'q:adrena' },
-  { label: 'paciente hipotenso', value: 'q:hipo' },
-  { label: 'noradrenalina ou dobutamina?', value: 'q:noradobu' },
-  { label: 'K 7,1 com QRS largo', value: 'crit:k' },
-  { label: 'interpreta uma gasometria', value: 'q:gaso' },
-  { label: 'protocolo de PCR', value: 'proto:pcr' },
-  { label: 'me explica sepse', value: 'learn:sepse' },
-  { label: 'resume pra evolução', value: 'q:resumo' },
+  { label: 'dose de adrenalina?', value: 'q:adrena', icon: 'seringa' },
+  { label: 'paciente hipotenso', value: 'q:hipo', icon: 'batimento' },
+  { label: 'interpreta uma gasometria', value: 'q:gaso', icon: 'gota' },
+  { label: 'noradrenalina ou dobutamina?', value: 'q:noradobu', icon: 'coracao' },
+  { label: 'protocolo de PCR', value: 'proto:pcr', icon: 'protocolos' },
+  { label: 'resume pra evolução', value: 'q:resumo', icon: 'editar' },
 ];
 
 const PCR_STEPS = [

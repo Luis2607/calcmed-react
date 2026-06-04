@@ -1,32 +1,26 @@
-.wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
 .block {
+  position: relative;
   padding: var(--esp-3) var(--esp-4);
   border-radius: var(--ds-r-sm, 8px);
   background: var(--ds-fundo-elevado);
 }
 
-/* Copiar = ícone discreto, ancorado à direita, ABAIXO do card. */
-.copyRow {
-  display: flex;
-  justify-content: flex-end;
+/* Espaço reservado à direita p/ o copiar flutuante não encostar no valor. */
+.block[data-copyable] {
+  padding-right: calc(var(--esp-4) + 36px + var(--esp-2));
 }
 
+/* Copiar flutuante: canto superior direito DENTRO do card. */
 .copy {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
+  position: absolute;
+  top: var(--esp-2);
+  right: var(--esp-2);
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--ds-borda-padrao);
   background: var(--ds-fundo-cartao);
   color: var(--ds-interativo-primario);
-  cursor: pointer;
   transition: background 0.15s ease;
 }
 

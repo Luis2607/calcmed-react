@@ -7,6 +7,7 @@ export { PrimaryAction } from './PrimaryAction';
 export { SuggestionChips } from './SuggestionChips';
 export { DoseBlock } from './DoseBlock';
 export { CopyableBlock } from './CopyableBlock';
+export { CopyButton } from './CopyButton';
 export { ExpandableSection } from './ExpandableSection';
 export { ContextSelector } from './ContextSelector';
 export { InterpretationBlock } from './InterpretationBlock';

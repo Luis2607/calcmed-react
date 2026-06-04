@@ -50,7 +50,7 @@ function ChecklistFromBlock({ block }) {
 
 /** Mapeia um bloco do payload → componente do DS. `onSelect(value)` torna
  *  seletor de contexto e chips interativos (continuação da conversa). */
-function renderBlock(block, i, onSelect, onCopied) {
+function renderBlock(block, i, onSelect) {
   switch (block.type) {
     case 'primary_action':
       return (
@@ -74,7 +74,7 @@ function renderBlock(block, i, onSelect, onCopied) {
     case 'divider':
       return <hr key={i} className={styles.divider} />;
     case 'dose':
-      return <DoseBlock key={i} value={block.value} unit={block.unit} via={block.via} copyText={block.copyText} onCopied={onCopied} />;
+      return <DoseBlock key={i} value={block.value} unit={block.unit} via={block.via} copyText={block.copyText} />;
     case 'table':
       return <Table key={i} columns={block.columns} rows={block.rows} caption={block.caption} getRowTone={block.getRowTone} />;
     case 'interpretation':
@@ -87,6 +87,7 @@ function renderBlock(block, i, onSelect, onCopied) {
           tone={block.tone}
           chips={block.chips}
           getRowTone={block.getRowTone}
+          onSelect={onSelect ? (value, meta) => onSelect(value, meta) : undefined}
         />
       );
     case 'checklist':
@@ -107,7 +108,7 @@ function renderBlock(block, i, onSelect, onCopied) {
         />
       );
     case 'copyable':
-      return <CopyableBlock key={i} text={block.text} variants={block.variants} onCopied={onCopied} />;
+      return <CopyableBlock key={i} text={block.text} variants={block.variants} />;
     case 'expandable':
       return (
         <ExpandableSection key={i} title={block.title} hint={block.hint} defaultOpen={block.defaultOpen}>
@@ -117,7 +118,7 @@ function renderBlock(block, i, onSelect, onCopied) {
     case 'stepper':
       return <ProtocolStep key={i} label={block.label} current={block.current} steps={block.steps} />;
     case 'limitation':
-      return <LimitationNote key={i} title={block.title}>{block.content}</LimitationNote>;
+      return <LimitationNote key={i}>{block.content}</LimitationNote>;
     case 'chips':
       return (
         <SuggestionChips
@@ -149,7 +150,7 @@ function renderBlock(block, i, onSelect, onCopied) {
  *    (opcional; sem ele a resposta é apenas visual, como na galeria do DS).
  *  - onCopied(msg): callback quando um bloco copiável é copiado (ex.: toast).
  */
-export const AIResponseRenderer = ({ response, onSelect, onCopied, variant = 'card' }) => {
+export const AIResponseRenderer = ({ response, onSelect, variant = 'card' }) => {
   if (!response) return null;
   const { intent, risk_level: risk, title, context, blocks = [], actions = [] } = response;
 
@@ -163,7 +164,7 @@ export const AIResponseRenderer = ({ response, onSelect, onCopied, variant = 'ca
           intentLabel={intent ? INTENT_LABELS[intent] ?? intent : undefined}
         />
       )}
-      {blocks.map((block, i) => renderBlock(block, i, onSelect, onCopied))}
+      {blocks.map((block, i) => renderBlock(block, i, onSelect))}
       {actions.length > 0 && (
         <SuggestionChips
           items={actions.map((a) => ({ label: a.label, value: a.value }))}

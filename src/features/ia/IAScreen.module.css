@@ -269,6 +269,43 @@
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
+/* ---------- Faixa de sugestões (rola na horizontal, acima do composer) ----------
+   Em vez de empilhar chips (que quebram em várias linhas), uma régua horizontal
+   rolável com poucas sugestões curadas — não ocupa altura nem desorganiza. */
+.suggestStrip {
+  flex-shrink: 0;
+  display: flex;
+  gap: var(--esp-2);
+  padding: var(--esp-2) var(--esp-4);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.suggestStrip::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
+.suggestChip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--esp-2) var(--esp-3);
+  border: 1px solid var(--ds-borda-padrao);
+  border-radius: var(--radius-pill);
+  background: var(--ds-fundo-cartao);
+  color: var(--ds-texto-padrao);
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-auxiliar);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.suggestChip:hover { background: var(--ds-fundo-hover); border-color: var(--ds-interativo-primario); }
+.suggestChip:active { background: var(--ds-fundo-elevado); }
+.suggestChip :global(svg) { color: var(--ds-interativo-primario); flex-shrink: 0; }
+
 /* ---------- Composer (travado na base do app-shell) ---------- */
 .composer {
   flex-shrink: 0;

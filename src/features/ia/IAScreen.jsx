@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Icon } from '../../shared/components/atoms/Icon';
 import { ProtocolHeader } from '../../shared/components/organisms/ProtocolHeader';
-import { AIResponseRenderer, SuggestionChips } from '../../shared/components/ai';
+import { AIResponseRenderer } from '../../shared/components/ai';
 import { Toast } from '../../shared/components/molecules/Toast';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import { IAOnboarding } from './IAOnboarding';
@@ -51,7 +51,7 @@ function TypingDots() {
  * Mantém o progresso EFÊMERO (não persiste). Ao parar (stopSignal) ou terminar,
  * chama onDone(units, stopped) para o pai finalizar.
  */
-function StreamingMessage({ response, onSelect, onCopied, onProgress, onDone, stopSignal }) {
+function StreamingMessage({ response, onSelect, onProgress, onDone, stopSignal }) {
   // Remonta a cada novo stream (key no pai) → units/refs começam zerados.
   const [units, setUnits] = useState(0);
   const unitsRef = useRef(0);
@@ -84,7 +84,7 @@ function StreamingMessage({ response, onSelect, onCopied, onProgress, onDone, st
   }, [stopSignal]);
 
   return (
-    <AIResponseRenderer response={sliceResponse(response, units)} variant="plain" onSelect={onSelect} onCopied={onCopied} />
+    <AIResponseRenderer response={sliceResponse(response, units)} variant="plain" onSelect={onSelect} />
   );
 }
 
@@ -116,11 +116,13 @@ export function IAScreen({ onBack }) {
   const pendingActive = active ? pending[active.id] || 0 : 0;
   const busy = pendingActive > 0 || streamingId != null;
 
-  const showToast = (message) => {
-    setToast(message);
+  const showToast = (message, undo) => {
+    setToast({ message, undo });
     if (toastTimer.current) clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setToast(null), 1800);
+    // Toasts com "Desfazer" ficam mais tempo (janela de recuperação).
+    toastTimer.current = setTimeout(() => setToast(null), undo ? 5000 : 1800);
   };
+  const dismissToast = () => { setToast(null); if (toastTimer.current) clearTimeout(toastTimer.current); };
 
   const isNearBottom = () => {
     const el = scrollerRef.current;
@@ -155,13 +157,28 @@ export function IAScreen({ onBack }) {
     if (finePointer()) inputRef.current?.focus();
   }, [activeId, historyOpen, aboutOpen, onboarded]);
 
-  const openHistory = () => setHistoryOpen(true);
-  const newChat = () => { setActiveId('new'); setHistoryOpen(false); setDraft(''); setShowJump(false); };
-  const openConv = (id) => { setActiveId(id); setHistoryOpen(false); setShowJump(false); };
+  // Ao navegar, encerra o streaming visual (a mensagem já está persistida e
+  // reaparece completa). Sem isso, sair da conversa no meio do streaming deixava
+  // streamingId preso → busy eterno (composer/Parar travados).
+  const openHistory = () => { setStreamingId(null); setHistoryOpen(true); };
+  const newChat = () => { setStreamingId(null); setActiveId('new'); setHistoryOpen(false); setDraft(''); setShowJump(false); };
+  const openConv = (id) => { setStreamingId(null); setActiveId(id); setHistoryOpen(false); setShowJump(false); };
   const deleteConv = (id) => {
+    const idx = conversations.findIndex((c) => c.id === id);
+    const removed = idx >= 0 ? conversations[idx] : null;
     setConversations((prev) => prev.filter((c) => c.id !== id));
     setPending((p) => { const n = { ...p }; delete n[id]; return n; });
     if (activeId === id) setActiveId('new');
+    if (removed) {
+      showToast('Conversa apagada', () => {
+        setConversations((prev) => {
+          if (prev.some((c) => c.id === removed.id)) return prev; // já restaurada
+          const next = [...prev];
+          next.splice(Math.min(idx, next.length), 0, removed); // volta na posição original
+          return next;
+        });
+      });
+    }
   };
 
   const updateMessage = (convId, msgId, patch) =>
@@ -170,7 +187,7 @@ export function IAScreen({ onBack }) {
     );
 
   const send = (displayText, lookup, forceNew = false) => {
-    if (busy) return;
+    if (busy && !forceNew) return; // forceNew (nova conversa) nunca é bloqueado por outra ocupada
     const now = nowTs();
     const target = forceNew ? null : active; // forceNew: começa SEMPRE uma conversa nova
     const convId = target ? target.id : uid();
@@ -230,7 +247,7 @@ export function IAScreen({ onBack }) {
   const handleSubmitNew = (e) => {
     e.preventDefault();
     const text = draft.trim();
-    if (!text || busy) return;
+    if (!text) return;
     setHistoryOpen(false);
     send(text, text, true);
     setDraft('');
@@ -252,13 +269,9 @@ export function IAScreen({ onBack }) {
     requestAnimationFrame(() => scrollToBottom('auto'));
   };
 
-  const copyResponse = (resp) => {
-    try { navigator.clipboard?.writeText(responseToText(resp)); } catch { /* noop */ }
-    showToast('Resposta copiada');
-  };
   const setFeedback = (msgId, value) => {
     if (active) updateMessage(active.id, msgId, { feedback: value });
-    if (value) showToast('Obrigado pelo retorno');
+    if (value) showToast('Anotado.');
   };
   const regenerate = (m) => {
     if (busy || !active) return;
@@ -279,7 +292,6 @@ export function IAScreen({ onBack }) {
           key={`stream-${streamNonce}`}
           response={m.response}
           onSelect={(value, meta) => send(meta?.label ?? value, value)}
-          onCopied={showToast}
           onProgress={keepBottom}
           onDone={(units, stopped) => finishStream(m.id, units, stopped)}
           stopSignal={stopSignal}
@@ -293,10 +305,9 @@ export function IAScreen({ onBack }) {
           response={resp}
           variant="plain"
           onSelect={(value, meta) => send(meta?.label ?? value, value)}
-          onCopied={showToast}
         />
         <MessageActions
-          onCopy={() => copyResponse(resp)}
+          copyText={() => responseToText(resp)}
           feedback={m.feedback ?? null}
           onFeedback={(v) => setFeedback(m.id, v)}
           onRegenerate={isLast && !busy ? () => regenerate(m) : undefined}
@@ -315,6 +326,16 @@ export function IAScreen({ onBack }) {
           subtitle="Seu histórico de IA"
           actions={[{ icon: 'plus', label: 'Nova conversa', onClick: newChat }]}
         />
+
+        {toast && (
+          <div className={styles.toastHost}>
+            <Toast
+              type="success"
+              message={toast.message}
+              onUndo={toast.undo ? () => { toast.undo(); dismissToast(); } : undefined}
+            />
+          </div>
+        )}
 
         <div className={styles.listScroll}>
           {conversations.length === 0 ? (
@@ -381,7 +402,11 @@ export function IAScreen({ onBack }) {
 
       {toast && (
         <div className={styles.toastHost}>
-          <Toast type="success" message={toast} />
+          <Toast
+            type="success"
+            message={toast.message}
+            onUndo={toast.undo ? () => { toast.undo(); dismissToast(); } : undefined}
+          />
         </div>
       )}
 
@@ -394,7 +419,6 @@ export function IAScreen({ onBack }) {
             <p className={styles.emptyText}>
               Dose, conduta, interpretação de exame ou um resumo pra evolução. É só perguntar.
             </p>
-            <SuggestionChips label="Comece por" items={STARTERS} onSelect={(item) => send(item.label, item.value)} />
           </div>
         ) : (
           <div className={styles.thread} role="log" aria-live="polite">
@@ -422,13 +446,30 @@ export function IAScreen({ onBack }) {
         </div>
       )}
 
+      {empty && (
+        <div className={styles.suggestStrip} role="list" aria-label="Sugestões para começar">
+          {STARTERS.map((s) => (
+            <button
+              key={s.value}
+              type="button"
+              role="listitem"
+              className={styles.suggestChip}
+              onClick={() => send(s.label, s.value)}
+            >
+              <Icon name={s.icon} size={16} />
+              <span>{s.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
       <form className={styles.composer} onSubmit={handleSubmit}>
         <input
           ref={inputRef}
           className={styles.input}
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          placeholder="Pergunte algo clínico…"
+          placeholder="Dose, conduta, exame…"
           aria-label="Mensagem para a IA"
           enterKeyHint="send"
         />
@@ -443,7 +484,7 @@ export function IAScreen({ onBack }) {
         )}
       </form>
 
-      <IAOnboarding open={!onboarded} onClose={() => setOnboarded(true)} />
+      <IAOnboarding open={!onboarded} onClose={() => setOnboarded(true)} blocking />
     </div>
   );
 }
