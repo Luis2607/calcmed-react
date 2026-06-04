@@ -77,6 +77,23 @@
 }
 .newBtn:hover { background: var(--ds-interativo-primario-hover); }
 
+.newBtnLarge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2);
+  margin-top: var(--esp-2);
+  padding: var(--esp-3) var(--esp-5);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--ds-interativo-primario);
+  color: var(--ds-texto-sobre-destaque);
+  font-family: var(--fonte-base);
+  font-size: var(--fonte-tamanho-corpo);
+  font-weight: 700;
+  cursor: pointer;
+}
+.newBtnLarge:hover { background: var(--ds-interativo-primario-hover); }
+
 /* ---------- Lista de conversas ---------- */
 .listScroll {
   flex: 1;

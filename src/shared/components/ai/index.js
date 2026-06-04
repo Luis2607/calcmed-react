@@ -11,5 +11,6 @@ export { ExpandableSection } from './ExpandableSection';
 export { ContextSelector } from './ContextSelector';
 export { InterpretationBlock } from './InterpretationBlock';
 export { LimitationNote } from './LimitationNote';
+export { ProtocolStep } from './ProtocolStep';
 export { AIResponseRenderer } from './AIResponseRenderer';
 export { INTENT_LABELS } from './intents';

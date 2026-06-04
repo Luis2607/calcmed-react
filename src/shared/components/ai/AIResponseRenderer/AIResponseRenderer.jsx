@@ -9,6 +9,7 @@ import { ExpandableSection } from '../ExpandableSection';
 import { ContextSelector } from '../ContextSelector';
 import { InterpretationBlock } from '../InterpretationBlock';
 import { LimitationNote } from '../LimitationNote';
+import { ProtocolStep } from '../ProtocolStep';
 import { Table } from '../../organisms/Table';
 import { AlertCard } from '../../organisms/AlertCard';
 import { ChecklistBlock } from '../../organisms/ChecklistBlock';
@@ -85,6 +86,8 @@ function renderBlock(block, i, onSelect) {
           {block.content}
         </ExpandableSection>
       );
+    case 'stepper':
+      return <ProtocolStep key={i} label={block.label} current={block.current} steps={block.steps} />;
     case 'limitation':
       return <LimitationNote key={i} title={block.title}>{block.content}</LimitationNote>;
     case 'chips':

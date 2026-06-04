@@ -11,6 +11,7 @@ import {
   ExpandableSection,
   ContextSelector,
   InterpretationBlock,
+  ProtocolStep,
   LimitationNote,
   AIResponseRenderer,
   INTENT_LABELS,
@@ -687,6 +688,13 @@ export function AiResponseSystemGallery() {
               reading={<><strong>Acidose metabólica</strong> com compensação parcial.</>}
               tone="atencao"
               chips={['Calcular Winter']}
+            />
+          </ComponentSpec>
+          <ComponentSpec name="ProtocolStep" note="Etapa atual do protocolo + progresso (Protocol Stepper).">
+            <ProtocolStep
+              label="PCR"
+              current={2}
+              steps={['Checar pulso', 'RCP 30:2 + monitor', 'Analisar ritmo', 'Desfibrilar / adrenalina', 'RCE → pós-parada']}
             />
           </ComponentSpec>
           <ComponentSpec name="AIResponse" note="Container da resposta (barra + blocos + risco).">
