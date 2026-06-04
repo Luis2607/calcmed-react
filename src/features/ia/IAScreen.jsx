@@ -3,6 +3,7 @@ import { Icon } from '../../shared/components/atoms/Icon';
 import { AIResponseRenderer, SuggestionChips } from '../../shared/components/ai';
 import { Toast } from '../../shared/components/molecules/Toast';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
+import { IAOnboarding } from './IAOnboarding';
 import { respond, STARTERS } from './iaData';
 import styles from './IAScreen.module.css';
 
@@ -54,6 +55,7 @@ function TypingDots() {
  */
 export function IAScreen({ onBack }) {
   const [conversations, setConversations] = usePersistedState('ia_conversations', []);
+  const [onboarded, setOnboarded] = usePersistedState('ia_onboarded', false);
   const [activeId, setActiveId] = useState('new'); // 'new' = chat novo · id = conversa salva
   const [historyOpen, setHistoryOpen] = useState(false);
   const [draft, setDraft] = useState('');
@@ -173,6 +175,11 @@ export function IAScreen({ onBack }) {
     send(text, text);
     setDraft('');
   };
+
+  // -------------------- ONBOARDING (1º acesso) --------------------
+  if (!onboarded) {
+    return <IAOnboarding onContinue={() => setOnboarded(true)} onBack={onBack} />;
+  }
 
   // -------------------- HISTÓRICO --------------------
   if (historyOpen) {

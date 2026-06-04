@@ -1,0 +1,56 @@
+/* Blocos de texto formatado do AIResponseRenderer — hierarquia clara estilo
+   ChatGPT/Claude: heading (emoji + negrito), parágrafo, lista, divider. */
+
+.text {
+  font-size: var(--fonte-tamanho-corpo);
+  line-height: 22px;
+  color: var(--ds-texto-secundario);
+}
+.text strong { color: var(--ds-texto-padrao); font-weight: 700; }
+
+.heading {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 800;
+  color: var(--ds-texto-padrao);
+  margin-top: 2px;
+}
+.headingEmoji {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+}
+.list li {
+  position: relative;
+  padding-left: var(--esp-4);
+  font-size: var(--fonte-tamanho-corpo);
+  line-height: 21px;
+  color: var(--ds-texto-secundario);
+}
+.list li::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ds-texto-terciario);
+}
+.list li strong { color: var(--ds-texto-padrao); font-weight: 700; }
+
+.divider {
+  border: 0;
+  border-top: 1px solid var(--ds-borda-sutil);
+  margin: var(--esp-1) 0;
+}
