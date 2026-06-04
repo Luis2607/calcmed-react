@@ -66,7 +66,7 @@
 
 .riskFlag {
   margin-left: auto;
-  padding: 2px 8px;
+  padding: 2px var(--esp-2);
   border-radius: var(--radius-pill);
   background: var(--ds-retorno-critico-fundo);
   color: var(--ds-retorno-critico);

@@ -6,8 +6,7 @@
 }
 
 .title {
-  font-size: 18px;
-  line-height: 24px;
+  font: var(--ds-font-subtitulo);
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--ds-texto-padrao);

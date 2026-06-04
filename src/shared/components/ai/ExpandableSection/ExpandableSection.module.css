@@ -40,7 +40,6 @@
 
 .content {
   padding: 0 var(--esp-3) var(--esp-3) calc(var(--esp-3) + 16px + var(--esp-2));
-  font-size: var(--fonte-tamanho-auxiliar);
-  line-height: 20px;
+  font: var(--ds-font-corpo-2);
   color: var(--ds-texto-secundario);
 }
