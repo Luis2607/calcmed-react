@@ -22,6 +22,7 @@ Ao abrir, o app mostra uma tela de selecao entre **Prototipo** (produto / Centra
 - `src/data/protocols.js`: inventario das Centrais (rotas, dominio, fase de migracao).
 - `src/features/hub/`: hub React da Central de Urgencia.
 - `src/features/cad|sepse|pcr|avc|sca/`: os cinco fluxos clinicos em React.
+- `src/features/ia/`: assistente de IA (aba "IA" do Home) — chat com respostas estruturadas. Spec em `docs/ia-response-system.md`.
 - `src/features/entry/`: tela de selecao de visao (prototipo / Design System).
 - `src/features/ds/`: documentacao viva do Design System (galerias QA + IA · Sistema de Respostas).
 - `src/shared/components/`: atomos, moleculas, organismos e overlays reutilizaveis.
@@ -41,5 +42,5 @@ Cada fluxo deve:
 - Dashboard do DS: abrir a visao "Design System" na selecao, ou `?qa=colors` (qualquer categoria) durante o dev server.
 - Galeria viva dos BottomSheets: `?qa=bottomsheets`.
 - Galeria viva de cores do DS: `?qa=colors`.
-- IA · Sistema de Respostas: `?qa=ia-respostas`.
+- IA · Sistema de Respostas: `?qa=ia-respostas` (spec dev em `docs/ia-response-system.md`).
 - Relatorios e planos em `docs/` (ex.: `docs/qa-report.md`).

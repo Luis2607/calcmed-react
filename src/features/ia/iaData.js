@@ -7,12 +7,24 @@ export const ILLUSTRATIVE =
   'Exemplo ilustrativo. Conteúdo clínico final deve ser validado pelo time médico.';
 
 // Sugestões iniciais (estado vazio + fallback). value = token de roteiro.
+// Cobrem a amplitude dos patterns: ambígua, triagem, crítico, exame, protocolo,
+// aprendizado e resumo. Comparação é alcançável por texto/ações.
 export const STARTERS = [
   { label: 'dose de adrenalina?', value: 'q:adrena' },
   { label: 'paciente hipotenso', value: 'q:hipo' },
+  { label: 'K 7,1 com QRS largo', value: 'crit:k' },
   { label: 'interpreta uma gasometria', value: 'q:gaso' },
-  { label: 'noradrenalina vs dobutamina', value: 'q:noradobu' },
+  { label: 'protocolo de PCR', value: 'proto:pcr' },
+  { label: 'me explica sepse', value: 'learn:sepse' },
   { label: 'resume pra evolução', value: 'q:resumo' },
+];
+
+const PCR_STEPS = [
+  'Checar responsividade e pulso',
+  'RCP 30:2 + monitor/desfibrilador',
+  'Analisar o ritmo',
+  'Chocável? desfibrilar; adrenalina',
+  'RCE → cuidados pós-parada',
 ];
 
 const RESPONSES = {
@@ -227,6 +239,100 @@ const RESPONSES = {
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
   },
+
+  // ---- Alerta crítico (Critical Alert) ----
+  'crit:k': {
+    intent: 'critico',
+    risk_level: 'alto',
+    title: 'Hipercalemia com alteração no ECG',
+    context: 'K⁺ 7,1 mEq/L · QRS alargado',
+    blocks: [
+      { type: 'alert', level: 'critical', title: 'Risco de arritmia / PCR', content: 'QRS largo indica instabilidade de membrana — agir agora.' },
+      { type: 'primary_action', tone: 'critico', content: 'Gluconato de cálcio 10% IV — estabiliza a membrana (não baixa o K⁺).' },
+      {
+        type: 'checklist',
+        tagLabel: 'Em seguida',
+        tagTone: 'critico',
+        items: ['Insulina regular + glicose (desloca K⁺ p/ dentro)', 'Beta-2 agonista inalatório', 'Monitorização contínua + ECG seriado'],
+      },
+      { type: 'limitation', content: ILLUSTRATIVE },
+    ],
+    actions: [{ label: 'Doses por peso', value: 'stub:tool' }, { label: 'Copiar conduta', value: 'q:resumo' }],
+  },
+
+  // ---- Protocolo guiado (Protocol Stepper) ----
+  'proto:pcr': {
+    intent: 'protocolo',
+    risk_level: 'alto',
+    title: 'Protocolo de PCR · ACLS',
+    blocks: [
+      { type: 'stepper', label: 'PCR', current: 2, steps: PCR_STEPS },
+      { type: 'primary_action', content: 'Próxima decisão: o ritmo é chocável?' },
+      {
+        type: 'chips',
+        label: 'Ramificar',
+        items: [
+          { label: 'Chocável (FV/TVSP)', value: 'proto:pcr:choca' },
+          { label: 'Não-chocável (AESP/Assist.)', value: 'proto:pcr:naochoca' },
+        ],
+      },
+      { type: 'limitation', content: ILLUSTRATIVE },
+    ],
+  },
+  'proto:pcr:choca': {
+    intent: 'protocolo',
+    risk_level: 'alto',
+    title: 'Ritmo chocável (FV / TV sem pulso)',
+    blocks: [
+      { type: 'stepper', label: 'PCR', current: 3, steps: PCR_STEPS },
+      { type: 'primary_action', content: 'Desfibrilar (bifásico 120–200 J) → retomar RCP por 2 min.' },
+      {
+        type: 'checklist',
+        tagLabel: 'Drogas',
+        tagTone: 'atencao',
+        items: ['Adrenalina 1 mg IV/IO a cada 3–5 min', 'Amiodarona 300 mg após o 3º choque'],
+      },
+      { type: 'limitation', content: ILLUSTRATIVE },
+    ],
+    actions: [{ label: 'Dose de adrenalina', value: 'adrena:pcr' }],
+  },
+  'proto:pcr:naochoca': {
+    intent: 'protocolo',
+    risk_level: 'alto',
+    title: 'Ritmo não-chocável (AESP / Assistolia)',
+    blocks: [
+      { type: 'stepper', label: 'PCR', current: 3, steps: PCR_STEPS },
+      { type: 'primary_action', content: 'RCP de alta qualidade + adrenalina 1 mg a cada 3–5 min.' },
+      {
+        type: 'checklist',
+        tagLabel: 'Buscar causas reversíveis (5H/5T)',
+        tagTone: 'atencao',
+        items: ['5H: hipovolemia, hipóxia, H⁺ (acidose), hipo/hipercalemia, hipotermia', '5T: pneumotórax hipertensivo, tamponamento, toxinas, trombose (TEP/IAM)'],
+      },
+      { type: 'limitation', content: ILLUSTRATIVE },
+    ],
+    actions: [{ label: 'Dose de adrenalina', value: 'adrena:pcr' }],
+  },
+
+  // ---- Aprendizado (Learning Layer) ----
+  'learn:sepse': {
+    intent: 'aprendizado',
+    title: 'Choque séptico — em camadas',
+    blocks: [
+      { type: 'text', content: 'Resumo: disfunção orgânica por resposta desregulada à infecção, com hipotensão que exige vasopressor e/ou lactato elevado apesar de volume adequado.' },
+      { type: 'expandable', title: 'Por que noradrenalina é a 1ª linha?', content: 'Vasopressor potente (α1) que eleva a PAM com menor risco arritmogênico que a dopamina — mantém a perfusão sem taquicardia excessiva.' },
+      { type: 'expandable', title: 'Como reconhecer (critérios)', content: 'Sepse + necessidade de vasopressor para manter PAM ≥ 65 mmHg + lactato > 2 mmol/L apesar de ressuscitação volêmica adequada.' },
+      {
+        type: 'chips',
+        label: 'Aprofundar',
+        items: [
+          { label: 'Conduta no plantão', value: 'hipo:sepse' },
+          { label: 'Comparar vasopressores', value: 'q:noradobu' },
+        ],
+      },
+      { type: 'limitation', content: ILLUSTRATIVE },
+    ],
+  },
 };
 
 // Stub de ferramenta: ações de calculadora/referência que, no produto, abririam
@@ -242,23 +348,49 @@ const TOOL_STUB = {
 
 const FALLBACK = {
   intent: 'ambigua',
-  title: 'Posso ajudar com alguns exemplos',
+  title: 'Posso ajudar com isso',
   blocks: [
-    { type: 'text', content: 'Esta é uma demonstração do AI Response System. Toque em um exemplo:' },
+    { type: 'text', content: 'Esta é uma demonstração do AI Response System do CalcMed. Reconheço dose, conduta, exame, protocolo, comparação e resumo — toque em um exemplo para ver:' },
     { type: 'chips', items: STARTERS },
   ],
 };
 
 // Casa texto livre com um token de roteiro (heurística simples de demonstração).
+// Ordem importa: específicos e críticos primeiro.
 function matchText(text) {
   const t = (text || '').toLowerCase();
+  const has = (...keys) => keys.some((k) => t.includes(k));
+  const explica = has('explica', 'explique', 'o que é', 'o que e', 'aprend', 'mecanismo', 'por que');
+
+  // Adrenalina (por contexto)
   if (t.includes('adrenalina') && t.includes('pcr')) return 'adrena:pcr';
-  if (t.includes('adrenalina') && (t.includes('anafilax') || t.includes('alergi'))) return 'adrena:ana';
+  if (t.includes('adrenalina') && has('anafilax', 'alergi')) return 'adrena:ana';
+  if (t.includes('adrenalina') && has('choque', 'infus')) return 'adrena:choque';
   if (t.includes('adrenalina')) return 'q:adrena';
-  if (t.includes('hipotens') || t.includes('pressão baixa') || t.includes('pressao baixa')) return 'q:hipo';
+
+  // Alerta crítico
+  if (has('hipercalem', 'k 7', 'k7', 'k+ 7', 'potássio alto', 'potassio alto', 'qrs largo')) return 'crit:k';
+
+  // Aprendizado (antes da conduta operacional)
+  if (explica && has('sepse', 'séptico', 'septico')) return 'learn:sepse';
+
+  // Protocolo guiado
+  if (has('protocolo', 'acls', 'parada cardio', 'reanima')) return 'proto:pcr';
+
+  // Comparação
   if (t.includes('noradrenalina') && t.includes('dobutamina')) return 'q:noradobu';
-  if (t.includes('gaso') || t.includes('ph ') || (t.includes('hco3') || t.includes('hco₃'))) return 'q:gaso';
-  if (t.includes('resume') || t.includes('resumo') || t.includes('evolu') || t.includes('prontuário') || t.includes('prontuario')) return 'q:resumo';
+  if (has('noradrenalina', 'dobutamina', 'vasopressor')) return 'q:noradobu';
+
+  // Interpretação de exame
+  if (has('gaso', 'gasometria', 'ph ', 'hco3', 'hco₃', 'lactato', 'ânion', 'anion')) return 'q:gaso';
+
+  // Conduta operacional / triagem
+  if (has('séptico', 'septico', 'sepse')) return 'hipo:sepse';
+  if (has('hipotens', 'pressão baixa', 'pressao baixa', 'paciente ruim', 'choque', 'pam ')) return 'q:hipo';
+
+  // Resumo copiável
+  if (has('resume', 'resumo', 'evolu', 'prontuário', 'prontuario', 'passagem', 'whatsapp')) return 'q:resumo';
+
   return null;
 }
 
