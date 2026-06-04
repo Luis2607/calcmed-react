@@ -221,20 +221,20 @@ sem match → `FALLBACK` ("Não entendi").
 - `→ adrena:pcr` (Adrenalina na PCR, adulto) — ações: *Ver ACLS* (`stub:tool`), *Dose pediátrica* (`adrena:ped`)
 - `→ adrena:ana` (Anafilaxia **adulto**) — ação: *Refratário → infusão* (`adrena:choque`) · *(removido o atalho "Dose pediátrica" que levava à dose de PCR — correção de segurança A3)*
 - `→ adrena:choque` (Infusão no choque) — ação: *Comparar com noradrenalina* (`q:noradobu`)
-- `→ adrena:ped` (PCR pediátrica) — terminal
+- `→ adrena:ped` (PCR pediátrica) — ações: *Dose adulto* (`adrena:pcr`), *Protocolo de PCR* (`proto:pcr`)
 
 **B. Paciente hipotenso** — `q:hipo` *(triagem guiada)*
 - `→ hipo:sepse` (Choque séptico provável) — ações: *Calcular dose por peso* (`stub:tool`), *Copiar conduta* (`q:resumo`)
-- `→ hipo:sangramento` (Choque hemorrágico)
-- `→ hipo:cardio` (Choque cardiogênico)
+- `→ hipo:sangramento` (Choque hemorrágico) — ações: *Calcular dose por peso* (`stub:tool`), *Copiar conduta* (`q:resumo`)
+- `→ hipo:cardio` (Choque cardiogênico) — ações: *Comparar nora × dobuta* (`q:noradobu`), *Copiar conduta* (`q:resumo`)
 - `→ adrena:ana` (Anafilaxia — reaproveita o nó de dose)
 - `→ hipo:naosei` (sem hipótese fechada) — chips do **diferencial** (não funila mais p/ sepse · correção A4): *Séptico* (`hipo:sepse`), *Hemorrágico* (`hipo:sangramento`), *Cardiogênico* (`hipo:cardio`), *Interpretar gasometria* (`q:gaso`)
 
 **C. Gasometria** — `q:gaso` *(interpretação)* — chips: *Calcular Winter*/*Ânion gap* (`stub:tool`), *Relacionar com sepse* (`hipo:sepse`)
 
-**D. Noradrenalina × Dobutamina** — `q:noradobu` *(comparação · tabela)* — terminal
+**D. Noradrenalina × Dobutamina** — `q:noradobu` *(comparação · tabela)* — ações: *Paciente em choque* (`q:hipo`), *Resumir conduta* (`q:resumo`)
 
-**E. Resumo** — `q:resumo` *(texto pronto · copyable, variações de formato)* — terminal
+**E. Resumo** — `q:resumo` *(texto pronto · copyable, variações de formato)* — ações: *Conduta no choque* (`q:hipo`), *Interpretar gasometria* (`q:gaso`)
 
 **F. Hipercalemia crítica** — `crit:k` *(crítico · alerta)* — ações: *Doses por peso* (`stub:tool`), *Copiar conduta* (`q:resumo`)
 
@@ -275,6 +275,7 @@ sem match → `FALLBACK` ("Não entendi").
 | Pensando | enviar | "digitando…" (3 pontos) + botão **Parar** |
 | Streaming | resposta chega | revela progressivo; **Parar** disponível; `aria-busy` |
 | Interrompida | Parar no meio | marca "Resposta interrompida" + **Continuar** |
+| Cancelada | Parar no "pensando" | marca "Geração cancelada" + **Tentar de novo** |
 | Concluída | fim do stream | ações da mensagem (copiar/👍/👎/regenerar) |
 | Conversa longa | scroll p/ cima | botão flutuante **descer** |
 | Copiado | clicar copiar | ícone → **check** → volta (cópia real) |

@@ -126,6 +126,7 @@ export function IAScreen({ onBack }) {
   const inputRef = useRef(null);
   const timers = useRef({});
   const toastTimer = useRef(null);
+  const sendingRef = useRef(false); // trava síncrona contra double-tap (busy é assíncrono)
   const activeIdRef = useRef(activeId);
 
   const active = activeId !== 'new' ? conversations.find((c) => c.id === activeId) : null;
@@ -204,7 +205,10 @@ export function IAScreen({ onBack }) {
     );
 
   const send = (displayText, lookup, forceNew = false) => {
+    if (sendingRef.current) return; // bloqueia 2º toque antes do busy assíncrono subir
     if (busy && !forceNew) return; // forceNew (nova conversa) nunca é bloqueado por outra ocupada
+    sendingRef.current = true;
+    requestAnimationFrame(() => { sendingRef.current = false; }); // libera após o render (busy já cobre)
     const now = nowTs();
     const target = forceNew ? null : active; // forceNew: começa SEMPRE uma conversa nova
     const convId = target ? target.id : uid();
@@ -279,9 +283,36 @@ export function IAScreen({ onBack }) {
       setStopSignal((s) => s + 1); // o StreamingMessage finaliza no ponto atual
       return;
     }
-    // ainda "pensando": cancela a resposta pendente
+    // ainda "pensando": cancela a resposta pendente e deixa um marcador (não some
+    // a pergunta órfã sem dar caminho de volta).
     Object.keys(timers.current).forEach((tid) => { clearTimeout(timers.current[tid]); delete timers.current[tid]; });
     setPending((p) => { const n = { ...p }; if (active) delete n[active.id]; return n; });
+    if (active) {
+      const lastUser = [...active.messages].reverse().find((x) => x.role === 'user');
+      if (lastUser) {
+        const cid = uid();
+        setConversations((prev) =>
+          prev.map((c) => (c.id === active.id
+            ? { ...c, messages: [...c.messages, { id: cid, role: 'ai', cancelled: true, text: lastUser.text, lookup: lastUser.lookup }] }
+            : c)),
+        );
+      }
+    }
+  };
+
+  // Retoma uma geração cancelada: remove o marcador + a pergunta órfã e reenvia.
+  const retry = (m) => {
+    if (busy || !active) return;
+    setConversations((prev) =>
+      prev.map((c) => {
+        if (c.id !== active.id) return c;
+        let msgs = c.messages.filter((x) => x.id !== m.id);
+        const lui = msgs.map((x) => x.role).lastIndexOf('user');
+        if (lui >= 0) msgs = msgs.slice(0, lui);
+        return { ...c, messages: msgs };
+      }),
+    );
+    send(m.text, m.lookup);
   };
 
   const finishStream = (msgId, units, stopped) => {
@@ -344,6 +375,16 @@ export function IAScreen({ onBack }) {
   };
 
   const renderAi = (m, isLast) => {
+    if (m.cancelled) {
+      return (
+        <div className={styles.interrupted}>
+          <span className={styles.interruptedLabel}><Icon name="atencao" size={14} /> Geração cancelada</span>
+          <button type="button" className={styles.continueBtn} onClick={() => retry(m)} disabled={busy}>
+            <Icon name="executar" size={14} /> Tentar de novo
+          </button>
+        </div>
+      );
+    }
     if (m.id === streamingId) {
       return (
         <StreamingMessage

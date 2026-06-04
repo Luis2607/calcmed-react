@@ -87,6 +87,7 @@ const RESPONSES = {
       { type: 'dose', value: '0,01 mg/kg', unit: 'IV/IO', via: 'máx 1 mg · a cada 3–5 min' },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
+    actions: [{ label: 'Dose adulto (PCR)', value: 'adrena:pcr' }, { label: 'Protocolo de PCR', value: 'proto:pcr' }],
   },
 
   // ---- Triagem contextual → Guided Flow → Operational Response ----
@@ -138,6 +139,7 @@ const RESPONSES = {
       },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
+    actions: [{ label: 'Calcular dose por peso', value: 'stub:tool' }, { label: 'Copiar conduta', value: 'q:resumo' }],
   },
   'hipo:cardio': {
     intent: 'operacional',
@@ -153,6 +155,7 @@ const RESPONSES = {
       },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
+    actions: [{ label: 'Comparar nora × dobuta', value: 'q:noradobu' }, { label: 'Copiar conduta', value: 'q:resumo' }],
   },
   'hipo:naosei': {
     intent: 'triagem',
@@ -225,6 +228,7 @@ const RESPONSES = {
       { type: 'text', content: '**Regra prática:** PA baixa → **nora** primeiro; débito baixo com PA mantida → **dobuta**.' },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
+    actions: [{ label: 'Paciente em choque', value: 'q:hipo' }, { label: 'Resumir conduta', value: 'q:resumo' }],
   },
 
   // ---- Resumo copiável ----
@@ -347,6 +351,7 @@ const RESPONSES = {
       },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
+    actions: [{ label: 'Conduta no choque', value: 'q:hipo' }, { label: 'Interpretar gasometria', value: 'q:gaso' }],
   },
 };
 
