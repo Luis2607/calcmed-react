@@ -6,20 +6,25 @@ import { PCRFlow } from './features/pcr/PCRFlow';
 import { AVCFlow } from './features/avc/AVCFlow';
 import { Home } from './features/home/Home';
 import { HubHome } from './features/hub/HubHome';
+import { IAScreen } from './features/ia/IAScreen';
 import { ColorGallery } from './features/ds/ColorGallery';
 import { DsDashboard } from './features/ds/DsDashboard';
 import { TypographyGallery } from './features/ds/TypographyGallery';
 import { SpacingGallery } from './features/ds/SpacingGallery';
 import { InputGallery } from './features/ds/InputGallery';
 import { SheetGallery } from './features/ds/SheetGallery';
-import { GoldenProtocolFrame } from './shared/components/layout/GoldenProtocolFrame';
 import { DevPanel } from './shared/components/layout/DevPanel/DevPanel';
+import { EntryChooser } from './features/entry/EntryChooser';
 import { usePersistedState } from './shared/hooks/usePersistedState';
 
 export default function App() {
   const [activeRoute, setActiveRoute] = usePersistedState('active_route', 'home');
   const [isPediatricMode, setIsPediatricMode] = usePersistedState('pediatric_mode', false);
   const [isDark, setIsDark] = usePersistedState('dark_mode', false);
+  // Gate de entrada: null = ainda não escolheu · 'prototype' · 'ds'.
+  // Persiste a visão para não reperguntar a cada refresh. ?qa= e ?route= mantêm
+  // precedência (deep-link de QA não passa pela seleção).
+  const [appMode, setAppMode] = usePersistedState('app_mode', null);
   const qaRoute = typeof window !== 'undefined'
     ? new URLSearchParams(window.location.search).get('qa')
     : null;
@@ -44,19 +49,52 @@ export default function App() {
   const isInputGallery = visibleRoute === 'ds-inputs' || qaRoute === 'inputs';
   const isControlsGallery = visibleRoute === 'ds-controles' || qaRoute === 'controles';
   const isGallery = isSheetGallery || isColorGallery || isTypographyGallery || isSpacingGallery || isInputGallery || isControlsGallery;
-  const isSepseReact = visibleRoute === 'sepse-react';
-  const isPcrReact = visibleRoute === 'pcr-react';
-  const isAvcReact = visibleRoute === 'avc-react';
+  // Centrais 100% React — aceitam tanto a rota -react quanto o id cru do protocolo
+  // (o golden/iframe foi removido; não há mais fallback HTML).
+  const isSepseReact = visibleRoute === 'sepse-react' || visibleRoute === 'sepse';
+  const isPcrReact = visibleRoute === 'pcr-react' || visibleRoute === 'pcr';
+  const isAvcReact = visibleRoute === 'avc-react' || visibleRoute === 'avc';
+  const isIA = visibleRoute === 'ia';
   const isKnownRoute =
-    visibleRoute === 'home' || visibleRoute === 'hub' || isGallery || isSepseReact || isPcrReact || isAvcReact || Boolean(activeProtocol);
+    visibleRoute === 'home' || visibleRoute === 'hub' || isIA || isGallery || isSepseReact || isPcrReact || isAvcReact || Boolean(activeProtocol);
   const showHome = !isGallery && (visibleRoute === 'home' || !isKnownRoute);
 
+  const switchTo = (mode) => {
+    // Lê a URL FRESCA (não a var qaRoute do topo do render): o DsDashboard adiciona
+    // ?qa= via pushState sem re-renderizar o App, então a closure fica desatualizada.
+    // Sem isso, "Ver protótipo" não saía do DS depois de navegar nas abas.
+    if (typeof window !== 'undefined' && window.location.search) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+    setAppMode(mode);
+  };
+
+  // Deep-link de QA (?qa=) abre o Design System direto, sem passar pela seleção.
   if (qaRoute) {
-    return <DsDashboard />;
+    return <DsDashboard onExit={() => switchTo('prototype')} />;
+  }
+
+  // Sem deep-link de rota e sem visão escolhida → mostra a seleção (só no 1º acesso).
+  if (!routeOverride && appMode == null) {
+    return <EntryChooser onChoose={setAppMode} />;
+  }
+
+  // Visão Design System escolhida na seleção.
+  if (appMode === 'ds' && !routeOverride) {
+    return <DsDashboard onExit={() => switchTo('prototype')} />;
   }
 
   return (
     <div className="page-wrapper">
+      <button
+        type="button"
+        className="app-mode-switch"
+        onClick={() => switchTo('ds')}
+        aria-label="Ir para o Design System"
+        title="Ir para o Design System"
+      >
+        ⇄
+      </button>
       <div className={`viewport-container ${isPediatricMode ? 'modo-pediatrico' : ''} ${isDark ? 'modo-escuro' : ''}`.trim()}>
         <div className="scroll-container">
           {showHome && <Home onNavigate={handleNavigate} isDark={isDark} onToggleTheme={() => setIsDark(!isDark)} />}
@@ -70,6 +108,8 @@ export default function App() {
           {isSpacingGallery && <SpacingGallery />}
 
           {isInputGallery && <InputGallery />}
+
+          {isIA && <IAScreen onBack={goHome} />}
 
           {visibleRoute === 'hub' && (
             <HubHome
@@ -97,10 +137,6 @@ export default function App() {
 
           {isAvcReact && (
             <AVCFlow onBack={goHome} />
-          )}
-
-          {activeProtocol && activeProtocol.id !== 'cad' && activeProtocol.id !== 'sca' && (
-            <GoldenProtocolFrame protocol={activeProtocol} onBack={goHome} />
           )}
         </div>
       </div>

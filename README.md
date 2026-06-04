@@ -1,15 +1,6 @@
 # CalcMed React - Central de Urgencia
 
-Este projeto e a base React escalavel da Central de Urgencia. A migracao e incremental: o HTML validado continua como golden master funcional ate cada fluxo React atingir paridade real.
-
-## Fonte de verdade durante a migracao
-
-- Golden master funcional: `../calcmed/`
-- Base React escalavel: `./`
-- Primeiro fluxo em migracao: CAD
-- Fluxos ainda por paridade: Sepse, PCR, AVC e SCA
-
-Nada do HTML deve ser removido, simplificado ou sobrescrito por causa da migracao. O React deve copiar comportamento validado, texto, estado, microinteracao e visual essencial antes de substituir qualquer uso diario.
+Base React escalavel da Central de Urgencia. As cinco centrais (CAD, Sepse, PCR, AVC e SCA) estao componentizadas em React — o bridge para o HTML validado (golden master) foi removido e o app e 100% self-contained.
 
 ## Como rodar
 
@@ -20,39 +11,35 @@ npm run lint
 npm run build
 ```
 
+O `npm run build` gera uma saida estatica em `dist/` (sem dependencia de pastas externas), pronta para deploy estatico (ex.: Vercel, com preset Vite).
+
+## Entrada do app
+
+Ao abrir, o app mostra uma tela de selecao entre **Prototipo** (produto / Central de Urgencia) e **Design System** (documentacao viva). A escolha fica salva em `localStorage` (`app_mode`) e pode ser trocada a qualquer momento. Deep-links de QA (`?qa=...`) abrem o Design System direto, sem passar pela selecao.
+
 ## Arquitetura atual
 
-- `src/data/protocols.js`: inventario da Central inteira, rotas, estado de migracao e ponteiro para o HTML de referencia.
+- `src/data/protocols.js`: inventario das Centrais (rotas, dominio, fase de migracao).
 - `src/features/hub/`: hub React da Central de Urgencia.
-- `src/features/cad/`: primeira migracao funcional por paridade.
-- `src/shared/components/layout/GoldenProtocolFrame.jsx`: ponte segura para renderizar o HTML validado dentro do React enquanto um protocolo ainda nao atingiu paridade componente-a-componente.
+- `src/features/cad|sepse|pcr|avc|sca/`: os cinco fluxos clinicos em React.
+- `src/features/entry/`: tela de selecao de visao (prototipo / Design System).
+- `src/features/ds/`: documentacao viva do Design System (galerias QA + IA · Sistema de Respostas).
 - `src/shared/components/`: atomos, moleculas, organismos e overlays reutilizaveis.
-- `src/shared/styles/`: tokens e estilos herdados do prototipo HTML/DS.
+- `src/shared/styles/`: tokens e estilos do DS.
 
-## Ponte segura para protocolos ainda nao migrados
+## Regra de qualidade por fluxo
 
-Sepse, PCR, AVC e SCA nao devem aparecer como placeholder. Enquanto a migracao React real nao for concluida, essas rotas carregam o HTML validado por `/golden/...`, servido pelo Vite a partir de `../calcmed/`.
+Cada fluxo deve:
 
-Isso preserva visual, fluxo, microinteracao e `localStorage` na mesma origem local. A ponte nao conta como migracao final: ela e uma protecao contra perda ate a componentizacao real ficar pronta.
+- Rodar sem erro de build e lint.
+- Preservar `localStorage` e recuperacao apos refresh.
+- Preservar gates clinicos, timers, historico, modais/sheets e estados vazios.
+- Passar QA visual mobile.
 
-## Regra de migracao por paridade
+## Design System
 
-Um fluxo so muda de "Na fila" para "Migrado" quando passar estes pontos:
-
-- Roda sem erro de build e lint.
-- Preserva localStorage e recuperacao apos refresh.
-- Preserva textos e microcopy do HTML ou registra divergencia aprovada.
-- Preserva gates clinicos, timers, historico, modais/sheets e estados vazios.
-- Passa QA visual mobile contra o HTML de referencia.
-
-## QA atual
-
-- Relatorio mais recente: `docs/qa-report.md`.
-- Plano de padronizacao dos BottomSheets: `docs/bottom-sheet-standardization-plan.md`.
-- Roadmap visual pos-BottomSheet: `docs/visual-coherence-roadmap.md`.
-- Galeria viva dos BottomSheets: abrir `http://127.0.0.1:5174/?qa=bottomsheets` durante o dev server.
-- Galeria viva de cores do DS: abrir `http://127.0.0.1:5174/?qa=colors` durante o dev server.
-
-## Status de seguranca
-
-O React pode evoluir como destino de escalabilidade, mas o uso diario e a validacao com cliente continuam no HTML enquanto a paridade nao estiver fechada para toda a Central.
+- Dashboard do DS: abrir a visao "Design System" na selecao, ou `?qa=colors` (qualquer categoria) durante o dev server.
+- Galeria viva dos BottomSheets: `?qa=bottomsheets`.
+- Galeria viva de cores do DS: `?qa=colors`.
+- IA · Sistema de Respostas: `?qa=ia-respostas`.
+- Relatorios e planos em `docs/` (ex.: `docs/qa-report.md`).
