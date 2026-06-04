@@ -222,8 +222,8 @@
   max-width: 82%;
   padding: var(--esp-2) var(--esp-3);
   border-radius: 16px 16px 4px 16px;
-  background: var(--ds-interativo-primario);
-  color: var(--ds-texto-sobre-destaque);
+  background: var(--ds-fundo-elevado);
+  color: var(--ds-texto-padrao);
   font-size: var(--fonte-tamanho-corpo);
   line-height: 20px;
 }

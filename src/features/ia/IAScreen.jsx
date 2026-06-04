@@ -156,10 +156,10 @@ export function IAScreen({ onBack }) {
   }, []);
 
   useEffect(() => {
-    if (historyOpen || aboutOpen) return;
+    if (!onboarded || historyOpen || aboutOpen) return;
     requestAnimationFrame(() => scrollToBottom('auto'));
     if (finePointer()) inputRef.current?.focus();
-  }, [activeId, historyOpen, aboutOpen]);
+  }, [activeId, historyOpen, aboutOpen, onboarded]);
 
   const openHistory = () => setHistoryOpen(true);
   const newChat = () => { setActiveId('new'); setHistoryOpen(false); setDraft(''); setShowJump(false); };
@@ -300,14 +300,6 @@ export function IAScreen({ onBack }) {
     );
   };
 
-  // -------------------- ONBOARDING / SOBRE --------------------
-  if (!onboarded) {
-    return <IAOnboarding onContinue={() => setOnboarded(true)} onBack={onBack} />;
-  }
-  if (aboutOpen) {
-    return <IAOnboarding onContinue={() => setAboutOpen(false)} onBack={() => setAboutOpen(false)} ctaLabel="Fechar" />;
-  }
-
   // -------------------- HISTÓRICO --------------------
   if (historyOpen) {
     return (
@@ -362,6 +354,10 @@ export function IAScreen({ onBack }) {
             <Icon name="informacao" size={16} /> Sobre a IA · avisos
           </button>
         </div>
+
+        {aboutOpen && (
+          <IAOnboarding onContinue={() => setAboutOpen(false)} onClose={() => setAboutOpen(false)} ctaLabel="Fechar" />
+        )}
       </div>
     );
   }
@@ -447,6 +443,10 @@ export function IAScreen({ onBack }) {
           </button>
         )}
       </form>
+
+      {!onboarded && (
+        <IAOnboarding onContinue={() => setOnboarded(true)} onClose={onBack} />
+      )}
     </div>
   );
 }
