@@ -129,6 +129,9 @@ export function IAScreen({ onBack }) {
     requestAnimationFrame(() => scrollToBottom('smooth'));
 
     const response = respond(lookup ?? displayText);
+    // "Interpretando" proporcional ao tamanho da resposta (sensação de raciocínio,
+    // não resposta instantânea). Entre ~0,6s e ~1,5s.
+    const delay = Math.min(1500, 600 + (response.blocks?.length || 1) * 180);
     const tid = uid();
     timers.current[tid] = setTimeout(() => {
       const viewing = activeIdRef.current === convId; // a conversa ainda está aberta?
@@ -146,7 +149,7 @@ export function IAScreen({ onBack }) {
       if (viewing && stick) requestAnimationFrame(() => scrollToBottom('smooth'));
       else if (viewing) setShowJump(true);
       delete timers.current[tid];
-    }, 650);
+    }, delay);
   };
 
   const handleSubmit = (e) => {
@@ -245,7 +248,7 @@ export function IAScreen({ onBack }) {
             <SuggestionChips label="Comece por" items={STARTERS} onSelect={(item) => send(item.label, item.value)} />
           </div>
         ) : (
-          <div className={styles.thread}>
+          <div className={styles.thread} role="log" aria-live="polite">
             {messages.map((m) =>
               m.role === 'user' ? (
                 <div key={m.id} className={styles.userRow}>
