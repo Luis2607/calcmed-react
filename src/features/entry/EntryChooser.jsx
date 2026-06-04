@@ -18,7 +18,7 @@ const OPTIONS = [
     eyebrow: 'Produto',
     title: 'Protótipo',
     desc: 'Central de Urgência funcional — Home, protocolos (PCR, SCA, Sepse, AVC, CAD) e fluxos clínicos guiados.',
-    bullets: ['Navegação real do app', 'Protocolos React + golden master', 'Estados, timers e histórico'],
+    bullets: ['Navegação real do app', 'Protocolos React (PCR, SCA, Sepse, AVC, CAD)', 'Estados, timers e histórico'],
     cta: 'Abrir protótipo',
   },
   {

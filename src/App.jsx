@@ -12,7 +12,6 @@ import { TypographyGallery } from './features/ds/TypographyGallery';
 import { SpacingGallery } from './features/ds/SpacingGallery';
 import { InputGallery } from './features/ds/InputGallery';
 import { SheetGallery } from './features/ds/SheetGallery';
-import { GoldenProtocolFrame } from './shared/components/layout/GoldenProtocolFrame';
 import { DevPanel } from './shared/components/layout/DevPanel/DevPanel';
 import { EntryChooser } from './features/entry/EntryChooser';
 import { usePersistedState } from './shared/hooks/usePersistedState';
@@ -49,9 +48,11 @@ export default function App() {
   const isInputGallery = visibleRoute === 'ds-inputs' || qaRoute === 'inputs';
   const isControlsGallery = visibleRoute === 'ds-controles' || qaRoute === 'controles';
   const isGallery = isSheetGallery || isColorGallery || isTypographyGallery || isSpacingGallery || isInputGallery || isControlsGallery;
-  const isSepseReact = visibleRoute === 'sepse-react';
-  const isPcrReact = visibleRoute === 'pcr-react';
-  const isAvcReact = visibleRoute === 'avc-react';
+  // Centrais 100% React — aceitam tanto a rota -react quanto o id cru do protocolo
+  // (o golden/iframe foi removido; não há mais fallback HTML).
+  const isSepseReact = visibleRoute === 'sepse-react' || visibleRoute === 'sepse';
+  const isPcrReact = visibleRoute === 'pcr-react' || visibleRoute === 'pcr';
+  const isAvcReact = visibleRoute === 'avc-react' || visibleRoute === 'avc';
   const isKnownRoute =
     visibleRoute === 'home' || visibleRoute === 'hub' || isGallery || isSepseReact || isPcrReact || isAvcReact || Boolean(activeProtocol);
   const showHome = !isGallery && (visibleRoute === 'home' || !isKnownRoute);
@@ -128,10 +129,6 @@ export default function App() {
 
           {isAvcReact && (
             <AVCFlow onBack={goHome} />
-          )}
-
-          {activeProtocol && activeProtocol.id !== 'cad' && activeProtocol.id !== 'sca' && (
-            <GoldenProtocolFrame protocol={activeProtocol} onBack={goHome} />
           )}
         </div>
       </div>
