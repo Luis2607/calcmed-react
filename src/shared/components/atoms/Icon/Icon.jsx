@@ -71,9 +71,11 @@ export const Icon = ({ name, size = 24, className = '', color = 'currentColor', 
           </>
         );
       case 'ia':
+        // Sparkle — marca universal de IA (antes era um sol, idêntico ao modo-claro).
         return (
           <>
-            <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
+            <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z" />
+            <path d="M5 3v4M3 5h4M19 17v4M17 19h4" />
           </>
         );
       case 'perfil':

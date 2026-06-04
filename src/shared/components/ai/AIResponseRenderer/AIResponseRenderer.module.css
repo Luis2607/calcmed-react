@@ -52,6 +52,6 @@
 
 .divider {
   border: 0;
-  border-top: 1px solid var(--ds-borda-sutil);
+  border-top: 1px solid var(--ds-borda-padrao);
   margin: var(--esp-1) 0;
 }

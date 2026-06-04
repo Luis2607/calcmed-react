@@ -60,13 +60,13 @@ const RESPONSES = {
   'adrena:ana': {
     intent: 'dose',
     risk_level: 'alto',
-    title: 'Adrenalina na anafilaxia',
+    title: 'Adrenalina na anafilaxia (adulto)',
     blocks: [
       { type: 'dose', value: '0,5 mg', unit: 'IM (1:1000)', via: 'face anterolateral da coxa · repetir 5–15 min' },
       { type: 'text', content: 'Via **IM** é a de escolha. **IV** apenas em choque refratário, com monitorização.' },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
-    actions: [{ label: 'Dose pediátrica', value: 'adrena:ped' }],
+    actions: [{ label: 'Refratário → infusão', value: 'adrena:choque' }],
   },
   'adrena:choque': {
     intent: 'dose',
@@ -158,14 +158,15 @@ const RESPONSES = {
     intent: 'triagem',
     title: 'Vamos por dados objetivos',
     blocks: [
-      { type: 'text', content: 'Sem hipótese fechada, seguimos pelos dados. O que você tem agora?' },
+      { type: 'text', content: 'Sem hipótese fechada, deixe o perfil guiar — ou um exame pra orientar.' },
       {
         type: 'chips',
-        label: 'Informe',
+        label: 'Perfil mais provável',
         items: [
-          { label: 'PAM atual', value: 'hipo:sepse' },
-          { label: 'Recebeu volume', value: 'hipo:sepse' },
-          { label: 'Lactato', value: 'q:gaso' },
+          { label: 'Séptico', value: 'hipo:sepse' },
+          { label: 'Hemorrágico', value: 'hipo:sangramento' },
+          { label: 'Cardiogênico', value: 'hipo:cardio' },
+          { label: 'Interpretar gasometria', value: 'q:gaso' },
         ],
       },
     ],
@@ -353,16 +354,16 @@ const TOOL_STUB = {
   intent: 'aprendizado',
   title: 'Cálculo por peso',
   blocks: [
-    { type: 'text', content: 'Aqui entra a dose ajustada ao peso do paciente — no app, este passo abre a calculadora já com os dados do caso.' },
-    { type: 'chips', label: 'Enquanto isso', items: STARTERS },
+    { type: 'text', content: 'A dose é ajustada ao peso do paciente (mg/kg) — informe o peso para fechar o número.' },
+    { type: 'chips', label: 'Continuar', items: STARTERS },
   ],
 };
 
 const FALLBACK = {
   intent: 'ambigua',
-  title: 'Não entendi',
+  title: 'Não consegui interpretar',
   blocks: [
-    { type: 'text', content: 'Reformula em uma linha — ou começa por um destes:' },
+    { type: 'text', content: 'Reformula em uma linha. Funciono melhor com dose, conduta, exame, protocolo ou resumo — por exemplo:' },
     { type: 'chips', items: STARTERS },
   ],
 };

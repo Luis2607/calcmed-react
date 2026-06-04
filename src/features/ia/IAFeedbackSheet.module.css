@@ -1,0 +1,12 @@
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-2);
+  margin-bottom: var(--esp-4);
+}
+
+.fineprint {
+  margin-top: var(--esp-3);
+  font: var(--ds-font-legenda);
+  color: var(--ds-texto-terciario);
+}

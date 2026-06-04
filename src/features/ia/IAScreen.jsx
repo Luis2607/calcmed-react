@@ -5,6 +5,7 @@ import { AIResponseRenderer } from '../../shared/components/ai';
 import { Toast } from '../../shared/components/molecules/Toast';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
 import { IAOnboarding } from './IAOnboarding';
+import { IAFeedbackSheet } from './IAFeedbackSheet';
 import { MessageActions } from './MessageActions';
 import { respond, STARTERS } from './iaData';
 import { countUnits, sliceResponse, responseToText } from './iaStream';
@@ -120,6 +121,7 @@ export function IAScreen({ onBack }) {
   const [streamNonce, setStreamNonce] = useState(0); // key p/ remontar o StreamingMessage
   const [stopSignal, setStopSignal] = useState(0);
   const [toast, setToast] = useState(null);
+  const [fbSheet, setFbSheet] = useState({ open: false, msgId: null, value: null });
   const scrollerRef = useRef(null);
   const inputRef = useRef(null);
   const timers = useRef({});
@@ -300,7 +302,17 @@ export function IAScreen({ onBack }) {
 
   const setFeedback = (msgId, value) => {
     if (active) updateMessage(active.id, msgId, { feedback: value });
-    if (value) showToast('Anotado.');
+    // Selecionar 👍/👎 abre o sheet de motivo; desmarcar fecha.
+    if (value) setFbSheet({ open: true, msgId, value });
+    else setFbSheet((s) => (s.msgId === msgId ? { open: false, msgId: null, value: null } : s));
+  };
+
+  const submitFeedback = ({ reasons, detail }) => {
+    if (active && fbSheet.msgId) {
+      updateMessage(active.id, fbSheet.msgId, { feedbackReasons: reasons, feedbackDetail: detail });
+    }
+    setFbSheet({ open: false, msgId: null, value: null });
+    showToast('Obrigado pelo retorno.');
   };
   const regenerate = (m) => {
     if (busy || !active) return;
@@ -556,6 +568,13 @@ export function IAScreen({ onBack }) {
           </button>
         )}
       </form>
+
+      <IAFeedbackSheet
+        open={fbSheet.open}
+        value={fbSheet.value}
+        onClose={() => setFbSheet({ open: false, msgId: null, value: null })}
+        onSubmit={submitFeedback}
+      />
 
       <IAOnboarding open={!onboarded} onClose={() => setOnboarded(true)} blocking />
     </div>
