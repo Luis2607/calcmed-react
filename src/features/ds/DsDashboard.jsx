@@ -67,8 +67,9 @@ export function DsDashboard({ onExit }) {
           className="app-mode-switch app-mode-switch--right"
           onClick={onExit}
           aria-label="Ir para o protótipo"
+          title="Ir para o protótipo"
         >
-          ⇄ Ver protótipo
+          ⇄
         </button>
       )}
       {/* Sidebar na esquerda */}

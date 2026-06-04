@@ -39,33 +39,33 @@ html, body {
 }
 
 /* Troca de visão (protótipo ↔ Design System) — tooling, fora do frame do produto.
-   Visual sóbrio (não usa tokens de produto, igual ao DevPanel) p/ não competir com a UI. */
+   Micro FAB circular, discreto, ancorado embaixo p/ não cobrir cabeçalho/voltar. */
 .app-mode-switch {
   position: fixed;
-  top: 12px;
-  left: 12px;
+  bottom: 24px;
+  left: 16px;
   z-index: 1000;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(13, 27, 42, 0.82);
   color: #e2e8f0;
   font-family: var(--fonte-base);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-size: 17px;
+  line-height: 1;
   cursor: pointer;
   backdrop-filter: blur(6px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-  transition: background 0.18s ease, transform 0.18s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.24);
+  transition: background 0.15s ease, transform 0.15s ease;
 }
 
 .app-mode-switch:hover {
   background: rgba(13, 27, 42, 0.95);
-  transform: translateY(-1px);
+  transform: translateY(-1px) scale(1.05);
 }
 
 /* Variante do DS: canto direito (esquerda é a sidebar/marca). */
@@ -74,17 +74,15 @@ html, body {
   right: 16px;
 }
 
-/* Mobile: o frame ocupa a tela toda e os topos têm voltar/ícones.
-   Move a troca para a base p/ não cobrir a navegação das telas. */
+/* Mobile: o frame ocupa a tela toda e tem tab bar/composer embaixo.
+   Sobe o FAB um pouco para não cobrir esses elementos. */
 @media (max-width: 430px) {
   .app-mode-switch {
-    top: auto;
-    bottom: 84px;
+    bottom: 76px;
     left: 12px;
   }
   .app-mode-switch--right {
-    top: auto;
-    bottom: 84px;
+    bottom: 76px;
     right: 12px;
     left: auto;
   }

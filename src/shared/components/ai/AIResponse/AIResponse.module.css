@@ -7,8 +7,24 @@
 }
 
 /* Risco alto: rail esquerdo sóbrio (sem decorar — sinaliza prioridade). */
-.response[data-risk='alto'] {
+.response[data-variant='card'][data-risk='alto'] {
   border-left: 3px solid var(--ds-retorno-critico);
+}
+
+/* Plain: largura cheia, sem caixa (chat). Os blocos internos dão a estrutura. */
+.response[data-variant='plain'] {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+.response[data-variant='plain'] .bar {
+  background: transparent;
+  border-bottom: 0;
+  padding: 0 0 var(--esp-2) 0;
+}
+.response[data-variant='plain'] .body {
+  padding: 0;
 }
 
 .bar {

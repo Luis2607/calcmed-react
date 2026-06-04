@@ -117,12 +117,12 @@ function renderBlock(block, i, onSelect) {
  *  - onSelect(value, meta): continuação da conversa ao tocar seletor/chip/ação
  *    (opcional; sem ele a resposta é apenas visual, como na galeria do DS).
  */
-export const AIResponseRenderer = ({ response, onSelect }) => {
+export const AIResponseRenderer = ({ response, onSelect, variant = 'card' }) => {
   if (!response) return null;
   const { intent, risk_level: risk, title, context, blocks = [], actions = [] } = response;
 
   return (
-    <AIResponse risk={risk}>
+    <AIResponse risk={risk} variant={variant}>
       {(title || intent) && (
         <ResponseHeader
           title={title}

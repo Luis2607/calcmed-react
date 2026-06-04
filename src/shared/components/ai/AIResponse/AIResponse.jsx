@@ -4,23 +4,27 @@ import styles from './AIResponse.module.css';
 /**
  * AI · AIResponse — container de uma resposta estruturada da IA do CalcMed.
  *
- * É a "bolha" que envolve os blocos de uma resposta (header, ação, tabela,
- * alerta, chips...). Não decide conteúdo: só dá a moldura, o respiro e o
- * estado de risco. Tudo sobre tokens do DS — nenhuma cor nova.
+ * Não decide conteúdo: dá a moldura, o respiro e o estado de risco. Sobre
+ * tokens do DS — nenhuma cor nova.
+ *
+ * Variantes:
+ *  - 'card' (default): caixa com borda/sombra. Uso: documentação do DS (delimita
+ *    o exemplo como um artefato).
+ *  - 'plain': largura cheia, sem caixa — os blocos internos (tabela, alerta,
+ *    ação) já têm estrutura própria. Uso: conversa (chat), onde encaixotar cada
+ *    resposta desperdiça espaço.
  *
  * Props:
- *  - children: blocos da resposta (ResponseHeader, PrimaryAction, Table, ...)
- *  - risk: 'baixo' | 'medio' | 'alto' — realça a borda esquerda em risco alto
- *  - barLabel: rótulo da barra superior (default "Resposta CalcMed IA")
- *  - showBar: exibe a barra superior (default true)
+ *  - children, risk ('baixo'|'medio'|'alto'), variant ('card'|'plain')
+ *  - barLabel (default "Resposta CalcMed IA"), showBar (default true)
  */
-export const AIResponse = ({ children, risk, barLabel = 'Resposta CalcMed IA', showBar = true }) => (
-  <article className={styles.response} data-risk={risk || undefined}>
+export const AIResponse = ({ children, risk, variant = 'card', barLabel = 'Resposta CalcMed IA', showBar = true }) => (
+  <article className={styles.response} data-risk={risk || undefined} data-variant={variant}>
     {showBar && (
       <div className={styles.bar}>
         <span className={styles.brand}>
           <Icon name="sparkles" size={14} />
-          {barLabel}
+          {variant === 'plain' ? 'IA · CalcMed' : barLabel}
         </span>
         {risk === 'alto' && <span className={styles.riskFlag}>Prioridade</span>}
       </div>

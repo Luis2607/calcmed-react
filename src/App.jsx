@@ -88,8 +88,9 @@ export default function App() {
         className="app-mode-switch"
         onClick={() => switchTo('ds')}
         aria-label="Ir para o Design System"
+        title="Ir para o Design System"
       >
-        ⇄ Design System
+        ⇄
       </button>
       <div className={`viewport-container ${isPediatricMode ? 'modo-pediatrico' : ''} ${isDark ? 'modo-escuro' : ''}`.trim()}>
         <div className="scroll-container">
