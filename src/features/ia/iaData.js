@@ -4,6 +4,8 @@
  * plugaria um backend no lugar deste roteiro. */
 
 export const ILLUSTRATIVE = 'Confira no protocolo do seu serviço.';
+// Ressalva mais forte para dose/conduta crítica (não anestesiar por repetição).
+export const ILLUSTRATIVE_DOSE = 'Valide a dose no protocolo do seu serviço antes de aplicar.';
 
 // Sugestões iniciais (estado vazio + fallback). value = token de roteiro.
 // Cobrem a amplitude dos patterns: ambígua, triagem, crítico, exame, protocolo,
@@ -53,7 +55,7 @@ const RESPONSES = {
     blocks: [
       { type: 'dose', value: '1 mg', unit: 'IV/IO', via: 'a cada 3–5 min' },
       { type: 'text', content: '**Sem teto de dose** na parada. Manter **RCP de alta qualidade** entre as doses.' },
-      { type: 'limitation', content: ILLUSTRATIVE },
+      { type: 'limitation', content: ILLUSTRATIVE_DOSE },
     ],
     actions: [{ label: 'Ver ACLS', value: 'stub:tool' }, { label: 'Dose pediátrica', value: 'adrena:ped' }],
   },
@@ -64,7 +66,7 @@ const RESPONSES = {
     blocks: [
       { type: 'dose', value: '0,5 mg', unit: 'IM (1:1000)', via: 'face anterolateral da coxa · repetir 5–15 min' },
       { type: 'text', content: 'Via **IM** é a de escolha. **IV** apenas em choque refratário, com monitorização.' },
-      { type: 'limitation', content: ILLUSTRATIVE },
+      { type: 'limitation', content: ILLUSTRATIVE_DOSE },
     ],
     actions: [{ label: 'Refratário → infusão', value: 'adrena:choque' }],
   },
@@ -75,7 +77,7 @@ const RESPONSES = {
     blocks: [
       { type: 'dose', value: '0,01–0,5', unit: 'mcg/kg/min', via: 'infusão contínua · titular pela PAM' },
       { type: 'text', content: 'Considerada em choque refratário; preferir noradrenalina como 1ª linha no choque séptico.' },
-      { type: 'limitation', content: ILLUSTRATIVE },
+      { type: 'limitation', content: ILLUSTRATIVE_DOSE },
     ],
     actions: [{ label: 'Comparar com noradrenalina', value: 'q:noradobu' }],
   },
@@ -85,7 +87,7 @@ const RESPONSES = {
     title: 'Adrenalina na PCR (pediátrica)',
     blocks: [
       { type: 'dose', value: '0,01 mg/kg', unit: 'IV/IO', via: 'máx 1 mg · a cada 3–5 min' },
-      { type: 'limitation', content: ILLUSTRATIVE },
+      { type: 'limitation', content: ILLUSTRATIVE_DOSE },
     ],
     actions: [{ label: 'Dose adulto (PCR)', value: 'adrena:pcr' }, { label: 'Protocolo de PCR', value: 'proto:pcr' }],
   },
@@ -263,7 +265,7 @@ const RESPONSES = {
         tagTone: 'critico',
         items: ['Insulina regular + glicose (desloca K⁺ p/ dentro)', 'Beta-2 agonista inalatório', 'Monitorização contínua + ECG seriado'],
       },
-      { type: 'limitation', content: ILLUSTRATIVE },
+      { type: 'limitation', content: ILLUSTRATIVE_DOSE },
     ],
     actions: [{ label: 'Doses por peso', value: 'stub:tool' }, { label: 'Copiar conduta', value: 'q:resumo' }],
   },
@@ -370,7 +372,7 @@ const FALLBACK = {
   intent: 'ambigua',
   title: 'Não consegui interpretar',
   blocks: [
-    { type: 'text', content: 'Reformula em uma linha. Funciono melhor com dose, conduta, exame, protocolo ou resumo — por exemplo:' },
+    { type: 'text', content: 'Reformule em uma linha. Funciono melhor com dose, conduta, exame, protocolo ou resumo — por exemplo:' },
     { type: 'chips', items: STARTERS },
   ],
 };

@@ -10,8 +10,10 @@ export function useCopy(timeout = 1600) {
   const timer = useRef(null);
 
   const copy = useCallback(async (text) => {
+    const value = String(text ?? '');
+    if (!value.trim()) return; // não "confirma" cópia de conteúdo vazio
     try {
-      await navigator.clipboard.writeText(String(text ?? ''));
+      await navigator.clipboard.writeText(value);
       setCopied(true);
       if (timer.current) clearTimeout(timer.current);
       timer.current = setTimeout(() => setCopied(false), timeout);

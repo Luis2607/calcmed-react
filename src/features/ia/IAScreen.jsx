@@ -33,6 +33,7 @@ const composerKeyDown = (e, submit) => {
 
 function greetingPrefix() {
   const h = new Date().getHours();
+  if (h < 5) return 'Boa madrugada'; // reconhece quem está de plantão de madrugada
   if (h < 12) return 'Bom dia';
   if (h < 18) return 'Boa tarde';
   return 'Boa noite';
@@ -52,7 +53,7 @@ function relativeTime(ts) {
 const THINK_LABELS = {
   dose: 'Calculando a dose…', critico: 'Avaliando o risco…', exame: 'Interpretando…',
   protocolo: 'Montando o protocolo…', comparacao: 'Comparando…', aprendizado: 'Organizando…',
-  resumo: 'Resumindo…', triagem: 'Pensando na triagem…', operacional: 'Montando a conduta…',
+  resumo: 'Resumindo…', triagem: 'Triando…', operacional: 'Montando a conduta…',
 };
 
 function TypingDots({ label = 'Pensando…' }) {
@@ -145,6 +146,8 @@ export function IAScreen({ onBack }) {
   const timers = useRef({});
   const toastTimer = useRef(null);
   const sendingRef = useRef(false); // trava síncrona contra double-tap (busy é assíncrono)
+  const timerConv = useRef({}); // tid → convId (parar/limpar timer só da conversa certa)
+  const editLookupRef = useRef(null); // { text, lookup } da pergunta em edição (preserva o token)
   const activeIdRef = useRef(activeId);
 
   const active = activeId !== 'new' ? conversations.find((c) => c.id === activeId) : null;
@@ -197,8 +200,8 @@ export function IAScreen({ onBack }) {
   // reaparece completa). Sem isso, sair da conversa no meio do streaming deixava
   // streamingId preso → busy eterno (composer/Parar travados).
   const openHistory = () => { setStreamingId(null); setHistoryOpen(true); };
-  const newChat = () => { setStreamingId(null); setActiveId('new'); setHistoryOpen(false); setDraft(''); setShowJump(false); };
-  const openConv = (id) => { setStreamingId(null); setActiveId(id); setHistoryOpen(false); setShowJump(false); };
+  const newChat = () => { editLookupRef.current = null; setStreamingId(null); setActiveId('new'); setHistoryOpen(false); setDraft(''); setShowJump(false); };
+  const openConv = (id) => { editLookupRef.current = null; setStreamingId(null); setActiveId(id); setHistoryOpen(false); setShowJump(false); };
   const deleteConv = (id) => {
     const idx = conversations.findIndex((c) => c.id === id);
     const removed = idx >= 0 ? conversations[idx] : null;
@@ -258,6 +261,7 @@ export function IAScreen({ onBack }) {
     const slow = ['comparacao', 'aprendizado'].includes(response.intent);
     const think = urgent ? 700 : slow ? 2400 : 1500;
     const tid = uid();
+    timerConv.current[tid] = convId;
     timers.current[tid] = setTimeout(() => {
       const viewing = activeIdRef.current === convId;
       const aiId = uid();
@@ -276,6 +280,7 @@ export function IAScreen({ onBack }) {
         requestAnimationFrame(() => scrollToBottom('smooth'));
       }
       delete timers.current[tid];
+      delete timerConv.current[tid];
     }, think);
   };
 
@@ -283,7 +288,11 @@ export function IAScreen({ onBack }) {
     e.preventDefault();
     const text = draft.trim();
     if (!text || busy) return;
-    send(text, text);
+    // edição: texto inalterado → reenvia pelo token original (não cai no fallback).
+    const edit = editLookupRef.current;
+    const lookup = edit && edit.text === text ? edit.lookup : text;
+    editLookupRef.current = null;
+    send(text, lookup);
     setDraft('');
     requestAnimationFrame(() => autoGrow(inputRef.current)); // volta o textarea a 1 linha
   };
@@ -293,6 +302,7 @@ export function IAScreen({ onBack }) {
     e.preventDefault();
     const text = draft.trim();
     if (!text) return;
+    editLookupRef.current = null;
     setHistoryOpen(false);
     send(text, text, true);
     setDraft('');
@@ -306,7 +316,14 @@ export function IAScreen({ onBack }) {
     }
     // ainda "pensando": cancela a resposta pendente e deixa um marcador (não some
     // a pergunta órfã sem dar caminho de volta).
-    Object.keys(timers.current).forEach((tid) => { clearTimeout(timers.current[tid]); delete timers.current[tid]; });
+    // cancela só os timers da conversa ATIVA (não mata gerações de outras conversas)
+    Object.keys(timers.current).forEach((tid) => {
+      if (!active || timerConv.current[tid] === active.id) {
+        clearTimeout(timers.current[tid]);
+        delete timers.current[tid];
+        delete timerConv.current[tid];
+      }
+    });
     setPending((p) => { const n = { ...p }; if (active) delete n[active.id]; return n; });
     if (active) {
       const lastUser = [...active.messages].reverse().find((x) => x.role === 'user');
@@ -364,18 +381,25 @@ export function IAScreen({ onBack }) {
       updateMessage(active.id, fbSheet.msgId, { feedbackReasons: reasons, feedbackDetail: detail });
     }
     setFbSheet({ open: false, msgId: null, value: null });
-    showToast('Obrigado pelo retorno.');
+    showToast('Anotado.');
   };
   const regenerate = (m) => {
     if (busy || !active) return;
+    const convId = active.id;
     const idx = messages.findIndex((x) => x.id === m.id);
     const prevUser = messages.slice(0, idx).reverse().find((x) => x.role === 'user');
+    // snapshot p/ desfazer (refazer pode devolver o mesmo conteúdo)
+    const prev = { response: m.response, revealedUnits: m.revealedUnits, feedback: m.feedback };
     // clone p/ nova identidade → o StreamingMessage reinicia o streaming
     const response = { ...respond(prevUser?.lookup ?? prevUser?.text ?? '') };
-    updateMessage(active.id, m.id, { response, revealedUnits: undefined, feedback: undefined });
+    updateMessage(convId, m.id, { response, revealedUnits: undefined, feedback: undefined });
     setStreamingId(m.id);
     setStreamNonce((n) => n + 1);
     requestAnimationFrame(() => scrollToBottom('smooth'));
+    showToast('Resposta refeita', () => {
+      setStreamingId(null);
+      updateMessage(convId, m.id, prev);
+    });
   };
 
   // Editar/reenviar a própria pergunta: devolve o texto ao composer e remove
@@ -389,6 +413,9 @@ export function IAScreen({ onBack }) {
     );
     setStreamingId(null);
     setDraft(m.text);
+    // guarda o token original: se o texto não mudar, reenvia pelo mesmo nó
+    // (sem isso, editar uma pergunta vinda de chip cairia no fallback).
+    editLookupRef.current = { text: m.text, lookup: m.lookup };
     requestAnimationFrame(() => {
       autoGrow(inputRef.current);
       inputRef.current?.focus();
@@ -399,7 +426,7 @@ export function IAScreen({ onBack }) {
     if (m.cancelled) {
       return (
         <div className={styles.interrupted}>
-          <span className={styles.interruptedLabel}><Icon name="atencao" size={14} /> Geração cancelada</span>
+          <span className={styles.interruptedLabel}><Icon name="atencao" size={14} /> Resposta cancelada</span>
           <button type="button" className={styles.continueBtn} onClick={() => retry(m)} disabled={busy}>
             <Icon name="executar" size={14} /> Tentar de novo
           </button>
@@ -407,16 +434,21 @@ export function IAScreen({ onBack }) {
       );
     }
     if (m.id === streamingId) {
+      // aria-hidden: o leitor de tela anuncia a resposta uma vez ao concluir (não token a
+      // token). pointer-events:none: chips/seletores revelados no meio do stream não viram
+      // afordância morta (o clique seria engolido por busy).
       return (
-        <StreamingMessage
-          key={`stream-${streamNonce}`}
-          response={m.response}
-          startUnits={m.revealedUnits ?? 0}
-          onSelect={(value, meta) => send(meta?.label ?? value, value)}
-          onProgress={keepBottom}
-          onDone={(units, stopped) => finishStream(m.id, units, stopped)}
-          stopSignal={stopSignal}
-        />
+        <div aria-hidden="true" style={{ pointerEvents: 'none' }}>
+          <StreamingMessage
+            key={`stream-${streamNonce}`}
+            response={m.response}
+            startUnits={m.revealedUnits ?? 0}
+            onSelect={(value, meta) => send(meta?.label ?? value, value)}
+            onProgress={keepBottom}
+            onDone={(units, stopped) => finishStream(m.id, units, stopped)}
+            stopSignal={stopSignal}
+          />
+        </div>
       );
     }
     const interrupted = m.revealedUnits != null;

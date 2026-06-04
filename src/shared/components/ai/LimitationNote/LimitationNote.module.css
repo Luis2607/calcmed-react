@@ -7,6 +7,12 @@
   font: var(--ds-font-legenda);
   color: var(--ds-texto-terciario);
 }
+/* risco alto: ressalva ganha peso (cor de atenção + filete mais forte) */
+.note[data-tone='atencao'] {
+  color: var(--ds-retorno-atencao);
+  border-top-color: var(--ds-retorno-atencao);
+  font-weight: 600;
+}
 
 .icon {
   flex-shrink: 0;
