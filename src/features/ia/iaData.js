@@ -51,7 +51,7 @@ const RESPONSES = {
     title: 'Adrenalina na PCR (adulto)',
     blocks: [
       { type: 'dose', value: '1 mg', unit: 'IV/IO', via: 'a cada 3–5 min' },
-      { type: 'text', content: 'Sem teto de dose na parada. Manter RCP de alta qualidade entre as doses.' },
+      { type: 'text', content: '**Sem teto de dose** na parada. Manter **RCP de alta qualidade** entre as doses.' },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
     actions: [{ label: 'Ver ACLS', value: 'stub:tool' }, { label: 'Dose pediátrica', value: 'adrena:ped' }],
@@ -62,7 +62,7 @@ const RESPONSES = {
     title: 'Adrenalina na anafilaxia',
     blocks: [
       { type: 'dose', value: '0,5 mg', unit: 'IM (1:1000)', via: 'face anterolateral da coxa · repetir 5–15 min' },
-      { type: 'text', content: 'Via IM é a de escolha. IV apenas em choque refratário, com monitorização.' },
+      { type: 'text', content: 'Via **IM** é a de escolha. **IV** apenas em choque refratário, com monitorização.' },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
     actions: [{ label: 'Dose pediátrica', value: 'adrena:ped' }],
@@ -112,7 +112,7 @@ const RESPONSES = {
     title: 'Choque séptico provável',
     context: 'Hipotensão + suspeita de foco infeccioso',
     blocks: [
-      { type: 'primary_action', content: 'Iniciar noradrenalina — meta PAM ≥ 65 mmHg' },
+      { type: 'primary_action', content: 'Iniciar **noradrenalina** — meta **PAM ≥ 65 mmHg**' },
       {
         type: 'checklist',
         tagLabel: 'Condutas paralelas',
@@ -218,7 +218,7 @@ const RESPONSES = {
           { criterio: 'Quando', nora: 'Choque com PA baixa', dobu: 'Baixo débito com PA ok' },
         ],
       },
-      { type: 'text', content: 'Regra prática: PA baixa → nora primeiro; débito baixo com PA mantida → dobuta.' },
+      { type: 'text', content: '**Regra prática:** PA baixa → **nora** primeiro; débito baixo com PA mantida → **dobuta**.' },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
   },
@@ -248,7 +248,7 @@ const RESPONSES = {
     context: 'K⁺ 7,1 mEq/L · QRS alargado',
     blocks: [
       { type: 'alert', level: 'critical', title: 'Risco de arritmia / PCR', content: 'QRS largo indica instabilidade de membrana — agir agora.' },
-      { type: 'primary_action', tone: 'critico', content: 'Gluconato de cálcio 10% IV — estabiliza a membrana (não baixa o K⁺).' },
+      { type: 'primary_action', tone: 'critico', content: '**Gluconato de cálcio 10% IV** — estabiliza a membrana (não baixa o K⁺).' },
       {
         type: 'checklist',
         tagLabel: 'Em seguida',
@@ -319,9 +319,20 @@ const RESPONSES = {
     intent: 'aprendizado',
     title: 'Choque séptico — em camadas',
     blocks: [
-      { type: 'text', content: 'Resumo: disfunção orgânica por resposta desregulada à infecção, com hipotensão que exige vasopressor e/ou lactato elevado apesar de volume adequado.' },
-      { type: 'expandable', title: 'Por que noradrenalina é a 1ª linha?', content: 'Vasopressor potente (α1) que eleva a PAM com menor risco arritmogênico que a dopamina — mantém a perfusão sem taquicardia excessiva.' },
-      { type: 'expandable', title: 'Como reconhecer (critérios)', content: 'Sepse + necessidade de vasopressor para manter PAM ≥ 65 mmHg + lactato > 2 mmol/L apesar de ressuscitação volêmica adequada.' },
+      { type: 'text', content: 'Em uma frase: **disfunção orgânica** por resposta desregulada à infecção, com **hipotensão** que exige vasopressor e/ou **lactato elevado** mesmo após volume adequado.' },
+      { type: 'divider' },
+      { type: 'heading', emoji: '🎯', text: 'Como reconhecer' },
+      {
+        type: 'list',
+        items: [
+          'Sepse **+ vasopressor** para manter **PAM ≥ 65 mmHg**',
+          '**Lactato > 2 mmol/L** apesar de ressuscitação volêmica adequada',
+        ],
+      },
+      { type: 'divider' },
+      { type: 'heading', emoji: '💉', text: 'Por que noradrenalina primeiro' },
+      { type: 'text', content: 'É o vasopressor de **1ª linha**: eleva a PAM com **menor risco arritmogênico** que a dopamina e mantém a perfusão sem taquicardia excessiva.' },
+      { type: 'expandable', title: 'E quando associar vasopressina?', content: 'Como 2º agente quando a noradrenalina sobe além de doses moderadas, para reduzir a dose total de catecolamina — conforme protocolo institucional.' },
       {
         type: 'chips',
         label: 'Aprofundar',

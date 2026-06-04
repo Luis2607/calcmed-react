@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import { AIResponse } from '../AIResponse';
 import { ResponseHeader } from '../ResponseHeader';
 import { PrimaryAction } from '../PrimaryAction';
@@ -14,6 +14,19 @@ import { Table } from '../../organisms/Table';
 import { AlertCard } from '../../organisms/AlertCard';
 import { ChecklistBlock } from '../../organisms/ChecklistBlock';
 import { INTENT_LABELS } from '../intents';
+import styles from './AIResponseRenderer.module.css';
+
+/** Negrito inline: converte **texto** em <strong> e \n em quebra de linha.
+ *  Mantém a formatação clara (hierarquia/ênfase) sem markdown pesado. */
+function rich(content) {
+  if (typeof content !== 'string') return content;
+  return content.split('\n').map((line, li) => (
+    <Fragment key={li}>
+      {li > 0 && <br />}
+      {line.split(/\*\*(.+?)\*\*/g).map((seg, i) => (i % 2 === 1 ? <strong key={i}>{seg}</strong> : seg))}
+    </Fragment>
+  ));
+}
 
 /** Checklist com estado local — para o render se sentir vivo (toggle real). */
 function ChecklistFromBlock({ block }) {
@@ -42,9 +55,24 @@ function renderBlock(block, i, onSelect, onCopied) {
     case 'primary_action':
       return (
         <PrimaryAction key={i} label={block.label} tone={block.tone}>
-          {block.content ?? block.title}
+          {rich(block.content ?? block.title)}
         </PrimaryAction>
       );
+    case 'heading':
+      return (
+        <h4 key={i} className={styles.heading}>
+          {block.emoji && <span className={styles.headingEmoji} aria-hidden="true">{block.emoji}</span>}
+          {rich(block.text)}
+        </h4>
+      );
+    case 'list':
+      return (
+        <ul key={i} className={styles.list}>
+          {(block.items || []).map((it, j) => <li key={j}>{rich(it)}</li>)}
+        </ul>
+      );
+    case 'divider':
+      return <hr key={i} className={styles.divider} />;
     case 'dose':
       return <DoseBlock key={i} value={block.value} unit={block.unit} via={block.via} copyText={block.copyText} onCopied={onCopied} />;
     case 'table':
@@ -100,7 +128,7 @@ function renderBlock(block, i, onSelect, onCopied) {
         />
       );
     case 'text':
-      return <p key={i} style={{ fontSize: 'var(--fonte-tamanho-corpo)', lineHeight: '21px', color: 'var(--ds-texto-secundario)' }}>{block.content}</p>;
+      return <p key={i} className={styles.text}>{rich(block.content)}</p>;
     default:
       return null;
   }

@@ -303,10 +303,11 @@
   color: var(--ds-texto-secundario);
 }
 
-/* ---------- Seta de descer (flutua acima do composer, ancorada no app-shell) ---------- */
+/* ---------- Seta de descer (centralizada, flutua acima do composer) ---------- */
 .jumpDock {
   position: absolute;
-  right: var(--esp-4);
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 84px;
   z-index: 4;
 }
