@@ -60,7 +60,10 @@ export default function App() {
   const showHome = !isGallery && (visibleRoute === 'home' || !isKnownRoute);
 
   const switchTo = (mode) => {
-    if (typeof window !== 'undefined' && (qaRoute || routeOverride)) {
+    // Lê a URL FRESCA (não a var qaRoute do topo do render): o DsDashboard adiciona
+    // ?qa= via pushState sem re-renderizar o App, então a closure fica desatualizada.
+    // Sem isso, "Ver protótipo" não saía do DS depois de navegar nas abas.
+    if (typeof window !== 'undefined' && window.location.search) {
       window.history.replaceState(null, '', window.location.pathname);
     }
     setAppMode(mode);
