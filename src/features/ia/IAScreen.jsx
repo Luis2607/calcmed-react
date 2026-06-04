@@ -58,8 +58,7 @@ export function IAScreen({ onBack }) {
   const [draft, setDraft] = useState('');
   const [showJump, setShowJump] = useState(false);
   const [pending, setPending] = useState({}); // { [convId]: count } — efêmero
-  const rootRef = useRef(null);
-  const scrollerRef = useRef(null);
+  const scrollerRef = useRef(null); // a área de mensagens (único elemento que rola)
   const inputRef = useRef(null);
   const timers = useRef({});
   const activeIdRef = useRef(activeId);
@@ -78,16 +77,6 @@ export function IAScreen({ onBack }) {
     if (el) el.scrollTo({ top: el.scrollHeight, behavior });
     setShowJump(false);
   };
-
-  // O scroll é do .scroll-container externo (appbar/composer ficam sticky).
-  useEffect(() => {
-    const scroller = rootRef.current?.closest('.scroll-container') || null;
-    scrollerRef.current = scroller;
-    if (!scroller) return undefined;
-    const onScroll = () => setShowJump(!isNearBottom());
-    scroller.addEventListener('scroll', onScroll, { passive: true });
-    return () => scroller.removeEventListener('scroll', onScroll);
-  }, []);
 
   useEffect(() => { activeIdRef.current = activeId; }, [activeId]);
   useEffect(() => () => { Object.values(timers.current).forEach(clearTimeout); }, []);
@@ -176,7 +165,7 @@ export function IAScreen({ onBack }) {
   // -------------------- HISTÓRICO --------------------
   if (historyOpen) {
     return (
-      <div className={styles.screen} ref={rootRef}>
+      <div className={styles.screen}>
         <header className={styles.appbar}>
           <button type="button" className={styles.iconBtn} onClick={() => setHistoryOpen(false)} aria-label="Voltar ao chat">
             <Icon name="voltar" size={22} />
@@ -230,7 +219,7 @@ export function IAScreen({ onBack }) {
   // -------------------- CHAT (padrão) --------------------
   const empty = messages.length === 0;
   return (
-    <div className={styles.screen} ref={rootRef}>
+    <div className={styles.screen}>
       <header className={styles.appbar}>
         <button type="button" className={styles.iconBtn} onClick={onBack} aria-label="Voltar ao app">
           <Icon name="voltar" size={22} />
@@ -244,7 +233,7 @@ export function IAScreen({ onBack }) {
         </button>
       </header>
 
-      <div className={styles.conversation}>
+      <div className={styles.conversation} ref={scrollerRef} onScroll={() => setShowJump(!isNearBottom())}>
         {empty ? (
           <div className={styles.empty}>
             <span className={styles.emptyMark}><Icon name="sparkles" size={28} /></span>
