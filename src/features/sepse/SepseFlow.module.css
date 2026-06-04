@@ -119,7 +119,9 @@
 
 /* Toast feedback efêmero · sticky no fundo do viewport (acima da TabBar) (§11.H.6) */
 .toastWrap {
-  position: fixed;
+  /* absolute (não fixed): ancora no .viewport-container (390px), não na janela —
+     com fixed o toast escapava do frame no desktop centralizado (Luis 2026-06-04). */
+  position: absolute;
   left: var(--esp-4);
   right: var(--esp-4);
   bottom: calc(64px + var(--esp-4));
