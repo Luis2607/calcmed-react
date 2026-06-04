@@ -42,7 +42,7 @@ const RESPONSES = {
       { type: 'text', content: 'Sem teto de dose na parada. Manter RCP de alta qualidade entre as doses.' },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
-    actions: [{ label: 'Ver ACLS' }, { label: 'Dose pediátrica', value: 'adrena:ped' }],
+    actions: [{ label: 'Ver ACLS', value: 'stub:tool' }, { label: 'Dose pediátrica', value: 'adrena:ped' }],
   },
   'adrena:ana': {
     intent: 'dose',
@@ -109,7 +109,7 @@ const RESPONSES = {
       },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
-    actions: [{ label: 'Calcular dose por peso' }, { label: 'Copiar conduta', value: 'q:resumo' }],
+    actions: [{ label: 'Calcular dose por peso', value: 'stub:tool' }, { label: 'Copiar conduta', value: 'q:resumo' }],
   },
   'hipo:sangramento': {
     intent: 'operacional',
@@ -179,8 +179,8 @@ const RESPONSES = {
         reading: 'Acidose metabólica com compensação respiratória parcial e lactato elevado (hipoperfusão).',
         tone: 'atencao',
         chips: [
-          { label: 'Calcular Winter' },
-          { label: 'Ânion gap' },
+          { label: 'Calcular Winter', value: 'stub:tool' },
+          { label: 'Ânion gap', value: 'stub:tool' },
           { label: 'Relacionar com sepse', value: 'hipo:sepse' },
         ],
       },
@@ -229,6 +229,17 @@ const RESPONSES = {
   },
 };
 
+// Stub de ferramenta: ações de calculadora/referência que, no produto, abririam
+// a ferramenta correspondente. Na demo, respondem de forma intencional.
+const TOOL_STUB = {
+  intent: 'aprendizado',
+  title: 'Ferramenta em demonstração',
+  blocks: [
+    { type: 'text', content: 'No produto, este passo abriria a calculadora ou a referência correspondente. Esta tela demonstra o sistema de respostas.' },
+    { type: 'chips', label: 'Continuar', items: STARTERS },
+  ],
+};
+
 const FALLBACK = {
   intent: 'ambigua',
   title: 'Posso ajudar com alguns exemplos',
@@ -253,6 +264,7 @@ function matchText(text) {
 
 /** Resolve uma entrada (token de roteiro OU texto livre) → resposta estruturada. */
 export function respond(input) {
+  if (input === 'stub:tool') return TOOL_STUB;
   if (RESPONSES[input]) return RESPONSES[input];
   const token = matchText(input);
   if (token && RESPONSES[token]) return RESPONSES[token];

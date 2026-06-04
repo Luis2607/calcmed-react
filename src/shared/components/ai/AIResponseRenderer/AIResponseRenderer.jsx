@@ -74,7 +74,7 @@ function renderBlock(block, i, onSelect) {
           key={i}
           question={block.question}
           options={block.options}
-          onSelect={onSelect ? (value) => onSelect(value) : undefined}
+          onSelect={onSelect ? (value, opt) => onSelect(value, opt) : undefined}
         />
       );
     case 'copyable':

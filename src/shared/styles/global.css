@@ -74,6 +74,22 @@ html, body {
   right: 16px;
 }
 
+/* Mobile: o frame ocupa a tela toda e os topos têm voltar/ícones.
+   Move a troca para a base p/ não cobrir a navegação das telas. */
+@media (max-width: 430px) {
+  .app-mode-switch {
+    top: auto;
+    bottom: 84px;
+    left: 12px;
+  }
+  .app-mode-switch--right {
+    top: auto;
+    bottom: 84px;
+    right: 12px;
+    left: auto;
+  }
+}
+
 .viewport-container {
   width: 390px;
   height: 844px;
