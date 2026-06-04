@@ -447,12 +447,11 @@ export function IAScreen({ onBack }) {
       )}
 
       {empty && (
-        <div className={styles.suggestStrip} role="list" aria-label="Sugestões para começar">
+        <div className={styles.suggestStrip} role="group" aria-label="Sugestões para começar">
           {STARTERS.map((s) => (
             <button
               key={s.value}
               type="button"
-              role="listitem"
               className={styles.suggestChip}
               onClick={() => send(s.label, s.value)}
             >
