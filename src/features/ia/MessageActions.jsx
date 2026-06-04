@@ -34,9 +34,9 @@ export function MessageActions({ copyText, feedback, onFeedback, onRegenerate })
         type="button"
         className={`${styles.btn} ${feedback === 'up' ? styles.active : ''}`}
         onClick={() => onFeedback(feedback === 'up' ? null : 'up')}
-        aria-label="Resposta útil"
+        aria-label="Resposta ajudou"
         aria-pressed={feedback === 'up'}
-        title="Útil"
+        title="Ajudou"
       >
         <ThumbUp width="15" height="15" />
       </button>
@@ -44,9 +44,9 @@ export function MessageActions({ copyText, feedback, onFeedback, onRegenerate })
         type="button"
         className={`${styles.btn} ${feedback === 'down' ? styles.active : ''}`}
         onClick={() => onFeedback(feedback === 'down' ? null : 'down')}
-        aria-label="Resposta não útil"
+        aria-label="Resposta não ajudou"
         aria-pressed={feedback === 'down'}
-        title="Não útil"
+        title="Não ajudou"
       >
         <ThumbDown width="15" height="15" />
       </button>

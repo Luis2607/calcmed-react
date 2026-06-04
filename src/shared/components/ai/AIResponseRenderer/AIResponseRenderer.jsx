@@ -165,8 +165,8 @@ export const AIResponseRenderer = ({ response, onSelect, variant = 'card' }) => 
         <ResponseHeader
           title={title}
           context={context}
-          intent={intent}
-          intentLabel={intent ? INTENT_LABELS[intent] ?? intent : undefined}
+          intent={variant === 'card' ? intent : undefined}
+          intentLabel={variant === 'card' && intent ? INTENT_LABELS[intent] ?? intent : undefined}
         />
       )}
       {blocks.map((block, i) => renderBlock(block, i, onSelect))}

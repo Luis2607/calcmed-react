@@ -34,7 +34,7 @@ export function IAOnboarding({ open, onClose, ctaLabel = 'Entendi, começar', bl
     <InfoSheet
       open={open}
       onClose={onClose}
-      title="IA do CalcMed"
+      title="IA · CalcMed"
       description="Apoio clínico pro plantão."
       leadingIcon={<Icon name="sparkles" size={20} />}
       tone="info"
