@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Icon } from '../../shared/components/atoms/Icon';
+import { ProtocolHeader } from '../../shared/components/organisms/ProtocolHeader';
 import { AIResponseRenderer, SuggestionChips } from '../../shared/components/ai';
 import { Toast } from '../../shared/components/molecules/Toast';
 import { usePersistedState } from '../../shared/hooks/usePersistedState';
@@ -30,13 +31,6 @@ function relativeTime(ts) {
   if (h < 24) return `${h} h`;
   const d = Math.floor(h / 24);
   return d === 1 ? 'ontem' : `${d} d`;
-}
-
-function previewOf(conv) {
-  const last = conv.messages[conv.messages.length - 1];
-  if (!last) return 'Conversa vazia';
-  if (last.role === 'user') return last.text;
-  return last.response?.title ?? 'Resposta';
 }
 
 function TypingDots() {
@@ -175,11 +169,12 @@ export function IAScreen({ onBack }) {
       prev.map((c) => (c.id === convId ? { ...c, messages: c.messages.map((m) => (m.id === msgId ? { ...m, ...patch } : m)) } : c)),
     );
 
-  const send = (displayText, lookup) => {
+  const send = (displayText, lookup, forceNew = false) => {
     if (busy) return;
     const now = nowTs();
-    const convId = active ? active.id : uid();
-    const isNew = !active;
+    const target = forceNew ? null : active; // forceNew: começa SEMPRE uma conversa nova
+    const convId = target ? target.id : uid();
+    const isNew = !target;
     const userMsg = { id: uid(), role: 'user', text: displayText, lookup: lookup ?? displayText };
 
     setConversations((prev) => {
@@ -228,6 +223,16 @@ export function IAScreen({ onBack }) {
     const text = draft.trim();
     if (!text || busy) return;
     send(text, text);
+    setDraft('');
+  };
+
+  // Composer do histórico: começa uma conversa NOVA e já abre o chat.
+  const handleSubmitNew = (e) => {
+    e.preventDefault();
+    const text = draft.trim();
+    if (!text || busy) return;
+    setHistoryOpen(false);
+    send(text, text, true);
     setDraft('');
   };
 
@@ -304,28 +309,19 @@ export function IAScreen({ onBack }) {
   if (historyOpen) {
     return (
       <div className={styles.screen}>
-        <header className={styles.appbar}>
-          <button type="button" className={styles.iconBtn} onClick={() => setHistoryOpen(false)} aria-label="Voltar ao chat">
-            <Icon name="voltar" size={22} />
-          </button>
-          <div className={styles.titleWrap}>
-            <span className={styles.brandRow}>Conversas</span>
-            <span className={styles.subtitle}>Seu histórico de IA</span>
-          </div>
-          <button type="button" className={styles.newBtn} onClick={newChat}>
-            <Icon name="adicionar" size={18} /> Nova
-          </button>
-        </header>
+        <ProtocolHeader
+          onBack={() => setHistoryOpen(false)}
+          title="Conversas"
+          subtitle="Seu histórico de IA"
+          actions={[{ icon: 'plus', label: 'Nova conversa', onClick: newChat }]}
+        />
 
         <div className={styles.listScroll}>
           {conversations.length === 0 ? (
             <div className={styles.empty}>
               <span className={styles.emptyMark}><Icon name="tempo" size={28} /></span>
               <h2 className={styles.emptyTitle}>Nenhuma conversa ainda</h2>
-              <p className={styles.emptyText}>Suas conversas com a IA aparecem aqui. Comece uma nova.</p>
-              <button type="button" className={styles.newBtnLarge} onClick={newChat}>
-                <Icon name="adicionar" size={18} /> Nova conversa
-              </button>
+              <p className={styles.emptyText}>Escreva abaixo pra começar — suas conversas com a IA ficam aqui.</p>
             </div>
           ) : (
             <>
@@ -334,12 +330,10 @@ export function IAScreen({ onBack }) {
                 {conversations.map((c) => (
                   <li key={c.id} className={styles.convItem}>
                     <button type="button" className={styles.convOpen} onClick={() => openConv(c.id)}>
-                      <span className={styles.convIcon}><Icon name="sparkles" size={18} /></span>
                       <span className={styles.convText}>
                         <span className={styles.convTitle}>{c.title || 'Nova conversa'}</span>
-                        <span className={styles.convPreview}>{pending[c.id] ? 'Digitando…' : previewOf(c)}</span>
+                        <span className={styles.convDate}>{relativeTime(c.updatedAt ?? c.createdAt)}</span>
                       </span>
-                      <span className={styles.convTime}>{relativeTime(c.updatedAt ?? c.createdAt)}</span>
                     </button>
                     <button type="button" className={styles.convDelete} onClick={() => deleteConv(c.id)} aria-label="Apagar conversa">
                       <Icon name="excluir" size={16} />
@@ -355,6 +349,20 @@ export function IAScreen({ onBack }) {
           </button>
         </div>
 
+        <form className={styles.composer} onSubmit={handleSubmitNew}>
+          <input
+            className={styles.input}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            placeholder="Começar uma nova conversa…"
+            aria-label="Nova mensagem para a IA"
+            enterKeyHint="send"
+          />
+          <button type="submit" className={styles.send} disabled={!draft.trim()} aria-label="Começar">
+            <Icon name="executar" size={20} />
+          </button>
+        </form>
+
         <IAOnboarding open={aboutOpen} onClose={() => setAboutOpen(false)} ctaLabel="Fechar" />
       </div>
     );
@@ -364,18 +372,12 @@ export function IAScreen({ onBack }) {
   const empty = messages.length === 0;
   return (
     <div className={styles.screen}>
-      <header className={styles.appbar}>
-        <button type="button" className={styles.iconBtn} onClick={onBack} aria-label="Voltar ao app">
-          <Icon name="voltar" size={22} />
-        </button>
-        <div className={styles.titleWrap}>
-          <span className={styles.brandRow}><Icon name="sparkles" size={16} /> IA · CalcMed</span>
-          <span className={styles.subtitle}>Assistente clínico · demonstração</span>
-        </div>
-        <button type="button" className={styles.iconBtn} onClick={openHistory} aria-label="Ver conversas anteriores" title="Conversas">
-          <Icon name="tempo" size={22} />
-        </button>
-      </header>
+      <ProtocolHeader
+        onBack={onBack}
+        title="IA · CalcMed"
+        subtitle="Assistente clínico"
+        actions={[{ icon: 'clock', label: 'Conversas anteriores', onClick: openHistory }]}
+      />
 
       {toast && (
         <div className={styles.toastHost}>

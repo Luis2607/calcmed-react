@@ -9,92 +9,6 @@
   background: var(--ds-fundo-padrao);
 }
 
-/* ---------- App bar (travada no topo) ---------- */
-.appbar {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: var(--esp-2);
-  padding: var(--esp-3) var(--esp-3);
-  background: var(--ds-fundo-cartao);
-  border-bottom: 1px solid var(--ds-borda-sutil);
-}
-
-.iconBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
-  border: 0;
-  background: transparent;
-  color: var(--ds-texto-padrao);
-  cursor: pointer;
-  border-radius: var(--radius-pill);
-}
-.iconBtn:hover { background: var(--ds-fundo-hover); }
-
-.titleWrap {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  flex: 1;
-  min-width: 0;
-}
-
-.brandRow {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: var(--fonte-tamanho-corpo);
-  font-weight: 800;
-  color: var(--ds-texto-padrao);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.brandRow :global(svg) { color: var(--ds-interativo-primario); flex-shrink: 0; }
-
-.subtitle {
-  font-size: var(--fonte-tamanho-micro);
-  color: var(--ds-texto-terciario);
-}
-
-.newBtn {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 7px var(--esp-3);
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: var(--ds-interativo-primario);
-  color: var(--ds-texto-sobre-destaque);
-  font-family: var(--fonte-base);
-  font-size: var(--fonte-tamanho-auxiliar);
-  font-weight: 700;
-  cursor: pointer;
-}
-.newBtn:hover { background: var(--ds-interativo-primario-hover); }
-
-.newBtnLarge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--esp-2);
-  margin-top: var(--esp-2);
-  padding: var(--esp-3) var(--esp-5);
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: var(--ds-interativo-primario);
-  color: var(--ds-texto-sobre-destaque);
-  font-family: var(--fonte-base);
-  font-size: var(--fonte-tamanho-corpo);
-  font-weight: 700;
-  cursor: pointer;
-}
-.newBtnLarge:hover { background: var(--ds-interativo-primario-hover); }
-
 /* ---------- Lista de conversas (rola por dentro) ---------- */
 .listScroll {
   flex: 1;
@@ -143,18 +57,6 @@
 }
 .convOpen:hover { background: var(--ds-fundo-hover); }
 
-.convIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  flex-shrink: 0;
-  border-radius: var(--ds-r-sm, 8px);
-  background: var(--interativo-primario-tint-08);
-  color: var(--ds-interativo-primario);
-}
-
 .convText {
   display: flex;
   flex-direction: column;
@@ -170,16 +72,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.convPreview {
-  font-size: var(--fonte-tamanho-auxiliar);
-  color: var(--ds-texto-secundario);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.convTime {
-  flex-shrink: 0;
-  align-self: flex-start;
+.convDate {
   font-size: var(--fonte-tamanho-micro);
   color: var(--ds-texto-terciario);
 }
