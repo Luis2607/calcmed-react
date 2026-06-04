@@ -60,7 +60,7 @@ export function IAFeedbackSheet({ open, value, onClose, onSubmit }) {
         rows={3}
         maxLength={300}
         label="Detalhes (opcional)"
-        placeholder="O que poderia ser melhor?"
+        placeholder="Conte em uma linha (opcional)"
       />
 
       <p className={styles.fineprint}>Não inclua nada que identifique o paciente.</p>

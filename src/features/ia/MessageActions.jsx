@@ -51,7 +51,7 @@ export function MessageActions({ copyText, feedback, onFeedback, onRegenerate })
         <ThumbDown width="15" height="15" />
       </button>
       {onRegenerate && (
-        <button type="button" className={styles.btn} onClick={onRegenerate} aria-label="Regenerar resposta" title="Regenerar">
+        <button type="button" className={styles.btn} onClick={onRegenerate} aria-label="Refazer resposta" title="Refazer">
           <Regen width="15" height="15" />
         </button>
       )}

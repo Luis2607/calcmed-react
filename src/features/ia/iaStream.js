@@ -85,11 +85,14 @@ export function responseToText(response) {
       case 'expandable':
         lines.push(`${strip(b.title)} — ${strip(b.content)}`);
         break;
+      case 'limitation':
+        lines.push(strip(b.content)); // a ressalva clínica entra no texto copiado
+        break;
       default:
         break;
     }
   }
   const body = lines.filter(Boolean).join('\n');
-  // Proveniência clínica: o que sai do app (prontuário/WhatsApp) carrega a ressalva.
-  return body ? `${body}\n\n— Gerado pela IA do CalcMed. Confira no protocolo do seu serviço.` : body;
+  // Proveniência: o que sai do app (prontuário/WhatsApp) carrega a origem.
+  return body ? `${body}\n\n— Gerado pela IA do CalcMed.` : body;
 }

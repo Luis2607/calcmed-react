@@ -213,7 +213,7 @@ Esta taxonomia é **a fonte de verdade** para os componentes que precisam existi
 Entrada por **texto livre** (heurística `matchText`): adrenalina→`q:adrena`; "K 7"/hipercalemia→`crit:k`;
 "explica sepse"→`learn:sepse`; protocolo/ACLS/parada→`proto:pcr`; noradrenalina+dobutamina→`q:noradobu`;
 gaso/pH/HCO₃/lactato/ânion→`q:gaso`; hipotensão/choque/PAM→`q:hipo`; resume/evolução→`q:resumo`;
-sem match → `FALLBACK` ("Não entendi").
+sem match → `FALLBACK` ("Não consegui interpretar").
 
 ### 10.2 Grafo (nó → ramificações)
 
@@ -246,7 +246,7 @@ sem match → `FALLBACK` ("Não entendi").
 
 **Especiais:**
 - `stub:tool` → **TOOL_STUB** ("Cálculo por peso") → chips: sugestões iniciais. *(No produto P1, abre a calculadora real.)*
-- sem match → **FALLBACK** ("Não entendi") → chips: sugestões iniciais.
+- sem match → **FALLBACK** ("Não consegui interpretar") → chips: sugestões iniciais.
 
 ### 10.3 Cobertura de blocos por cenário (amostra)
 | Cenário | Blocos exercitados |
@@ -307,7 +307,7 @@ sem match → `FALLBACK` ("Não entendi").
 ## 12. UX writing & tom de voz
 
 - **Tom:** clínico, direto, humano. Frases curtas. Sem "calor" artificial de assistente.
-- **Exemplos vigentes:** saudação "Bom dia/tarde/noite" + "Como posso ajudar no plantão?"; placeholder "Dose, conduta, exame…"; feedback "Anotado."; erro/ambíguo "Não entendi — reformula em uma linha ou começa por um destes:".
+- **Exemplos vigentes:** saudação "Bom dia/tarde/noite/madrugada" + "Como posso ajudar no plantão?"; placeholder "Dose, conduta, exame…"; feedback "Anotado."; erro/ambíguo título "Não consegui interpretar" + "Reformule em uma linha. Funciono melhor com dose, conduta, exame, protocolo ou resumo — por exemplo:".
 - **Proibições:** quebrar a 4ª parede ("este é um sistema de demonstração…"), prometer o que não cumpre, jargão de IA genérica.
 - **Nota de limitação:** curta e não repetida verbatim em toda resposta ("Confira no protocolo do seu serviço.").
 

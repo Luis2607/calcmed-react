@@ -64,7 +64,7 @@ function ChecklistFromBlock({ block }) {
 
 /** Mapeia um bloco do payload → componente do DS. `onSelect(value)` torna
  *  seletor de contexto e chips interativos (continuação da conversa). */
-function renderBlock(block, i, onSelect) {
+function renderBlock(block, i, onSelect, risk) {
   switch (block.type) {
     case 'primary_action':
       return (
@@ -136,7 +136,8 @@ function renderBlock(block, i, onSelect) {
     case 'stepper':
       return <ProtocolStep key={i} label={block.label} current={block.current} steps={block.steps} />;
     case 'limitation':
-      return <LimitationNote key={i}>{rich(block.content)}</LimitationNote>;
+      // risco alto → ressalva ganha saliência (tom atenção), em vez de sumir no rodapé.
+      return <LimitationNote key={i} tone={risk === 'alto' ? 'atencao' : undefined}>{rich(block.content)}</LimitationNote>;
     case 'chips':
       return (
         <SuggestionChips
@@ -184,7 +185,7 @@ export const AIResponseRenderer = ({ response, onSelect, variant = 'card' }) => 
       )}
       {blocks.map((block, i) => (
         <BlockBoundary key={`${block?.type || 'blk'}-${i}`}>
-          {renderBlock(block, i, onSelect)}
+          {renderBlock(block, i, onSelect, risk)}
         </BlockBoundary>
       ))}
       {actions.length > 0 && (

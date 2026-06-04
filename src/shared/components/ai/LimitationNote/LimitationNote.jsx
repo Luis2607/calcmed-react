@@ -6,10 +6,10 @@ import styles from './LimitationNote.module.css';
  * Sinaliza dependência de validação clínica/protocolo local sem competir
  * visualmente com a resposta.
  *
- * Props: children (texto da limitação)
+ * Props: children (texto da limitação) · tone ('atencao' dá saliência p/ risco alto)
  */
-export const LimitationNote = ({ children }) => (
-  <p className={styles.note}>
+export const LimitationNote = ({ children, tone }) => (
+  <p className={styles.note} data-tone={tone}>
     <svg className={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="10" />
       <line x1="12" y1="16" x2="12" y2="12" />

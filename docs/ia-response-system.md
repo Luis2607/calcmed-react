@@ -101,9 +101,10 @@ visual (galeria do DS); com ele, seletores/chips/ações continuam a conversa
 - **Sugestões iniciais** numa **faixa horizontal rolável** (curadas, sem ícone) acima do composer, só no estado vazio.
 - Respostas em **largura cheia** (`AIResponse variant="plain"`), com reveal progressivo dos blocos.
 - **Streaming:** "pensando" **por intenção** — urgência (dose/crítico/protocolo) ~700ms, comparação/aprendizado ~2,4s, demais ~1,5s — com **rótulo de estado** ("Calculando a dose…", "Avaliando o risco…"). Revelação por unidades (~48ms). **Parar** congela e marca "Resposta interrompida" → **Continuar** retoma do ponto exato. **Parar no "pensando"** (antes do 1º token) deixa "Geração cancelada → **Tentar de novo**" (não some a pergunta órfã). Guard síncrono evita **envio duplicado** (double-tap). Progresso efêmero (nunca persiste cru). **`prefers-reduced-motion`: revela a resposta completa de imediato** (sem digitar).
-- **Ações por mensagem** (`MessageActions`): copiar (`CopyButton`, micro-check), 👍/👎, regenerar (só na última).
+- **Ações por mensagem** (`MessageActions`): copiar (`CopyButton`, micro-check; não confirma cópia vazia), 👍/👎, **Refazer** (só na última; toast com **Desfazer**, pois refazer é determinístico e pode devolver o mesmo). A cópia carimba proveniência (`— Gerado pela IA do CalcMed.`) e serializa a ressalva clínica.
 - **Feedback estruturado:** 👍/👎 abre o `IAFeedbackSheet` (BottomSheet do DS) com chips de motivo (multi-seleção, conjuntos distintos p/ up/down) + texto opcional + fineprint "sem dados do paciente"; grava `feedbackReasons`/`feedbackDetail` na mensagem.
-- **Editar/reenviar** a última pergunta (devolve ao composer e trunca o último par).
+- **Editar/reenviar** a última pergunta (devolve ao composer e trunca o último par). **Preserva o token original** se o texto não mudar — editar uma pergunta vinda de chip não cai no fallback.
+- **Ressalva de segurança calibrada por risco:** `risk_level: 'alto'` usa copy mais forte ("Valide a dose…") e a `LimitationNote` ganha saliência (tom atenção), em vez de sumir no rodapé.
 - **Composer** multilinha (`textarea` auto-resize 1→~5 linhas; Enter envia, Shift+Enter quebra).
 - **Onboarding** de 1º acesso = `InfoSheet` **bloqueante** (só fecha pelo CTA); "Sobre a IA · avisos" reabre não-bloqueante.
 - Conversas persistidas em `localStorage` (`ia_conversations`); exclusão com **Desfazer** (toast).
