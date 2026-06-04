@@ -62,3 +62,16 @@ pergunta↔resposta no thread).
 - `npm run build` deve passar **antes** do merge.
 - Após o merge, confirmar que o deploy ficou READY na Vercel e que o hash do
   bundle servido em `calcmed-react.vercel.app` bate com o `dist/` local.
+
+## 7. Documentação viva (o "cérebro") — SEMPRE atualizar
+
+- **Regra do dono (Luis):** ao mexer em **qualquer coisa** da feature de IA (UI,
+  fluxo, componente, copy, token, comportamento), **atualize a documentação na
+  mesma entrega** — nunca deixar o doc desatualizado. O objetivo é nunca perder
+  info e tornar a passagem pro Figma tranquila.
+- Os 3 documentos-cérebro da IA, mantidos em sincronia com o código:
+  - `docs/prd-ia-calcmed.md` — PRD + cenários (para o P.O.).
+  - `docs/figma-handoff-plan.md` — plano/inventário de passagem pro Figma.
+  - `docs/ia-response-system.md` — spec técnico do AI Response System.
+- Mudou um componente/cenário/copy → reflita nos 3 (no que couber) **antes do
+  merge**. Tratar doc desatualizado como bug.
