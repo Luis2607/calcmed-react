@@ -378,6 +378,8 @@ export function PCRFlow({ onBack }) {
   // Banner contextual dinâmico
   const renderBanner = () => {
     if (!bannerVisible) return null;
+    // §BUG-4: antes de iniciar compressões o banner não existe — evita "Ciclo 1 · 0s" espúrio.
+    if (!compressoesIniciadas) return null;
     if (cycleEndReached) {
       return (
         <BannerContextual
@@ -423,6 +425,46 @@ export function PCRFlow({ onBack }) {
   const ritmoLabel = s.ritmo === 'na' ? 'Não avaliado' : getRitmoLabel(s.ritmo);
   const desfibrilarDisabled = !isChocavel(s.ritmo);
 
+  // §BUG-5: card de adrenalina reutilizado em dois lugares (acima e abaixo das compressões);
+  // extraído para evitar duplicação. Quando ATRASADA, sobe acima do card de compressões.
+  const adrenCard = (
+    <TimerCard
+      label={`Adrenalina · ×${s.adrenalinaCount}`}
+      value={adrenElapsedStr}
+      meta={
+        !temAdrenalina ? 'Aguardando 1ª dose'
+          : adrenState === 'window-overdue' ? 'ATRASADA'
+            : adrenState === 'window-ok' ? 'JANELA ABERTA'
+              : `Próxima em ${s.intervaloAdrenalinaMin} min`
+      }
+      description={temAdrenalina
+        ? `Desde a última dose · alvo a cada ${s.intervaloAdrenalinaMin} min`
+        : 'Aplique quando indicado · timer começa na 1ª dose.'}
+      state={adrenState}
+      onInfo={() => showToast('Adrenalina · 1 mg IV/IO 3-5 min · diluir 1:10 em SF', 'success')}
+      size="lg"
+      progress={temAdrenalina ? Math.min(100, (adrenElapsed / adrenJanela.fimMs) * 100) : undefined}
+      progressMarkers={temAdrenalina ? [
+        { position: (adrenJanela.inicioMs / adrenJanela.fimMs) * 100, label: adrenJanela.labelInicio },
+        { position: 100, label: adrenJanela.labelFim },
+      ] : undefined}
+    >
+      <Segmented
+        options={SEG_INTERVALO}
+        value={s.intervaloAdrenalinaMin}
+        onChange={s.setIntervaloAdrenalinaMin}
+        block
+      />
+      <Button
+        variant={adrenState === 'window-overdue' ? 'danger' : 'primary'}
+        size="md"
+        onClick={onAplicarAdrenalina}
+      >
+        Apliquei agora
+      </Button>
+    </TimerCard>
+  );
+
   const t2 = (
     <div className={styles.tela}>
       {/* §F12 · notificação antecipada da próxima medicação (acima do banner de ciclo · auto-some
@@ -436,6 +478,11 @@ export function PCRFlow({ onBack }) {
         />
       )}
       {renderBanner()}
+
+      {/* §BUG-5: Adrenalina ATRASADA + ciclo em marco → sobe o card crítico acima das compressões
+          para que fique visível sem rolar. Em qualquer outro estado mantém a ordem padrão
+          (compressões primeiro). */}
+      {adrenState === 'window-overdue' && compressoesIniciadas && cycleEndReached && adrenCard}
 
       {/* Card Compressões · F04: aguardando até "Iniciar compressões"; depois running/cycle-end. */}
       {!compressoesIniciadas ? (
@@ -485,42 +532,9 @@ export function PCRFlow({ onBack }) {
         </TimerCard>
       )}
 
-      {/* Card Adrenalina · F07: zerada até a 1ª dose · janela EXATA (B6) após aplicar */}
-      <TimerCard
-        label={`Adrenalina · ×${s.adrenalinaCount}`}
-        value={adrenElapsedStr}
-        meta={
-          !temAdrenalina ? 'Aguardando 1ª dose'
-            : adrenState === 'window-overdue' ? 'ATRASADA'
-              : adrenState === 'window-ok' ? 'JANELA ABERTA'
-                : `Próxima em ${s.intervaloAdrenalinaMin} min`
-        }
-        description={temAdrenalina
-          ? `Desde a última dose · alvo a cada ${s.intervaloAdrenalinaMin} min`
-          : 'Aplique quando indicado · timer começa na 1ª dose.'}
-        state={adrenState}
-        onInfo={() => showToast('Adrenalina · 1 mg IV/IO 3-5 min · diluir 1:10 em SF', 'success')}
-        size="lg"
-        progress={temAdrenalina ? Math.min(100, (adrenElapsed / adrenJanela.fimMs) * 100) : undefined}
-        progressMarkers={temAdrenalina ? [
-          { position: (adrenJanela.inicioMs / adrenJanela.fimMs) * 100, label: adrenJanela.labelInicio },
-          { position: 100, label: adrenJanela.labelFim },
-        ] : undefined}
-      >
-        <Segmented
-          options={SEG_INTERVALO}
-          value={s.intervaloAdrenalinaMin}
-          onChange={s.setIntervaloAdrenalinaMin}
-          block
-        />
-        <Button
-          variant={adrenState === 'window-overdue' ? 'danger' : 'primary'}
-          size="md"
-          onClick={onAplicarAdrenalina}
-        >
-          Apliquei agora
-        </Button>
-      </TimerCard>
+      {/* Card Adrenalina · F07: zerada até a 1ª dose · janela EXATA (B6) após aplicar.
+          Renderizado aqui no fluxo normal; quando ATRASADA+marco já foi mostrado acima. */}
+      {!(adrenState === 'window-overdue' && compressoesIniciadas && cycleEndReached) && adrenCard}
 
       {/* Linha de ações grandes · golden btn-acao-grande */}
       <div className={styles.actionsRow}>
