@@ -26,8 +26,9 @@ export function diffMin(t1, t2) {
   return Math.floor((t2 - t1) / 60000);
 }
 
-// Aceita "HH:MM" ou "HHMM" → retorna ts (hoje). Igual ao golden parseHHMM.
-export function parseHHMM(str) {
+// Aceita "HH:MM" ou "HHMM" → retorna ts (no dia indicado por diasAtras).
+// diasAtras: 0 = hoje, 1 = ontem, 2 = anteontem. Retorna null se formato inválido.
+export function parseHHMM(str, diasAtras = 0) {
   if (!str) return null;
   const s = str.replace(/[^0-9:]/g, '');
   let h;
@@ -44,7 +45,8 @@ export function parseHHMM(str) {
   }
   if (isNaN(h) || isNaN(m) || h > 23 || m > 59) return null;
   const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0).getTime();
+  const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - diasAtras, h, m, 0);
+  return d.getTime();
 }
 
 // Auto-formatar HH:MM enquanto digita (golden onHorarioInput).
@@ -54,13 +56,12 @@ export function formatarHorario(raw) {
   return v;
 }
 
-// Janela em minutos a partir do horário informado (corrige p/ ontem se passou de hoje).
-export function janelaMinDe(horarioStr) {
-  const ts = parseHHMM(horarioStr);
+// Janela em minutos a partir do horário informado + deslocamento de dias.
+// diasAtras: 0 = hoje, 1 = ontem, 2 = anteontem.
+export function janelaMinDe(horarioStr, diasAtras = 0) {
+  const ts = parseHHMM(horarioStr, diasAtras);
   if (!ts) return null;
-  let referenceTs = ts;
-  if (ts > Date.now()) referenceTs = ts - 24 * 3600 * 1000;
-  return diffMin(referenceTs, Date.now());
+  return diffMin(ts, Date.now());
 }
 
 // Texto + faixa da janela (golden atualizarJanelaHelper).

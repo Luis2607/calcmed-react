@@ -7,7 +7,7 @@ import {
   BYPASS_GATES, PESO_ESTIMATIVAS, TROMBOLITICO_OPCOES,
   DISFAGIA_OPCOES, TROMBEC_VASO_OPCOES, TROMBEC_MRS_OPCOES,
   janelaInfo, limitePA, avaliarGlicemia, avaliarTrombectomia,
-  paAcima, formatHora, pad2, PA_MONITOR_RANGE,
+  paAcima, formatHora, pad2, PA_MONITOR_RANGE, parseHHMM,
 } from './avcData';
 import { AVC_MODAIS, AvcModalBody } from './avcModais';
 import { ProtocolShell } from '../../shared/components/templates/ProtocolShell/ProtocolShell';
@@ -81,6 +81,16 @@ export function AVCFlow({ onBack }) {
 
   const fora = s.janelaMin != null && s.janelaMin > 1440;
   const janela = janelaInfo(s.janelaMin);
+
+  // Validação inline de horário inválido (ex.: "25:99") — parseHHMM retorna null.
+  const horarioInvalido = s.horarioInicio.length >= 4 && parseHHMM(s.horarioInicio) === null;
+
+  // Opções do seletor de dia para representar inícios >24h.
+  const DIAS_OPCOES = [
+    { value: 0, label: 'Hoje' },
+    { value: 1, label: 'Ontem' },
+    { value: 2, label: 'Anteontem' },
+  ];
 
   // ====================== chips header ======================
   const chips = [];
@@ -247,6 +257,13 @@ export function AVCFlow({ onBack }) {
         />
         {s.sintomasPresenciado && (
           <div className={styles.group}>
+            {/* Seletor de dia: permite representar início >24h (ontem/anteontem). */}
+            <Segmented
+              options={DIAS_OPCOES}
+              value={s.horarioDiasAtras}
+              onChange={s.setDiasAtras}
+              block
+            />
             <InputField
               label={s.sintomasPresenciado === 'sim' ? 'Horário do início' : 'Última vez visto normal (usaremos como início)'}
               value={s.horarioInicio}
@@ -256,9 +273,11 @@ export function AVCFlow({ onBack }) {
               maxLength={5}
               mono
               showUnit
-              unit="hoje"
+              unit={DIAS_OPCOES.find((d) => d.value === s.horarioDiasAtras)?.label ?? 'hoje'}
+              state={horarioInvalido ? 'error' : 'default'}
+              helperText={horarioInvalido ? 'Horário inválido. Use o formato HH:MM (00:00 a 23:59).' : undefined}
             />
-            <span className={styles.janelaHelper}>{janela.texto}</span>
+            {!horarioInvalido && <span className={styles.janelaHelper}>{janela.texto}</span>}
             {s.sintomasPresenciado === 'nao' && (
               <Button variant="secondary" onClick={() => setModalId('wake-up-info')}>
                 Sobre wake-up · RM DWI-FLAIR pode estender até 9h

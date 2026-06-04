@@ -28,6 +28,8 @@ export function useAVCState() {
   // T1 · Triagem
   const [sintomasPresenciado, setSintomasPresenciado] = usePersistedState('avc_sintomas', null);
   const [horarioInicio, setHorarioInicioRaw] = usePersistedState('avc_horario', '');
+  // diasAtras: 0 = hoje, 1 = ontem, 2 = anteontem (para permitir janelas >24h).
+  const [horarioDiasAtras, setHorarioDiasAtras] = usePersistedState('avc_horario_dias_atras', 0);
   const [janelaMin, setJanelaMin] = usePersistedState('avc_janela_min', null);
   const [cincinnati, setCincinnati] = usePersistedState('avc_cincinnati', { face: null, braco: null, fala: null });
   const [bypassUsado, setBypassUsado] = usePersistedState('avc_bypass_usado', false);
@@ -102,7 +104,13 @@ export function useAVCState() {
   const setHorarioInicio = (raw) => {
     const v = formatarHorario(raw);
     setHorarioInicioRaw(v);
-    setJanelaMin(janelaMinDe(v));
+    setJanelaMin(janelaMinDe(v, horarioDiasAtras));
+  };
+
+  // Muda o deslocamento de dias e recalcula a janela imediatamente.
+  const setDiasAtras = (dias) => {
+    setHorarioDiasAtras(dias);
+    setJanelaMin(janelaMinDe(horarioInicio, dias));
   };
 
   // Cincinnati: marca início no 1º sinal alterado + abre Código AVC na timeline.
@@ -165,7 +173,7 @@ export function useAVCState() {
 
   const resetProtocol = () => {
     setIniciadoEm(null); setTelaAtual(1); setTelaMaxVisitada(1); setAbaAtual('executar');
-    setSintomasPresenciado(null); setHorarioInicioRaw(''); setJanelaMin(null);
+    setSintomasPresenciado(null); setHorarioInicioRaw(''); setHorarioDiasAtras(0); setJanelaMin(null);
     setCincinnati({ face: null, braco: null, fala: null });
     setBypassUsado(false); setJanelaConfirmada(false);
     setNihssScores({}); setNihssDominio(1);
@@ -185,6 +193,7 @@ export function useAVCState() {
     // T1
     sintomasPresenciado, setSintomasPresenciado,
     horarioInicio, setHorarioInicio,
+    horarioDiasAtras, setDiasAtras,
     janelaMin, setJanelaMin,
     cincinnati, setCincinnatiItem, cincinnatiAlterados, cincinnatiRespondidos,
     bypassUsado, setBypassUsado,
