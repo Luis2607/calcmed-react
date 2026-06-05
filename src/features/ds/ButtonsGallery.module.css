@@ -1,6 +1,6 @@
 .page {
   padding: 2rem;
-  background-color: var(--fundo-padrao, #F8FAFC);
+  background-color: var(--ds-fundo-padrao);
   color: var(--texto-padrao, #0F172A);
   min-height: 100vh;
 }
@@ -123,11 +123,11 @@
 
 /* Tabela de Auditoria */
 .tableContainer {
-  background: var(--fundo-superficie, #FFFFFF);
-  border: 1px solid var(--borda-padrao, #E2E8F0);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+  background: var(--ds-fundo-cartao);
+  border: 1px solid var(--ds-borda-padrao);
+  border-radius: var(--ds-r-md);
+  overflow-x: auto; /* mobile: tabela rola na horizontal em vez de ser cortada */
+  box-shadow: var(--ds-sombra-1, 0 2px 4px rgba(0,0,0,0.01));
 }
 
 .table {
@@ -186,13 +186,13 @@
 }
 
 .okValue {
-  background-color: var(--ds-sucesso-fundo, #ECFDF5);
-  color: var(--ds-sucesso, #047857);
+  background-color: var(--ds-retorno-sucesso-fundo);
+  color: var(--ds-retorno-sucesso);
 }
 
 .driftValue {
-  background-color: var(--ds-critico-fundo, #FEF2F2);
-  color: var(--ds-critico, #991B1B);
+  background-color: var(--ds-retorno-critico-fundo);
+  color: var(--ds-retorno-critico);
 }
 
 .statusBadge {
@@ -205,13 +205,13 @@
 }
 
 .statusBadge.ok {
-  background-color: var(--ds-sucesso-fundo, #ECFDF5);
-  color: var(--ds-sucesso, #047857);
+  background-color: var(--ds-retorno-sucesso-fundo);
+  color: var(--ds-retorno-sucesso);
 }
 
 .statusBadge.drift {
-  background-color: var(--ds-critico-fundo, #FEF2F2);
-  color: var(--ds-critico, #991B1B);
+  background-color: var(--ds-retorno-critico-fundo);
+  color: var(--ds-retorno-critico);
 }
 
 /* Variantes Grid */

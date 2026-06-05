@@ -1,3 +1,5 @@
+> ⚠️ **DOC HISTÓRICO** — descreve uma fase anterior do protótipo (iframe golden / não-portado / pré-git). Hoje as 5 centrais são React nativo e tudo está versionado. Mantido como registro; **não usar como verdade atual** (ver `docs/00-index.md`).
+
 # QA Report - 2026-05-26
 
 Escopo validado: estabilizacao inicial da base React da Central de Urgencia, preservando o HTML como golden master + entrega das Fases 2-5 do plano de padronizacao do BottomSheet.

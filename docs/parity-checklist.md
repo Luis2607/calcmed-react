@@ -1,3 +1,5 @@
+> ⚠️ **DOC HISTÓRICO** — descreve uma fase anterior do protótipo (iframe golden / não-portado / pré-git). Hoje as 5 centrais são React nativo e tudo está versionado. Mantido como registro; **não usar como verdade atual** (ver `docs/00-index.md`).
+
 # Checklist de Paridade - Central de Urgencia
 
 Use este checklist antes de considerar qualquer protocolo migrado para React.

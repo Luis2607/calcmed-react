@@ -1,3 +1,5 @@
+> ⚠️ **DOC HISTÓRICO** — descreve uma fase anterior do protótipo (iframe golden / não-portado / pré-git). Hoje as 5 centrais são React nativo e tudo está versionado. Mantido como registro; **não usar como verdade atual** (ver `docs/00-index.md`).
+
 # Baseline pré-padronização (F-1)
 
 > Estado oficial do "ANTES" — registrado em 2026-05-27 antes de QUALQUER alteração de padronização.

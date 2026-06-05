@@ -116,6 +116,7 @@ export function SCAFlow({ onBack }) {
   const salvarCaso = () => {
     if (!(s.paciente.iniciais || '').trim()) return;
     const novoCaso = {
+      // eslint-disable-next-line react-hooks/purity -- Date.now() roda só no clique de salvar (handler), não em render
       id: `sca-${Date.now()}`,
       initials: (s.paciente.iniciais || '—').toUpperCase().slice(0, 10),
       status: statusCaso(tipoIam),
