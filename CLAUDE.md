@@ -65,13 +65,17 @@ pergunta↔resposta no thread).
 
 ## 7. Documentação viva (o "cérebro") — SEMPRE atualizar
 
-- **Regra do dono (Luis):** ao mexer em **qualquer coisa** da feature de IA (UI,
-  fluxo, componente, copy, token, comportamento), **atualize a documentação na
-  mesma entrega** — nunca deixar o doc desatualizado. O objetivo é nunca perder
-  info e tornar a passagem pro Figma tranquila.
-- Os 3 documentos-cérebro da IA, mantidos em sincronia com o código:
+- **Regra do dono (Luis):** ao mexer em **qualquer coisa** de **qualquer feature**
+  (IA *ou* as 5 centrais de urgência — UI, fluxo, componente, cálculo, copy, token,
+  comportamento), **atualize a documentação na mesma entrega** — nunca deixar o doc
+  desatualizado. O objetivo é nunca perder info e tornar a passagem pro Figma tranquila.
+- **Cérebro da IA** (em sincronia com o código):
   - `docs/prd-ia-calcmed.md` — PRD + cenários (para o P.O.).
   - `docs/figma-handoff-plan.md` — plano/inventário de passagem pro Figma.
   - `docs/ia-response-system.md` — spec técnico do AI Response System.
-- Mudou um componente/cenário/copy → reflita nos 3 (no que couber) **antes do
-  merge**. Tratar doc desatualizado como bug.
+- **Cérebro das centrais de urgência** (um PRD por central + o plano de Figma):
+  - `docs/prd-cad.md` · `docs/prd-sca.md` · `docs/prd-sepse.md` · `docs/prd-pcr.md` ·
+    `docs/prd-avc.md` — PRDs (fluxo, estados, cálculos, segurança clínica).
+  - `docs/figma-handoff-centrais.md` — plano/inventário de passagem pro Figma das centrais.
+- Mudou um componente/cenário/cálculo/copy → reflita no(s) doc(s) da feature **antes do
+  merge** (no que couber). Tratar doc desatualizado como bug.
