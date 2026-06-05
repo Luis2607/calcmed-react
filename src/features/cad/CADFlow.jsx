@@ -192,7 +192,7 @@ export function CADFlow({ onBack }) {
       if (na != null && cl != null && hco3 != null) medida.ag = na - (cl + hco3);
     }
     s.lancarMedida(medida);
-    showToast(medRec ? medRec.titulo : 'Reavaliação lançada', medRec?.nivel === 'critico' ? 'error' : 'success');
+    showToast(medRec ? medRec.titulo : 'Reavaliação lançada', medRec?.nivel === 'critico' ? 'error' : medRec?.nivel === 'atencao' ? 'atencao' : 'success');
     if (medida.k != null && medida.k < 3.5) s.irParaTela('2k');
   };
 
@@ -279,8 +279,8 @@ export function CADFlow({ onBack }) {
 
       <ClinicalCard variant="plain" title="Dados de triagem">
         <div className={styles.row2}>
-          <InputField label="Idade" type="number" mono value={s.idade} onChange={s.setIdade} placeholder="Ex.: 32" unit="anos" showUnit />
-          <InputField label="Peso" type="number" mono value={s.peso} onChange={s.setPeso} placeholder="Ex.: 70" unit="kg" showUnit />
+          <InputField label="Idade" inputMode="decimal" mono value={s.idade} onChange={s.setIdade} placeholder="Ex.: 32" unit="anos" showUnit />
+          <InputField label="Peso" inputMode="decimal" mono value={s.peso} onChange={s.setPeso} placeholder="Ex.: 70" unit="kg" showUnit />
         </div>
       </ClinicalCard>
 
@@ -298,7 +298,7 @@ export function CADFlow({ onBack }) {
       <ClinicalCard variant="plain" title="Critérios diagnósticos" subtitle="2 de 3 fecham o diagnóstico." onInfo={() => setModalId('teoria-criterios')}>
         <InputField
           label="Glicemia capilar (HGT)"
-          type="number"
+          inputMode="decimal"
           mono
           value={s.glicemia}
           onChange={s.setGlicemia}
@@ -335,7 +335,7 @@ export function CADFlow({ onBack }) {
       <ClinicalCard variant="plain" title="Sódio sérico (Na)" onInfo={() => setModalId('por-que-sodio')}>
         <InputField
           label="Sódio"
-          type="number"
+          inputMode="decimal"
           mono
           value={s.sodio}
           onChange={s.setSodio}
@@ -372,9 +372,11 @@ export function CADFlow({ onBack }) {
         progress={(1 - aguardoKRestante / AGUARDO_K_SEGUNDOS) * 100}
         description="Colha novo K ao zerar e toque em Lançar novo K."
       >
-        <Button variant="secondary" size="sm" onClick={() => s.setAguardoKIniciadoEm((p) => (p || Date.now()) - 5 * 60 * 1000)}>
-          Pular 5 min (dev)
-        </Button>
+        {import.meta.env.DEV && (
+          <Button variant="secondary" size="sm" onClick={() => s.setAguardoKIniciadoEm((p) => (p || Date.now()) - 5 * 60 * 1000)}>
+            Pular 5 min (dev)
+          </Button>
+        )}
       </TimerCard>
 
       <AlertCard level="info" title="Prescrição de KCl">
@@ -397,9 +399,11 @@ export function CADFlow({ onBack }) {
           progress={(1 - bloqueioPedRestante / BLOQUEIO_PEDIATRICO_SEGUNDOS) * 100}
           description="Em pediatria, a insulina IV inicia 1 hora após os fluidos, para evitar hiponatremia e edema cerebral."
         >
-          <Button variant="secondary" size="sm" onClick={() => s.setPediatricoFluidosEm((p) => (p || Date.now()) - 5 * 60 * 1000)}>
-            Pular 5 min (dev)
-          </Button>
+          {import.meta.env.DEV && (
+            <Button variant="secondary" size="sm" onClick={() => s.setPediatricoFluidosEm((p) => (p || Date.now()) - 5 * 60 * 1000)}>
+              Pular 5 min (dev)
+            </Button>
+          )}
         </TimerCard>
       )}
 
@@ -433,9 +437,11 @@ export function CADFlow({ onBack }) {
         description="Colha novo HGT e gasometria ao zerar."
         onInfo={() => setModalId('o-que-e-reavaliacao')}
       >
-        <Button variant="secondary" size="sm" onClick={() => s.setReavalProximoEm((p) => (p || Date.now()) - 5 * 60 * 1000)}>
-          Pular 5 min (dev)
-        </Button>
+        {import.meta.env.DEV && (
+          <Button variant="secondary" size="sm" onClick={() => s.setReavalProximoEm((p) => (p || Date.now()) - 5 * 60 * 1000)}>
+            Pular 5 min (dev)
+          </Button>
+        )}
       </TimerCard>
 
       {s.isPediatric && (
@@ -705,9 +711,9 @@ export function CADFlow({ onBack }) {
         onSave={salvarMedida}
       >
         <div className={styles.group}>
-          <InputField label="HGT anterior" type="number" mono value={medHgtAnterior} onChange={setMedHgtAnterior} placeholder="—" unit="mg/dL" showUnit helperText="Puxado do último registro · edite se foi diferente." />
-          <InputField label="HGT atual · agora" type="number" mono value={medHgt} onChange={setMedHgt} placeholder="Ex.: 220" unit="mg/dL" showUnit tagText="obrigatório" state={medHgt !== '' && !medHgtValido ? 'error' : 'default'} helperText="20 a 2000 mg/dL · HGT / Dextro" />
-          <InputField label="Insulina rodando agora" type="number" mono value={medInsulina} onChange={setMedInsulina} placeholder="—" unit="U/h" showUnit helperText="Puxado da prescrição · edite se a enfermagem ajustou." />
+          <InputField label="HGT anterior" inputMode="decimal" mono value={medHgtAnterior} onChange={setMedHgtAnterior} placeholder="—" unit="mg/dL" showUnit helperText="Puxado do último registro · edite se foi diferente." />
+          <InputField label="HGT atual · agora" inputMode="decimal" mono value={medHgt} onChange={setMedHgt} placeholder="Ex.: 220" unit="mg/dL" showUnit tagText="obrigatório" state={medHgt !== '' && !medHgtValido ? 'error' : 'default'} helperText="20 a 2000 mg/dL · HGT / Dextro" />
+          <InputField label="Insulina rodando agora" inputMode="decimal" mono value={medInsulina} onChange={setMedInsulina} placeholder="—" unit="U/h" showUnit helperText="Puxado da prescrição · edite se a enfermagem ajustou." />
 
           {medRec && (
             <AlertCard level={nivelAlerta(medRec.nivel)} title={medRec.titulo}>{medRec.corpo}</AlertCard>
@@ -717,16 +723,16 @@ export function CADFlow({ onBack }) {
           {medGaso && (
             <div className={styles.group}>
               <div className={styles.row2}>
-                <InputField label="pH venoso" type="number" mono value={medPh} onChange={setMedPh} placeholder="Ex.: 7,28" />
-                <InputField label="Bicarbonato" type="number" mono value={medHco3} onChange={setMedHco3} placeholder="Ex.: 16" unit="mEq/L" showUnit />
+                <InputField label="pH venoso" inputMode="decimal" mono value={medPh} onChange={setMedPh} placeholder="Ex.: 7,28" />
+                <InputField label="Bicarbonato" inputMode="decimal" mono value={medHco3} onChange={setMedHco3} placeholder="Ex.: 16" unit="mEq/L" showUnit />
               </div>
               <div className={styles.row2}>
-                <InputField label="Sódio (Na)" type="number" mono value={medNa} onChange={setMedNa} placeholder="Ex.: 138" unit="mEq/L" showUnit />
-                <InputField label="Cloro (Cl)" type="number" mono value={medCl} onChange={setMedCl} placeholder="Ex.: 105" unit="mEq/L" showUnit />
+                <InputField label="Sódio (Na)" inputMode="decimal" mono value={medNa} onChange={setMedNa} placeholder="Ex.: 138" unit="mEq/L" showUnit />
+                <InputField label="Cloro (Cl)" inputMode="decimal" mono value={medCl} onChange={setMedCl} placeholder="Ex.: 105" unit="mEq/L" showUnit />
               </div>
               <div className={styles.row2}>
-                <InputField label="Potássio (K)" type="number" mono value={medK} onChange={setMedK} placeholder="Ex.: 4,0" unit="mEq/L" showUnit helperText="K < 3,5 suspende a insulina." />
-                <InputField label="BOHB" type="number" mono value={medBohb} onChange={setMedBohb} placeholder="Ex.: 1,2" unit="mmol/L" showUnit />
+                <InputField label="Potássio (K)" inputMode="decimal" mono value={medK} onChange={setMedK} placeholder="Ex.: 4,0" unit="mEq/L" showUnit helperText="K < 3,5 suspende a insulina." />
+                <InputField label="BOHB" inputMode="decimal" mono value={medBohb} onChange={setMedBohb} placeholder="Ex.: 1,2" unit="mmol/L" showUnit />
               </div>
               {medKRec && <AlertCard level="critical" title={medKRec.titulo}>{medKRec.corpo}</AlertCard>}
             </div>
@@ -746,10 +752,10 @@ export function CADFlow({ onBack }) {
       >
         <div className={styles.group}>
           <div className={styles.row2}>
-            <InputField label="Sódio (Na)" type="number" mono value={agNa} onChange={setAgNa} placeholder="Ex.: 138" unit="mEq/L" showUnit />
-            <InputField label="Cloro (Cl)" type="number" mono value={agCl} onChange={setAgCl} placeholder="Ex.: 105" unit="mEq/L" showUnit />
+            <InputField label="Sódio (Na)" inputMode="decimal" mono value={agNa} onChange={setAgNa} placeholder="Ex.: 138" unit="mEq/L" showUnit />
+            <InputField label="Cloro (Cl)" inputMode="decimal" mono value={agCl} onChange={setAgCl} placeholder="Ex.: 105" unit="mEq/L" showUnit />
           </div>
-          <InputField label="Bicarbonato (HCO₃)" type="number" mono value={agHco3} onChange={setAgHco3} placeholder="Ex.: 18" unit="mEq/L" showUnit />
+          <InputField label="Bicarbonato (HCO₃)" inputMode="decimal" mono value={agHco3} onChange={setAgHco3} placeholder="Ex.: 18" unit="mEq/L" showUnit />
           {agPreview != null && (
             <ResultDisplay value={agPreview.toFixed(0)} unit="mEq/L" label="Ânion gap" level={agPreview < 12 ? 'success' : 'warning'} />
           )}
@@ -802,7 +808,7 @@ export function CADFlow({ onBack }) {
         description="A ação não pode ser desfeita."
         confirmLabel="Apagar"
         cancelLabel="Manter"
-        perigo
+        destructive
         onConfirm={handleExcluirConfirm}
       />
 

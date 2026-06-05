@@ -666,13 +666,13 @@ export function SCAFlow({ onBack }) {
         description="Esta ação não pode ser desfeita."
         confirmLabel="Excluir"
         cancelLabel="Manter"
-        perigo
+        destructive
         onConfirm={handleExcluirCaso}
       />
 
       {toast && (
         <div className={styles.toastWrap}>
-          <Toast type={toast.type === 'success' ? 'success' : 'error'} message={toast.message} onDismiss={() => setToast(null)} />
+          <Toast type={toast.type === 'warning' ? 'atencao' : (toast.type || 'success')} message={toast.message} onDismiss={() => setToast(null)} />
         </div>
       )}
     </>

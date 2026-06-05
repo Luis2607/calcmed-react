@@ -72,3 +72,10 @@
 
 .error { border-color: var(--retorno-critico-borda); }   /* #FECACA */
 .error .icon { color: var(--retorno-critico); }          /* #991B1B */
+
+/* atencao (âmbar) e info (neutro) — estados que não são sucesso nem erro */
+.atencao { border-color: var(--ds-retorno-atencao); }
+.atencao .icon { color: var(--ds-retorno-atencao); }
+
+.info { border-color: var(--ds-borda-padrao); }
+.info .icon { color: var(--ds-texto-secundario); }

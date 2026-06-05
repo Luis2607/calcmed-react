@@ -1085,7 +1085,7 @@ export function SepseFlow({ onBack }) {
         description="Esta ação não pode ser desfeita."
         confirmLabel="Excluir"
         cancelLabel="Manter"
-        perigo
+        destructive
         onConfirm={handleExcluirConfirm}
       />
 

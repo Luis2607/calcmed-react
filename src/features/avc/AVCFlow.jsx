@@ -795,7 +795,7 @@ export function AVCFlow({ onBack }) {
         description="A ação não pode ser desfeita."
         confirmLabel="Apagar"
         cancelLabel="Manter"
-        perigo
+        destructive
         onConfirm={handleExcluirConfirm}
       />
 
