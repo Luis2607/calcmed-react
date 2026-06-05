@@ -225,3 +225,4 @@
 .tone-primario { background: var(--ds-interativo-primario); color: var(--ds-texto-sobre-destaque); }
 .tone-pediatria { background: var(--ds-dominio-pediatria); color: var(--ds-texto-sobre-destaque); }
 .tone-critico { background: var(--ds-dominio-urgencias); color: var(--ds-texto-sobre-destaque); }
+.tone-atencao { background: var(--ds-retorno-atencao); color: var(--ds-texto-sobre-destaque); }

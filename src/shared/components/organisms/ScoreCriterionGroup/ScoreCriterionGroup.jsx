@@ -61,8 +61,18 @@ export const ScoreCriterionGroup = ({
   // ── Modo BINARY · header com Checkbox + badge, sem body ─────────────
   if (binary) {
     const cardClass = [styles.card, binaryChecked ? styles.expanded : ''].filter(Boolean).join(' ');
+    const toggle = () => onBinaryChange?.(!binaryChecked);
+    // div role=checkbox (não <label> envolvendo o <label> do Checkbox — isso causava
+    // toque duplo por labels aninhados). Checkbox fica visual (pointer-events:none).
     return (
-      <label className={cardClass}>
+      <div
+        className={cardClass}
+        role="checkbox"
+        aria-checked={binaryChecked}
+        tabIndex={0}
+        onClick={toggle}
+        onKeyDown={(e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(); } }}
+      >
         <div className={[styles.header, styles.headerBinary].join(' ')}>
           <span className={styles.leftCol}>
             <span className={styles.titleRow}>
@@ -72,10 +82,10 @@ export const ScoreCriterionGroup = ({
           </span>
           <span className={styles.rightCol}>
             {points && <span className={styles.ptsBadge}>{points}</span>}
-            <Checkbox checked={binaryChecked} onChange={onBinaryChange} />
+            <span style={{ pointerEvents: 'none' }}><Checkbox checked={binaryChecked} onChange={() => {}} /></span>
           </span>
         </div>
-      </label>
+      </div>
     );
   }
 
