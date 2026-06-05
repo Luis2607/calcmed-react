@@ -1309,7 +1309,7 @@ export function PCRFlow({ onBack }) {
         description="Esta ação não pode ser desfeita."
         confirmLabel="Excluir"
         cancelLabel="Manter"
-        perigo
+        destructive
         onConfirm={handleExcluirCaso}
       />
 
@@ -1400,7 +1400,7 @@ export function PCRFlow({ onBack }) {
       {toast && (
         <div className={styles.toastWrap}>
           <Toast
-            type={toast.type === 'success' ? 'success' : 'error'}
+            type={toast.type === 'warning' ? 'atencao' : (toast.type || 'info')}
             message={toast.message}
             onUndo={toast.onUndo ? () => { toast.onUndo(); setToast(null); } : undefined}
             onDismiss={() => setToast(null)}

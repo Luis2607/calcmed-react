@@ -228,7 +228,7 @@ export function AdrenDoubleTapSheet({ open, onClose, segundosDesde, onConfirm })
       description={`Última dose foi há ${segundosDesde}s. Aplicar mesmo assim?`}
       confirmLabel="Aplicar"
       cancelLabel="Cancelar"
-      perigo
+      destructive
       onConfirm={onConfirm}
     />
   );

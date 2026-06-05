@@ -7,7 +7,7 @@ import styles from './Toast.module.css';
  * pendência em docs/ds-issues-figma.md.
  *
  * Props:
- *  - type: 'success' | 'error'
+ *  - type: 'success' | 'error' | 'atencao' | 'info'
  *  - message: string (texto da mensagem)
  *  - onUndo?: () => void  -> renderiza botão "Desfazer"
  *  - onDismiss?: () => void -> renderiza X (Figma "Show dismiss")
@@ -26,6 +26,22 @@ const GLYPH = {
       <path d="m10.29 3.86-8.47 14.14A2 2 0 0 0 3.53 21h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
       <line x1="12" y1="9" x2="12" y2="13" />
       <line x1="12" y1="17" x2="12.01" y2="17" />
+    </svg>
+  ),
+  // atencao = mesmo triângulo (Figma icone/atencao), em âmbar via CSS
+  atencao: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m10.29 3.86-8.47 14.14A2 2 0 0 0 3.53 21h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+      <line x1="12" y1="9" x2="12" y2="13" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
+    </svg>
+  ),
+  // info = neutro (estado/confirmação que não é sucesso nem erro)
+  info: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="11" x2="12" y2="16" />
+      <line x1="12" y1="8" x2="12.01" y2="8" />
     </svg>
   ),
 };
