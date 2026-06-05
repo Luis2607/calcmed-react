@@ -11,14 +11,16 @@ import { ContextSelector } from '../ContextSelector';
 import { InterpretationBlock } from '../InterpretationBlock';
 import { LimitationNote } from '../LimitationNote';
 import { ProtocolStep } from '../ProtocolStep';
+import { OpenToolButton } from '../OpenToolButton';
 import { Table } from '../../organisms/Table';
 import { AlertCard } from '../../organisms/AlertCard';
 import { ChecklistBlock } from '../../organisms/ChecklistBlock';
 import { INTENT_LABELS } from '../intents';
 import styles from './AIResponseRenderer.module.css';
 
-/** Negrito inline: converte **texto** em <strong> e \n em quebra de linha.
- *  Mantém a formatação clara (hierarquia/ênfase) sem markdown pesado. */
+/** Markdown leve inline: **negrito** → <strong>, *itálico* → <em> e \n em quebra
+ *  de linha. O itálico serve à prosa longa (ênfase secundária / termo técnico)
+ *  sem virar markdown pesado. Negrito é tratado antes do itálico (`**` contém `*`). */
 function rich(content) {
   if (content == null) return null;
   if (typeof content === 'number') content = String(content);
@@ -27,7 +29,11 @@ function rich(content) {
   return content.split('\n').map((line, li) => (
     <Fragment key={li}>
       {li > 0 && <br />}
-      {line.split(/\*\*(.+?)\*\*/g).map((seg, i) => (i % 2 === 1 ? <strong key={i}>{seg}</strong> : seg))}
+      {line.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).map((seg, i) => {
+        if (seg.startsWith('**') && seg.endsWith('**')) return <strong key={i}>{seg.slice(2, -2)}</strong>;
+        if (seg.startsWith('*') && seg.endsWith('*') && seg.length > 2) return <em key={i}>{seg.slice(1, -1)}</em>;
+        return seg;
+      })}
     </Fragment>
   ));
 }
@@ -147,8 +153,11 @@ function renderBlock(block, i, onSelect, risk) {
           onSelect={onSelect ? (item) => onSelect(item.value ?? item.label, item) : undefined}
         />
       );
-    case 'text':
-      return <p key={i} className={styles.text}>{rich(block.content)}</p>;
+    case 'text': {
+      // prosa longa (>40 palavras) ganha conforto de leitura (medida + respiro)
+      const long = typeof block.content === 'string' && block.content.trim().split(/\s+/).length > 40;
+      return <p key={i} className={styles.text} data-long={long || undefined}>{rich(block.content)}</p>;
+    }
     default:
       return null;
   }
@@ -188,12 +197,29 @@ export const AIResponseRenderer = ({ response, onSelect, variant = 'card' }) => 
           {renderBlock(block, i, onSelect, risk)}
         </BlockBoundary>
       ))}
-      {actions.length > 0 && (
-        <SuggestionChips
-          items={actions.map((a) => ({ label: a.label, value: a.value }))}
-          onSelect={onSelect ? (item) => onSelect(item.value ?? item.label, item) : undefined}
-        />
-      )}
+      {actions.length > 0 && (() => {
+        // deep-links (abrir ferramenta) ≠ chips de continuidade: o renderer não
+        // conhece roteamento — sinaliza via meta.type e o IAScreen navega.
+        const tools = actions.filter((a) => a.type === 'open_tool');
+        const chips = actions.filter((a) => a.type !== 'open_tool');
+        return (
+          <>
+            {chips.length > 0 && (
+              <SuggestionChips
+                items={chips.map((a) => ({ label: a.label, value: a.value }))}
+                onSelect={onSelect ? (item) => onSelect(item.value ?? item.label, item) : undefined}
+              />
+            )}
+            {tools.map((a, i) => (
+              <OpenToolButton
+                key={`tool-${i}`}
+                label={a.label}
+                onOpen={onSelect ? () => onSelect(a.route, { type: 'open_tool', route: a.route, label: a.label }) : undefined}
+              />
+            ))}
+          </>
+        );
+      })()}
     </AIResponse>
   );
 };

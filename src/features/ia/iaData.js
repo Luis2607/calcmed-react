@@ -7,19 +7,25 @@ export const ILLUSTRATIVE = 'Confira no protocolo do seu serviço.';
 // Ressalva mais forte para dose/conduta crítica (não anestesiar por repetição).
 export const ILLUSTRATIVE_DOSE = 'Valide a dose no protocolo do seu serviço antes de aplicar.';
 
-// Sugestões iniciais (estado vazio + fallback). value = token de roteiro.
-// Cobrem a amplitude dos patterns: ambígua, triagem, crítico, exame, protocolo,
-// aprendizado e resumo. Comparação é alcançável por texto/ações.
-// Sugestões iniciais — curadas pelo MAIOR valor de plantão, cada uma uma
-// capacidade distinta (dose · conduta · exame · comparação · protocolo · resumo),
-// ordenadas por urgência. Poucas e de propósito: a faixa rola na horizontal.
+// Sugestões iniciais (estado vazio + fallback). value = token de roteiro,
+// icon = glifo do átomo Icon (todos mapeados, nunca fallback). São 12 cards
+// distribuídos em 2 linhas que rolam na horizontal (grid no estado-vazio).
+// Cada um cobre uma capacidade distinta — dose · conduta · exame · comparação ·
+// protocolo · resumo · explicação — ordenados por valor de plantão. Cada `value`
+// casa um branch real de RESPONSES (sem cair no fallback).
 export const STARTERS = [
-  { label: 'dose de adrenalina?', value: 'q:adrena' },
-  { label: 'paciente hipotenso', value: 'q:hipo' },
-  { label: 'interpreta uma gasometria', value: 'q:gaso' },
-  { label: 'noradrenalina ou dobutamina?', value: 'q:noradobu' },
-  { label: 'protocolo de PCR', value: 'proto:pcr' },
-  { label: 'resume pra evolução', value: 'q:resumo' },
+  { label: 'Dose de adrenalina', icon: 'gota', value: 'q:adrena' },
+  { label: 'Paciente hipotenso', icon: 'batimento', value: 'q:hipo' },
+  { label: 'Hipercalemia / ECG', icon: 'onda-ecg', value: 'crit:k' },
+  { label: 'Protocolo de PCR', icon: 'primeiro-socorro', value: 'proto:pcr' },
+  { label: 'Interpretar gaso', icon: 'conversores', value: 'q:gaso' },
+  { label: 'Nora ou dobuta?', icon: 'seringa', value: 'q:noradobu' },
+  { label: 'Conduta na sepse', icon: 'cerebro', value: 'learn:sepse' },
+  { label: 'Dose pediátrica', icon: 'bebe', value: 'adrena:ped' },
+  { label: 'Resumir p/ evolução', icon: 'executar', value: 'q:resumo' },
+  { label: 'Por que noradrenalina', icon: 'eletrico', value: 'explica:noraprimeiro' },
+  { label: 'O que o lactato diz', icon: 'gota', value: 'explica:lactato' },
+  { label: 'Meta de PAM 65', icon: 'tempo', value: 'explica:pam' },
 ];
 
 const PCR_STEPS = [
@@ -57,7 +63,7 @@ const RESPONSES = {
       { type: 'text', content: '**Sem teto de dose** na parada. Manter **RCP de alta qualidade** entre as doses.' },
       { type: 'limitation', content: ILLUSTRATIVE_DOSE },
     ],
-    actions: [{ label: 'Ver ACLS', value: 'stub:tool' }, { label: 'Dose pediátrica', value: 'adrena:ped' }],
+    actions: [{ type: 'open_tool', route: 'pcr-react', label: 'Abrir Modo PCR no CalcMed' }, { label: 'Dose pediátrica', value: 'adrena:ped' }],
   },
   'adrena:ana': {
     intent: 'dose',
@@ -89,7 +95,7 @@ const RESPONSES = {
       { type: 'dose', value: '0,01 mg/kg', unit: 'IV/IO', via: 'máx 1 mg · a cada 3–5 min' },
       { type: 'limitation', content: ILLUSTRATIVE_DOSE },
     ],
-    actions: [{ label: 'Dose adulto (PCR)', value: 'adrena:pcr' }, { label: 'Protocolo de PCR', value: 'proto:pcr' }],
+    actions: [{ label: 'Dose adulto (PCR)', value: 'adrena:pcr' }, { type: 'open_tool', route: 'pcr-react', label: 'Abrir Modo PCR no CalcMed' }],
   },
 
   // ---- Triagem contextual → Guided Flow → Operational Response ----
@@ -125,7 +131,7 @@ const RESPONSES = {
       },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
-    actions: [{ label: 'Calcular dose por peso', value: 'stub:tool' }, { label: 'Copiar conduta', value: 'q:resumo' }],
+    actions: [{ type: 'open_tool', route: 'sepse-react', label: 'Abrir Sepse no CalcMed' }, { label: 'Copiar conduta', value: 'q:resumo' }],
   },
   'hipo:sangramento': {
     intent: 'operacional',
@@ -157,7 +163,7 @@ const RESPONSES = {
       },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
-    actions: [{ label: 'Comparar nora × dobuta', value: 'q:noradobu' }, { label: 'Copiar conduta', value: 'q:resumo' }],
+    actions: [{ label: 'Comparar nora × dobuta', value: 'q:noradobu' }, { type: 'open_tool', route: 'sca', label: 'Abrir SCA no CalcMed' }, { label: 'Copiar conduta', value: 'q:resumo' }],
   },
   'hipo:naosei': {
     intent: 'triagem',
@@ -288,6 +294,7 @@ const RESPONSES = {
       },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
+    actions: [{ type: 'open_tool', route: 'pcr-react', label: 'Abrir Modo PCR no CalcMed' }],
   },
   'proto:pcr:choca': {
     intent: 'protocolo',
@@ -304,7 +311,7 @@ const RESPONSES = {
       },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
-    actions: [{ label: 'Dose de adrenalina', value: 'adrena:pcr' }],
+    actions: [{ label: 'Dose de adrenalina', value: 'adrena:pcr' }, { type: 'open_tool', route: 'pcr-react', label: 'Abrir Modo PCR no CalcMed' }],
   },
   'proto:pcr:naochoca': {
     intent: 'protocolo',
@@ -321,7 +328,7 @@ const RESPONSES = {
       },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
-    actions: [{ label: 'Dose de adrenalina', value: 'adrena:pcr' }],
+    actions: [{ label: 'Dose de adrenalina', value: 'adrena:pcr' }, { type: 'open_tool', route: 'pcr-react', label: 'Abrir Modo PCR no CalcMed' }],
   },
 
   // ---- Aprendizado (Learning Layer) ----
@@ -353,7 +360,68 @@ const RESPONSES = {
       },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
-    actions: [{ label: 'Conduta no choque', value: 'q:hipo' }, { label: 'Interpretar gasometria', value: 'q:gaso' }],
+    actions: [{ label: 'Conduta no choque', value: 'q:hipo' }, { type: 'open_tool', route: 'sepse-react', label: 'Abrir Sepse no CalcMed' }],
+  },
+
+  // ---- Explicação (prosa longa / text-only): "por que / o que é / nuance" ----
+  // Diferente de `aprendizado` (camadas/Learning Layer): é a prosa direta de um
+  // "por quê", text-heavy. Usa só blocos já suportados (text/heading/list/
+  // expandable/limitation/chips). Itálico *...* depende do rich() estendido.
+  'explica:noraprimeiro': {
+    intent: 'explicacao',
+    title: 'Por que noradrenalina é a 1ª linha no choque séptico',
+    blocks: [
+      { type: 'text', content: 'No choque séptico o problema dominante é **vasoplegia**: os vasos perdem o tônus e a pressão cai mesmo com débito cardíaco preservado. O que falta, na maioria dos casos, é *resistência vascular* — e é exatamente isso que a noradrenalina repõe, com efeito α-adrenérgico potente e ação β1 discreta que sustenta o débito sem disparar a frequência.' },
+      { type: 'text', content: 'A escolha sobre a dopamina não é preferência de escola: em ensaios comparativos a dopamina associou-se a **mais arritmias** e, em subgrupos de choque, a pior desfecho. A noradrenalina entrega a mesma elevação de PAM com margem de segurança maior — por isso virou o padrão.' },
+      { type: 'text', content: 'A leitura prática é simples: *PAM baixa que não responde a volume* pede vasopressor, e o vasopressor é a noradrenalina. Reservar adrenalina e vasopressina para quando ela sozinha não basta.' },
+      { type: 'expandable', title: 'E se a PAM não subir com noradrenalina?', content: 'Antes de escalar, reavalie volemia e a dose atual. Persistindo, associe **vasopressina** como 2º agente — poupa catecolamina e atua por via independente — conforme o protocolo institucional.' },
+      { type: 'limitation', content: ILLUSTRATIVE },
+    ],
+    actions: [
+      { label: 'Conduta no plantão', value: 'hipo:sepse' },
+      { label: 'Comparar vasopressores', value: 'q:noradobu' },
+      { type: 'open_tool', route: 'sepse-react', label: 'Abrir Sepse no CalcMed' },
+    ],
+  },
+  'explica:lactato': {
+    intent: 'explicacao',
+    title: 'O que o lactato realmente diz',
+    blocks: [
+      { type: 'text', content: '"O lactato subiu" virou sinônimo de gravidade — mas entender *por que* ele sobe muda a conduta. Na maioria dos choques o lactato reflete **metabolismo anaeróbio**: a oferta de oxigênio aos tecidos não acompanha a demanda, e a célula passa a gerar energia por uma via que termina em lactato. É um marcador de *hipoperfusão*, não um veneno em si.' },
+      { type: 'divider' },
+      { type: 'heading', icon: 'busca', text: 'Por que nem todo lactato alto é hipóxia' },
+      { type: 'text', content: 'Existe um lactato que não vem de falta de oxigênio. Adrenalina endógena ou exógena acelera a glicólise e eleva o lactato com perfusão preservada; o fígado doente o depura mal; e algumas toxinas o aumentam por bloqueio mitocondrial. Por isso o número isolado engana — ele só ganha sentido *ao lado da clínica e da tendência*.' },
+      {
+        type: 'list',
+        items: [
+          '**Hipoperfusão** — a causa mais comum no pronto-socorro; trata-se a perfusão, não o número.',
+          '**Adrenérgico** — drogas vasoativas e estresse elevam sem isquemia.',
+          '**Clearance reduzido** — disfunção hepática prolonga a queda.',
+        ],
+      },
+      { type: 'divider' },
+      { type: 'heading', icon: 'seringa', text: 'O que fazer com a informação' },
+      { type: 'text', content: 'O valor que orienta conduta é a **tendência**, não a foto. Lactato que *cai* após ressuscitação sinaliza perfusão recuperando; lactato que *não cai* em algumas horas é sinal de alerta — reavalie volume, fonte e a necessidade de escalar suporte. A meta nunca é o número bonito no papel, é o paciente perfundindo.' },
+      { type: 'limitation', content: ILLUSTRATIVE },
+    ],
+    actions: [
+      { label: 'Interpretar gasometria', value: 'q:gaso' },
+      { label: 'Choque séptico — conduta', value: 'hipo:sepse' },
+      { type: 'open_tool', route: 'sepse-react', label: 'Abrir Sepse no CalcMed' },
+    ],
+  },
+  'explica:pam': {
+    intent: 'explicacao',
+    title: 'O que é PAM e por que a meta é 65',
+    blocks: [
+      { type: 'text', content: 'A **pressão arterial média** é a pressão que de fato empurra o sangue pelos órgãos ao longo do ciclo cardíaco — por isso ela, e não a sistólica, é o alvo na ressuscitação. Estima-se por *diastólica + ⅓ da diferença sistólica–diastólica*, mas o monitor já entrega o valor.' },
+      { type: 'text', content: 'A meta de **PAM ≥ 65 mmHg** é o ponto onde a maioria dos leitos vasculares ainda autorregula o fluxo. Abaixo disso, rim e cérebro começam a perder perfusão. Acima, salvo hipertenso crônico ou contexto específico, ganha-se pouco e expõe-se o paciente a mais vasopressor do que o necessário.' },
+      { type: 'limitation', content: ILLUSTRATIVE },
+    ],
+    actions: [
+      { label: 'Paciente hipotenso', value: 'q:hipo' },
+      { label: 'Por que noradrenalina', value: 'explica:noraprimeiro' },
+    ],
   },
 };
 
@@ -398,8 +466,12 @@ function matchText(text) {
   const kAlto = /\bk\+?\s*\.?\s*[6-9]/.test(t) || /(pot[aá]ssio)\W{0,6}[6-9]/.test(t);
   if (has('hipercalem', 'qrs largo', 'potássio alto', 'potassio alto') || kAlto) return 'crit:k';
 
-  // Aprendizado (antes da conduta operacional)
+  // Aprendizado / explicação (prosa) — antes da conduta operacional, senão
+  // "por que noradrenalina" cairia na conduta e "o que é PAM" na triagem.
   if (explica && has('sepse', 'séptico', 'septico')) return 'learn:sepse';
+  if (explica && t.includes('noradrenalina')) return 'explica:noraprimeiro';
+  if (explica && word('lactato')) return 'explica:lactato';
+  if (explica && word('pam')) return 'explica:pam';
 
   // Protocolo guiado
   if (has('protocolo', 'acls', 'parada cardio', 'reanima')) return 'proto:pcr';

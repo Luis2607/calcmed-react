@@ -1,0 +1,25 @@
+/* AI · OpenToolButton — botão largo de deep-link para uma ferramenta do app.
+   Tom de "ação de seção" (não pílula de chip): ocupa a largura, ícone+seta
+   sinalizam ida para fora do chat. Cor da marca, sem competir com a conduta. */
+.openTool {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-2);
+  width: 100%;
+  padding: var(--esp-3);
+  border: 1px solid var(--ds-borda-padrao);
+  border-radius: var(--radius-card);
+  background: var(--interativo-primario-tint-08);
+  color: var(--ds-interativo-primario);
+  font: var(--ds-font-botao-md);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.openTool:hover { background: var(--interativo-primario-tint-04); border-color: var(--ds-interativo-primario); }
+.openTool:active { background: var(--ds-fundo-elevado); }
+.openTool:focus-visible { outline: 2px solid var(--ds-borda-foco); outline-offset: 2px; }
+
+.icon { display: inline-flex; flex-shrink: 0; }
+.label { flex: 1; min-width: 0; }
+.arrow { display: inline-flex; flex-shrink: 0; }

@@ -3,11 +3,22 @@
  * nas listas, 1 por bloco inteiro) para revelar progressivamente, como se a IA
  * estivesse digitando. responseToText serializa a resposta para copiar. */
 
-const strip = (s) => String(s ?? '').replace(/\*\*(.+?)\*\*/g, '$1');
+const strip = (s) => String(s ?? '')
+  .replace(/\*\*(.+?)\*\*/g, '$1') // negrito
+  .replace(/\*(.+?)\*/g, '$1');    // itálico
 const words = (s) => strip(s).trim().split(/\s+/).filter(Boolean);
 
+// Prosa longa revela em "blocos de leitura" (CHUNK palavras por tick) em vez de
+// soluço palavra-a-palavra — uma explicação de ~180 palavras cairia de ~8,6s para
+// ~2,3s sem perder o efeito de digitação. Texto curto continua 1 palavra/tick.
+const CHUNK = 3;
+const LONG = 40;
+const chunkOf = (content) => (words(content).length > LONG ? CHUNK : 1);
+
 function blockUnits(b) {
-  if (b.type === 'text' || b.type === 'primary_action') return Math.max(1, words(b.content).length);
+  if (b.type === 'text' || b.type === 'primary_action') {
+    return Math.max(1, Math.ceil(words(b.content).length / chunkOf(b.content)));
+  }
   if (b.type === 'heading') return Math.max(1, words(b.text).length);
   if (b.type === 'list') return Math.max(1, (b.items || []).length);
   return 1; // bloco "inteiro" (tabela, dose, alerta…) revela de uma vez
@@ -28,7 +39,7 @@ export function sliceResponse(response, units) {
     if (units >= acc + cost) { out.push(b); acc += cost; continue; }
     const into = units - acc; // units já reveladas dentro deste bloco
     if (into > 0) {
-      if (b.type === 'text' || b.type === 'primary_action') out.push({ ...b, content: words(b.content).slice(0, into).join(' ') });
+      if (b.type === 'text' || b.type === 'primary_action') out.push({ ...b, content: words(b.content).slice(0, into * chunkOf(b.content)).join(' ') });
       else if (b.type === 'heading') out.push({ ...b, text: words(b.text).slice(0, into).join(' ') });
       else if (b.type === 'list') out.push({ ...b, items: (b.items || []).slice(0, into) });
       else out.push(b);

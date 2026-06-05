@@ -6,6 +6,13 @@
   color: var(--ds-texto-secundario);
 }
 .text strong { color: var(--ds-texto-padrao); font-weight: 700; }
+.text em { font-style: italic; color: var(--ds-texto-padrao); }
+
+/* Prosa longa (text-only): parágrafos consecutivos ganham ~1 linha de respiro e
+   uma medida de leitura confortável (~68ch; em telas estreitas nunca limita). */
+.text + .text { margin-top: var(--esp-2); }
+.text[data-long],
+.list[data-long] { max-width: 68ch; }
 
 .heading {
   display: flex;

@@ -10,6 +10,7 @@ export const INTENT_LABELS = {
   comparacao: 'Comparação clínica',
   protocolo: 'Protocolo guiado',
   aprendizado: 'Aprendizado',
+  explicacao: 'Explicação',
   resumo: 'Resumo copiável',
   triagem: 'Triagem contextual',
   critico: 'Alerta crítico',
