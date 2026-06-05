@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import { ConfirmSheet, InfoSheet } from '../../shared/components/overlays/patterns';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
-import { SheetSection, SheetText, SheetList } from '../../shared/components/molecules/sheet';
+import { SheetSection, SheetText } from '../../shared/components/molecules/sheet';
 import { HHTTPills } from '../../shared/components/molecules/HHTTPills';
 import { HHTT_ITEMS } from '../../shared/components/molecules/HHTTPills/hhttData';
 import { BottomSheet } from '../../shared/components/overlays/BottomSheet';

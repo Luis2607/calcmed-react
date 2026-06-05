@@ -31,7 +31,6 @@ import { ChecklistBlock } from '../../shared/components/organisms/ChecklistBlock
 import { TimerCard } from '../../shared/components/organisms/TimerCard/TimerCard';
 import { OptionCard } from '../../shared/components/molecules/OptionCard/OptionCard';
 import { Timeline } from '../../shared/components/organisms/Timeline';
-import { BannerContextual } from '../../shared/components/organisms/BannerContextual';
 import { SheetSection, SheetDetailRow, SheetText } from '../../shared/components/molecules/sheet';
 import { Toast } from '../../shared/components/molecules/Toast';
 import { ConfirmSheet, AnnotationSheet, DetailSheet, SavePatientSheet } from '../../shared/components/overlays/patterns';
