@@ -122,7 +122,7 @@ const RESPONSES = {
     title: 'Choque séptico provável',
     context: 'Hipotensão + suspeita de foco infeccioso',
     blocks: [
-      { type: 'primary_action', content: 'Iniciar **noradrenalina** — meta **PAM ≥ 65 mmHg**' },
+      { type: 'primary_action', content: 'Iniciar **noradrenalina**. Meta: **PAM ≥ 65 mmHg**' },
       {
         type: 'checklist',
         tagLabel: 'Condutas paralelas',
@@ -169,7 +169,7 @@ const RESPONSES = {
     intent: 'triagem',
     title: 'Vamos por dados objetivos',
     blocks: [
-      { type: 'text', content: 'Sem hipótese fechada, deixe o perfil guiar — ou um exame pra orientar.' },
+      { type: 'text', content: 'Sem hipótese fechada, deixe o perfil guiar, ou um exame pra orientar.' },
       {
         type: 'chips',
         label: 'Perfil mais provável',
@@ -263,8 +263,8 @@ const RESPONSES = {
     title: 'Hipercalemia com alteração no ECG',
     context: 'K⁺ 7,1 mEq/L · QRS alargado',
     blocks: [
-      { type: 'alert', level: 'critical', title: 'Risco de arritmia / PCR', content: 'QRS largo indica instabilidade de membrana — agir agora.' },
-      { type: 'primary_action', tone: 'critico', content: '**Gluconato de cálcio 10% IV** — estabiliza a membrana (não baixa o K⁺).' },
+      { type: 'alert', level: 'critical', title: 'Risco de arritmia / PCR', content: 'QRS largo indica instabilidade de membrana. Agir agora.' },
+      { type: 'primary_action', tone: 'critico', content: '**Gluconato de cálcio 10% IV**: estabiliza a membrana (não baixa o K⁺).' },
       {
         type: 'checklist',
         tagLabel: 'Em seguida',
@@ -334,7 +334,7 @@ const RESPONSES = {
   // ---- Aprendizado (Learning Layer) ----
   'learn:sepse': {
     intent: 'aprendizado',
-    title: 'Choque séptico — em camadas',
+    title: 'Choque séptico, em camadas',
     blocks: [
       { type: 'text', content: 'Em uma frase: **disfunção orgânica** por resposta desregulada à infecção, com **hipotensão** que exige vasopressor e/ou **lactato elevado** mesmo após volume adequado.' },
       { type: 'divider' },
@@ -349,7 +349,7 @@ const RESPONSES = {
       { type: 'divider' },
       { type: 'heading', icon: 'seringa', text: 'Por que noradrenalina primeiro' },
       { type: 'text', content: 'É o vasopressor de **1ª linha**: eleva a PAM com **menor risco arritmogênico** que a dopamina e mantém a perfusão sem taquicardia excessiva.' },
-      { type: 'expandable', title: 'E quando associar vasopressina?', content: 'Como 2º agente quando a noradrenalina sobe além de doses moderadas, para reduzir a dose total de catecolamina — conforme protocolo institucional.' },
+      { type: 'expandable', title: 'E quando associar vasopressina?', content: 'Como 2º agente quando a noradrenalina sobe além de doses moderadas, para reduzir a dose total de catecolamina, conforme o protocolo institucional.' },
       {
         type: 'chips',
         label: 'Aprofundar',
@@ -371,10 +371,12 @@ const RESPONSES = {
     intent: 'explicacao',
     title: 'Por que noradrenalina é a 1ª linha no choque séptico',
     blocks: [
-      { type: 'text', content: 'No choque séptico o problema dominante é **vasoplegia**: os vasos perdem o tônus e a pressão cai mesmo com débito cardíaco preservado. O que falta, na maioria dos casos, é *resistência vascular* — e é exatamente isso que a noradrenalina repõe, com efeito α-adrenérgico potente e ação β1 discreta que sustenta o débito sem disparar a frequência.' },
-      { type: 'text', content: 'A escolha sobre a dopamina não é preferência de escola: em ensaios comparativos a dopamina associou-se a **mais arritmias** e, em subgrupos de choque, a pior desfecho. A noradrenalina entrega a mesma elevação de PAM com margem de segurança maior — por isso virou o padrão.' },
-      { type: 'text', content: 'A leitura prática é simples: *PAM baixa que não responde a volume* pede vasopressor, e o vasopressor é a noradrenalina. Reservar adrenalina e vasopressina para quando ela sozinha não basta.' },
-      { type: 'expandable', title: 'E se a PAM não subir com noradrenalina?', content: 'Antes de escalar, reavalie volemia e a dose atual. Persistindo, associe **vasopressina** como 2º agente — poupa catecolamina e atua por via independente — conforme o protocolo institucional.' },
+      { type: 'text', content: 'No choque séptico, o problema dominante é **vasoplegia**. Os vasos perdem o tônus e a pressão cai mesmo com o débito cardíaco preservado.' },
+      { type: 'text', content: 'O que falta, na maioria dos casos, é *resistência vascular*. É isso que a noradrenalina repõe: efeito α-adrenérgico potente, com ação β1 discreta que sustenta o débito sem disparar a frequência.' },
+      { type: 'text', content: 'A escolha sobre a dopamina não é preferência de escola. Em ensaios comparativos, a dopamina se associou a **mais arritmias** e, em subgrupos de choque, a pior desfecho.' },
+      { type: 'text', content: 'A noradrenalina entrega a mesma elevação de PAM com margem de segurança maior. Por isso virou o padrão.' },
+      { type: 'text', content: 'A leitura prática é simples. *PAM baixa que não responde a volume* pede vasopressor, e o vasopressor é a noradrenalina. Adrenalina e vasopressina ficam reservadas para quando ela sozinha não basta.' },
+      { type: 'expandable', title: 'E se a PAM não subir com noradrenalina?', content: 'Antes de escalar, reavalie a volemia e a dose atual. Se persistir, associe **vasopressina** como 2º agente. Ela poupa catecolamina e atua por uma via independente, conforme o protocolo institucional.' },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
     actions: [
@@ -387,26 +389,30 @@ const RESPONSES = {
     intent: 'explicacao',
     title: 'O que o lactato realmente diz',
     blocks: [
-      { type: 'text', content: '"O lactato subiu" virou sinônimo de gravidade — mas entender *por que* ele sobe muda a conduta. Na maioria dos choques o lactato reflete **metabolismo anaeróbio**: a oferta de oxigênio aos tecidos não acompanha a demanda, e a célula passa a gerar energia por uma via que termina em lactato. É um marcador de *hipoperfusão*, não um veneno em si.' },
+      { type: 'text', content: '"O lactato subiu" virou sinônimo de gravidade. Mas entender *por que* ele sobe muda a conduta.' },
+      { type: 'text', content: 'Na maioria dos choques, o lactato reflete **metabolismo anaeróbio**: a oferta de oxigênio aos tecidos não acompanha a demanda, e a célula gera energia por uma via que termina em lactato. É um marcador de *hipoperfusão*, não um veneno em si.' },
       { type: 'divider' },
       { type: 'heading', icon: 'busca', text: 'Por que nem todo lactato alto é hipóxia' },
-      { type: 'text', content: 'Existe um lactato que não vem de falta de oxigênio. Adrenalina endógena ou exógena acelera a glicólise e eleva o lactato com perfusão preservada; o fígado doente o depura mal; e algumas toxinas o aumentam por bloqueio mitocondrial. Por isso o número isolado engana — ele só ganha sentido *ao lado da clínica e da tendência*.' },
+      { type: 'text', content: 'Existe um lactato que não vem de falta de oxigênio. A adrenalina, endógena ou exógena, acelera a glicólise e eleva o lactato com perfusão preservada. O fígado doente o depura mal. E algumas toxinas o aumentam por bloqueio mitocondrial.' },
+      { type: 'text', content: 'Por isso o número isolado engana. Ele só ganha sentido *ao lado da clínica e da tendência*.' },
       {
         type: 'list',
         items: [
-          '**Hipoperfusão** — a causa mais comum no pronto-socorro; trata-se a perfusão, não o número.',
-          '**Adrenérgico** — drogas vasoativas e estresse elevam sem isquemia.',
-          '**Clearance reduzido** — disfunção hepática prolonga a queda.',
+          '**Hipoperfusão**: a causa mais comum no pronto-socorro. Trata-se a perfusão, não o número.',
+          '**Adrenérgico**: drogas vasoativas e estresse elevam sem isquemia.',
+          '**Clearance reduzido**: disfunção hepática prolonga a queda.',
         ],
       },
       { type: 'divider' },
       { type: 'heading', icon: 'seringa', text: 'O que fazer com a informação' },
-      { type: 'text', content: 'O valor que orienta conduta é a **tendência**, não a foto. Lactato que *cai* após ressuscitação sinaliza perfusão recuperando; lactato que *não cai* em algumas horas é sinal de alerta — reavalie volume, fonte e a necessidade de escalar suporte. A meta nunca é o número bonito no papel, é o paciente perfundindo.' },
+      { type: 'text', content: 'O valor que orienta a conduta é a **tendência**, não a foto.' },
+      { type: 'text', content: 'Lactato que *cai* após a ressuscitação sinaliza perfusão recuperando. Lactato que *não cai* em algumas horas é alerta: reavalie volume, fonte e a necessidade de escalar suporte.' },
+      { type: 'text', content: 'A meta nunca é o número bonito no papel. É o paciente perfundindo.' },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
     actions: [
       { label: 'Interpretar gasometria', value: 'q:gaso' },
-      { label: 'Choque séptico — conduta', value: 'hipo:sepse' },
+      { label: 'Conduta no choque séptico', value: 'hipo:sepse' },
       { type: 'open_tool', route: 'sepse-react', label: 'Abrir Sepse no CalcMed' },
     ],
   },
@@ -414,8 +420,10 @@ const RESPONSES = {
     intent: 'explicacao',
     title: 'O que é PAM e por que a meta é 65',
     blocks: [
-      { type: 'text', content: 'A **pressão arterial média** é a pressão que de fato empurra o sangue pelos órgãos ao longo do ciclo cardíaco — por isso ela, e não a sistólica, é o alvo na ressuscitação. Estima-se por *diastólica + ⅓ da diferença sistólica–diastólica*, mas o monitor já entrega o valor.' },
-      { type: 'text', content: 'A meta de **PAM ≥ 65 mmHg** é o ponto onde a maioria dos leitos vasculares ainda autorregula o fluxo. Abaixo disso, rim e cérebro começam a perder perfusão. Acima, salvo hipertenso crônico ou contexto específico, ganha-se pouco e expõe-se o paciente a mais vasopressor do que o necessário.' },
+      { type: 'text', content: 'A **pressão arterial média** é a pressão que de fato empurra o sangue pelos órgãos ao longo do ciclo cardíaco. Por isso ela, e não a sistólica, é o alvo na ressuscitação.' },
+      { type: 'text', content: 'Estima-se por *diastólica + ⅓ da diferença entre sistólica e diastólica*, mas o monitor já entrega o valor.' },
+      { type: 'text', content: 'A meta de **PAM ≥ 65 mmHg** é o ponto onde a maioria dos leitos vasculares ainda autorregula o fluxo.' },
+      { type: 'text', content: 'Abaixo disso, rim e cérebro começam a perder perfusão. Acima, salvo hipertenso crônico ou contexto específico, ganha-se pouco e expõe-se o paciente a mais vasopressor do que o necessário.' },
       { type: 'limitation', content: ILLUSTRATIVE },
     ],
     actions: [
@@ -431,7 +439,7 @@ const TOOL_STUB = {
   intent: 'aprendizado',
   title: 'Cálculo por peso',
   blocks: [
-    { type: 'text', content: 'A dose é ajustada ao peso do paciente (mg/kg) — informe o peso para fechar o número.' },
+    { type: 'text', content: 'A dose é ajustada ao peso do paciente (mg/kg). Informe o peso para fechar o número.' },
     { type: 'chips', label: 'Continuar', items: STARTERS },
   ],
 };
@@ -440,7 +448,7 @@ const FALLBACK = {
   intent: 'ambigua',
   title: 'Não consegui interpretar',
   blocks: [
-    { type: 'text', content: 'Reformule em uma linha. Funciono melhor com dose, conduta, exame, protocolo ou resumo — por exemplo:' },
+    { type: 'text', content: 'Reformule em uma linha. Funciono melhor com dose, conduta, exame, protocolo ou resumo. Por exemplo:' },
     { type: 'chips', items: STARTERS },
   ],
 };

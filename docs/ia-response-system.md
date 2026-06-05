@@ -69,6 +69,8 @@ de continuação da conversa (interatividade).
 
 **Markdown leve no `text`:** `rich()` converte `**negrito**` → `<strong>`, `*itálico*` → `<em>` e `\n` → quebra. Itálico serve à prosa longa (ênfase/termo técnico) sem virar markdown pesado. Prosa longa (>40 palavras, `data-long`) ganha respiro entre parágrafos e medida de leitura (~68ch). Listas/citações usam blocos próprios (`list`/`expandable`), não markdown aninhado.
 
+**Copy da prosa (CLAUDE.md §5):** texto **quebradinho** — vários blocos `text` curtos em vez de um parágrafo longo. **Sem travessão (—)**, que tem "cara de IA"; usar ponto/vírgula/dois-pontos. En-dash `–` em faixas numéricas ("3–5 min") é permitido.
+
 ## Patterns × intenção
 
 | Pattern | Quando | Intenção |

@@ -53,6 +53,10 @@ pergunta↔resposta no thread).
 
 - Tom clínico, direto, humano. **Não** soar como IA genérica. Auditar a copy
   antes de entregar.
+- **Sem travessão (—).** O em-dash é "cara de IA". Prefira ponto, vírgula ou
+  dois-pontos e **frases curtas**. Texto longo deve ser **quebradinho**
+  (parágrafos curtos, fácil de escanear), não blocões corridos. (En-dash `–`
+  em faixas numéricas clínicas, ex.: "3–5 min", é permitido.)
 
 ## 6. Entrega e verificação
 
