@@ -215,7 +215,9 @@ export function CADFlow({ onBack }) {
   const toggleEdema = (key) => setEdemaMarcados((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
   const edemaTratar = avaliarEdema(edemaMarcados, s.isCriticalPediatric);
 
-  const DESFECHO_CAD = 'Alta'; // CAD resolvida → alta (desfecho automático · #7)
+  // Desfecho real: só "Alta" se os 3 critérios de resolução fecharam; senão "Em andamento"
+  // (finalizar sem resolução não deve gravar o caso como Alta no histórico · M5).
+  const DESFECHO_CAD = s.resolucaoTodos ? 'Alta' : 'Em andamento';
 
   const handleSalvarCaso = () => {
     if (s.iniciais.trim() === '') return;

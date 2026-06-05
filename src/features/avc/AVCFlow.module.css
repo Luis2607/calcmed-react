@@ -103,7 +103,7 @@
 
 .progressTrack {
   height: 8px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--ds-fundo-elevado);
   overflow: hidden;
   margin-top: var(--esp-2);
@@ -111,7 +111,7 @@
 
 .progressFill {
   height: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--ds-interativo-primario);
   transition: width 0.3s ease;
 }
@@ -130,9 +130,7 @@
 
 .parcialValor {
   color: var(--ds-interativo-primario);
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 1;
+  font: var(--ds-font-valor-grande);
 }
 
 .nihssNav {
@@ -190,7 +188,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--esp-2) var(--esp-3);
-  border-radius: var(--esp-2);
+  border-radius: var(--ds-r-sm);
   background: var(--ds-fundo-elevado);
   color: var(--ds-texto-padrao);
   font: var(--ds-font-corpo-2);
@@ -209,7 +207,7 @@
   position: fixed;
   left: var(--esp-4);
   right: var(--esp-4);
-  bottom: calc(64px + var(--esp-4));
+  bottom: calc(var(--esp-16) + var(--esp-4));
   z-index: 1000;
   pointer-events: none;
 }

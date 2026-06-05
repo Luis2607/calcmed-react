@@ -89,6 +89,13 @@ export function AVCFlow({ onBack }) {
   const fora = janelaMin != null && janelaMin > 1440;
   const janela = janelaInfo(janelaMin);
 
+  // Sanity-check da PA da elegibilidade: um typo ("18" em vez de "180") passaria
+  // pelo gate 185/110 sem aviso. Bloqueia valor fora da faixa fisiológica (A4).
+  const R = PA_MONITOR_RANGE;
+  const paImplausivel =
+    (s.numPas != null && (s.numPas < R.pasMin || s.numPas > R.pasMax)) ||
+    (s.numPad != null && (s.numPad < R.padMin || s.numPad > R.padMax));
+
   // ====================== chips header ======================
   const chips = [];
   if (s.hemorragico) chips.push({ label: 'Hemorrágico', tone: 'critico' });
@@ -396,10 +403,15 @@ export function AVCFlow({ onBack }) {
 
       <ClinicalCard variant="plain" title="Pressão arterial atual" subtitle="Pré-trombólise: limite 185/110 mmHg. Se acima, baixe antes." onInfo={() => setModalId('pa-gate-info')}>
         <div className={styles.row2}>
-          <InputField label="Sistólica" value={s.pas} onChange={s.setPas} placeholder="Ex.: 170" inputMode="numeric" maxLength={3} mono showUnit unit="mmHg" />
-          <InputField label="Diastólica" value={s.pad} onChange={s.setPad} placeholder="Ex.: 100" inputMode="numeric" maxLength={3} mono showUnit unit="mmHg" />
+          <InputField label="Sistólica" value={s.pas} onChange={s.setPas} placeholder="Ex.: 170" inputMode="numeric" maxLength={3} mono showUnit unit="mmHg" state={s.numPas != null && (s.numPas < R.pasMin || s.numPas > R.pasMax) ? 'error' : 'default'} />
+          <InputField label="Diastólica" value={s.pad} onChange={s.setPad} placeholder="Ex.: 100" inputMode="numeric" maxLength={3} mono showUnit unit="mmHg" state={s.numPad != null && (s.numPad < R.padMin || s.numPad > R.padMax) ? 'error' : 'default'} />
         </div>
-        {paAcima(s.numPas, s.numPad) && (
+        {paImplausivel && (
+          <AlertCard level="warning" title="PA fora da faixa fisiológica">
+            Verifique o valor — provável erro de digitação. A leitura precisa ser plausível antes de liberar a trombólise.
+          </AlertCard>
+        )}
+        {!paImplausivel && paAcima(s.numPas, s.numPad) && (
           <AlertCard level="warning" title="PA acima do limite">
             Reduza a PA abaixo de 185/110 antes da trombólise. Inicie Nitroprussiato de Sódio IV ou Labetalol.
           </AlertCard>
@@ -603,8 +615,8 @@ export function AVCFlow({ onBack }) {
       }
       : {
         secondary: voltar(2),
-        hint: paAcima(s.numPas, s.numPad) ? 'Reduza a PA abaixo de 185/110 antes de avançar.' : null,
-        primary: { label: 'Calcular dose', size: 'lg', onClick: confirmarElegibilidade, disabled: paAcima(s.numPas, s.numPad) },
+        hint: paImplausivel ? 'PA fora da faixa fisiológica — verifique o valor.' : paAcima(s.numPas, s.numPad) ? 'Reduza a PA abaixo de 185/110 antes de avançar.' : null,
+        primary: { label: 'Calcular dose', size: 'lg', onClick: confirmarElegibilidade, disabled: paAcima(s.numPas, s.numPad) || paImplausivel },
       },
     4: {
       secondary: voltar(3),
