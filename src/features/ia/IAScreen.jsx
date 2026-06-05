@@ -53,6 +53,7 @@ function relativeTime(ts) {
 const THINK_LABELS = {
   dose: 'Calculando a dose…', critico: 'Avaliando o risco…', exame: 'Interpretando…',
   protocolo: 'Montando o protocolo…', comparacao: 'Comparando…', aprendizado: 'Organizando…',
+  explicacao: 'Explicando…',
   resumo: 'Resumindo…', triagem: 'Triando…', operacional: 'Montando a conduta…',
 };
 
@@ -126,7 +127,7 @@ function StreamingMessage({ response, startUnits = 0, onSelect, onProgress, onDo
  * IAScreen — assistente clínico do protótipo: chat direto (com streaming),
  * histórico, onboarding de 1º acesso e ações por mensagem.
  */
-export function IAScreen({ onBack }) {
+export function IAScreen({ onBack, onNavigate }) {
   const [conversations, setConversations] = usePersistedState('ia_conversations', []);
   const [onboarded, setOnboarded] = usePersistedState('ia_onboarded', false);
   const [activeId, setActiveId] = useState('new');
@@ -258,7 +259,7 @@ export function IAScreen({ onBack }) {
     // "Pensar" por intenção: urgência (dose/crítico/protocolo) responde rápido;
     // raciocínio mais longo só onde agrega (comparação/aprendizado).
     const urgent = ['dose', 'critico', 'protocolo'].includes(response.intent);
-    const slow = ['comparacao', 'aprendizado'].includes(response.intent);
+    const slow = ['comparacao', 'aprendizado', 'explicacao'].includes(response.intent);
     const think = urgent ? 700 : slow ? 2400 : 1500;
     const tid = uid();
     timerConv.current[tid] = convId;
@@ -295,6 +296,14 @@ export function IAScreen({ onBack }) {
     send(text, lookup);
     setDraft('');
     requestAnimationFrame(() => autoGrow(inputRef.current)); // volta o textarea a 1 linha
+  };
+
+  // Seleção de chip/seletor/ação. Deep-link (open_tool) SAI do chat e abre a
+  // ferramenta do CalcMed; o resto continua a conversa como nova pergunta. A
+  // conversa persiste em localStorage, então voltar pra IA a mantém intacta.
+  const handleSelect = (value, meta) => {
+    if (meta?.type === 'open_tool' && meta.route) { onNavigate?.(meta.route); return; }
+    send(meta?.label ?? value, value);
   };
 
   // Composer do histórico: começa uma conversa NOVA e já abre o chat.
@@ -443,7 +452,7 @@ export function IAScreen({ onBack }) {
             key={`stream-${streamNonce}`}
             response={m.response}
             startUnits={m.revealedUnits ?? 0}
-            onSelect={(value, meta) => send(meta?.label ?? value, value)}
+            onSelect={handleSelect}
             onProgress={keepBottom}
             onDone={(units, stopped) => finishStream(m.id, units, stopped)}
             stopSignal={stopSignal}
@@ -458,7 +467,7 @@ export function IAScreen({ onBack }) {
         <AIResponseRenderer
           response={resp}
           variant="plain"
-          onSelect={(value, meta) => send(meta?.label ?? value, value)}
+          onSelect={handleSelect}
         />
         {interrupted && (
           <div className={styles.interrupted}>
@@ -578,14 +587,29 @@ export function IAScreen({ onBack }) {
         </div>
       )}
 
-      <div className={styles.conversation} ref={scrollerRef} onScroll={() => setShowJump(!isNearBottom())}>
+      <div
+        className={styles.conversation}
+        data-empty={empty || undefined}
+        ref={scrollerRef}
+        onScroll={() => setShowJump(!isNearBottom())}
+      >
         {empty ? (
           <div className={styles.empty}>
-            <span className={styles.emptyMark}><Icon name="sparkles" size={28} /></span>
+            <div className={styles.brand}>
+              <span className={styles.brandMark}><Icon name="ia" size={26} /></span>
+              <div className={styles.brandText}>
+                <strong className={styles.brandName}>CalcMed IA</strong>
+                <span className={styles.brandTag}>Assistente clínico</span>
+              </div>
+            </div>
             <span className={styles.greeting}>{greetingPrefix()}</span>
             <h2 className={styles.emptyTitle}>Como posso ajudar no plantão?</h2>
             <p className={styles.emptyText}>
               Dose, conduta, interpretação de exame ou um resumo pra evolução. É só perguntar.
+            </p>
+            <p className={styles.evidenceNote}>
+              <Icon name="informacao" size={14} aria-hidden="true" />
+              Respostas baseadas em evidências. Valide com seu julgamento.
             </p>
           </div>
         ) : (
@@ -626,18 +650,27 @@ export function IAScreen({ onBack }) {
       )}
 
       {empty && (
-        <div className={styles.suggestStrip} role="group" aria-label="Sugestões para começar">
-          {STARTERS.map((s) => (
-            <button
-              key={s.value}
-              type="button"
-              className={styles.suggestChip}
-              onClick={() => send(s.label, s.value)}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
+        <section className={styles.suggest} aria-label="Sugestões para começar">
+          <h3 className={styles.suggestLabel}>Comece por aqui</h3>
+          <div
+            className={styles.suggestGrid}
+            role="group"
+            tabIndex={0}
+            aria-label="Sugestões — role para a direita para ver mais"
+          >
+            {STARTERS.map((s) => (
+              <button
+                key={s.value}
+                type="button"
+                className={styles.suggestCard}
+                onClick={() => send(s.label, s.value)}
+              >
+                <span className={styles.cardIcon}><Icon name={s.icon} size={20} aria-hidden="true" /></span>
+                <span className={styles.cardLabel}>{s.label}</span>
+              </button>
+            ))}
+          </div>
+        </section>
       )}
 
       <form className={styles.composer} onSubmit={handleSubmit}>

@@ -105,6 +105,19 @@
 }
 .conversation::-webkit-scrollbar { width: 0; display: none; }
 
+/* Gradiente bem suave SÓ no estado-vazio (glow de marca no topo). Tints oficiais
+   do DS — não é hex cru. Quando a conversa começa, `data-empty` cai e o
+   background-image some sozinho (sem JS, sem cleanup, sem flash). */
+.conversation[data-empty] {
+  background-image: radial-gradient(
+    120% 60% at 50% 0%,
+    var(--interativo-primario-tint-08) 0%,
+    var(--interativo-primario-tint-04) 38%,
+    transparent 72%
+  );
+  background-repeat: no-repeat;
+}
+
 .thread {
   display: flex;
   flex-direction: column;
@@ -200,31 +213,57 @@
 }
 
 /* ---------- Empty state ---------- */
+/* Gestalt/proximidade: a marca é um grupo isolado (respiro DEPOIS dela abre a
+   seção); greeting cola no título; título cola no texto; a nota é satélite
+   (mais ar antes pra se descolar do par). */
 .empty {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: var(--esp-3);
+  gap: var(--esp-2);
 }
-.emptyMark {
+
+/* Marca-herói (ícone DS + wordmark) — "loguinho ali" no corpo do vazio. */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-3);
+  margin-bottom: var(--esp-5); /* respiro depois da marca */
+}
+.brandMark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-card);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--ds-r-lg);
   background: var(--interativo-primario-tint-08);
   color: var(--ds-interativo-primario);
 }
+.brandText { display: flex; flex-direction: column; line-height: 1.1; }
+.brandName {
+  font: var(--ds-font-subtitulo);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ds-texto-padrao);
+}
+.brandTag {
+  font-size: var(--fonte-tamanho-rotulo);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ds-interativo-primario);
+}
+
 .greeting {
   font-size: var(--fonte-tamanho-rotulo);
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ds-interativo-primario);
-  margin-bottom: -6px;
+  margin-bottom: calc(-1 * var(--esp-1)); /* cola no título */
 }
 
 .emptyTitle {
@@ -232,6 +271,7 @@
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--ds-texto-padrao);
+  margin-bottom: var(--esp-2); /* par título↔texto: gap pequeno */
 }
 
 /* Link "Sobre a IA / avisos" no rodapé do histórico */
@@ -255,7 +295,19 @@
 .emptyText {
   font: var(--ds-font-corpo-2);
   color: var(--ds-texto-secundario);
+  max-width: 34ch;
 }
+
+/* Nota de evidências — satélite discreto (par ícone↔texto), descolado do bloco. */
+.evidenceNote {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--esp-2);
+  margin-top: var(--esp-4);
+  font: var(--ds-font-legenda);
+  color: var(--ds-texto-secundario); /* AA garantido (terciário falha em 12px) */
+}
+.evidenceNote svg { flex-shrink: 0; }
 
 /* ---------- Seta de descer (centralizada, flutua acima do composer) ---------- */
 .jumpDock {
@@ -298,40 +350,74 @@
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* ---------- Faixa de sugestões (rola na horizontal, acima do composer) ----------
-   Em vez de empilhar chips (que quebram em várias linhas), uma régua horizontal
-   rolável com poucas sugestões curadas — não ocupa altura nem desorganiza. */
-.suggestStrip {
+/* ---------- Sugestões: grid de 2 linhas que rola na horizontal ----------
+   Mais destaque que a régua de 1 linha: cards com ícone, 2 linhas × N colunas
+   rolando pra direita. O 3º card cortado sinaliza "tem mais, role". Só no vazio. */
+.suggest {
   flex-shrink: 0;
   display: flex;
+  flex-direction: column;
+  gap: var(--esp-2); /* label cola no grid */
+  padding: var(--esp-3) 0 var(--esp-2);
+}
+.suggestLabel {
+  padding: 0 var(--esp-4);
+  font-size: var(--fonte-tamanho-rotulo);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-texto-secundario);
+}
+.suggestGrid {
+  display: grid;
+  grid-auto-flow: column; /* enche coluna a coluna */
+  grid-template-rows: repeat(2, auto); /* 2 linhas fixas */
+  grid-auto-columns: minmax(150px, 1fr);
   gap: var(--esp-2);
-  padding: var(--esp-2) var(--esp-4);
+  padding: var(--esp-1) var(--esp-4);
   overflow-x: auto;
   scroll-snap-type: x proximity;
+  scroll-padding-left: var(--esp-4);
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
-.suggestStrip::-webkit-scrollbar { width: 0; height: 0; display: none; }
+.suggestGrid::-webkit-scrollbar { width: 0; height: 0; display: none; }
 
-.suggestChip {
-  flex: 0 0 auto;
-  display: inline-flex;
+.suggestCard {
+  scroll-snap-align: start;
+  display: flex;
   align-items: center;
+  gap: var(--esp-2);
+  min-height: 44px; /* alvo de toque */
   padding: var(--esp-2) var(--esp-3);
   border: 1px solid var(--ds-borda-padrao);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-card); /* card, não pílula: mais destaque */
   background: var(--ds-fundo-cartao);
   color: var(--ds-texto-padrao);
-  font-family: var(--fonte-base);
-  font-size: var(--fonte-tamanho-auxiliar);
-  font-weight: 600;
-  white-space: nowrap;
+  font: var(--ds-font-botao-md);
+  text-align: left;
   cursor: pointer;
-  scroll-snap-align: start;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
-.suggestChip:hover { background: var(--ds-fundo-hover); border-color: var(--ds-interativo-primario); }
-.suggestChip:active { background: var(--ds-fundo-elevado); }
+.suggestCard:hover { background: var(--ds-fundo-hover); border-color: var(--ds-interativo-primario); }
+.suggestCard:active { background: var(--ds-fundo-elevado); }
+.cardIcon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ds-r-sm);
+  background: var(--interativo-primario-tint-08);
+  color: var(--ds-interativo-primario);
+}
+.cardLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 /* ---------- Resposta interrompida (parada no meio do streaming) ---------- */
 .interrupted {
@@ -372,7 +458,8 @@
 .jump:focus-visible,
 .convOpen:focus-visible,
 .convDelete:focus-visible,
-.suggestChip:focus-visible,
+.suggestGrid:focus-visible,
+.suggestCard:focus-visible,
 .continueBtn:focus-visible,
 .aboutLink:focus-visible {
   outline: 2px solid var(--ds-borda-foco);

@@ -13,5 +13,6 @@ export { ContextSelector } from './ContextSelector';
 export { InterpretationBlock } from './InterpretationBlock';
 export { LimitationNote } from './LimitationNote';
 export { ProtocolStep } from './ProtocolStep';
+export { OpenToolButton } from './OpenToolButton';
 export { AIResponseRenderer } from './AIResponseRenderer';
 export { INTENT_LABELS } from './intents';

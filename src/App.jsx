@@ -109,7 +109,7 @@ export default function App() {
 
           {isInputGallery && <InputGallery />}
 
-          {isIA && <IAScreen onBack={goHome} />}
+          {isIA && <IAScreen onBack={goHome} onNavigate={handleNavigate} />}
 
           {visibleRoute === 'hub' && (
             <HubHome

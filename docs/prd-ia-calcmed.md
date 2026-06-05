@@ -97,7 +97,7 @@ Implicações de design: alvos de toque generosos, leitura escaneável, latênci
 - **Dark mode** (via escopo `.modo-escuro`), **a11y** (foco, alvos, leitor de tela), **tokens DS** (zero hardcode).
 
 ### 6.2 P1 — backlog (orquestração) — fora do P0, priorizar depois
-- **Deep-link das ações** para calculadoras/protocolos reais (ex.: "Calcular dose por peso" abre a calc).
+- **Deep-link das ações para as centrais** já está **no P0** (ação `open_tool` → Sepse/PCR/SCA; ver RF-13.1). Resta o deep-link para **calculadoras/escores** (Winter, ânion gap, dose por peso) — essas ferramentas ainda não existem como rota navegável.
 - **Contexto de paciente / memória de peso** entre turnos.
 - **Classificação de intenção real** (backend de NLU no lugar do roteiro).
 - **Telemetria/analytics** dos eventos de §15.
@@ -116,11 +116,13 @@ Implicações de design: alvos de toque generosos, leitura escaneável, latênci
 **Pipeline:** `entrada (texto ou ação) → classificação de intenção → payload estruturado → AIResponseRenderer → UI`.
 
 Uma **resposta** = um objeto com:
-- `intent` (dose, triagem, exame, comparação, protocolo, crítico, aprendizado, resumo, operacional, ambígua)
+- `intent` (dose, triagem, exame, comparação, protocolo, crítico, aprendizado, **explicação**, resumo, operacional, ambígua)
 - `risk_level` (baixo/médio/alto — afeta o realce visual)
 - `title` / `context` (cabeçalho da resposta)
 - `blocks[]` — **lista ordenada de blocos tipados** (o miolo)
-- `actions[]` — chips de continuidade (próximo passo)
+- `actions[]` — rodapé: **chips de continuidade** (`{ label, value }`) **e/ou deep-links** (`{ type:'open_tool', route, label }`, que abrem uma ferramenta do app via `OpenToolButton` — ver RF-13.1)
+
+**Prosa vs. estruturado (diretriz de conteúdo):** dose/conduta/protocolo/exame = **estruturado** (blocos escaneáveis em segundos). "O que é / por que / mecanismo / nuance" = **prosa mais longa** (intent `explicacao`, parágrafos `text` + `heading`/`list` + `expandable`). O bloco `text` aceita **negrito** `**`, **itálico** `*` e `\n`; prosa longa (>40 palavras) ganha respiro entre parágrafos e medida de leitura (~68ch).
 
 **Taxonomia de blocos (12+):**
 
@@ -158,15 +160,19 @@ Esta taxonomia é **a fonte de verdade** para os componentes que precisam existi
 - **RF-06** Botão **enviar** habilita só com texto; ancora na base ao crescer.
 - **RF-07** Durante "pensando"/streaming, o enviar vira **Parar**.
 
-### 8.3 Sugestões iniciais
-- **RF-08** No estado vazio, exibir **faixa horizontal rolável** de sugestões curadas (poucas, alto valor), cada uma com ícone do DS. Some ao iniciar a conversa.
-- **RF-09** As sugestões cobrem capacidades distintas: dose · conduta · exame · comparação · protocolo · resumo.
+### 8.3 Estado vazio & sugestões iniciais
+- **RF-08** No estado vazio, exibir **grid de 2 linhas que rola na horizontal** com **12 cards** de sugestão, cada um com **ícone do DS + label curto**. Mais destaque que a régua de 1 linha (card, não pílula); o 3º card cortado sinaliza "tem mais, role". Some ao iniciar a conversa.
+- **RF-08.1** O estado vazio tem **marca-herói** no corpo (ícone `ia` + "CalcMed IA" / "Assistente clínico"), **saudação** por horário, título, texto e **nota de evidências** ("Respostas baseadas em evidências. Valide com seu julgamento."). Proximidade assimétrica (Gestalt §1).
+- **RF-08.2** Um **gradiente bem suave** (tints do `--ds-interativo-primario`, radial no topo) aparece **só no estado vazio** (`.conversation[data-empty]`) e some sozinho quando a conversa começa.
+- **RF-09** As 12 sugestões cobrem capacidades distintas: dose · conduta · exame · comparação · protocolo · resumo · **explicação** (cada `value` casa um nó real do roteiro, sem cair no fallback).
 
 ### 8.4 Resposta & streaming
 - **RF-10** A resposta é **revelada progressivamente** (streaming, efeito de digitação). Progresso é efêmero (não persiste cru).
 - **RF-11** **Parar** congela a resposta no ponto atual e a marca como **"Resposta interrompida"** com ação **"Continuar"** (retoma do ponto exato).
 - **RF-12** A resposta é renderizada **full-width** (variante `plain`), sem "cardzão" agrupador; os blocos internos dão a estrutura.
 - **RF-13** Seletores de contexto, chips e ações **continuam a conversa** (geram novo turno).
+- **RF-13.1** **Deep-link (`open_tool`):** quando o tópico tem uma central real, a resposta oferece — no rodapé, depois dos chips — um **botão largo `OpenToolButton`** ("Abrir Sepse no CalcMed", ícone de abrir + seta) que **sai do chat e abre a ferramenta** (`onNavigate(route)`). Distinto do chip de continuidade. Destinos reais hoje: **Sepse** (`sepse-react`), **PCR** (`pcr-react`), **SCA** (`sca`). A conversa **persiste** (localStorage) — voltar pra IA a mantém intacta.
+- **RF-13.2** **Respostas de explicação (prosa longa / só-texto):** intent `explicacao` para "por que / o que é / mecanismo". Streaming de prosa longa revela em **blocos de ~3 palavras** (não palavra-a-palavra) para não arrastar; `reduced-motion` revela tudo de imediato.
 
 ### 8.5 Ações por mensagem
 - **RF-14** Rodapé de cada resposta: **copiar resposta inteira**, **👍/👎**, **regenerar** (só na última).
@@ -202,31 +208,38 @@ Esta taxonomia é **a fonte de verdade** para os componentes que precisam existi
 > Fonte: roteiro `src/features/ia/iaData.js`. No P0 a classificação é **scriptada** (heurística
 > `matchText` + tokens). Todos os caminhos resolvem (zero beco sem saída).
 
-### 10.1 Pontos de entrada (sugestões iniciais)
-1. **dose de adrenalina?** → `q:adrena`
-2. **paciente hipotenso** → `q:hipo`
-3. **interpreta uma gasometria** → `q:gaso`
-4. **noradrenalina ou dobutamina?** → `q:noradobu`
-5. **protocolo de PCR** → `proto:pcr`
-6. **resume pra evolução** → `q:resumo`
+### 10.1 Pontos de entrada (sugestões iniciais — 12 cards, 2 linhas)
+1. **Dose de adrenalina** (`gota`) → `q:adrena`
+2. **Paciente hipotenso** (`batimento`) → `q:hipo`
+3. **Hipercalemia / ECG** (`onda-ecg`) → `crit:k`
+4. **Protocolo de PCR** (`primeiro-socorro`) → `proto:pcr`
+5. **Interpretar gaso** (`conversores`) → `q:gaso`
+6. **Nora ou dobuta?** (`seringa`) → `q:noradobu`
+7. **Conduta na sepse** (`cerebro`) → `learn:sepse`
+8. **Dose pediátrica** (`bebe`) → `adrena:ped`
+9. **Resumir p/ evolução** (`executar`) → `q:resumo`
+10. **Por que noradrenalina** (`eletrico`) → `explica:noraprimeiro`
+11. **O que o lactato diz** (`gota`) → `explica:lactato`
+12. **Meta de PAM 65** (`tempo`) → `explica:pam`
 
 Entrada por **texto livre** (heurística `matchText`): adrenalina→`q:adrena`; "K 7"/hipercalemia→`crit:k`;
-"explica sepse"→`learn:sepse`; protocolo/ACLS/parada→`proto:pcr`; noradrenalina+dobutamina→`q:noradobu`;
+"explica sepse"→`learn:sepse`; **"por que noradrenalina"→`explica:noraprimeiro`**; **"o que é PAM"→`explica:pam`**;
+**"explica lactato"→`explica:lactato`**; protocolo/ACLS/parada→`proto:pcr`; noradrenalina+dobutamina→`q:noradobu`;
 gaso/pH/HCO₃/lactato/ânion→`q:gaso`; hipotensão/choque/PAM→`q:hipo`; resume/evolução→`q:resumo`;
 sem match → `FALLBACK` ("Não consegui interpretar").
 
 ### 10.2 Grafo (nó → ramificações)
 
 **A. Dose de adrenalina** — `q:adrena` *(desambiguação)*
-- `→ adrena:pcr` (Adrenalina na PCR, adulto) — ações: *Ver ACLS* (`stub:tool`), *Dose pediátrica* (`adrena:ped`)
+- `→ adrena:pcr` (Adrenalina na PCR, adulto) — ações: **🔗 Abrir Modo PCR** (`open_tool`→`pcr-react`), *Dose pediátrica* (`adrena:ped`)
 - `→ adrena:ana` (Anafilaxia **adulto**) — ação: *Refratário → infusão* (`adrena:choque`) · *(removido o atalho "Dose pediátrica" que levava à dose de PCR — correção de segurança A3)*
 - `→ adrena:choque` (Infusão no choque) — ação: *Comparar com noradrenalina* (`q:noradobu`)
-- `→ adrena:ped` (PCR pediátrica) — ações: *Dose adulto* (`adrena:pcr`), *Protocolo de PCR* (`proto:pcr`)
+- `→ adrena:ped` (PCR pediátrica) — ações: *Dose adulto* (`adrena:pcr`), **🔗 Abrir Modo PCR** (`open_tool`→`pcr-react`)
 
 **B. Paciente hipotenso** — `q:hipo` *(triagem guiada)*
-- `→ hipo:sepse` (Choque séptico provável) — ações: *Calcular dose por peso* (`stub:tool`), *Copiar conduta* (`q:resumo`)
-- `→ hipo:sangramento` (Choque hemorrágico) — ações: *Calcular dose por peso* (`stub:tool`), *Copiar conduta* (`q:resumo`)
-- `→ hipo:cardio` (Choque cardiogênico) — ações: *Comparar nora × dobuta* (`q:noradobu`), *Copiar conduta* (`q:resumo`)
+- `→ hipo:sepse` (Choque séptico provável) — ações: **🔗 Abrir Sepse** (`open_tool`→`sepse-react`), *Copiar conduta* (`q:resumo`)
+- `→ hipo:sangramento` (Choque hemorrágico) — ações: *Calcular dose por peso* (`stub:tool` — sem ferramenta real), *Copiar conduta* (`q:resumo`)
+- `→ hipo:cardio` (Choque cardiogênico) — ações: *Comparar nora × dobuta* (`q:noradobu`), **🔗 Abrir SCA** (`open_tool`→`sca`), *Copiar conduta* (`q:resumo`)
 - `→ adrena:ana` (Anafilaxia — reaproveita o nó de dose)
 - `→ hipo:naosei` (sem hipótese fechada) — chips do **diferencial** (não funila mais p/ sepse · correção A4): *Séptico* (`hipo:sepse`), *Hemorrágico* (`hipo:sangramento`), *Cardiogênico* (`hipo:cardio`), *Interpretar gasometria* (`q:gaso`)
 
@@ -238,14 +251,19 @@ sem match → `FALLBACK` ("Não consegui interpretar").
 
 **F. Hipercalemia crítica** — `crit:k` *(crítico · alerta)* — ações: *Doses por peso* (`stub:tool`), *Copiar conduta* (`q:resumo`)
 
-**G. Protocolo PCR** — `proto:pcr` *(desambiguação de ritmo)*
-- `→ proto:pcr:choca` (FV/TV sem pulso) — ação: *Dose de adrenalina* (`adrena:pcr`)
-- `→ proto:pcr:naochoca` (AESP/Assistolia) — ação: *Dose de adrenalina* (`adrena:pcr`)
+**G. Protocolo PCR** — `proto:pcr` *(desambiguação de ritmo)* — ação: **🔗 Abrir Modo PCR** (`open_tool`→`pcr-react`)
+- `→ proto:pcr:choca` (FV/TV sem pulso) — ações: *Dose de adrenalina* (`adrena:pcr`), **🔗 Abrir Modo PCR** (`open_tool`→`pcr-react`)
+- `→ proto:pcr:naochoca` (AESP/Assistolia) — ações: *Dose de adrenalina* (`adrena:pcr`), **🔗 Abrir Modo PCR** (`open_tool`→`pcr-react`)
 
-**H. Aprendizado** — `learn:sepse` *(camadas, headings com ícone)* — chips: *Conduta no plantão* (`hipo:sepse`), *Comparar vasopressores* (`q:noradobu`)
+**H. Aprendizado** — `learn:sepse` *(camadas, headings com ícone)* — ações: *Conduta no choque* (`q:hipo`), **🔗 Abrir Sepse** (`open_tool`→`sepse-react`); chips internos: *Conduta no plantão* (`hipo:sepse`), *Comparar vasopressores* (`q:noradobu`)
+
+**I. Explicação (prosa longa / só-texto)** — intent `explicacao`
+- `explica:noraprimeiro` (Por que noradrenalina é 1ª linha) — ações: *Conduta no plantão* (`hipo:sepse`), *Comparar vasopressores* (`q:noradobu`), **🔗 Abrir Sepse** (`open_tool`→`sepse-react`)
+- `explica:lactato` (O que o lactato realmente diz — text + heading + list) — ações: *Interpretar gasometria* (`q:gaso`), *Choque séptico* (`hipo:sepse`), **🔗 Abrir Sepse** (`open_tool`→`sepse-react`)
+- `explica:pam` (O que é PAM e por que a meta é 65 — só-texto curto) — ações: *Paciente hipotenso* (`q:hipo`), *Por que noradrenalina* (`explica:noraprimeiro`)
 
 **Especiais:**
-- `stub:tool` → **TOOL_STUB** ("Cálculo por peso") → chips: sugestões iniciais. *(No produto P1, abre a calculadora real.)*
+- `stub:tool` → **TOOL_STUB** ("Cálculo por peso") → chips: sugestões iniciais. Restam só onde **não há ferramenta real** (calculadora de peso/Winter/ânion gap). Onde há central, virou `open_tool`.
 - sem match → **FALLBACK** ("Não consegui interpretar") → chips: sugestões iniciais.
 
 ### 10.3 Cobertura de blocos por cenário (amostra)
@@ -260,6 +278,7 @@ sem match → `FALLBACK` ("Não consegui interpretar").
 | `crit:k` | **alert** (critical), checklist, actions |
 | `proto:pcr:*` | **stepper**, text, actions |
 | `learn:sepse` | heading(ícone), text, divider, list, **expandable**, chips, limitation |
+| `explica:*` | **text (prosa longa, itálico)**, heading, list, expandable, limitation, **open_tool** |
 
 → O protótipo exercita **todos** os tipos de bloco — base de evidência para o inventário de componentes do Figma.
 
