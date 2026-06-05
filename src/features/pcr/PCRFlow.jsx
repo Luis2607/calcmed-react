@@ -140,6 +140,10 @@ export function PCRFlow({ onBack }) {
     }
   }, [s.rce, s.audioOn]);
 
+  // Ao desmontar (sair da PCR por qualquer caminho), silencia áudio e voz —
+  // sem isso uma fala enfileirada continua tocando fora da tela.
+  useEffect(() => () => { pararFala(); pararMetronomo(); }, []);
+
   // Calculados (ciclo + adrenalina)
   const masterElapsed = s.iniciadoEm ? now - s.iniciadoEm : 0;
   const masterStr = formatDuracao(masterElapsed);

@@ -238,7 +238,7 @@ export function SepseFlow({ onBack }) {
   // §11.S6.warn · highlight de itens pendentes persiste enquanto o user já passou pelo step
   // (mesmo que esteja de volta nele — feedback continua até completar).
   const pendenciaT2 = (s.telaMaxVisitada || 1) > 2 && !stepCompleto[2];
-  const pendenciaT5 = (s.telaMaxVisitada || 1) >= 5 && !stepCompleto[5] && s.telaAtual !== 5;
+  const pendenciaT5 = (s.telaMaxVisitada || 1) >= 5 && !stepCompleto[5];
 
   // chips do header (idade/peso + Sepse + bundle% sempre visível a partir de T2 · Nielsen N1)
   const chips = [];
