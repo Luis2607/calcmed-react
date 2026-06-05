@@ -65,6 +65,8 @@ pergunta↔resposta no thread).
 
 ## 7. Documentação viva (o "cérebro") — SEMPRE atualizar
 
+- **🧠 Mapa de tudo:** [`docs/00-index.md`](docs/00-index.md) é a **home do wiki** (todos os docs com
+  status VIVO/PROCESSO/HISTÓRICO + atalhos de navegação). Comece por lá.
 - **Regra do dono (Luis):** ao mexer em **qualquer coisa** de **qualquer feature**
   (IA *ou* as 5 centrais de urgência — UI, fluxo, componente, cálculo, copy, token,
   comportamento), **atualize a documentação na mesma entrega** — nunca deixar o doc
