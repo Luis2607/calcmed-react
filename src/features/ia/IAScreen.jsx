@@ -513,9 +513,9 @@ export function IAScreen({ onBack, onNavigate }) {
         <div className={styles.listScroll}>
           {conversations.length === 0 ? (
             <div className={styles.empty}>
-              <span className={styles.emptyMark}><Icon name="tempo" size={28} /></span>
+              <span className={styles.emptyMark}><Icon name="tempo" size={26} /></span>
               <h2 className={styles.emptyTitle}>Nenhuma conversa ainda</h2>
-              <p className={styles.emptyText}>Escreva abaixo pra começar — suas conversas com a IA ficam aqui.</p>
+              <p className={styles.emptyText}>Escreva abaixo pra começar. Suas conversas com a IA ficam aqui.</p>
             </div>
           ) : (
             <>
@@ -607,10 +607,6 @@ export function IAScreen({ onBack, onNavigate }) {
             <p className={styles.emptyText}>
               Dose, conduta, interpretação de exame ou um resumo pra evolução. É só perguntar.
             </p>
-            <p className={styles.evidenceNote}>
-              <Icon name="informacao" size={14} aria-hidden="true" />
-              Respostas baseadas em evidências. Valide com seu julgamento.
-            </p>
           </div>
         ) : (
           <div className={styles.thread} role="log" aria-live="polite" aria-busy={busy || undefined}>
@@ -651,12 +647,15 @@ export function IAScreen({ onBack, onNavigate }) {
 
       {empty && (
         <section className={styles.suggest} aria-label="Sugestões para começar">
-          <h3 className={styles.suggestLabel}>Comece por aqui</h3>
+          <div className={styles.suggestHeader}>
+            <h3 className={styles.suggestTitle}>Comece por aqui</h3>
+            <p className={styles.suggestSub}>Sugestões para agilizar seu atendimento</p>
+          </div>
           <div
             className={styles.suggestGrid}
             role="group"
             tabIndex={0}
-            aria-label="Sugestões — role para a direita para ver mais"
+            aria-label="Sugestões. Role para a direita para ver mais"
           >
             {STARTERS.map((s) => (
               <button
@@ -667,6 +666,7 @@ export function IAScreen({ onBack, onNavigate }) {
               >
                 <span className={styles.cardIcon}><Icon name={s.icon} size={20} aria-hidden="true" /></span>
                 <span className={styles.cardLabel}>{s.label}</span>
+                <span className={styles.cardChevron} aria-hidden="true"><Icon name="seta-direita" size={18} /></span>
               </button>
             ))}
           </div>
@@ -674,26 +674,32 @@ export function IAScreen({ onBack, onNavigate }) {
       )}
 
       <form className={styles.composer} onSubmit={handleSubmit}>
-        <textarea
-          ref={inputRef}
-          className={styles.input}
-          value={draft}
-          rows={1}
-          onChange={(e) => { setDraft(e.target.value); autoGrow(e.target); }}
-          onKeyDown={(e) => composerKeyDown(e, handleSubmit)}
-          placeholder="Dose, conduta, exame…"
-          aria-label="Mensagem para a IA"
-          enterKeyHint="send"
-        />
-        {busy ? (
-          <button type="button" className={styles.stop} onClick={handleStop} aria-label="Parar">
-            <span className={styles.stopSquare} />
-          </button>
-        ) : (
-          <button type="submit" className={styles.send} disabled={!draft.trim()} aria-label="Enviar">
-            <Icon name="executar" size={20} />
-          </button>
-        )}
+        <div className={styles.composerRow}>
+          <textarea
+            ref={inputRef}
+            className={styles.input}
+            value={draft}
+            rows={1}
+            onChange={(e) => { setDraft(e.target.value); autoGrow(e.target); }}
+            onKeyDown={(e) => composerKeyDown(e, handleSubmit)}
+            placeholder="Dose, conduta, exame…"
+            aria-label="Mensagem para a IA"
+            enterKeyHint="send"
+          />
+          {busy ? (
+            <button type="button" className={styles.stop} onClick={handleStop} aria-label="Parar">
+              <span className={styles.stopSquare} />
+            </button>
+          ) : (
+            <button type="submit" className={styles.send} disabled={!draft.trim()} aria-label="Enviar">
+              <Icon name="executar" size={20} />
+            </button>
+          )}
+        </div>
+        <p className={styles.composerNote}>
+          <Icon name="informacao" size={13} aria-hidden="true" />
+          Respostas baseadas em evidências. Valide com seu julgamento.
+        </p>
       </form>
 
       <IAFeedbackSheet

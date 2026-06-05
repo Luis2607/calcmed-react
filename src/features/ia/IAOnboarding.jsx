@@ -25,7 +25,7 @@ const POINTS = [
     icon: 'cadeado',
     tone: 'neutral',
     title: 'Nada que identifique o paciente',
-    desc: 'Fale da clínica — sem nome, leito ou prontuário.',
+    desc: 'Fale da clínica, sem nome, leito ou prontuário.',
   },
 ];
 
@@ -42,7 +42,7 @@ export function IAOnboarding({ open, onClose, ctaLabel = 'Entendi, começar', bl
       blocking={blocking}
     >
       <p className={styles.intro}>
-        Pergunte uma dose, descreva um caso ou mande um exame. A resposta vem direto ao ponto —
+        Pergunte uma dose, descreva um caso ou mande um exame. A resposta vem direto ao ponto:
         conduta, dose e o próximo passo.
       </p>
 
@@ -60,7 +60,7 @@ export function IAOnboarding({ open, onClose, ctaLabel = 'Entendi, começar', bl
         ))}
       </ul>
 
-      <p className={styles.fineprint}>Demonstração — conteúdo clínico ilustrativo.</p>
+      <p className={styles.fineprint}>Demonstração: conteúdo clínico ilustrativo.</p>
     </InfoSheet>
   );
 }

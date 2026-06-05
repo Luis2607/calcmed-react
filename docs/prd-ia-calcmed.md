@@ -85,7 +85,7 @@ Implicações de design: alvos de toque generosos, leitura escaneável, latênci
 
 ### 6.1 P0 — entregue no protótipo (este documento)
 - Entrada direta em **nova conversa** ao abrir a IA.
-- **Sugestões iniciais** curadas em faixa horizontal rolável.
+- **Sugestões iniciais** (12 cards, 2 linhas com rolagem horizontal) na seção "Comece por aqui".
 - **Chat com streaming** (resposta revelada progressivamente) + **Parar** + **Continuar** + **Regenerar**.
 - **Respostas estruturadas** (AI Response System) com blocos tipados.
 - **Ações por mensagem:** copiar resposta, 👍/👎, regenerar.
@@ -159,11 +159,12 @@ Esta taxonomia é **a fonte de verdade** para os componentes que precisam existi
 - **RF-05** Campo **multilinha** que cresce de 1 a ~5 linhas (depois rola). **Enter envia · Shift+Enter quebra linha** (respeita IME).
 - **RF-06** Botão **enviar** habilita só com texto; ancora na base ao crescer.
 - **RF-07** Durante "pensando"/streaming, o enviar vira **Parar**.
+- **RF-07.1** O input é **maior** e tem **sombra** (`--sombra-cartao`), flutuando sobre o fundo branco. Abaixo dele, um **aviso de evidências fixo** ("Respostas baseadas em evidências. Valide com seu julgamento."), persistente em qualquer estado (não só no vazio).
 
 ### 8.3 Estado vazio & sugestões iniciais
-- **RF-08** No estado vazio, exibir **grid de 2 linhas que rola na horizontal** com **12 cards** de sugestão, cada um com **ícone do DS + label curto**. Mais destaque que a régua de 1 linha (card, não pílula); o 3º card cortado sinaliza "tem mais, role". Some ao iniciar a conversa.
-- **RF-08.1** O estado vazio tem **marca-herói** no corpo (ícone `ia` + "CalcMed IA" / "Assistente clínico"), **saudação** por horário, título, texto e **nota de evidências** ("Respostas baseadas em evidências. Valide com seu julgamento."). Proximidade assimétrica (Gestalt §1).
-- **RF-08.2** Um **gradiente bem suave** (tints do `--ds-interativo-primario`, radial no topo) aparece **só no estado vazio** (`.conversation[data-empty]`) e some sozinho quando a conversa começa.
+- **RF-08** No estado vazio, exibir seção "Comece por aqui" (título + subtítulo) com **grid de 2 linhas que rola na horizontal** e **12 cards** de sugestão: **ícone do DS** (tile tinted) + **label de até 2 linhas** + **chevron**. Cards com **sombra** (fundo branco). Colunas largas (~56%) → a **2ª coluna fica cortada na borda**, sinalizando rolagem. Some ao iniciar a conversa.
+- **RF-08.1** O estado vazio tem **marca-herói centralizado** (ícone `ia` + "CalcMed IA" / "Assistente clínico"), **saudação** por horário, título e texto. Proximidade assimétrica (Gestalt §1). A nota de evidências migrou para o composer (RF-07.1).
+- **RF-08.2** **Fundo branco** (`--ds-fundo-cartao` no light; dark mantém o fundo profundo). Um **gradiente "aurora"** (3 radiais suaves em tints do `--ds-interativo-primario`) aparece **só no estado vazio** (`.conversation[data-empty]`) e some sozinho quando a conversa começa.
 - **RF-09** As 12 sugestões cobrem capacidades distintas: dose · conduta · exame · comparação · protocolo · resumo · **explicação** (cada `value` casa um nó real do roteiro, sem cair no fallback).
 
 ### 8.4 Resposta & streaming
