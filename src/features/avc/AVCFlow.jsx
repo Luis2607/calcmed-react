@@ -6,7 +6,7 @@ import {
   CONTRA_ABSOLUTAS, CONTRA_PATOLOGIA, CONTRA_RELATIVAS,
   BYPASS_GATES, PESO_ESTIMATIVAS, TROMBOLITICO_OPCOES,
   DISFAGIA_OPCOES, TROMBEC_VASO_OPCOES, TROMBEC_MRS_OPCOES,
-  janelaInfo, limitePA, avaliarGlicemia, avaliarTrombectomia,
+  janelaInfo, janelaMinDe, limitePA, avaliarGlicemia, avaliarTrombectomia,
   paAcima, formatHora, pad2, PA_MONITOR_RANGE,
 } from './avcData';
 import { AVC_MODAIS, AvcModalBody } from './avcModais';
@@ -79,15 +79,22 @@ export function AVCFlow({ onBack }) {
     return h > 0 ? `${h}h${pad2(m)}` : `${pad2(m)}:${pad2(sec)}`;
   }, [s.iniciadoEm, now]);
 
-  const fora = s.janelaMin != null && s.janelaMin > 1440;
-  const janela = janelaInfo(s.janelaMin);
+  // Janela VIVA: recomputada do horário de início vs agora (tick de 1s), em vez
+  // de um snapshot congelado — numa central tempo-dependente a janela tem de subir
+  // sozinha conforme o tempo passa (corrige C1).
+  const janelaMin = useMemo(
+    () => (s.horarioInicio ? janelaMinDe(s.horarioInicio) : null),
+    [s.horarioInicio, now],
+  );
+  const fora = janelaMin != null && janelaMin > 1440;
+  const janela = janelaInfo(janelaMin);
 
   // ====================== chips header ======================
   const chips = [];
   if (s.hemorragico) chips.push({ label: 'Hemorrágico', tone: 'critico' });
   else if (s.iniciadoEm) chips.push({ label: 'Isquêmico' });
   if (s.nihssTotal > 0) chips.push({ label: `NIHSS ${s.nihssTotal}`, mono: true });
-  if (s.janelaMin != null) chips.push({ label: `Janela ${Math.floor(s.janelaMin / 60)}h${pad2(s.janelaMin % 60)}`, mono: true });
+  if (janelaMin != null) chips.push({ label: `Janela ${Math.floor(janelaMin / 60)}h${pad2(janelaMin % 60)}`, mono: true });
 
   // ====================== step states ======================
   const stepCompleto = {
@@ -140,7 +147,7 @@ export function AVCFlow({ onBack }) {
 
   const confirmarDose = () => {
     const nome = s.trombolitico === 'tnk' ? 'TNK' : 'Alteplase';
-    if (s.janelaMin != null && s.janelaMin > 270 && !s.janelaConfirmada) {
+    if (janelaMin != null && janelaMin > 270 && !s.janelaConfirmada) {
       setJanelaConfirmOpen(true);
       return;
     }
@@ -195,7 +202,7 @@ export function AVCFlow({ onBack }) {
       idade,
       sexo,
       nihss: s.nihssTotal,
-      janelaMin: s.janelaMin,
+      janelaMin: janelaMin,
       peso: s.peso,
       trombolitico: s.trombolitico,
       doseTotal: s.doseTotal,
@@ -760,7 +767,7 @@ export function AVCFlow({ onBack }) {
         open={janelaConfirmOpen}
         onClose={() => setJanelaConfirmOpen(false)}
         title="Janela estendida · confirmar mismatch"
-        description={`A janela está em ${s.janelaMin != null ? `${Math.floor(s.janelaMin / 60)}h ${pad2(s.janelaMin % 60)}min` : '—'} · fora da janela padrão de 4,5h. A trombólise só é indicada com perfusão TC/RM com mismatch core-penumbra (DAWN/DEFUSE 3) ou RM DWI-FLAIR (wake-up até 9h). Confirme que avaliou a neuroimagem.`}
+        description={`A janela está em ${janelaMin != null ? `${Math.floor(janelaMin / 60)}h ${pad2(janelaMin % 60)}min` : '—'} · fora da janela padrão de 4,5h. A trombólise só é indicada com perfusão TC/RM com mismatch core-penumbra (DAWN/DEFUSE 3) ou RM DWI-FLAIR (wake-up até 9h). Confirme que avaliou a neuroimagem.`}
         confirmLabel="Confirmei mismatch · seguir"
         cancelLabel="Voltar e revisar"
         onConfirm={confirmarJanelaEstendida}

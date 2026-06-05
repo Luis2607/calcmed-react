@@ -58,9 +58,14 @@ export function formatarHorario(raw) {
 export function janelaMinDe(horarioStr) {
   const ts = parseHHMM(horarioStr);
   if (!ts) return null;
+  const now = Date.now();
   let referenceTs = ts;
-  if (ts > Date.now()) referenceTs = ts - 24 * 3600 * 1000;
-  return diffMin(referenceTs, Date.now());
+  if (ts > now) {
+    // Pequeno futuro (≤5 min) = provável erro de digitação → trata como agora
+    // (janela 0). Futuro grande = horário de ontem que cruzou a meia-noite → −24h.
+    referenceTs = ts - now <= 5 * 60 * 1000 ? now : ts - 24 * 3600 * 1000;
+  }
+  return diffMin(referenceTs, now);
 }
 
 // Texto + faixa da janela (golden atualizarJanelaHelper).
