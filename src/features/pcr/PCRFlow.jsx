@@ -52,6 +52,15 @@ const PCR_TABS = [
 const SEG_BPM = BPM_OPCOES.map((v) => ({ value: v, label: `${v} BPM` }));
 const SEG_INTERVALO = INTERVALO_ADREN_OPCOES.map((v) => ({ value: v, label: `${v} min` }));
 
+// Idade em anos a partir do form (idadeAnos; ou idadeMeses/12 p/ lactente).
+// s.idade nunca era preenchido → carga/dose pediátrica nunca disparava (C1).
+const idadeEmAnos = (paciente) => {
+  const a = parseNumber(paciente?.idadeAnos);
+  if (a != null && !Number.isNaN(a)) return a;
+  const m = parseNumber(paciente?.idadeMeses);
+  return m != null && !Number.isNaN(m) ? m / 12 : null;
+};
+
 /**
  * PCRFlow — main flow PCR React (port golden pcr.html/.js/.css).
  *
@@ -333,7 +342,7 @@ export function PCRFlow({ onBack }) {
   const onAplicarChoque = (foiAplicado) => {
     setChoqueOpen(false);
     if (foiAplicado) {
-      const carga = getCargaInicial(s.idade, s.peso);
+      const carga = getCargaInicial(idadeEmAnos(s.paciente), parseNumber(s.peso));
       const undo = s.registrarChoque(carga);
       // §ACLS · após o choque, retoma RCP imediatamente (novo ciclo de 2 min).
       s.checarPulsoRitmoConfirmado();
@@ -423,7 +432,7 @@ export function PCRFlow({ onBack }) {
     tag: ev.tag || undefined,
   }));
 
-  const cargaInicialLabel = getCargaInicial(s.idade, s.peso);
+  const cargaInicialLabel = getCargaInicial(idadeEmAnos(s.paciente), parseNumber(s.peso));
   const ritmoLabel = s.ritmo === 'na' ? 'Não avaliado' : getRitmoLabel(s.ritmo);
   const desfibrilarDisabled = !isChocavel(s.ritmo);
 
