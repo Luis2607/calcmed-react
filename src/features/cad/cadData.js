@@ -106,12 +106,12 @@ export const PESO_MAX = 300;
 
 // ============================================================
 // T1 · CRITÉRIOS DIAGNÓSTICOS
-// 2 de 3 fecham (glicemia > 200 · acidose · cetose).
+// 2 de 3 fecham (glicemia ≥ 200 · acidose · cetose).
 // ============================================================
 export function contarCriterios({ glicemia, acidoseConfirmada, cetoseConfirmada }) {
   const g = parseNum(glicemia);
   let n = 0;
-  if (!isNaN(g) && g > 200 && dentroSanity('glicemia', g)) n += 1;
+  if (!isNaN(g) && g >= 200 && dentroSanity('glicemia', g)) n += 1;
   if (acidoseConfirmada) n += 1;
   if (cetoseConfirmada) n += 1;
   return n;
@@ -164,8 +164,8 @@ export function sodioCorrigido(sodio, glicemia) {
 export const POTASSIO_OPCOES = [
   { value: 'baixo', label: '< 3,5 mEq/L', description: 'NÃO INICIE INSULINA · repor KCl 10-20 mEq/h', critico: true },
   { value: 'normal', label: '3,5 a 5 mEq/L', description: 'Faixa segura · adicione 20-40 mEq KCl por litro de soro' },
-  { value: 'alto', label: '5 a 6,5 mEq/L', description: 'Liberado · monitore K seriado' },
-  { value: 'muito-alto', label: '> 6,5 mEq/L', description: 'Não reponha K · monitore · trate hipercalemia se ECG alterado' },
+  { value: 'alto', label: '5 a 5,5 mEq/L', description: 'Insulina liberada · reponha com cautela · monitore K seriado' },
+  { value: 'muito-alto', label: '> 5,5 mEq/L', description: 'Não reponha K · monitore · trate hipercalemia se ECG alterado' },
 ];
 
 export function labelPotassio(value) {
