@@ -8,11 +8,13 @@ const strip = (s) => String(s ?? '')
   .replace(/\*(.+?)\*/g, '$1');    // itálico
 const words = (s) => strip(s).trim().split(/\s+/).filter(Boolean);
 
-// Prosa longa revela em "blocos de leitura" (CHUNK palavras por tick) em vez de
-// soluço palavra-a-palavra — uma explicação de ~180 palavras cairia de ~8,6s para
-// ~2,3s sem perder o efeito de digitação. Texto curto continua 1 palavra/tick.
+// Prosa revela em "blocos de leitura" (CHUNK palavras por tick) em vez de soluço
+// palavra-a-palavra. Como a prosa é "quebradinha" (vários parágrafos curtos), o
+// limiar é baixo (>12 palavras): qualquer parágrafo de verdade já agrupa, e o
+// total de uma explicação de várias linhas fica em ~3s. Frases muito curtas
+// (one-liners, primary_action) seguem 1 palavra/tick, preservando a "digitação".
 const CHUNK = 3;
-const LONG = 40;
+const LONG = 12;
 const chunkOf = (content) => (words(content).length > LONG ? CHUNK : 1);
 
 function blockUnits(b) {
