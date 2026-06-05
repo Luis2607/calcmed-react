@@ -108,15 +108,16 @@
 }
 .conversation::-webkit-scrollbar { width: 0; display: none; }
 
-/* Glow de marca SÓ no estado-vazio. Três radiais suaves (aurora) em tints
-   oficiais do DS — não é hex cru — para um fundo mais interessante sobre o
-   branco, sem competir com o conteúdo. Quando a conversa começa, `data-empty`
-   cai e o background-image some sozinho (sem JS, sem cleanup, sem flash). */
+/* Glow de marca SÓ no estado-vazio. Um radial central GRANDE e macio dissolve de
+   cima até atrás da marca (sem "faixa"/borda dura), com dois acentos nos cantos
+   (aurora). Cor derivada do token de marca via color-mix (não é hex cru; mais
+   presença que a escala fixa de tints permite, ~12/8/5%). Adapta ao dark. Quando
+   a conversa começa, `data-empty` cai e o background some sozinho (sem flash). */
 .conversation[data-empty] {
   background-image:
-    radial-gradient(75% 42% at 8% -6%, var(--interativo-primario-tint-08) 0%, transparent 60%),
-    radial-gradient(70% 40% at 100% 2%, var(--interativo-primario-tint-06) 0%, transparent 58%),
-    radial-gradient(135% 75% at 50% -16%, var(--interativo-primario-tint-04) 0%, transparent 72%);
+    radial-gradient(150% 95% at 50% -28%, color-mix(in srgb, var(--ds-interativo-primario) 12%, transparent) 0%, transparent 68%),
+    radial-gradient(85% 60% at 102% -6%, color-mix(in srgb, var(--ds-interativo-primario) 8%, transparent) 0%, transparent 62%),
+    radial-gradient(78% 55% at -2% 2%, color-mix(in srgb, var(--ds-interativo-primario) 5%, transparent) 0%, transparent 60%);
   background-repeat: no-repeat;
 }
 
@@ -386,7 +387,7 @@
   display: grid;
   grid-auto-flow: column; /* enche coluna a coluna */
   grid-template-rows: repeat(2, auto); /* 2 linhas fixas */
-  grid-auto-columns: minmax(160px, 56%); /* largas → 2ª coluna corta na borda (cue de scroll) */
+  grid-auto-columns: minmax(160px, 58%); /* largas → 2ª coluna corta na borda (cue de scroll) */
   gap: var(--esp-2) var(--esp-3);
   /* padding vertical contém a sombra dos cards (overflow-x:auto força overflow-y:auto) */
   padding: var(--esp-2) var(--esp-4) var(--esp-3);
@@ -422,8 +423,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--ds-r-md);
   background: var(--interativo-primario-tint-08);
   color: var(--ds-interativo-primario);

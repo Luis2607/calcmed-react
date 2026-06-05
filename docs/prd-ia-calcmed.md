@@ -164,7 +164,7 @@ Esta taxonomia é **a fonte de verdade** para os componentes que precisam existi
 ### 8.3 Estado vazio & sugestões iniciais
 - **RF-08** No estado vazio, exibir seção "Comece por aqui" (título + subtítulo) com **grid de 2 linhas que rola na horizontal** e **12 cards** de sugestão: **ícone do DS** (tile tinted) + **label de até 2 linhas** + **chevron**. Cards com **sombra** (fundo branco). Colunas largas (~56%) → a **2ª coluna fica cortada na borda**, sinalizando rolagem. Some ao iniciar a conversa.
 - **RF-08.1** O estado vazio tem **marca-herói centralizado** (ícone `ia` + "CalcMed IA" / "Assistente clínico"), **saudação** por horário, título e texto. Proximidade assimétrica (Gestalt §1). A nota de evidências migrou para o composer (RF-07.1).
-- **RF-08.2** **Fundo branco** (`--ds-fundo-cartao` no light; dark mantém o fundo profundo). Um **gradiente "aurora"** (3 radiais suaves em tints do `--ds-interativo-primario`) aparece **só no estado vazio** (`.conversation[data-empty]`) e some sozinho quando a conversa começa.
+- **RF-08.2** **Fundo branco** (`--ds-fundo-cartao` no light; dark mantém o fundo profundo). Um **gradiente "aurora"** (radial central macio que dissolve atrás da marca + 2 acentos nos cantos; cor via `color-mix` sobre `--ds-interativo-primario`, ~12/8/5%) aparece **só no estado vazio** (`.conversation[data-empty]`) e some sozinho quando a conversa começa.
 - **RF-09** As 12 sugestões cobrem capacidades distintas: dose · conduta · exame · comparação · protocolo · resumo · **explicação** (cada `value` casa um nó real do roteiro, sem cair no fallback).
 
 ### 8.4 Resposta & streaming
