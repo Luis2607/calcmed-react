@@ -377,6 +377,31 @@ export function SCAFlow({ onBack }) {
   const p2y12Sug = p2y12Sugestao({ reperfusaoTipo: reperf.reperfusaoTipo, ecgClasse: s.ecgClasse, avcPrevio: s.flags.avcPrevio, idade: idadeNum, peso: s.paciente.peso });
   const p2y12SelectOpcoes = P2Y12_OPCOES.map((o) => ({ value: o.value, label: o.value === 'prasugrel' && p2y12Sug.bloqPrasugrel ? `${o.label} · bloqueado` : o.label, disabled: o.value === 'prasugrel' && p2y12Sug.bloqPrasugrel }));
 
+  // Cronômetro porta-balão (PPCI ≤90min) / porta-agulha (fibrinólise ≤30min) —
+  // a métrica-mãe do STEMI. Espelha o porta-ECG.
+  const renderPortaTimer = (key, label, metaMin, critMin) => {
+    const crono = key === 'balao' ? s.cronoPortaBalao : s.cronoPortaAgulha;
+    const setCrono = key === 'balao' ? s.setCronoPortaBalao : s.setCronoPortaAgulha;
+    if (!crono.iniciadoEm) {
+      return (
+        <TimerCard label={label} value="--:--" meta={`Meta < ${metaMin} min`} description="Inicie ao decidir a reperfusão." state="idle">
+          <Button variant="primary" size="lg" onClick={() => setCrono({ iniciadoEm: Date.now() })}>Iniciar cronômetro</Button>
+        </TimerCard>
+      );
+    }
+    const ms = now - crono.iniciadoEm;
+    const faixa = faixaCrono(ms, metaMin, critMin);
+    return (
+      <TimerCard
+        label={label}
+        value={formatarMinSeg(ms)}
+        meta={`Meta < ${metaMin} min`}
+        description={`Verde < ${metaMin} · vermelho > ${critMin} min.`}
+        tone={faixa === 'critical' ? 'critical' : faixa === 'warning' ? 'warning' : undefined}
+      />
+    );
+  };
+
   const t4 = (
     <div className={styles.tela}>
       <StepHeader title="Conduzir" subtitle="Antitrombóticos, locks de segurança e reperfusão." />
@@ -415,6 +440,8 @@ export function SCAFlow({ onBack }) {
           <AlertCard level={reperf.tipo === 'sucesso' ? 'result' : reperf.tipo === 'atencao' ? 'warning' : 'info'} title={reperf.titulo}>
             {reperf.corpo}
           </AlertCard>
+          {reperf.reperfusaoTipo === 'ppci' && renderPortaTimer('balao', 'Porta-balão', 90, 120)}
+          {reperf.reperfusaoTipo === 'fibrinolise' && renderPortaTimer('agulha', 'Porta-agulha', 30, 60)}
           {reperf.mostraFib && tnk && (
             <AlertCard level="warning" title="Tenecteplase" showValue value={`${tnk.dose}`} unit="mg">
               {tnk.detalhe}. Sempre transferir para centro com PCI após fibrinolisar.
