@@ -1,6 +1,17 @@
-# Índice da documentação (o "cérebro" do CalcMed)
+# 🧠 Wiki CalcMed — índice (comece por aqui)
 
-> Mapa único dos docs. **Status:** `VIVO` (fonte da verdade, em sincronia com o código) ·
+> **Esta é a home da documentação.** Tudo é referenciável por caminho estável (`docs/<nome>.md`)
+> e por nome simples (`` `<nome>.md` ``). Mantenha os docs **flat** nesta pasta — muitos se referenciam
+> por nome, e subpastas quebrariam os links.
+
+## 🧭 Como navegar (atalhos)
+- **Quero entender uma feature** → o PRD dela (`prd-ia-calcmed`, `prd-cad`, `prd-sca`, `prd-sepse`, `prd-pcr`, `prd-avc`).
+- **Vou passar pro Figma** → `figma-handoff-plan` (IA) / `figma-handoff-centrais` + `figma-sync-ledger` (o que muda) + `decisoes-figma` (decisões pendentes).
+- **Vou construir uma feature nova** → `checklist-nova-feature.md` (gate) + `_templates/PRD.md` (molde) + `CLAUDE.md` (regras).
+- **Quero as regras do projeto** → `../CLAUDE.md`.
+- **Quero o negócio/estratégia** → `estrategia-negocio-ia-calcmed.md`.
+
+> Mapa completo abaixo. **Status:** `VIVO` (fonte da verdade, em sincronia com o código) ·
 > `PROCESSO` (regras/templates/planos de trabalho) · `HISTÓRICO` (registro de uma fase já
 > superada — **não** usar como verdade atual).
 >
@@ -27,6 +38,14 @@
 | `ds-issues-figma.md` | Problemas de modelagem do próprio Figma | VIVO |
 | `decisoes-figma.md` | Decisões pendentes do DS/Figma (ADR-lite, fonte única) | VIVO |
 | `estrategia-negocio-ia-calcmed.md` | Estratégia de negócio da IA (P.O./investidor) | VIVO |
+
+## Skills do workflow (`.claude/skills/` — invoque com `/<nome>`)
+| Skill | Quando usar |
+|---|---|
+| `/deploy-seguro` | Commitar/mergear/deployar (branch→main→Vercel) — batch, empurrar antes do PR, verificar hash |
+| `/nova-feature` | Construir uma feature/tela nova (pipeline do código ao PRD pronto pro Figma) |
+| `/auditoria-qa` | Revisão profunda via enxame de agentes Opus (código/UX/clínica/DS/workflow) |
+| `/gerar-prd` | Gerar/atualizar o PRD de uma feature a partir do código |
 
 ## Processo (regras, templates, checklists)
 | Doc | Uso | Status |
