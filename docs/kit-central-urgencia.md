@@ -1,3 +1,5 @@
+> ⚠️ **DOC HISTÓRICO** — descreve uma fase anterior do protótipo (iframe golden / não-portado / pré-git). Hoje as 5 centrais são React nativo e tudo está versionado. Mantido como registro; **não usar como verdade atual** (ver `docs/00-index.md`).
+
 # Kit de Componentes — Central de Urgência
 
 > Plano consolidado dos componentes que faltam pra Central de Urgência ficar **100% componentizada

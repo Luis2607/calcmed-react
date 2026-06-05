@@ -1,0 +1,29 @@
+name: CI
+
+# Gate automatizado do CLAUDE.md §6: build deve passar antes do merge.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+
+      # Build — BLOQUEANTE (a regra do dono: build verde antes do merge).
+      - name: Build
+        run: npm run build
+
+      # Lint — informativo por enquanto. Há débito pré-existente em src/admin/
+      # (setState-em-effect / refs-em-render — ver docs/decisoes-figma.md D9).
+      # Quando o débito for limpo, remover o `continue-on-error` e tornar bloqueante.
+      - name: Lint (informativo)
+        run: npm run lint
+        continue-on-error: true
