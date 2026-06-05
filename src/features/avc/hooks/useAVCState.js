@@ -60,6 +60,7 @@ export function useAVCState() {
 
   // Desvio + eventos + anotação
   const [hemorragico, setHemorragico] = usePersistedState('avc_hemorragico', false);
+  const [tcResultado, setTcResultado] = usePersistedState('avc_tc_resultado', null); // null|'isquemico'|'hemorragico'
   const [eventos, setEventos] = usePersistedState('avc_eventos', []);
   const [anotacao, setAnotacao] = usePersistedState('avc_anotacao', '');
   const [anotacaoEditadaEm, setAnotacaoEditadaEm] = usePersistedState('avc_anotacao_em', null);
@@ -163,6 +164,17 @@ export function useAVCState() {
     registrarEvento('TC: hemorragia intraparenquimatosa · desvio fluxo', 'hemorragico');
   };
 
+  // Gate isquêmico × hemorrágico pós-TC: define o caminho do protocolo.
+  const definirTcResultado = (r) => {
+    setTcResultado(r);
+    if (r === 'hemorragico') {
+      ativarHemorragico();
+    } else {
+      setHemorragico(false);
+      registrarEvento('TC sem contraste: isquêmico (sem hemorragia)', 't1');
+    }
+  };
+
   const resetProtocol = () => {
     setIniciadoEm(null); setTelaAtual(1); setTelaMaxVisitada(1); setAbaAtual('executar');
     setSintomasPresenciado(null); setHorarioInicioRaw(''); setJanelaMin(null);
@@ -173,7 +185,7 @@ export function useAVCState() {
     setPeso(''); setPesoEstimado(null); setTrombolitico('tnk');
     setPaAfericoes([]); setGlicemia(''); setDisfagia(null); setIniciais('');
     setTrombecVaso(null); setTrombecAspects(''); setTrombecMRS(null);
-    setHemorragico(false); setEventos([]);
+    setHemorragico(false); setTcResultado(null); setEventos([]);
     setAnotacao(''); setAnotacaoEditadaEm(null);
   };
 
@@ -205,7 +217,7 @@ export function useAVCState() {
     trombecVaso, setTrombecVaso, trombecAspects, setTrombecAspects, numAspects,
     trombecMRS, setTrombecMRS,
     // desvio / eventos / anotação
-    hemorragico, ativarHemorragico,
+    hemorragico, ativarHemorragico, tcResultado, definirTcResultado,
     eventos, registrarEvento,
     anotacao, setAnotacao, anotacaoEditadaEm, setAnotacaoEditadaEm,
     // ciclo

@@ -101,7 +101,7 @@ export function AVCFlow({ onBack }) {
     1: s.cincinnatiRespondidos >= 3 || s.bypassUsado,
     2: Object.keys(s.nihssScores).length >= NIHSS_TOTAL_PASSOS || s.bypassUsado,
     3: true,
-    4: s.doseTotal != null,
+    4: s.doseTotal != null || s.hemorragico,
     5: s.iniciais.trim().length >= 2 && s.disfagia && s.disfagia !== 'nao-feito',
   };
   const stepStates = [1, 2, 3, 4, 5].map((num) => {
@@ -146,6 +146,12 @@ export function AVCFlow({ onBack }) {
   const confirmarElegibilidade = () => { s.registrarEvento('Elegibilidade confirmada · avanço pra dose', 't3'); s.irParaTela(4); };
 
   const confirmarDose = () => {
+    if (s.hemorragico) {
+      // sem trombólise no hemorrágico — segue direto pro monitoramento (PA agressiva)
+      s.registrarEvento('Conduta hemorrágica · sem trombólise · monitoramento de PA', 'hemorragico');
+      s.irParaTela(5);
+      return;
+    }
     const nome = s.trombolitico === 'tnk' ? 'TNK' : 'Alteplase';
     if (janelaMin != null && janelaMin > 270 && !s.janelaConfirmada) {
       setJanelaConfirmOpen(true);
@@ -300,6 +306,26 @@ export function AVCFlow({ onBack }) {
           Encaminhe pra TC de crânio sem contraste imediatamente. Colete laboratórios em paralelo, acione neurologia.
         </AlertCard>
       )}
+      {s.cincinnatiAlterados >= 1 && !fora && (
+        <div className={styles.tcGate}>
+          <SectionLabel>Resultado da TC sem contraste</SectionLabel>
+          <Segmented
+            block
+            value={s.tcResultado}
+            onChange={s.definirTcResultado}
+            options={[
+              { value: 'isquemico', label: 'Isquêmico' },
+              { value: 'hemorragico', label: 'Hemorrágico' },
+            ]}
+          />
+          {s.hemorragico && (
+            <AlertCard level="critical" title="AVC hemorrágico — abortar trombólise">
+              Trombólise e trombectomia contraindicadas. Meta de PA agressiva (ver Monitor), reverter
+              anticoagulação se em uso e acionar neurocirurgia.
+            </AlertCard>
+          )}
+        </div>
+      )}
       {fora && (
         <AlertCard level="info" title="Fora de janela aguda">
           Sintomas &gt; 24h não são candidatos a trombólise aguda. Siga avaliação neurológica eletiva e ABCD² se déficit transitório.
@@ -399,6 +425,13 @@ export function AVCFlow({ onBack }) {
   const t4 = (
     <div className={styles.tela}>
       <StepHeader title="Terapia de Reperfusão" subtitle="Confirme o peso e escolha o trombolítico." />
+
+      {s.hemorragico && (
+        <AlertCard level="critical" title="Trombólise contraindicada — AVC hemorrágico">
+          Não administrar trombolítico nem indicar trombectomia. Siga para o monitoramento: meta de PA
+          agressiva, reversão de anticoagulação e neurocirurgia.
+        </AlertCard>
+      )}
 
       {s.bypassUsado && (
         <AlertCard level="warning" title="Atalho de dose ativo">
@@ -576,7 +609,7 @@ export function AVCFlow({ onBack }) {
     4: {
       secondary: voltar(3),
       hint: s.pesoEstimado ? 'Peso estimado · confirme assim que possível' : null,
-      primary: { label: 'Iniciar monitoramento', size: 'lg', onClick: confirmarDose, disabled: s.doseTotal == null },
+      primary: { label: 'Iniciar monitoramento', size: 'lg', onClick: confirmarDose, disabled: s.doseTotal == null && !s.hemorragico },
     },
     5: {
       secondary: voltar(4),
