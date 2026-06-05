@@ -1,6 +1,6 @@
 .page {
   padding: 2rem;
-  background-color: var(--fundo-padrao, #F8FAFC);
+  background-color: var(--ds-fundo-padrao);
   color: var(--texto-padrao, #0F172A);
   min-height: 100vh;
 }
@@ -213,11 +213,11 @@
 }
 
 .statusBadge.ok {
-  background-color: var(--ds-sucesso-fundo, #ECFDF5);
-  color: var(--ds-sucesso, #047857);
+  background-color: var(--ds-retorno-sucesso-fundo);
+  color: var(--ds-retorno-sucesso);
 }
 
 .statusBadge.missing {
-  background-color: var(--ds-atencao-fundo, #FFFBEB);
-  color: var(--ds-atencao, #92400E);
+  background-color: var(--ds-retorno-atencao-fundo);
+  color: var(--ds-retorno-atencao);
 }
