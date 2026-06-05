@@ -185,7 +185,7 @@ export const CAD_MODAIS = {
       { p: <>Os três precisam fechar juntos:</> },
       { list: [
         <>Glicemia &lt; 200 mg/dL</>,
-        <>HCO₃ &gt; 15 mEq/L ou pH &ge; 7,30</>,
+        <>HCO₃ &ge; 18 mEq/L ou pH &ge; 7,30</>,
         <>Ânion gap &lt; 12 mEq/L</>,
       ] },
       { helper: 'BOHB < 0,6 mmol/L em adultos é alternativa moderna ao AG. Em pediatria, BOHB ≤ 1.' },
