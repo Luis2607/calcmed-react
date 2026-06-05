@@ -284,7 +284,7 @@ export function decisaoEstratificacao({ ecgClasse, escoreTipo, escoreTotal, esco
     return { tipo: 'critico', titulo: 'Internação · SCA confirmado (NSTE-ACS)',
       corpo: `${trop.texto}${escorePreenchido ? ` · ${escoreLabel} ${escoreTotal}` : ''}. Iniciar antitrombóticos na próxima tela e estratificar a estratégia invasiva por GRACE e quadro clínico.` };
   }
-  if (escoreTipo === 'heart' && trop.status === 'rule-out' && escoreTotal < 4 && escoreTotal > 0) {
+  if (escoreTipo === 'heart' && trop.status === 'rule-out' && escoreTotal < 4 && escorePreenchido) {
     return { tipo: 'info', titulo: 'Alta segura · investigação ambulatorial',
       corpo: `HEART ${escoreTotal} (< 4) + troponina descartada + sem DAC conhecida = critério SBC. Encaminhar para investigação ambulatorial em 7 dias e teste funcional/anatômico em 30 dias.` };
   }
@@ -428,13 +428,15 @@ export function fibrinoliticoBloqueado(contraindicacoes = {}) {
 // ============================================================
 // TELA 5 · REAVALIAR · TIPO DE IAM + CONDUTA (golden detectarTipoIam / condutas)
 // ============================================================
-// Retorna 'stemi' | 'nstemi-omi' | 'zona-cinzenta' | null.
-export function detectarTipoIam({ ecgClasse, sinaisOmi, trop }) {
+// Retorna 'stemi' | 'nstemi-omi' | 'zona-cinzenta'. Nunca null (T5 sempre tem conduta).
+export function detectarTipoIam({ ecgClasse, trop }) {
   if (ecgClasse === 'stemi') return 'stemi';
-  if (ecgClasse === 'omi' && algumSinalOmi(sinaisOmi)) return 'stemi'; // OMI = STEMI equivalente
+  // OMI classificado = STEMI-equivalente → reperfunde (consistente com a T3, que já
+  // manda reperfundir por ecgClasse 'omi'). Os sinaisOmi são a evidência, não o gate.
+  if (ecgClasse === 'omi') return 'stemi';
   if (trop?.status === 'rule-in') return 'nstemi-omi';
   if (ecgClasse === 'preocupante' || trop?.status === 'observacao') return 'zona-cinzenta';
-  return null;
+  return 'zona-cinzenta'; // default seguro: zona-cinzenta (reavaliar) em vez de sumir a conduta
 }
 
 export const CONDUTAS_INTERNACAO = {
