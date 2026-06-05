@@ -6,8 +6,11 @@
   height: 100%;
   min-height: 0;
   overflow: hidden; /* o app-shell não rola; só a área de mensagens rola por dentro */
-  background: var(--ds-fundo-padrao);
+  background: var(--ds-fundo-cartao); /* branco no light (mais limpo); cartões sobem por sombra */
 }
+/* No dark, branco viraria a cor do cartão e os cards sumiriam — mantém o fundo
+   profundo do tema escuro (cards lift naturalmente). */
+:global(.modo-escuro) .screen { background: var(--ds-fundo-padrao); }
 
 /* ---------- Lista de conversas (rola por dentro) ---------- */
 .listScroll {
@@ -105,16 +108,15 @@
 }
 .conversation::-webkit-scrollbar { width: 0; display: none; }
 
-/* Gradiente bem suave SÓ no estado-vazio (glow de marca no topo). Tints oficiais
-   do DS — não é hex cru. Quando a conversa começa, `data-empty` cai e o
-   background-image some sozinho (sem JS, sem cleanup, sem flash). */
+/* Glow de marca SÓ no estado-vazio. Três radiais suaves (aurora) em tints
+   oficiais do DS — não é hex cru — para um fundo mais interessante sobre o
+   branco, sem competir com o conteúdo. Quando a conversa começa, `data-empty`
+   cai e o background-image some sozinho (sem JS, sem cleanup, sem flash). */
 .conversation[data-empty] {
-  background-image: radial-gradient(
-    120% 60% at 50% 0%,
-    var(--interativo-primario-tint-08) 0%,
-    var(--interativo-primario-tint-04) 38%,
-    transparent 72%
-  );
+  background-image:
+    radial-gradient(75% 42% at 8% -6%, var(--interativo-primario-tint-08) 0%, transparent 60%),
+    radial-gradient(70% 40% at 100% 2%, var(--interativo-primario-tint-06) 0%, transparent 58%),
+    radial-gradient(135% 75% at 50% -16%, var(--interativo-primario-tint-04) 0%, transparent 72%);
   background-repeat: no-repeat;
 }
 
@@ -225,6 +227,19 @@
   text-align: center;
   gap: var(--esp-2);
 }
+/* Marca do estado-vazio do HISTÓRICO (ícone de relógio em tile tinted). O hero
+   da conversa usa .brand; aqui é um placeholder simples. */
+.emptyMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--esp-2);
+  border-radius: var(--ds-r-lg);
+  background: var(--interativo-primario-tint-08);
+  color: var(--ds-interativo-primario);
+}
 
 /* Marca-herói (ícone DS + wordmark) — "loguinho ali" no corpo do vazio. */
 .brand {
@@ -299,17 +314,6 @@
   max-width: 34ch;
 }
 
-/* Nota de evidências — satélite discreto (par ícone↔texto), descolado do bloco. */
-.evidenceNote {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--esp-2);
-  margin-top: var(--esp-4);
-  font: var(--ds-font-legenda);
-  color: var(--ds-texto-secundario); /* AA garantido (terciário falha em 12px) */
-}
-.evidenceNote svg { flex-shrink: 0; }
-
 /* ---------- Seta de descer (centralizada, flutua acima do composer) ---------- */
 .jumpDock {
   position: absolute;
@@ -352,8 +356,9 @@
 }
 
 /* ---------- Sugestões: grid de 2 linhas que rola na horizontal ----------
-   Mais destaque que a régua de 1 linha: cards com ícone, 2 linhas × N colunas
-   rolando pra direita. O 3º card cortado sinaliza "tem mais, role". Só no vazio. */
+   Cards com ícone + label (2 linhas) + chevron, em 2 linhas × N colunas rolando
+   pra direita. Colunas largas (~52%) → a 2ª coluna fica CORTADA na borda,
+   sinalizando "tem mais, role". Só no estado-vazio. */
 .suggest {
   flex-shrink: 0;
   display: flex;
@@ -361,21 +366,30 @@
   gap: var(--esp-2); /* label cola no grid */
   padding: var(--esp-3) 0 var(--esp-2);
 }
-.suggestLabel {
+.suggestHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* título cola no subtítulo (par) */
   padding: 0 var(--esp-4);
-  font-size: var(--fonte-tamanho-rotulo);
+}
+.suggestTitle {
+  font: var(--ds-font-subtitulo); /* 18/28 */
   font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--ds-texto-padrao);
+}
+.suggestSub {
+  font: var(--ds-font-legenda);
   color: var(--ds-texto-secundario);
 }
 .suggestGrid {
   display: grid;
   grid-auto-flow: column; /* enche coluna a coluna */
   grid-template-rows: repeat(2, auto); /* 2 linhas fixas */
-  grid-auto-columns: minmax(140px, 1fr);
-  gap: var(--esp-2);
-  padding: var(--esp-1) var(--esp-4);
+  grid-auto-columns: minmax(160px, 56%); /* largas → 2ª coluna corta na borda (cue de scroll) */
+  gap: var(--esp-2) var(--esp-3);
+  /* padding vertical contém a sombra dos cards (overflow-x:auto força overflow-y:auto) */
+  padding: var(--esp-2) var(--esp-4) var(--esp-3);
   overflow-x: auto;
   scroll-snap-type: x proximity;
   scroll-padding-left: var(--esp-4);
@@ -389,37 +403,44 @@
   display: flex;
   align-items: center;
   gap: var(--esp-2);
-  min-height: 44px; /* alvo de toque */
-  padding: var(--esp-2) var(--esp-3);
-  border: 1px solid var(--ds-borda-padrao);
-  border-radius: var(--radius-card); /* card, não pílula: mais destaque */
+  min-height: 60px; /* mais presença; alvo de toque folgado */
+  padding: var(--esp-3);
+  border: 1px solid var(--ds-borda-sutil); /* borda leve; a sombra é que levanta o card */
+  border-radius: var(--ds-r-lg);
   background: var(--ds-fundo-cartao);
+  box-shadow: var(--sombra-cartao); /* card branco sobre fundo branco → sobe pela sombra */
   color: var(--ds-texto-padrao);
   font: var(--ds-font-botao-md);
   text-align: left;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
-.suggestCard:hover { background: var(--ds-fundo-hover); border-color: var(--ds-interativo-primario); }
-.suggestCard:active { background: var(--ds-fundo-elevado); }
+.suggestCard:hover { border-color: var(--ds-interativo-primario); transform: translateY(-1px); }
+.suggestCard:active { background: var(--ds-fundo-elevado); transform: none; }
 .cardIcon {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--ds-r-sm);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--ds-r-md);
   background: var(--interativo-primario-tint-08);
   color: var(--ds-interativo-primario);
 }
 .cardLabel {
+  flex: 1;
   min-width: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2; /* até 2 linhas, quebra em vez de truncar com "…" */
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+.cardChevron {
+  flex-shrink: 0;
+  display: inline-flex;
+  color: var(--ds-texto-terciario);
 }
 
 /* ---------- Resposta interrompida (parada no meio do streaming) ---------- */
@@ -469,25 +490,43 @@
   outline-offset: 2px;
 }
 
-/* ---------- Composer (travado na base do app-shell) ---------- */
+/* ---------- Composer (travado na base do app-shell) ----------
+   Input maior com sombra (flutua no branco) + aviso de evidências fixo embaixo. */
 .composer {
   flex-shrink: 0;
   display: flex;
+  flex-direction: column;
+  gap: var(--esp-2);
+  padding: var(--esp-2) var(--esp-4) var(--esp-3);
+  background: transparent;
+}
+.composerRow {
+  display: flex;
   align-items: flex-end; /* botão enviar fica na base quando o textarea cresce */
   gap: var(--esp-2);
-  padding: var(--esp-3) var(--esp-4);
-  background: var(--ds-fundo-cartao);
-  border-top: 1px solid var(--ds-borda-sutil);
 }
+/* Aviso clínico persistente (substitui a nota de evidências do hero): vale em
+   qualquer estado, não só no vazio. Centralizado sob o input. */
+.composerNote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  padding: 0 var(--esp-2);
+  font: var(--ds-font-legenda);
+  color: var(--ds-texto-secundario); /* AA garantido (terciário falha em 12px) */
+}
+.composerNote svg { flex-shrink: 0; }
 .input {
   flex: 1;
   min-width: 0;
-  min-height: var(--input-altura);
-  max-height: 128px; /* ~5 linhas; depois rola por dentro */
+  min-height: 52px; /* input maior */
+  max-height: 132px; /* ~5 linhas; depois rola por dentro */
   padding: var(--esp-3) var(--esp-4);
   border: 1px solid var(--ds-input-borda);
-  border-radius: var(--radius-card);
+  border-radius: var(--ds-r-lg);
   background: var(--ds-input-fundo);
+  box-shadow: var(--sombra-cartao); /* sombra: o input "sobe" do fundo branco */
   color: var(--ds-input-texto);
   font-family: var(--fonte-base);
   font-size: var(--fonte-tamanho-input);
